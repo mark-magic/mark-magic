@@ -14,7 +14,7 @@ export function hexoOutput(): OutputPlugin {
       config = options
       const root = options.root ?? path.resolve()
       _postsPath = path.resolve(root, 'source/_posts')
-      resourcePath = path.resolve(root, 'source/resource')
+      resourcePath = path.resolve(root, 'source/resources')
       await mkdirp(_postsPath)
       await mkdirp(resourcePath)
     },

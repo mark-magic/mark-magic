@@ -20,7 +20,7 @@ it('convertLinks', () => {
     ],
   })
   const r = toMarkdown(root)
-  expect(r.includes('../resource/4b638fd91af2417e9fd0942c3e04ea0c.mp3')).true
-  expect(r.includes('../resource/b160280b7d94417bb7f64d5fd1969230.webm')).true
-  expect(r.includes('./b6175f189a4e4c1cbea14c72848c54cb.md')).true
+  expect(r.includes('../resources/4b638fd91af2417e9fd0942c3e04ea0c.mp3')).true
+  expect(r.includes('../resources/b160280b7d94417bb7f64d5fd1969230.webm')).true
+  expect(r.includes('/p/b6175f189a4e4c1cbea14c72848c54cb')).true
 })

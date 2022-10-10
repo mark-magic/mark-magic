@@ -16,9 +16,9 @@ export function convertLinks(root: Root, note: { resources: Pick<ValuesType<Note
     const id = item.url.slice(2)
     const resource = map[id]
     if (resource) {
-      item.url = `../resource/${id + path.extname(resource.title)}`
+      item.url = `../resources/${id + path.extname(resource.title)}`
     } else {
-      item.url = `./${id}.md`
+      item.url = `/p/${id}`
     }
   })
 }

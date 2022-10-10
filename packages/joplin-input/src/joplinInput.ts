@@ -52,7 +52,7 @@ export function joplinInput(options: Config & { tag: string }): InputPlugin {
           'user_updated_time',
           'parent_id',
         ])
-        const tags = await noteApi.tagsById(n.id)
+        const tags = (await noteApi.tagsById(n.id)).filter((item) => item.title !== options.tag)
         const folder = folders[note.parent_id]
         const resources = await AsyncArray.map(await noteApi.resourcesById(n.id), async (item) => {
           return {

@@ -12,9 +12,13 @@
   "sideEffects": false,
   "devDependencies": {
     "@mami/cli": "workspace:^0.2.0",
+    "@mami/plugin-joplin-input": "workspace:^0.2.0",
+    "@types/lodash-es": "^4.17.6",
+    "@types/node": "^18.8.3",
     "tsup": "^6.2.3",
     "tsx": "^3.10.1",
     "typescript": "^4.8.4",
+    "utility-types": "^3.10.0",
     "vitest": "^0.24.0"
   },
   "publishConfig": {
@@ -23,6 +27,8 @@
   },
   "dependencies": {
     "@liuli-util/async": "^3.6.0",
-    "@liuli-util/fs-extra": "^0.1.0"
+    "@liuli-util/fs-extra": "^0.1.0",
+    "@liuli-util/markdown-util": "^0.2.4",
+    "lodash-es": "^4.17.21"
   }
 }

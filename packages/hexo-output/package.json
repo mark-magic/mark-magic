@@ -1,6 +1,6 @@
 {
   "name": "@mami/plugin-hexo-output",
-  "version": "0.2.0",
+  "version": "0.1.0",
   "license": "MIT",
   "type": "module",
   "exports": "./dist/index.js",
@@ -13,8 +13,8 @@
   },
   "sideEffects": false,
   "devDependencies": {
-    "@mami/cli": "workspace:^0.2.0",
-    "@mami/plugin-joplin-input": "workspace:^0.2.0",
+    "@mami/cli": "workspace:^1.0.0",
+    "@mami/plugin-joplin-input": "workspace:^1.0.0",
     "@types/lodash-es": "^4.17.6",
     "@types/node": "^18.8.3",
     "tsup": "^6.2.3",

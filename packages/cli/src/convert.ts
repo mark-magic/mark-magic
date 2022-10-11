@@ -1,4 +1,5 @@
 import { groupBy } from 'lodash-es'
+import { PromiseUtil } from './utils/PromiseUtil'
 
 export interface Tag {
   id: string
@@ -38,26 +39,35 @@ export interface ConvertConfig {
   plugins: (InputPlugin | OutputPlugin)[]
 }
 
-export async function convert(options: ConvertConfig) {
-  const p = groupBy(options.plugins, (item) => 'generate' in item)
-  const inputs = (p['true'] ?? []) as InputPlugin[]
-  const outputs = (p['false'] ?? []) as OutputPlugin[]
-  if (inputs.length > 0) {
-    for (const output of outputs) {
-      await output.config?.(options)
-    }
-  }
-  for (const input of inputs) {
-    const generator = input.generate()
-    for await (const note of generator) {
+export interface Events {
+  generate?(options: { input: InputPlugin; note: Note }): void
+  handle?(options: { input: InputPlugin; output: OutputPlugin; note: Note }): void
+}
+
+export function convert(options: ConvertConfig) {
+  return PromiseUtil.warpOnEvent(async (events: Events) => {
+    const p = groupBy(options.plugins, (item) => 'generate' in item)
+    const inputs = (p['true'] ?? []) as InputPlugin[]
+    const outputs = (p['false'] ?? []) as OutputPlugin[]
+    if (inputs.length > 0) {
       for (const output of outputs) {
-        await output.handle(note)
+        await output.config?.(options)
       }
     }
-  }
-  if (inputs.length > 0) {
-    for (const output of outputs) {
-      await output.end?.()
+    for (const input of inputs) {
+      const generator = input.generate()
+      for await (const note of generator) {
+        events.generate?.({ input, note })
+        for (const output of outputs) {
+          events.handle?.({ input, output, note })
+          await output.handle(note)
+        }
+      }
     }
-  }
+    if (inputs.length > 0) {
+      for (const output of outputs) {
+        await output.end?.()
+      }
+    }
+  })
 }

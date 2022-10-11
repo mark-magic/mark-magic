@@ -29,11 +29,14 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
+    "@liuli-util/async": "^3.6.0",
     "@liuli-util/fs-extra": "^0.1.0",
     "bundle-require": "^3.1.0",
     "esbuild": "^0.15.10",
     "form-data": "^4.0.0",
     "lodash-es": "^4.17.21",
-    "node-fetch": "^3.2.10"
+    "node-fetch": "^3.2.10",
+    "ora": "^6.1.2",
+    "type-fest": "^3.1.0"
   }
 }

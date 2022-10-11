@@ -30,6 +30,7 @@ export interface OutputPlugin {
   name: string
   config?(config: ConvertConfig): Promise<void>
   handle(note: Note): Promise<void>
+  end?(): Promise<void>
 }
 
 export interface ConvertConfig {
@@ -52,6 +53,11 @@ export async function convert(options: ConvertConfig) {
       for (const output of outputs) {
         await output.handle(note)
       }
+    }
+  }
+  if (inputs.length > 0) {
+    for (const output of outputs) {
+      await output.end?.()
     }
   }
 }

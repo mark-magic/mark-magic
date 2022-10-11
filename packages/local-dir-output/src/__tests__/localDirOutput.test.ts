@@ -1,0 +1,64 @@
+import { mkdirp, remove, readFile, pathExists } from '@liuli-util/fs-extra'
+import path from 'path'
+import { beforeEach, expect, it } from 'vitest'
+import { convert, InputPlugin, Note, Resource, Tag } from '@mami/cli'
+import { localDirOutput } from '../localDirOutput'
+import { fromMarkdown } from '@liuli-util/markdown-util'
+
+const tempPath = path.resolve(__dirname, '.temp')
+beforeEach(async () => {
+  await remove(tempPath)
+  await mkdirp(tempPath)
+})
+
+it('hexoOutput', async () => {
+  const generateVirtual: InputPlugin = {
+    name: 'generateVirtual',
+    async *generate() {
+      yield {
+        id: 'test1',
+        title: 'test1',
+        content: `
+# test1
+
+[test2](:/test2)
+        `.trim(),
+        resources: [] as Resource[],
+        tags: [{ id: 'test', title: 'test' }] as Tag[],
+        path: ['a/b'],
+      } as Note
+      yield {
+        id: 'test2',
+        title: 'test2',
+        content: `
+# test2
+
+[test1](:/test1)
+[localDirOutput.test.ts](:/test)
+                `.trim(),
+        resources: [
+          {
+            id: 'test',
+            title: path.basename(__filename),
+            raw: await readFile(__filename),
+          },
+        ] as Resource[],
+        tags: [{ id: 'test', title: 'test' }] as Tag[],
+        path: ['c'],
+      } as Note
+    },
+  }
+  await convert({
+    root: tempPath,
+    plugins: [generateVirtual, localDirOutput({ root: tempPath })],
+  })
+
+  const test1Path = path.resolve(tempPath, 'a/b/test1.md')
+  expect(await pathExists(test1Path)).true
+  const test2Path = path.resolve(tempPath, 'c/test2.md')
+  expect(await pathExists(test2Path)).true
+  expect(await pathExists(path.resolve(tempPath, '_resources/', path.basename(__filename)))).true
+  expect(await readFile(test1Path, 'utf-8')).includes('../../c/test2.md')
+  expect(await readFile(test2Path, 'utf-8')).includes('../a/b/test1.md')
+  expect(await readFile(test2Path, 'utf-8')).includes('../_resources/localDirOutput.test.ts')
+})

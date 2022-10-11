@@ -63,7 +63,7 @@ export function joplinInput(options: Config & { tag: string }): InputPlugin {
         })
         const inputNote: Note = {
           id: note.id,
-          title: note.title,
+          title: (note.title.startsWith('# ') ? note.title.slice(2) : note.title).trim(),
           content: note.body,
           createAt: note.user_created_time,
           updateAt: note.user_updated_time,

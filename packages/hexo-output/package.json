@@ -1,6 +1,6 @@
 {
   "name": "@mami/plugin-hexo-output",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "MIT",
   "type": "module",
   "exports": "./dist/index.js",

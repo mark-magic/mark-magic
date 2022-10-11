@@ -1,5 +1,11 @@
 # @mami/plugin-hexo-output
 
+## 0.1.2
+
+### Patch Changes
+
+- fix resource link errors
+
 ## 0.1.1
 
 ### Patch Changes

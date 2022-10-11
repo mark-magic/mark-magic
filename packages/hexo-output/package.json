@@ -13,8 +13,8 @@
   },
   "sideEffects": false,
   "devDependencies": {
-    "@mami/cli": "workspace:^0.1.0",
-    "@mami/plugin-joplin-input": "workspace:^0.1.0",
+    "@mami/cli": "workspace:^",
+    "@mami/plugin-joplin-input": "workspace:^",
     "@types/lodash-es": "^4.17.6",
     "@types/node": "^18.8.3",
     "tsup": "^6.2.3",

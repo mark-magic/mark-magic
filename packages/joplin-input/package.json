@@ -13,7 +13,7 @@
   },
   "sideEffects": false,
   "devDependencies": {
-    "@mami/cli": "workspace:^0.1.0",
+    "@mami/cli": "workspace:^",
     "@types/lodash-es": "^4.17.6",
     "tsup": "^6.2.3",
     "tsx": "^3.10.1",

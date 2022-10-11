@@ -25,9 +25,9 @@
     "hexo-theme-landscape": "^0.0.3"
   },
   "devDependencies": {
-    "@mami/cli": "workspace:^0.1.0",
-    "@mami/plugin-hexo-output": "workspace:^0.1.0",
-    "@mami/plugin-joplin-input": "workspace:^0.1.0",
+    "@mami/cli": "workspace:^",
+    "@mami/plugin-hexo-output": "workspace:^",
+    "@mami/plugin-joplin-input": "workspace:^",
     "typescript": "^4.8.4"
   }
 }

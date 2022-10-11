@@ -12,6 +12,10 @@
     "test": "vitest run"
   },
   "sideEffects": false,
+  "files": [
+    "dist",
+    "src"
+  ],
   "devDependencies": {
     "@mami/cli": "workspace:^",
     "@types/lodash-es": "^4.17.6",

@@ -2,6 +2,7 @@
   "name": "joplin2hugo-demo",
   "version": "1.0.0",
   "description": "",
+  "private": true,
   "main": "index.js",
   "scripts": {
     "dev": "hugo server -D",
@@ -15,7 +16,7 @@
   "license": "ISC",
   "devDependencies": {
     "@mami/cli": "workspace:^",
-    "@mami/plugin-hugo-output": "workspace:^0.1.0",
+    "@mami/plugin-hugo-output": "workspace:^",
     "@mami/plugin-joplin-input": "workspace:^",
     "@mami/plugin-local-dir-output": "workspace:^",
     "@types/node": "^18.8.3",

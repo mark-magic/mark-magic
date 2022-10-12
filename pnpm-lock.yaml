@@ -62,7 +62,7 @@ importers:
   demos/joplin2hugo-demo:
     specifiers:
       '@mami/cli': workspace:^
-      '@mami/plugin-hugo-output': workspace:^0.1.0
+      '@mami/plugin-hugo-output': workspace:^
       '@mami/plugin-joplin-input': workspace:^
       '@mami/plugin-local-dir-output': workspace:^
       '@types/node': ^18.8.3

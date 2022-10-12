@@ -1,0 +1,40 @@
+{
+  "name": "@mami/plugin-hugo-output",
+  "version": "0.1.0",
+  "license": "MIT",
+  "type": "module",
+  "exports": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --sourcemap --dts",
+    "dev": "pnpm build --watch",
+    "setup": "pnpm build",
+    "test": "vitest run"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "src"
+  ],
+  "devDependencies": {
+    "@mami/cli": "workspace:^",
+    "@mami/plugin-joplin-input": "workspace:^",
+    "@types/lodash-es": "^4.17.6",
+    "@types/node": "^18.8.3",
+    "tsup": "^6.2.3",
+    "tsx": "^3.10.1",
+    "typescript": "^4.8.4",
+    "utility-types": "^3.10.0",
+    "vitest": "^0.24.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "@liuli-util/async": "^3.6.0",
+    "@liuli-util/fs-extra": "^0.1.0",
+    "@liuli-util/markdown-util": "^0.2.4",
+    "lodash-es": "^4.17.21"
+  }
+}

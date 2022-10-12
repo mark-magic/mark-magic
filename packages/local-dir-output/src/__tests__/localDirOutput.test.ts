@@ -3,7 +3,7 @@ import path from 'path'
 import { beforeEach, expect, it } from 'vitest'
 import { convert, InputPlugin, Note, Resource, Tag } from '@mami/cli'
 import { localDirOutput } from '../localDirOutput'
-import { fromMarkdown } from '@liuli-util/markdown-util'
+import { calcMeta } from '../utils/calcMeta'
 
 const tempPath = path.resolve(__dirname, '.temp')
 beforeEach(async () => {
@@ -49,8 +49,14 @@ it('hexoOutput', async () => {
     },
   }
   await convert({
-    root: tempPath,
-    plugins: [generateVirtual, localDirOutput({ root: tempPath })],
+    plugins: [
+      generateVirtual,
+      localDirOutput({
+        noteRootPath: tempPath,
+        resourceRootPath: path.resolve(tempPath, '_resources'),
+        meta: calcMeta,
+      }),
+    ],
   })
 
   const test1Path = path.resolve(tempPath, 'a/b/test1.md')

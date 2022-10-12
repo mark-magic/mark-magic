@@ -29,13 +29,12 @@ export interface InputPlugin {
 }
 export interface OutputPlugin {
   name: string
-  config?(config: ConvertConfig): Promise<void>
+  start?(): Promise<void>
   handle(note: Note): Promise<void>
   end?(): Promise<void>
 }
 
 export interface ConvertConfig {
-  root?: string
   plugins: (InputPlugin | OutputPlugin)[]
 }
 
@@ -51,7 +50,7 @@ export function convert(options: ConvertConfig) {
     const outputs = (p['false'] ?? []) as OutputPlugin[]
     if (inputs.length > 0) {
       for (const output of outputs) {
-        await output.config?.(options)
+        await output.start?.()
       }
     }
     for (const input of inputs) {

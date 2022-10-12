@@ -2,24 +2,28 @@ import { AsyncArray } from '@liuli-util/async'
 import { mkdirp, readFile, writeFile } from '@liuli-util/fs-extra'
 import path from 'path'
 import type { Note, OutputPlugin } from '@mami/cli'
-import { fromMarkdown, toMarkdown } from '@liuli-util/markdown-util'
-import { addMeta } from './utils/addMeta'
+import { fromMarkdown, setYamlMeta, toMarkdown } from '@liuli-util/markdown-util'
+import { calcMeta } from './utils/calcMeta'
 import { convertLinks } from './utils/convertLinks'
 import { BiMultiMap } from './utils/BiMultiMap'
 
-export function localDirOutput(options: { root: string }): OutputPlugin {
-  const resourcePath = path.resolve(options.root, '_resources'),
-    resourceMap = new BiMultiMap<string, string>(),
+export function localDirOutput(options: {
+  noteRootPath: string
+  resourceRootPath: string
+  meta?(note: Note): any
+}): OutputPlugin {
+  const resourceMap = new BiMultiMap<string, string>(),
     noteMap = new BiMultiMap<string, string>(),
     afterList: { fsPath: string; note: Note }[] = []
   return {
     name: 'hexoOutput',
-    async config() {
-      await mkdirp(resourcePath)
+    async start() {
+      await mkdirp(options.noteRootPath)
+      await mkdirp(options.resourceRootPath)
     },
     async handle(note) {
       await AsyncArray.forEach(note.resources, async (item) => {
-        let fsPath = path.resolve(resourcePath, item.title)
+        let fsPath = path.resolve(options.resourceRootPath, item.title)
         if (resourceMap.has(fsPath)) {
           const ext = path.extname(item.title)
           fsPath = path.basename(item.title, ext) + '_' + item.id + ext
@@ -28,13 +32,13 @@ export function localDirOutput(options: { root: string }): OutputPlugin {
         resourceMap.set(item.id, fsPath)
       })
 
-      let fsPath = path.resolve(options.root, note.path.join('/'), note.title + '.md')
+      let fsPath = path.resolve(options.noteRootPath, note.path.join('/'), note.title + '.md')
       if (noteMap.has(fsPath)) {
-        fsPath = path.resolve(options.root, note.path.join('/'), note.title + '_' + note.id + '.md')
+        fsPath = path.resolve(options.noteRootPath, note.path.join('/'), note.title + '_' + note.id + '.md')
       }
       noteMap.set(note.id, fsPath)
       const root = fromMarkdown(note.content)
-      addMeta(root, note)
+      setYamlMeta(root, (options.meta ?? calcMeta)(note))
       const isAfter = convertLinks({ root, note, fsPath, noteMap, resourceMap })
       if (isAfter) {
         afterList.push({ fsPath, note })

@@ -15,7 +15,7 @@ it('convert', async () => {
     name: 'outputVirtual',
     handle: mockFn,
   }
-  await convert({ root: path.resolve(), plugins: [generateVirtual, outputVirtual] })
+  await convert({ plugins: [generateVirtual, outputVirtual] })
 
   expect(mockFn.mock.calls.length).eq(2)
 })

@@ -1,5 +1,11 @@
 # @mami/cli
 
+## 0.4.0
+
+### Minor Changes
+
+- feat: 在配置中分离 input/output 插件，以支持统一插件导入导出
+
 ## 0.3.0
 
 ### Minor Changes

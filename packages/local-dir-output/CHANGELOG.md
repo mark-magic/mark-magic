@@ -1,5 +1,11 @@
 # @mami/plugin-local-dir-output
 
+## 0.3.0
+
+### Minor Changes
+
+- fix: 修复写入文件时没有处理文件名和含有空格的路径的问题
+
 ## 0.2.0
 
 ### Minor Changes

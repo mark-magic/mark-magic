@@ -1,5 +1,11 @@
 # @mami/plugin-joplin
 
+## 0.5.0
+
+### Minor Changes
+
+- modify plugin interface
+
 ## 0.3.0
 
 ### Minor Changes

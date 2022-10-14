@@ -50,8 +50,8 @@ it('hexoOutput', async () => {
     },
   }
   await convert({
-    plugins: [
-      generateVirtual,
+    input: [generateVirtual],
+    output: [
       localDirOutput({
         noteRootPath: tempPath,
         resourceRootPath: path.resolve(tempPath, '_resources'),
@@ -99,8 +99,8 @@ it('filename', async () => {
     },
   }
   await convert({
-    plugins: [
-      generateVirtual,
+    input: [generateVirtual],
+    output: [
       localDirOutput({
         noteRootPath: tempPath,
         resourceRootPath: path.resolve(tempPath, '_resources'),

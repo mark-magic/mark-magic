@@ -1,4 +1,3 @@
-import path from 'path'
 import { expect, it, vi } from 'vitest'
 import { convert, InputPlugin, Note, OutputPlugin } from '../convert'
 
@@ -15,7 +14,7 @@ it('convert', async () => {
     name: 'outputVirtual',
     handle: mockFn,
   }
-  await convert({ plugins: [generateVirtual, outputVirtual] })
+  await convert({ input: [generateVirtual], output: [outputVirtual] })
 
   expect(mockFn.mock.calls.length).eq(2)
 })

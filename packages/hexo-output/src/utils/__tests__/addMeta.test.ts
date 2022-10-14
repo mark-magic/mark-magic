@@ -1,4 +1,4 @@
-import { fromMarkdown, getYamlMeta, setYamlMeta } from '@liuli-util/markdown-util'
+import { fromMarkdown, getYamlMeta } from '@liuli-util/markdown-util'
 import { Note, Tag } from '@mami/cli'
 import { expect, it } from 'vitest'
 import { addMeta, HexoPostMeta } from '../addMeta'

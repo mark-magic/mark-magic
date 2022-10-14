@@ -44,7 +44,7 @@ it('hugoOutput', async () => {
     },
   }
 
-  await convert({ plugins: [generateVirtual, hugoOutput({ root: tempPath })] })
+  await convert({ input: [generateVirtual], output: [hugoOutput({ root: tempPath })] })
 
   expect(await pathExists(path.resolve(tempPath, 'content/posts/test1.md'))).to.be.true
   expect(await pathExists(path.resolve(tempPath, 'content/posts/test2.md'))).to.be.true

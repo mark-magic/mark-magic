@@ -35,7 +35,8 @@ export interface OutputPlugin {
 }
 
 export interface ConvertConfig {
-  plugins: (InputPlugin | OutputPlugin)[]
+  input?: InputPlugin[]
+  output?: OutputPlugin[]
 }
 
 export interface Events {
@@ -45,9 +46,8 @@ export interface Events {
 
 export function convert(options: ConvertConfig) {
   return PromiseUtil.warpOnEvent(async (events: Events) => {
-    const p = groupBy(options.plugins, (item) => 'generate' in item)
-    const inputs = (p['true'] ?? []) as InputPlugin[]
-    const outputs = (p['false'] ?? []) as OutputPlugin[]
+    const inputs = (options.input ?? []) as InputPlugin[]
+    const outputs = (options.output ?? []) as OutputPlugin[]
     if (inputs.length > 0) {
       for (const output of outputs) {
         await output.start?.()

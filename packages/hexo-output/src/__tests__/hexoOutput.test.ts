@@ -37,7 +37,8 @@ it('hexoOutput', async () => {
     },
   }
   await convert({
-    plugins: [generateVirtual, hexoOutput({ root: tempPath })],
+    input: [generateVirtual],
+    output: [hexoOutput({ root: tempPath })],
   })
 
   expect(await pathExists(path.resolve(tempPath, 'source/_posts/test1.md'))).to.be.true

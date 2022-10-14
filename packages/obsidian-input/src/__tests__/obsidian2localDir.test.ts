@@ -13,6 +13,7 @@ beforeEach(async () => {
 
 it('convert', async () => {
   await convert({
-    plugins: [obsidianInput({ root: path.resolve(__dirname, 'assets') }), localDirOutput({ root: tempPath })],
+    input: [obsidianInput({ root: path.resolve(__dirname, 'assets') })],
+    output: [localDirOutput({ noteRootPath: tempPath, resourceRootPath: path.resolve(tempPath, '_resources') })],
   })
 })

@@ -10,7 +10,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts --sourcemap --shims && tsup src/bin.ts --format esm --target esnext",
-    "dev": "tsup-node src/index.ts --format esm --dts --sourcemap --shims && tsup src/bin.ts --format esm --target esnext --watch",
+    "dev": "pnpm build --watch",
     "setup": "pnpm build",
     "start": "tsx ./src/bin.ts",
     "test": "vitest run"

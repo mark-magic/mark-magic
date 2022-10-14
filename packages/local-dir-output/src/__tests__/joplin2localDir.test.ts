@@ -13,16 +13,15 @@ beforeEach(async () => {
 
 it.skip('joplin2hexo', async () => {
   await convert({
-    root: tempPath,
-    plugins: [
+    input: [
       joplinInput({
         baseUrl: 'http://localhost:27583',
         token:
           '5bcfa49330788dd68efea27a0a133d2df24df68c3fd78731eaa9914ef34811a34a782233025ed8a651677ec303de6a04e54b57a27d48898ff043fd812d8e0b31',
         tag: '',
       }),
-      localDirOutput({ root: tempPath }),
     ],
+    output: [localDirOutput({ noteRootPath: tempPath, resourceRootPath: path.resolve(tempPath, '_resources') })],
   })
 
   expect(await pathExists(path.resolve(tempPath, 'source/_posts'))).to.be.true

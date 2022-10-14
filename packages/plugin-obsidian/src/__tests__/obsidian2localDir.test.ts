@@ -3,7 +3,7 @@ import { convert } from '@mami/cli'
 import path from 'path'
 import { beforeEach, it } from 'vitest'
 import { obsidianInput } from '..'
-import { localDirOutput } from '@mami/plugin-local-dir-output'
+import { localDirOutput } from '@mami/plugin-local'
 
 const tempPath = path.resolve(__dirname, '.temp')
 beforeEach(async () => {

@@ -16,9 +16,9 @@
   "license": "ISC",
   "devDependencies": {
     "@mami/cli": "workspace:^",
-    "@mami/plugin-hugo-output": "workspace:^",
-    "@mami/plugin-joplin-input": "workspace:^",
-    "@mami/plugin-local-dir-output": "workspace:^",
+    "@mami/plugin-hugo": "workspace:^",
+    "@mami/plugin-joplin": "workspace:^",
+    "@mami/plugin-local": "workspace:^",
     "@types/node": "^18.8.3",
     "typescript": "^4.8.4"
   }

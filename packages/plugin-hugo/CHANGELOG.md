@@ -1,4 +1,4 @@
-# @mami/plugin-hexo-output
+# @mami/plugin-hexo
 
 ## 0.2.0
 

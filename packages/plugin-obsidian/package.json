@@ -1,31 +1,26 @@
 {
-  "name": "@mami/plugin-hugo-output",
-  "version": "0.2.0",
+  "name": "@mami/plugin-obsidian",
+  "version": "0.3.0",
   "license": "MIT",
   "type": "module",
   "exports": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/index.js",
   "scripts": {
-    "build": "tsup src/index.ts --format esm --sourcemap --dts",
-    "dev": "pnpm build --watch",
+    "build": "tsup src/index.ts --format esm --dts",
     "setup": "pnpm build",
     "test": "vitest run"
   },
   "sideEffects": false,
-  "files": [
-    "dist",
-    "src"
-  ],
   "devDependencies": {
     "@mami/cli": "workspace:^",
-    "@mami/plugin-joplin-input": "workspace:^",
+    "@mami/plugin-local": "workspace:^",
     "@types/lodash-es": "^4.17.6",
     "@types/node": "^18.8.3",
+    "@types/uuid": "^8.3.4",
     "tsup": "^6.2.3",
-    "tsx": "^3.10.1",
+    "tsx": "^3.9.0",
     "typescript": "^4.8.4",
-    "utility-types": "^3.10.0",
-    "vitest": "^0.24.0"
+    "vitest": "^0.23.4"
   },
   "publishConfig": {
     "access": "public",
@@ -35,6 +30,9 @@
     "@liuli-util/async": "^3.6.0",
     "@liuli-util/fs-extra": "^0.1.0",
     "@liuli-util/markdown-util": "^0.2.4",
-    "lodash-es": "^4.17.21"
+    "fast-glob": "^3.2.12",
+    "lodash-es": "^4.17.21",
+    "unist-builder": "^3.0.0",
+    "uuid": "^9.0.0"
   }
 }

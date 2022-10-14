@@ -26,11 +26,11 @@ importers:
       simple-git-hooks: 2.8.0
       typescript: 4.8.4
 
-  demos/joplin-hexo-demo:
+  demos/joplin2hexo-demo:
     specifiers:
       '@mami/cli': workspace:^
-      '@mami/plugin-hexo-output': workspace:^
-      '@mami/plugin-joplin-input': workspace:^
+      '@mami/plugin-hexo': workspace:^
+      '@mami/plugin-joplin': workspace:^
       hexo: ^6.3.0
       hexo-generator-archive: ^1.0.0
       hexo-generator-category: ^1.0.0
@@ -55,23 +55,23 @@ importers:
       hexo-theme-landscape: 0.0.3
     devDependencies:
       '@mami/cli': link:../../packages/cli
-      '@mami/plugin-hexo-output': link:../../packages/hexo-output
-      '@mami/plugin-joplin-input': link:../../packages/joplin-input
+      '@mami/plugin-hexo': link:../../packages/plugin-hexo
+      '@mami/plugin-joplin': link:../../packages/plugin-joplin
       typescript: 4.8.4
 
   demos/joplin2hugo-demo:
     specifiers:
       '@mami/cli': workspace:^
-      '@mami/plugin-hugo-output': workspace:^
-      '@mami/plugin-joplin-input': workspace:^
-      '@mami/plugin-local-dir-output': workspace:^
+      '@mami/plugin-hugo': workspace:^
+      '@mami/plugin-joplin': workspace:^
+      '@mami/plugin-local': workspace:^
       '@types/node': ^18.8.3
       typescript: ^4.8.4
     devDependencies:
       '@mami/cli': link:../../packages/cli
-      '@mami/plugin-hugo-output': link:../../packages/hugo-output
-      '@mami/plugin-joplin-input': link:../../packages/joplin-input
-      '@mami/plugin-local-dir-output': link:../../packages/local-dir-output
+      '@mami/plugin-hugo': link:../../packages/plugin-hugo
+      '@mami/plugin-joplin': link:../../packages/plugin-joplin
+      '@mami/plugin-local': link:../../packages/plugin-local
       '@types/node': 18.8.3
       typescript: 4.8.4
 
@@ -110,13 +110,13 @@ importers:
       typescript: 4.8.4
       vitest: 0.24.0
 
-  packages/hexo-output:
+  packages/plugin-hexo:
     specifiers:
       '@liuli-util/async': ^3.6.0
       '@liuli-util/fs-extra': ^0.1.0
       '@liuli-util/markdown-util': ^0.2.4
       '@mami/cli': workspace:^
-      '@mami/plugin-joplin-input': workspace:^
+      '@mami/plugin-joplin': workspace:^
       '@types/lodash-es': ^4.17.6
       '@types/node': ^18.8.3
       lodash-es: ^4.17.21
@@ -132,7 +132,7 @@ importers:
       lodash-es: 4.17.21
     devDependencies:
       '@mami/cli': link:../cli
-      '@mami/plugin-joplin-input': link:../joplin-input
+      '@mami/plugin-joplin': link:../plugin-joplin
       '@types/lodash-es': 4.17.6
       '@types/node': 18.8.3
       tsup: 6.2.3_typescript@4.8.4
@@ -141,13 +141,12 @@ importers:
       utility-types: 3.10.0
       vitest: 0.24.0
 
-  packages/hugo-output:
+  packages/plugin-hugo:
     specifiers:
       '@liuli-util/async': ^3.6.0
       '@liuli-util/fs-extra': ^0.1.0
       '@liuli-util/markdown-util': ^0.2.4
       '@mami/cli': workspace:^
-      '@mami/plugin-joplin-input': workspace:^
       '@types/lodash-es': ^4.17.6
       '@types/node': ^18.8.3
       lodash-es: ^4.17.21
@@ -163,7 +162,6 @@ importers:
       lodash-es: 4.17.21
     devDependencies:
       '@mami/cli': link:../cli
-      '@mami/plugin-joplin-input': link:../joplin-input
       '@types/lodash-es': 4.17.6
       '@types/node': 18.8.3
       tsup: 6.2.3_typescript@4.8.4
@@ -172,7 +170,7 @@ importers:
       utility-types: 3.10.0
       vitest: 0.24.0
 
-  packages/joplin-input:
+  packages/plugin-joplin:
     specifiers:
       '@liuli-util/async': ^3.6.0
       '@liuli-util/fs-extra': ^0.1.0
@@ -192,6 +190,7 @@ importers:
       vitest: ^0.24.0
     dependencies:
       '@liuli-util/async': 3.6.0
+      '@liuli-util/fs-extra': 0.1.0
       '@liuli-util/markdown-util': 0.2.4
       '@liuli-util/tree': 3.6.0
       form-data: 4.0.0
@@ -200,7 +199,6 @@ importers:
       node-fetch: 3.2.10
       utility-types: 3.10.0
     devDependencies:
-      '@liuli-util/fs-extra': 0.1.0
       '@mami/cli': link:../cli
       '@types/lodash-es': 4.17.6
       '@types/node': 18.8.3
@@ -209,13 +207,13 @@ importers:
       typescript: 4.8.4
       vitest: 0.24.0
 
-  packages/local-dir-output:
+  packages/plugin-local:
     specifiers:
       '@liuli-util/async': ^3.6.0
       '@liuli-util/fs-extra': ^0.1.0
       '@liuli-util/markdown-util': ^0.2.4
       '@mami/cli': workspace:^
-      '@mami/plugin-joplin-input': workspace:^
+      '@mami/plugin-joplin': workspace:^
       '@types/lodash-es': ^4.17.6
       '@types/node': ^18.8.3
       filenamify: ^5.1.1
@@ -233,7 +231,7 @@ importers:
       lodash-es: 4.17.21
     devDependencies:
       '@mami/cli': link:../cli
-      '@mami/plugin-joplin-input': link:../joplin-input
+      '@mami/plugin-joplin': link:../plugin-joplin
       '@types/lodash-es': 4.17.6
       '@types/node': 18.8.3
       tsup: 6.2.3_typescript@4.8.4
@@ -242,13 +240,13 @@ importers:
       utility-types: 3.10.0
       vitest: 0.24.0
 
-  packages/obsidian-input:
+  packages/plugin-obsidian:
     specifiers:
       '@liuli-util/async': ^3.6.0
       '@liuli-util/fs-extra': ^0.1.0
       '@liuli-util/markdown-util': ^0.2.4
       '@mami/cli': workspace:^
-      '@mami/plugin-local-dir-output': workspace:^
+      '@mami/plugin-local': workspace:^
       '@types/lodash-es': ^4.17.6
       '@types/node': ^18.8.3
       '@types/uuid': ^8.3.4
@@ -270,7 +268,7 @@ importers:
       uuid: 9.0.0
     devDependencies:
       '@mami/cli': link:../cli
-      '@mami/plugin-local-dir-output': link:../local-dir-output
+      '@mami/plugin-local': link:../plugin-local
       '@types/lodash-es': 4.17.6
       '@types/node': 18.8.3
       '@types/uuid': 8.3.4
@@ -723,6 +721,7 @@ packages:
     dependencies:
       '@types/fs-extra': 9.0.13
       fs-extra: 10.1.0
+    dev: false
 
   /@liuli-util/markdown-util/0.2.4:
     resolution: {integrity: sha512-DXLoB4Dp8w0rE8ddgbBZqitIbauJkCwuhSo3b5svfNaqChBhJ4dPpZ06URn9SqK9ZYH5+XnaMpZi4yXE6DUeAQ==}
@@ -839,6 +838,7 @@ packages:
     resolution: {integrity: sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==}
     dependencies:
       '@types/node': 18.8.3
+    dev: false
 
   /@types/hast/2.3.4:
     resolution: {integrity: sha512-wLEm0QvaoawEDoTRwzTXp4b4jpwiJDvR5KMnFnVodm3scufTlBOWRD6N1OBf9TZMhjlNsSfcO5V+7AF4+Vy+9g==}

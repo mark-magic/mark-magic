@@ -1,10 +1,10 @@
-# @mami/plugin-local-dir-output
+# @mami/plugin-hexo
 
 ## 0.3.0
 
 ### Minor Changes
 
-- fix: 修复写入文件时没有处理文件名和含有空格的路径的问题
+- publish
 
 ## 0.2.0
 
@@ -12,6 +12,12 @@
 
 - Update the configuration items, no longer expose the root option, and use it to specify it in the plugin
 - update hooks `config` => `start`
+
+## 0.1.2
+
+### Patch Changes
+
+- fix resource link errors
 
 ## 0.1.1
 

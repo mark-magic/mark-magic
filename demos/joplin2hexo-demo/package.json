@@ -1,5 +1,5 @@
 {
-  "name": "joplin-hexo-demo",
+  "name": "joplin2hexo-demo",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -26,8 +26,8 @@
   },
   "devDependencies": {
     "@mami/cli": "workspace:^",
-    "@mami/plugin-hexo-output": "workspace:^",
-    "@mami/plugin-joplin-input": "workspace:^",
+    "@mami/plugin-hexo": "workspace:^",
+    "@mami/plugin-joplin": "workspace:^",
     "typescript": "^4.8.4"
   }
 }

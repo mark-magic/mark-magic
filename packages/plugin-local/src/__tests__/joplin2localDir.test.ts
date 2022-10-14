@@ -1,6 +1,6 @@
 import { convert } from '@mami/cli'
 import { beforeEach, expect, it } from 'vitest'
-import { joplinInput } from '@mami/plugin-joplin-input'
+import * as joplin from '@mami/plugin-joplin'
 import { localDirOutput } from '../localDirOutput'
 import { mkdirp, pathExists, remove } from '@liuli-util/fs-extra'
 import path from 'path'
@@ -14,7 +14,7 @@ beforeEach(async () => {
 it.skip('joplin2hexo', async () => {
   await convert({
     input: [
-      joplinInput({
+      joplin.input({
         baseUrl: 'http://localhost:27583',
         token:
           '5bcfa49330788dd68efea27a0a133d2df24df68c3fd78731eaa9914ef34811a34a782233025ed8a651677ec303de6a04e54b57a27d48898ff043fd812d8e0b31',

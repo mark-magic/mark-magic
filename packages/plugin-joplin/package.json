@@ -1,6 +1,6 @@
 {
-  "name": "@mami/plugin-joplin-input",
-  "version": "0.3.0",
+  "name": "@mami/plugin-joplin",
+  "version": "0.1.0",
   "license": "MIT",
   "type": "module",
   "exports": "./dist/index.js",
@@ -17,7 +17,6 @@
     "src"
   ],
   "devDependencies": {
-    "@liuli-util/fs-extra": "^0.1.0",
     "@mami/cli": "workspace:^",
     "@types/lodash-es": "^4.17.6",
     "@types/node": "^18.8.3",
@@ -31,6 +30,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
+    "@liuli-util/fs-extra": "^0.1.0",
     "@liuli-util/async": "^3.6.0",
     "@liuli-util/markdown-util": "^0.2.4",
     "@liuli-util/tree": "^3.6.0",

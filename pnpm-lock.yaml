@@ -175,9 +175,12 @@ importers:
   packages/joplin-input:
     specifiers:
       '@liuli-util/async': ^3.6.0
+      '@liuli-util/fs-extra': ^0.1.0
+      '@liuli-util/markdown-util': ^0.2.4
       '@liuli-util/tree': ^3.6.0
       '@mami/cli': workspace:^
       '@types/lodash-es': ^4.17.6
+      '@types/node': ^18.8.3
       form-data: ^4.0.0
       joplin-api: ^0.4.3
       lodash-es: ^4.17.21
@@ -185,17 +188,22 @@ importers:
       tsup: ^6.2.3
       tsx: ^3.10.1
       typescript: ^4.8.4
+      utility-types: ^3.10.0
       vitest: ^0.24.0
     dependencies:
       '@liuli-util/async': 3.6.0
+      '@liuli-util/markdown-util': 0.2.4
       '@liuli-util/tree': 3.6.0
       form-data: 4.0.0
       joplin-api: 0.4.3
       lodash-es: 4.17.21
       node-fetch: 3.2.10
+      utility-types: 3.10.0
     devDependencies:
+      '@liuli-util/fs-extra': 0.1.0
       '@mami/cli': link:../cli
       '@types/lodash-es': 4.17.6
+      '@types/node': 18.8.3
       tsup: 6.2.3_typescript@4.8.4
       tsx: 3.10.1
       typescript: 4.8.4
@@ -715,7 +723,6 @@ packages:
     dependencies:
       '@types/fs-extra': 9.0.13
       fs-extra: 10.1.0
-    dev: false
 
   /@liuli-util/markdown-util/0.2.4:
     resolution: {integrity: sha512-DXLoB4Dp8w0rE8ddgbBZqitIbauJkCwuhSo3b5svfNaqChBhJ4dPpZ06URn9SqK9ZYH5+XnaMpZi4yXE6DUeAQ==}
@@ -832,7 +839,6 @@ packages:
     resolution: {integrity: sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==}
     dependencies:
       '@types/node': 18.8.3
-    dev: false
 
   /@types/hast/2.3.4:
     resolution: {integrity: sha512-wLEm0QvaoawEDoTRwzTXp4b4jpwiJDvR5KMnFnVodm3scufTlBOWRD6N1OBf9TZMhjlNsSfcO5V+7AF4+Vy+9g==}
@@ -5313,7 +5319,6 @@ packages:
   /utility-types/3.10.0:
     resolution: {integrity: sha512-O11mqxmi7wMKCo6HKFt5AhO4BwY3VV68YU07tgxfz8zJTIxr4BpsezN49Ffwy9j3ZpwwJp4fkRwjRzq3uWE6Rg==}
     engines: {node: '>= 4'}
-    dev: true
 
   /utils-merge/1.0.1:
     resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}

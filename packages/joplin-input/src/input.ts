@@ -28,10 +28,10 @@ async function getFolders(): Promise<Record<string, FolderListAllRes & Pick<Note
   return r
 }
 
-export function joplinInput(options: Config & { tag: string }): InputPlugin {
+export function input(options: Config & { tag: string }): InputPlugin {
   Object.assign(config, pick(options, 'baseUrl', 'token'))
   return {
-    name: 'joplin-input',
+    name: 'joplin',
     async *generate() {
       await import('./utils/nodePolyfill')
       const folders = await getFolders()

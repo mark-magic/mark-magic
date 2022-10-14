@@ -6,6 +6,7 @@ import { fromMarkdown, setYamlMeta, toMarkdown } from '@liuli-util/markdown-util
 import { calcMeta } from './utils/calcMeta'
 import { convertLinks } from './utils/convertLinks'
 import { BiMultiMap } from './utils/BiMultiMap'
+import filenamify from 'filenamify'
 
 export function localDirOutput(options: {
   noteRootPath: string
@@ -23,18 +24,18 @@ export function localDirOutput(options: {
     },
     async handle(note) {
       await AsyncArray.forEach(note.resources, async (item) => {
-        let fsPath = path.resolve(options.resourceRootPath, item.title)
+        let fsPath = path.resolve(options.resourceRootPath, filenamify(item.title))
         if (resourceMap.has(fsPath)) {
           const ext = path.extname(item.title)
-          fsPath = path.basename(item.title, ext) + '_' + item.id + ext
+          fsPath = path.basename(filenamify(item.title), ext) + '_' + item.id + ext
         }
         await writeFile(fsPath, item.raw)
         resourceMap.set(item.id, fsPath)
       })
 
-      let fsPath = path.resolve(options.noteRootPath, note.path.join('/'), note.title + '.md')
+      let fsPath = path.resolve(options.noteRootPath, note.path.join('/'), filenamify(note.title) + '.md')
       if (noteMap.has(fsPath)) {
-        fsPath = path.resolve(options.noteRootPath, note.path.join('/'), note.title + '_' + note.id + '.md')
+        fsPath = path.resolve(options.noteRootPath, note.path.join('/'), filenamify(note.title) + '_' + note.id + '.md')
       }
       noteMap.set(note.id, fsPath)
       const root = fromMarkdown(note.content)

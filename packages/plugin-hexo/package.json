@@ -6,7 +6,7 @@
   "exports": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsup src/index.ts --format esm --sourcemap --dts",
+    "build": "tsup src/index.ts --format esm --sourcemap && tsc",
     "dev": "pnpm build --watch",
     "setup": "pnpm build",
     "test": "vitest run"

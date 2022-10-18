@@ -4,7 +4,7 @@ import { beforeEach, expect, it } from 'vitest'
 import { convert, InputPlugin, Note, Resource, Tag } from '@mami/cli'
 import { localDirOutput } from '../localDirOutput'
 import { calcMeta } from '../utils/calcMeta'
-import filenamify, { filenamifyPath } from 'filenamify'
+import { filenamifyPath } from 'filenamify'
 
 const tempPath = path.resolve(__dirname, '.temp')
 beforeEach(async () => {

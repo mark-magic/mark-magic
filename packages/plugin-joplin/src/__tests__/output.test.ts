@@ -5,7 +5,6 @@ import { output } from '../output'
 import { readFile } from '@liuli-util/fs-extra'
 import '../utils/nodePolyfill'
 import { config, Config, folderApi, noteApi, PageUtil, tagApi } from 'joplin-api'
-import { AsyncArray } from '@liuli-util/async'
 import { pick } from 'lodash-es'
 
 const options: Config = {
@@ -67,4 +66,6 @@ it('output', async () => {
     input: [mockInput],
     output: [output(options)],
   })
+  const r = await PageUtil.pageToAllList(noteApi.list)
+  console.log(r)
 })

@@ -1,5 +1,4 @@
 import { PromiseUtil } from './utils/PromiseUtil'
-import { queue } from './utils/queue'
 
 export interface Tag {
   id: string
@@ -54,7 +53,7 @@ export function convert(options: ConvertConfig) {
       }
     }
     for (const input of inputs) {
-      const generator = queue(input.generate())
+      const generator = input.generate()
       for await (const note of generator) {
         events.generate?.({ input, note })
         for (const output of outputs) {

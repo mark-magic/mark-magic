@@ -28,8 +28,12 @@ async function createResources(note: Note, resources: Map<string, string>) {
     async (item) => {
       const fsPath = path.resolve(tempPath, path.basename(item.title))
       await writeFile(fsPath, item.raw)
-      const r = await resourceApi.create({ title: item.title, data: createReadStream(fsPath) })
-      resources.set(item.id, r.id)
+      try {
+        const r = await resourceApi.create({ title: item.title, data: createReadStream(fsPath) })
+        resources.set(item.id, r.id)
+      } finally {
+        await remove(fsPath)
+      }
     },
   )
   await remove(tempPath)

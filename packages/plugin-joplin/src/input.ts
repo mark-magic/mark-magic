@@ -12,19 +12,20 @@ import {
 import type { InputPlugin, Note, Resource } from '@mami/cli'
 import { AsyncArray } from '@liuli-util/async'
 import { listToTree, treeToList } from '@liuli-util/tree'
-import { keyBy, pick } from 'lodash-es'
+import { chain, keyBy, pick } from 'lodash-es'
 
 async function getFolders(): Promise<Record<string, FolderListAllRes & Pick<Note, 'path'>>> {
   const list = await folderApi.listAll()
-  // console.log('list', list)
   const treeList = treeToList(listToTree(list, { id: 'id', children: 'children', parentId: 'parent_id' }), {
     id: 'id',
     children: 'children',
     path: 'path',
   }) as unknown as (FolderListAllRes & Pick<Note, 'path'>)[]
-  // console.log('treeList', treeList)
-  const r = keyBy(treeList, (item) => item.id)
-  // console.log('r', r)
+  const map = keyBy(treeList, (item) => item.id)
+  const r = chain(treeList)
+    .map((item) => ({ ...item, path: item.path.map((s) => map[s].title) }))
+    .keyBy((item) => item.id)
+    .value()
   return r
 }
 
@@ -33,7 +34,6 @@ export function input(options: Config & { tag: string }): InputPlugin {
   return {
     name: 'joplin',
     async *generate() {
-      await import('./utils/nodePolyfill')
       const folders = await getFolders()
       const notes = await PageUtil.pageToAllList((pageParam) =>
         searchApi.search({
@@ -58,7 +58,7 @@ export function input(options: Config & { tag: string }): InputPlugin {
           return {
             id: item.id,
             title: item.title,
-            raw: await resourceApi.fileByResourceId(item.id),
+            raw: Buffer.from(await (await resourceApi.fileById(item.id)).arrayBuffer()),
           } as Resource
         })
         const inputNote: Note = {

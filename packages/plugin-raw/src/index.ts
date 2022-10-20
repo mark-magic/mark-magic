@@ -1,4 +1,5 @@
 import { AsyncArray } from '@liuli-util/async'
+import { mkdirp } from '@liuli-util/fs-extra'
 import { InputPlugin, Note, OutputPlugin } from '@mami/cli'
 import { readFile, writeFile } from 'fs/promises'
 import JSZip from 'jszip'
@@ -45,7 +46,9 @@ export function output(options: { path: string }): OutputPlugin {
       )
     },
     async end() {
-      await writeFile(path.resolve(options.path), await zip.generateAsync({ type: 'nodebuffer' }))
+      const distPath = path.resolve(options.path)
+      await mkdirp(path.dirname(distPath))
+      await writeFile(distPath, await zip.generateAsync({ type: 'nodebuffer' }))
     },
   }
 }

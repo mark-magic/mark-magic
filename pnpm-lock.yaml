@@ -75,6 +75,20 @@ importers:
       '@types/node': 18.8.3
       typescript: 4.8.4
 
+  demos/toybox-demo:
+    specifiers:
+      '@liuli-util/fs-extra': ^0.1.0
+      '@mami/cli': workspace:^
+      '@mami/plugin-joplin': workspace:^
+      '@mami/plugin-raw': workspace:^
+      typescript: ^4.8.4
+    devDependencies:
+      '@liuli-util/fs-extra': 0.1.0
+      '@mami/cli': link:../../packages/cli
+      '@mami/plugin-joplin': link:../../packages/plugin-joplin
+      '@mami/plugin-raw': link:../../packages/plugin-raw
+      typescript: 4.8.4
+
   packages/cli:
     specifiers:
       '@liuli-util/async': ^3.6.0
@@ -179,10 +193,8 @@ importers:
       '@mami/cli': workspace:^
       '@types/lodash-es': ^4.17.6
       '@types/node': ^18.8.3
-      form-data: ^4.0.0
-      joplin-api: ^0.4.3
+      joplin-api: ^0.5.0
       lodash-es: ^4.17.21
-      node-fetch: ^3.2.10
       tsup: ^6.2.3
       tsx: ^3.10.1
       typescript: ^4.8.4
@@ -193,10 +205,8 @@ importers:
       '@liuli-util/fs-extra': 0.1.0
       '@liuli-util/markdown-util': 0.2.4
       '@liuli-util/tree': 3.6.0
-      form-data: 4.0.0
-      joplin-api: 0.4.3
+      joplin-api: 0.5.0
       lodash-es: 4.17.21
-      node-fetch: 3.2.10
       utility-types: 3.10.0
     devDependencies:
       '@mami/cli': link:../cli
@@ -746,7 +756,6 @@ packages:
     dependencies:
       '@types/fs-extra': 9.0.13
       fs-extra: 10.1.0
-    dev: false
 
   /@liuli-util/markdown-util/0.2.4:
     resolution: {integrity: sha512-DXLoB4Dp8w0rE8ddgbBZqitIbauJkCwuhSo3b5svfNaqChBhJ4dPpZ06URn9SqK9ZYH5+XnaMpZi4yXE6DUeAQ==}
@@ -863,7 +872,6 @@ packages:
     resolution: {integrity: sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==}
     dependencies:
       '@types/node': 18.8.3
-    dev: false
 
   /@types/hast/2.3.4:
     resolution: {integrity: sha512-wLEm0QvaoawEDoTRwzTXp4b4jpwiJDvR5KMnFnVodm3scufTlBOWRD6N1OBf9TZMhjlNsSfcO5V+7AF4+Vy+9g==}
@@ -3077,8 +3085,8 @@ packages:
       minimatch: 3.1.2
     dev: false
 
-  /joplin-api/0.4.3:
-    resolution: {integrity: sha512-DCizaaT+/SS25ofRi82CPUPQaW935ZQ7M88buAxLHzN4hPhuG5deD9SaD9ucNDUPOm0H6MG8c2P8M6anbZBtGQ==}
+  /joplin-api/0.5.0:
+    resolution: {integrity: sha512-7JH+brumvpusLG+D7KPsP+tIc1YYxfKWJxVHptHLNVixFYsWDpbOrVy1RPqwyf/c3jqNEYYmi3/8scMBZ05DQA==}
     dependencies:
       '@liuli-util/object': 3.5.1
       query-string: 7.1.1

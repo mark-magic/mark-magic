@@ -7,6 +7,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsup src/index.ts --format esm --sourcemap && tsc",
+    "dev": "tsup src/index.ts --format esm --sourcemap --watch",
     "setup": "pnpm build",
     "test": "vitest run"
   },

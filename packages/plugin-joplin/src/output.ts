@@ -1,14 +1,13 @@
 import { AsyncArray } from '@liuli-util/async'
 import { Note, OutputPlugin } from '@mami/cli'
-import { Readable } from 'stream'
 import { Config, config, tagApi, resourceApi, noteApi, folderApi } from 'joplin-api'
 import { pick } from 'lodash-es'
-import { ReadStream } from 'fs'
 import { fromMarkdown, toMarkdown } from '@liuli-util/markdown-util'
 import { convertLinks } from './utils/convertLinks'
 import { BiMultiMap } from './utils/BiMultiMap'
 import path from 'path'
-import { createReadStream, mkdirp, remove, writeFile } from '@liuli-util/fs-extra'
+import { mkdirp, readFile, remove, writeFile } from '@liuli-util/fs-extra'
+import { fileURLToPath } from 'url'
 
 async function createTags(note: Note, tags: Map<string, string>) {
   await AsyncArray.forEach(
@@ -21,7 +20,7 @@ async function createTags(note: Note, tags: Map<string, string>) {
 }
 
 async function createResources(note: Note, resources: Map<string, string>) {
-  const tempPath = path.resolve(__dirname, '.temp')
+  const tempPath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '.temp')
   await mkdirp(tempPath)
   await AsyncArray.forEach(
     note.resources.filter((item) => !resources.has(item.id)),
@@ -29,7 +28,7 @@ async function createResources(note: Note, resources: Map<string, string>) {
       const fsPath = path.resolve(tempPath, path.basename(item.title))
       await writeFile(fsPath, item.raw)
       try {
-        const r = await resourceApi.create({ title: item.title, data: createReadStream(fsPath) })
+        const r = await resourceApi.create({ title: item.title, data: new Blob([await readFile(fsPath)]) })
         resources.set(item.id, r.id)
       } finally {
         await remove(fsPath)

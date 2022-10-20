@@ -1,0 +1,16 @@
+{
+  "name": "toybox-demo",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "gen": "mami"
+  },
+  "devDependencies": {
+    "@liuli-util/fs-extra": "^0.1.0",
+    "@mami/cli": "workspace:^",
+    "@mami/plugin-joplin": "workspace:^",
+    "@mami/plugin-raw": "workspace:^",
+    "typescript": "^4.8.4"
+  }
+}

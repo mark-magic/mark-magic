@@ -5,11 +5,14 @@ import { v4 } from 'uuid'
 import { expect, it } from 'vitest'
 import { BiMultiMap } from '../BiMultiMap'
 import { convertLinks } from '../convertLinks'
+import { wikiLinkFromMarkdown, wikiLinkToMarkdown } from '../wiki'
 
 it('convertLinks', async () => {
   const rootPath = path.resolve(__dirname, '../../__tests__/assets')
   const notePath = path.resolve(rootPath, 'hello/hello world 2.md')
-  const root = fromMarkdown(await readFile(notePath, 'utf-8'))
+  const root = fromMarkdown(await readFile(notePath, 'utf-8'), {
+    mdastExtensions: [wikiLinkFromMarkdown()],
+  })
   const resourceMap = new BiMultiMap<string, string>()
   const resources = convertLinks({
     root,
@@ -22,9 +25,13 @@ it('convertLinks', async () => {
     ],
     resourceMap,
   })
-  const r = toMarkdown(root).replaceAll(/\\\[(.+)\]\\\(:\/(.*)\)/g, '[$1](:/$2)')
+  const r = toMarkdown(root, { extensions: [wikiLinkToMarkdown()] }).replaceAll(
+    /\\\[(.+)\]\\\(:\/(.*)\)/g,
+    '[$1](:/$2)',
+  )
   expect(await pathExists(resources[0].fsPath)).true
   // console.log(r)
   expect(/\[.+\]\(:\/.+\)/.test(r)).true
+  expect(/\!\[.+\]\(:\/.+\)/.test(r)).true
   expect(/\[\[.+\]\]/.test(r)).false
 })

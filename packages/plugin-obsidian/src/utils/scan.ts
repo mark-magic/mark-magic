@@ -13,6 +13,7 @@ export async function scan(root: string): Promise<ScanNote[]> {
     await FastGlob('**/*.md', {
       cwd: root,
       onlyFiles: true,
+      ignore: ['.obsidian'],
     })
   ).map((item) => ({
     id: v4(),

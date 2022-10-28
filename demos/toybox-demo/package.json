@@ -10,6 +10,7 @@
     "@liuli-util/fs-extra": "^0.1.0",
     "@mami/cli": "workspace:^",
     "@mami/plugin-joplin": "workspace:^",
+    "@mami/plugin-obsidian": "workspace:^",
     "@mami/plugin-raw": "workspace:^",
     "typescript": "^4.8.4"
   }

@@ -24,11 +24,11 @@ export function convertLinks({
       return [node]
     }
     const wiki = node as WikiLink
-    const fileName = wiki.url
+    const fileName = wiki.url.endsWith('.md') ? wiki.url.slice(0, wiki.url.length - 3) : wiki.url
+    const fsPath = ['./', '../'].some((s) => fileName.startsWith(s))
+      ? path.resolve(path.dirname(notePath), fileName)
+      : path.resolve(rootPath, fileName)
     if (wiki.embed) {
-      const fsPath = ['./', '../'].some((s) => fileName.startsWith(s))
-        ? path.resolve(path.dirname(notePath), fileName)
-        : path.resolve(rootPath, fileName)
       if (!resourceMap.has(fsPath)) {
         resourceMap.set(fsPath, v4())
       }
@@ -40,8 +40,15 @@ export function convertLinks({
         }),
       ]
     }
-    const findNote =
-      list.find((item) => item.relPath === fileName + '.md') ?? list.find((item) => item.title === fileName)
+    const findNote = list.find(
+      (item) =>
+        // 绝对路径对比
+        path.resolve(rootPath, item.relPath) === fsPath + '.md' ||
+        // 绝对路径
+        item.relPath === fileName + '.md' ||
+        // 绝对路径，使用顶级目录中的文件名
+        item.title === fileName,
+    )
     if (findNote) {
       return [
         u('link', {

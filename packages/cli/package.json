@@ -15,6 +15,9 @@
     "start": "tsx ./src/bin.ts",
     "test": "vitest run"
   },
+  "engines": {
+    "node": ">=18"
+  },
   "sideEffects": false,
   "files": [
     "dist",

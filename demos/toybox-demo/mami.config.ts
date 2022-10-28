@@ -1,6 +1,6 @@
 import { defineConfig } from '@mami/cli'
 import * as joplin from '@mami/plugin-joplin'
-import * as raw from '@mami/plugin-raw'
+import * as obsidian from '@mami/plugin-obsidian'
 import path from 'path'
 
 const zipPath = path.resolve(__dirname, 'dist/temp.zip')
@@ -13,11 +13,13 @@ const config: Parameters<typeof joplin.input>[0] = {
 
 export default defineConfig({
   input: [
-    raw.input({ path: zipPath }),
+    // raw.input({ path: zipPath }),
     // joplin.input(config),
+    obsidian.input({ root: path.resolve(__dirname, '.temp') }),
   ],
   output: [
     // raw.output({ path: zipPath }),
     joplin.output(config),
+    // obsidian.output({ root: path.resolve(__dirname, '.temp') }),
   ],
 })

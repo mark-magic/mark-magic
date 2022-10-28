@@ -1,26 +1,29 @@
-import { fromMarkdown } from '@liuli-util/markdown-util'
+import { fromMarkdown, selectAll, toMarkdown } from '@liuli-util/markdown-util'
 import { expect, it } from 'vitest'
-import { parseUrl, WikiLink, wikiLinkFromMarkdown } from '../wiki'
+import { parseUrl, stringifyUrl, WikiLink, wikiLinkFromMarkdown, wikiLinkToMarkdown } from '../wiki'
 
 it('wiki', () => {
   const content = `
-  Support [[Internal link]]
-  Support [[Internal link|With custom text]]
-  Support [[Internal link#heading]]
-  Support [[Internal link#heading|With custom text]]
-  Support ![[Document.pdf]]
-  Support ![[Image.png]]
-  Support ![[Audio.mp3]]
-  Support ![[Video.mp4]]
-  Support ![[Embed note]]
-  Support ![[Embed note#heading]]
+Support [[Internal link]]
+Support [[Internal link|With custom text]]
+Support [[Internal link#heading]]
+Support [[Internal link#heading|With custom text]]
+Support ![[Document.pdf]]
+Support ![[Image.png]]
+Support ![[Audio.mp3]]
+Support ![[Video.mp4]]
+Support ![[Embed note]]
+Support ![[Embed note#heading]]
     `.trim()
-  // const root = fromMarkdown(content, {
-  //   mdastExtensions: [wikiLinkFromMarkdown()],
-  // })
+  const root = fromMarkdown(content, {
+    mdastExtensions: [wikiLinkFromMarkdown()],
+  })
+  expect(selectAll('wiki', root).length).eq(content.split('\n').length)
+  const r = toMarkdown(root, { extensions: [wikiLinkToMarkdown()] })
+  expect(r.trim()).eq(content)
 })
 
-it.only('parseUrl', () => {
+it('parseUrl', () => {
   expect(parseUrl('[[Internal link]]')).deep.eq({
     type: 'wiki',
     embed: false,
@@ -101,4 +104,22 @@ it.only('parseUrl', () => {
     hash: 'heading',
     title: undefined,
   } as WikiLink)
+})
+
+it('stringifyUrl', () => {
+  const list = [
+    '[[Internal link]]',
+    '[[Internal link|With custom text]]',
+    '[[Internal link#heading]]',
+    '[[Internal link#heading|With custom text]]',
+    '![[Document.pdf]]',
+    '![[Image.png]]',
+    '![[Audio.mp3]]',
+    '![[Video.mp4]]',
+    '![[Embed note]]',
+    '![[Embed note#heading]]',
+  ]
+  list.forEach((s) => {
+    expect(stringifyUrl(parseUrl(s))).eq(s)
+  })
 })

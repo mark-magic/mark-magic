@@ -1,4 +1,4 @@
-import { AsyncArray } from '@liuli-util/async'
+import { AsyncArray, concatMap } from '@liuli-util/async'
 import { Note, OutputPlugin } from '@mami/cli'
 import { Config, config, tagApi, resourceApi, noteApi, folderApi } from 'joplin-api'
 import { pick } from 'lodash-es'
@@ -11,11 +11,16 @@ import { fileURLToPath } from 'url'
 
 async function createTags(note: Note, tags: Map<string, string>) {
   await AsyncArray.forEach(
-    note.tags.filter((item) => !tags.has(item.id)),
-    async (item) => {
-      const r = await tagApi.create({ title: item.title })
-      tags.set(item.id, r.id)
-    },
+    note.tags,
+    concatMap(async (item) => {
+      if (tags.has(item.id)) {
+        return
+      }
+      try {
+        const r = await tagApi.create({ title: item.title })
+        tags.set(item.id, r.id)
+      } catch {}
+    }),
   )
 }
 
@@ -23,8 +28,11 @@ async function createResources(note: Note, resources: Map<string, string>) {
   const tempPath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '.temp')
   await mkdirp(tempPath)
   await AsyncArray.forEach(
-    note.resources.filter((item) => !resources.has(item.id)),
-    async (item) => {
+    note.resources,
+    concatMap(async (item) => {
+      if (resources.has(item.id)) {
+        return
+      }
       const fsPath = path.resolve(tempPath, path.basename(item.title))
       await writeFile(fsPath, item.raw)
       try {
@@ -33,7 +41,7 @@ async function createResources(note: Note, resources: Map<string, string>) {
       } finally {
         await remove(fsPath)
       }
-    },
+    }),
   )
   await remove(tempPath)
 }
@@ -68,7 +76,9 @@ async function bindTags(note: Note, id: string, tags: Map<string, string>) {
   await AsyncArray.forEach(
     note.tags.map((item) => tags.get(item.id)!),
     async (tagId) => {
-      await tagApi.addTagByNoteId(tagId, id)
+      try {
+        await tagApi.addTagByNoteId(tagId, id)
+      } catch {}
     },
   )
 }

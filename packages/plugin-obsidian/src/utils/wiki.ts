@@ -41,8 +41,22 @@ export function parseUrl(s: string): WikiLink {
     title: head ? r[2] : r[1],
   }) as WikiLink
 }
-export function stringifyUrl(node: WikiLink): string {
-  return node.value
+
+export function stringifyUrl(node: Omit<WikiLink, 'value'>): string {
+  let s = ''
+  if (node.embed) {
+    s += '!'
+  }
+  s += '[['
+  s += node.url
+  if (node.hash) {
+    s += '#' + node.hash
+  }
+  if (node.title) {
+    s += '|' + node.title
+  }
+  s += ']]'
+  return s
 }
 
 export function wikiLinkFromMarkdown(): MdastExtension {

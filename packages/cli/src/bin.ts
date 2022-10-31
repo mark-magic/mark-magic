@@ -14,8 +14,14 @@ const { mod } = await bundleRequire({
 console.log('start')
 const spinner = ora().start()
 spinner.color = 'blue'
-await convert(mod.default).on('generate', ({ note }) => {
-  spinner.text = 'handle: ' + note.title
-})
+await convert(mod.default)
+  .on('generate', ({ note }) => {
+    spinner.text = 'handle: ' + note.title
+  })
+  .on('error', (context) => {
+    spinner.stop()
+    console.error('origin error: ', context.error)
+    throw new Error(`handle error, plugin: ${context.plugin.name}, note: ${context.note.title}`)
+  })
 spinner.stop()
 console.log('end')

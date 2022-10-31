@@ -1,7 +1,7 @@
 import { convert } from '@mami/cli'
 import { expect, it } from 'vitest'
 import * as joplin from '@mami/plugin-joplin'
-import { hexoOutput } from '../hexoOutput'
+import { hexo } from '../hexo'
 import { pathExists } from '@liuli-util/fs-extra'
 import path from 'path'
 import { initTestDir } from '../utils/initTestDir'
@@ -19,7 +19,7 @@ it.skip('joplin2hexo', async () => {
         tag: '',
       }),
     ],
-    output: [hexoOutput({ root: tempPath })],
+    output: [hexo({ root: tempPath })],
   })
 
   expect(await pathExists(path.resolve(tempPath, 'source/_posts'))).to.be.true

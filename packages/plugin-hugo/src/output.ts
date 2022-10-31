@@ -6,10 +6,10 @@ import { fromMarkdown, toMarkdown } from '@liuli-util/markdown-util'
 import { addMeta } from './utils/addMeta'
 import { convertLinks } from './utils/convertLinks'
 
-export function hugoOutput(options?: { root?: string }): OutputPlugin {
+export function output(options?: { root?: string }): OutputPlugin {
   let _postsPath: string, resourcePath: string
   return {
-    name: 'hugoOutput',
+    name: 'hugo',
     async start() {
       const root = options?.root ?? path.resolve()
       _postsPath = path.resolve(root, 'content/posts')

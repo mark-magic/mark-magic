@@ -1,6 +1,7 @@
 import { defineConfig } from '@mami/cli'
 import * as joplin from '@mami/plugin-joplin'
 import * as obsidian from '@mami/plugin-obsidian'
+import * as raw from '@mami/plugin-raw'
 import path from 'path'
 
 const zipPath = path.resolve(__dirname, 'dist/temp.zip')

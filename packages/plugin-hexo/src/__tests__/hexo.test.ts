@@ -2,7 +2,7 @@ import { readFile, pathExists } from '@liuli-util/fs-extra'
 import path from 'path'
 import { expect, it } from 'vitest'
 import { convert, InputPlugin, Note, Resource, Tag } from '@mami/cli'
-import { hexoOutput } from '../hexoOutput'
+import { hexo } from '../hexo'
 import { initTestDir } from '../utils/initTestDir'
 
 const tempPath = path.resolve(__dirname, '.temp', path.basename(__filename))
@@ -38,7 +38,7 @@ it('hexoOutput', async () => {
   }
   await convert({
     input: [generateVirtual],
-    output: [hexoOutput({ root: tempPath })],
+    output: [hexo({ root: tempPath })],
   })
 
   expect(await pathExists(path.resolve(tempPath, 'source/_posts/test1.md'))).to.be.true

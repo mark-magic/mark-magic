@@ -1,7 +1,7 @@
 import { convert } from '@mami/cli'
 import { beforeEach, expect, it } from 'vitest'
 import * as joplin from '@mami/plugin-joplin'
-import { localDirOutput } from '../localDirOutput'
+import { output } from '../output'
 import { mkdirp, pathExists, remove } from '@liuli-util/fs-extra'
 import path from 'path'
 
@@ -11,7 +11,7 @@ beforeEach(async () => {
   await mkdirp(tempPath)
 })
 
-it.skip('joplin2hexo', async () => {
+it.skip('joplin2local', async () => {
   await convert({
     input: [
       joplin.input({
@@ -21,7 +21,7 @@ it.skip('joplin2hexo', async () => {
         tag: '',
       }),
     ],
-    output: [localDirOutput({ noteRootPath: tempPath, resourceRootPath: path.resolve(tempPath, '_resources') })],
+    output: [output({ noteRootPath: tempPath, resourceRootPath: path.resolve(tempPath, '_resources') })],
   })
 
   expect(await pathExists(path.resolve(tempPath, 'source/_posts'))).to.be.true

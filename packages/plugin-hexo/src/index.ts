@@ -1,1 +1,1 @@
-export * from './hexoOutput'
+export * from './hexo'

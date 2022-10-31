@@ -1,1 +1,1 @@
-export * from './localDirOutput'
+export * from './output'

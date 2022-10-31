@@ -6,7 +6,7 @@ import { fromMarkdown, toMarkdown } from '@liuli-util/markdown-util'
 import { addMeta } from './utils/addMeta'
 import { convertLinks } from './utils/convertLinks'
 
-export function hexoOutput(options?: { root?: string }): OutputPlugin {
+export function hexo(options?: { root?: string }): OutputPlugin {
   let config: ConvertConfig, _postsPath: string, resourcePath: string
   return {
     name: 'hexoOutput',

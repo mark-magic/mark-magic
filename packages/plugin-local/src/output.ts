@@ -8,7 +8,7 @@ import { convertLinks } from './utils/convertLinks'
 import { BiMultiMap } from './utils/BiMultiMap'
 import filenamify from 'filenamify'
 
-export function localDirOutput(options: {
+export function output(options: {
   noteRootPath: string
   resourceRootPath: string
   meta?(note: Note): any
@@ -17,7 +17,7 @@ export function localDirOutput(options: {
     noteMap = new BiMultiMap<string, string>(),
     afterList: { fsPath: string; note: Note }[] = []
   return {
-    name: 'hexoOutput',
+    name: 'local',
     async start() {
       await mkdirp(options.noteRootPath)
       await mkdirp(options.resourceRootPath)

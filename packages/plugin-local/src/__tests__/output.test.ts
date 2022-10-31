@@ -2,7 +2,7 @@ import { mkdirp, remove, readFile, pathExists } from '@liuli-util/fs-extra'
 import path from 'path'
 import { beforeEach, expect, it } from 'vitest'
 import { convert, InputPlugin, Note, Resource, Tag } from '@mami/cli'
-import { localDirOutput } from '../localDirOutput'
+import { output } from '../output'
 import { calcMeta } from '../utils/calcMeta'
 import { filenamifyPath } from 'filenamify'
 
@@ -52,7 +52,7 @@ it('hexoOutput', async () => {
   await convert({
     input: [generateVirtual],
     output: [
-      localDirOutput({
+      output({
         noteRootPath: tempPath,
         resourceRootPath: path.resolve(tempPath, '_resources'),
         meta: calcMeta,
@@ -101,7 +101,7 @@ it('filename', async () => {
   await convert({
     input: [generateVirtual],
     output: [
-      localDirOutput({
+      output({
         noteRootPath: tempPath,
         resourceRootPath: path.resolve(tempPath, '_resources'),
         meta: calcMeta,

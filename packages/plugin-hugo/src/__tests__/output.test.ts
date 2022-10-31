@@ -2,7 +2,7 @@ import { mkdirp, remove, readFile, pathExists } from '@liuli-util/fs-extra'
 import path from 'path'
 import { afterEach, beforeEach, expect, it, isWatchMode } from 'vitest'
 import { convert, InputPlugin, Note, Resource, Tag } from '@mami/cli'
-import { hugoOutput } from '../hugoOutput'
+import { output } from '../output'
 
 const tempPath = path.resolve(__dirname, '.temp')
 beforeEach(async () => {
@@ -44,7 +44,7 @@ it('hugoOutput', async () => {
     },
   }
 
-  await convert({ input: [generateVirtual], output: [hugoOutput({ root: tempPath })] })
+  await convert({ input: [generateVirtual], output: [output({ root: tempPath })] })
 
   expect(await pathExists(path.resolve(tempPath, 'content/posts/test1.md'))).to.be.true
   expect(await pathExists(path.resolve(tempPath, 'content/posts/test2.md'))).to.be.true

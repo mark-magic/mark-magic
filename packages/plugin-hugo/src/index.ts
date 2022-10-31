@@ -1,1 +1,1 @@
-export * from './hugoOutput'
+export * from './output'

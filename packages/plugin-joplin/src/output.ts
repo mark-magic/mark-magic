@@ -6,7 +6,7 @@ import { fromMarkdown, toMarkdown } from '@liuli-util/markdown-util'
 import { convertLinks } from './utils/convertLinks'
 import { BiMultiMap } from './utils/BiMultiMap'
 import path from 'path'
-import { mkdirp, readFile, remove, writeFile } from '@liuli-util/fs-extra'
+import { mkdirp, remove } from '@liuli-util/fs-extra'
 import { fileURLToPath } from 'url'
 
 async function createTags(note: Note, tags: Map<string, string>) {
@@ -33,14 +33,12 @@ async function createResources(note: Note, resources: Map<string, string>) {
       if (resources.has(item.id)) {
         return
       }
-      const fsPath = path.resolve(tempPath, path.basename(item.title))
-      await writeFile(fsPath, item.raw)
-      try {
-        const r = await resourceApi.create({ title: item.title, data: new Blob([await readFile(fsPath)]) })
-        resources.set(item.id, r.id)
-      } finally {
-        await remove(fsPath)
-      }
+      const r = await resourceApi.create({
+        title: item.title,
+        data: new Blob([item.raw]),
+        filename: item.title,
+      })
+      resources.set(item.id, r.id)
     }),
   )
   await remove(tempPath)

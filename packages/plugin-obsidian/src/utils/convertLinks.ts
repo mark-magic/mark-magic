@@ -28,18 +28,6 @@ export function convertLinks({
     const fsPath = ['./', '../'].some((s) => fileName.startsWith(s))
       ? path.resolve(path.dirname(notePath), fileName)
       : path.resolve(rootPath, fileName)
-    if (wiki.embed) {
-      if (!resourceMap.has(fsPath)) {
-        resourceMap.set(fsPath, v4())
-      }
-      resources.push({ id: resourceMap.get(fsPath)!, fsPath })
-      return [
-        u('image', {
-          alt: path.basename(fileName),
-          url: `:/${resourceMap.get(fsPath)}`,
-        }),
-      ]
-    }
     const findNote = list.find(
       (item) =>
         // 绝对路径对比
@@ -56,9 +44,22 @@ export function convertLinks({
           children: [u('text', path.basename(fileName))],
         }),
       ]
-    } else {
-      throw new Error('not found note: ' + fileName)
     }
+    if (!resourceMap.has(fsPath)) {
+      resourceMap.set(fsPath, v4())
+    }
+    resources.push({ id: resourceMap.get(fsPath)!, fsPath })
+    return [
+      wiki.embed
+        ? u('image', {
+            alt: path.basename(fileName),
+            url: `:/${resourceMap.get(fsPath)}`,
+          })
+        : u('link', {
+            url: `:/${resourceMap.get(fsPath)}`,
+            children: [u('text', path.basename(fileName))],
+          }),
+    ]
   })
   return resources
 }

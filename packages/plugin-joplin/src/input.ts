@@ -8,11 +8,14 @@ import {
   resourceApi,
   searchApi,
   TypeEnum,
+  ResourceProperties,
 } from 'joplin-api'
 import type { InputPlugin, Note, Resource } from '@mami/cli'
 import { AsyncArray } from '@liuli-util/async'
 import { listToTree, treeToList } from '@liuli-util/tree'
 import { chain, keyBy, pick } from 'lodash-es'
+import path from 'path'
+import { extension, lookup } from 'mime-types'
 
 async function getFolders(): Promise<Record<string, FolderListAllRes & Pick<Note, 'path'>>> {
   const list = await folderApi.listAll()
@@ -27,6 +30,19 @@ async function getFolders(): Promise<Record<string, FolderListAllRes & Pick<Note
     .keyBy((item) => item.id)
     .value()
   return r
+}
+
+export function calcTitle(resource: Pick<ResourceProperties, 'id' | 'title' | 'file_extension' | 'mime'>) {
+  const title = resource.title ? resource.title : resource.id
+  const ext = resource.file_extension ? resource.file_extension : extension(resource.mime)
+  if (!ext) {
+    return resource.title
+  }
+  const e = '.' + ext
+  if (path.extname(title) === e) {
+    return title
+  }
+  return title + e
 }
 
 export function input(options: Config & { tag: string }): InputPlugin {
@@ -54,13 +70,16 @@ export function input(options: Config & { tag: string }): InputPlugin {
         ])
         const tags = (await noteApi.tagsById(n.id)).filter((item) => item.title !== options.tag)
         const folder = folders[note.parent_id]
-        const resources = await AsyncArray.map(await noteApi.resourcesById(n.id), async (item) => {
-          return {
-            id: item.id,
-            title: item.title,
-            raw: Buffer.from(await (await resourceApi.fileById(item.id)).arrayBuffer()),
-          } as Resource
-        })
+        const resources = await AsyncArray.map(
+          await noteApi.resourcesById(n.id, ['id', 'title', 'file_extension', 'mime']),
+          async (item) => {
+            return {
+              id: item.id,
+              title: calcTitle(item),
+              raw: Buffer.from(await (await resourceApi.fileById(item.id)).arrayBuffer()),
+            } as Resource
+          },
+        )
         const inputNote: Note = {
           id: note.id,
           title: (note.title.startsWith('# ') ? note.title.slice(2) : note.title).trim(),

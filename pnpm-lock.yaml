@@ -194,9 +194,11 @@ importers:
       '@liuli-util/tree': ^3.6.0
       '@mami/cli': workspace:^
       '@types/lodash-es': ^4.17.6
+      '@types/mime-types': ^2.1.1
       '@types/node': ^18.8.3
-      joplin-api: ^0.5.0
+      joplin-api: ^0.5.1
       lodash-es: ^4.17.21
+      mime-types: ^2.1.35
       tsup: ^6.2.3
       tsx: ^3.10.1
       typescript: ^4.8.4
@@ -207,12 +209,14 @@ importers:
       '@liuli-util/fs-extra': 0.1.0
       '@liuli-util/markdown-util': 0.4.0
       '@liuli-util/tree': 3.6.0
-      joplin-api: 0.5.0
+      joplin-api: 0.5.1
       lodash-es: 4.17.21
+      mime-types: 2.1.35
       utility-types: 3.10.0
     devDependencies:
       '@mami/cli': link:../cli
       '@types/lodash-es': 4.17.6
+      '@types/mime-types': 2.1.1
       '@types/node': 18.8.3
       tsup: 6.2.3_typescript@4.8.4
       tsx: 3.10.1
@@ -911,6 +915,10 @@ packages:
     dependencies:
       '@types/unist': 2.0.6
     dev: false
+
+  /@types/mime-types/2.1.1:
+    resolution: {integrity: sha512-vXOTGVSLR2jMw440moWTC7H19iUyLtP3Z1YTj7cSsubOICinjMxFeb/V57v9QdyyPGbbWolUFSSmSiRSn94tFw==}
+    dev: true
 
   /@types/minimist/1.2.2:
     resolution: {integrity: sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==}
@@ -3104,8 +3112,8 @@ packages:
       minimatch: 3.1.2
     dev: false
 
-  /joplin-api/0.5.0:
-    resolution: {integrity: sha512-7JH+brumvpusLG+D7KPsP+tIc1YYxfKWJxVHptHLNVixFYsWDpbOrVy1RPqwyf/c3jqNEYYmi3/8scMBZ05DQA==}
+  /joplin-api/0.5.1:
+    resolution: {integrity: sha512-LMd+Emdg2Xh+7hcBRMiSAxM8bpfjgcn6mtLSXKzkswvXWe4DleSbK/EC9s9BWv8cipZmgu820gZ8WJAGJklPfA==}
     dependencies:
       '@liuli-util/object': 3.5.1
       query-string: 7.1.1

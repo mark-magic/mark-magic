@@ -1,9 +1,9 @@
 import { convert, InputPlugin, Note, Resource, Tag } from '@mami/cli'
 import path from 'path'
-import { beforeEach, it } from 'vitest'
+import { beforeEach, expect, it } from 'vitest'
 import { output } from '../output'
 import { readFile } from '@liuli-util/fs-extra'
-import { config, Config, folderApi, noteApi, PageUtil, tagApi } from 'joplin-api'
+import { config, Config, folderApi, noteApi, PageUtil, resourceApi, tagApi } from 'joplin-api'
 import { pick } from 'lodash-es'
 
 const options: Config = {
@@ -16,6 +16,7 @@ export async function clearDatabase() {
   await Promise.all((await PageUtil.pageToAllList(tagApi.list)).map(({ id }) => tagApi.remove(id)))
   await Promise.all((await PageUtil.pageToAllList(noteApi.list)).map(({ id }) => noteApi.remove(id)))
   await Promise.all((await PageUtil.pageToAllList(folderApi.list)).map(({ id }) => folderApi.remove(id)))
+  await Promise.all((await PageUtil.pageToAllList(resourceApi.list)).map(({ id }) => resourceApi.remove(id)))
 }
 
 beforeEach(async () => {
@@ -23,7 +24,8 @@ beforeEach(async () => {
   await clearDatabase()
 })
 
-it.skip('output', async () => {
+it('output', async () => {
+  const jsonPath = path.resolve(__dirname, '../../package.json')
   const mockInput: InputPlugin = {
     name: 'generateVirtual',
     async *generate() {
@@ -51,8 +53,8 @@ it.skip('output', async () => {
         resources: [
           {
             id: 'test',
-            title: path.basename(__filename),
-            raw: await readFile(__filename),
+            title: path.basename(jsonPath),
+            raw: await readFile(jsonPath),
           },
         ] as Resource[],
         tags: [{ id: 'test', title: 'test' }] as Tag[],
@@ -65,6 +67,10 @@ it.skip('output', async () => {
     input: [mockInput],
     output: [output(options)],
   })
-  const r = await PageUtil.pageToAllList(noteApi.list)
-  console.log(r)
+  expect(await PageUtil.pageToAllList(noteApi.list)).length(2)
+  const list = await PageUtil.pageToAllList(resourceApi.list)
+  expect(list.length).eq(1)
+  const res = await resourceApi.get(list[0].id, ['file_extension', 'mime'])
+  expect(res.mime).eq('application/json')
+  expect(res.file_extension).eq('json')
 })

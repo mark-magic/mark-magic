@@ -11,10 +11,15 @@ function join<T>(a: T[], sep: T): T[] {
   return r
 }
 
-function split(str: string, matchs: string[]): string[] {
+export function split(str: string, matchs: string[]): string[] {
   let r: string[] = [str]
   for (const m of matchs) {
-    r = r.flatMap((s) => join(s.split(m), m).filter((s) => s.length > 0))
+    r = r.flatMap((s) => {
+      if (/^!?\[\[.+\]\]$/.test(s)) {
+        return [s]
+      }
+      return join(s.split(m), m).filter((s) => s.length > 0)
+    })
   }
   return r
 }

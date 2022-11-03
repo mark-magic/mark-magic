@@ -1,6 +1,7 @@
-import { fromMarkdown, selectAll, toMarkdown } from '@liuli-util/markdown-util'
+import { flatMap, fromMarkdown, selectAll, toMarkdown, u, visit } from '@liuli-util/markdown-util'
+import path from 'path'
 import { expect, it } from 'vitest'
-import { parseUrl, stringifyUrl, WikiLink, wikiLinkFromMarkdown, wikiLinkToMarkdown } from '../wiki'
+import { parseUrl, split, stringifyUrl, WikiLink, wikiLinkFromMarkdown, wikiLinkToMarkdown } from '../wiki'
 
 it('wiki', () => {
   const content = `
@@ -122,4 +123,50 @@ it('stringifyUrl', () => {
   list.forEach((s) => {
     expect(stringifyUrl(parseUrl(s))).eq(s)
   })
+})
+
+it('wiki', () => {
+  const root = fromMarkdown(
+    `
+![[Pasted image 20221011232440.png]]
+[[Pasted image 20221011232440.png]]
+    `.trim(),
+    { mdastExtensions: [wikiLinkFromMarkdown()] },
+  )
+  flatMap(root, (node) => {
+    if (node.type !== 'wiki') {
+      return [node]
+    }
+    const wiki = node as WikiLink
+    if (wiki.embed) {
+      return [
+        u('image', {
+          alt: 'Pasted image 20221011232440.png',
+          url: `:/test`,
+        }),
+      ]
+    }
+    return [
+      u('link', {
+        url: `:/test`,
+        children: [u('text', 'Pasted image 20221011232440.png')],
+      }),
+    ]
+  })
+  const r = toMarkdown(root)
+  expect(r.trim().split('\n')).deep.eq([
+    '![Pasted image 20221011232440.png](:/test)',
+    '[Pasted image 20221011232440.png](:/test)',
+  ])
+})
+
+it('split', () => {
+  const r = split(
+    `
+![[Pasted image 20221011232440.png]]
+[[Pasted image 20221011232440.png]]
+      `.trim(),
+    ['![[Pasted image 20221011232440.png]]', '[[Pasted image 20221011232440.png]]'],
+  )
+  expect(r).deep.eq(['![[Pasted image 20221011232440.png]]', '\n', '[[Pasted image 20221011232440.png]]'])
 })

@@ -18,10 +18,13 @@ await convert(mod.default)
   .on('generate', ({ note }) => {
     spinner.text = 'handle: ' + note.title
   })
+  .on('handle', ({ note, time, output }) => {
+    if (time > 10 * 1000) {
+      console.warn(`handle slow, plugin ${output.name}, note: ${note.title}`)
+    }
+  })
   .on('error', (context) => {
-    spinner.stop()
-    console.error('origin error: ', context.error)
-    throw new Error(`handle error, plugin: ${context.plugin.name}, note: ${context.note.title}`)
+    console.error(`handle error, plugin: ${context.plugin.name}, note: ${context.note.title}`, context.error)
   })
 spinner.stop()
 console.log('end')

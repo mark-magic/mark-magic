@@ -23,6 +23,7 @@ export function input(options: { root: string }): InputPlugin {
     async *generate() {
       const list = await scan(options.root)
       const resourceMap = new BiMultiMap<string, string>()
+      const resourcePath = path.resolve(options.root, '_rosources')
       for (const item of list) {
         const fsPath = path.resolve(options.root, item.relPath)
         const s = await stat(fsPath)
@@ -31,7 +32,13 @@ export function input(options: { root: string }): InputPlugin {
         })
         const meta = (getYamlMeta(root) ?? {}) as Partial<LocalNoteMeta>
         root.children = root.children.filter((item) => item.type !== 'yaml')
-        const resources = convertLinks({ root, rootPath: options.root, list, resourceMap, notePath: fsPath })
+        const resources = convertLinks({
+          root,
+          rootPath: options.root,
+          list,
+          resourceMap,
+          notePath: fsPath,
+        })
         const tagMap = new Map<string, Tag>()
         const tags = (meta.tags ?? []).map((title) => {
           if (tagMap.has(title)) {

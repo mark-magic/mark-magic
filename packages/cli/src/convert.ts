@@ -40,7 +40,7 @@ export interface ConvertConfig {
 
 export interface Events {
   generate?(options: { input: InputPlugin; note: Note }): void
-  handle?(options: { input: InputPlugin; output: OutputPlugin; note: Note }): void
+  handle?(options: { input: InputPlugin; output: OutputPlugin; note: Note; time: number }): void
   error?(context: { note: Note; plugin: InputPlugin | OutputPlugin; error: unknown }): void
 }
 
@@ -58,9 +58,10 @@ export function convert(options: ConvertConfig) {
       for await (const note of generator) {
         events.generate?.({ input, note })
         for (const output of outputs) {
-          events.handle?.({ input, output, note })
+          const start = Date.now()
           try {
             await output.handle(note)
+            events.handle?.({ input, output, note, time: Date.now() - start })
           } catch (e) {
             events.error?.({
               note,

@@ -1,8 +1,8 @@
 import { expect, it, vi } from 'vitest'
 import { convert, Note, OutputPlugin } from '@mami/cli'
-import { input } from '../input'
+import { calcTitle, input } from '../input'
 
-it('joplinInput', async () => {
+it.skip('joplinInput', async () => {
   const mockFn = vi.fn()
   const outputVirtual: OutputPlugin = {
     name: 'outputVirtual',
@@ -21,4 +21,12 @@ it('joplinInput', async () => {
   })
   const r = mockFn.mock.calls.map((item) => (item[0] as Note).title)
   expect(r).not.empty
+})
+
+it('calcTitle', () => {
+  expect(calcTitle({ id: '1', title: 'test.png', file_extension: 'png', mime: 'image/png' })).eq('test.png')
+  expect(calcTitle({ id: '1', title: 'test', file_extension: 'png', mime: 'image/png' })).eq('test.png')
+  expect(calcTitle({ id: '1', title: 'test', file_extension: '', mime: 'image/png' })).eq('test.png')
+  expect(calcTitle({ id: '1', title: '', file_extension: '', mime: 'image/png' })).eq('1.png')
+  expect(calcTitle({ id: '1', title: '', file_extension: 'png', mime: '' })).eq('1.png')
 })

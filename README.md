@@ -111,7 +111,7 @@ export default defineConfig({
 Then you can rerun the following command
 
 ```sh
-pnpm-gen
+pnpm run gen
 ```
 
 Now you will see the converted obsidian file in dist

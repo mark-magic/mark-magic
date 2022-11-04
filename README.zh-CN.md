@@ -111,7 +111,7 @@ export default defineConfig({
 然后，你可以重新运行以下命令
 
 ```sh
-pnpm gen
+pnpm run gen
 ```
 
 现在，你将能在 dist 中看到转换的 obsidian 文件

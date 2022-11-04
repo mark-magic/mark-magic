@@ -1,5 +1,11 @@
 # @mami/plugin-obsidian
 
+## 0.5.2
+
+### Patch Changes
+
+- feat: support filter by tag
+
 ## 0.5.1
 
 ### Patch Changes

@@ -3,7 +3,7 @@ import { convert } from '@mami/cli'
 import path from 'path'
 import { beforeEach, it } from 'vitest'
 import { input } from '..'
-import { localDirOutput } from '@mami/plugin-local'
+import { output } from '@mami/plugin-local'
 
 const tempPath = path.resolve(__dirname, '.temp')
 beforeEach(async () => {
@@ -14,6 +14,6 @@ beforeEach(async () => {
 it('convert', async () => {
   await convert({
     input: [input({ root: path.resolve(__dirname, 'assets') })],
-    output: [localDirOutput({ noteRootPath: tempPath, resourceRootPath: path.resolve(tempPath, '_resources') })],
+    output: [output({ noteRootPath: tempPath, resourceRootPath: path.resolve(tempPath, '_resources') })],
   })
 })

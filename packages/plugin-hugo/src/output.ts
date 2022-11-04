@@ -1,5 +1,5 @@
 import { AsyncArray } from '@liuli-util/async'
-import { mkdirp, writeFile } from '@liuli-util/fs-extra'
+import { emptyDir, mkdirp, writeFile } from '@liuli-util/fs-extra'
 import path from 'path'
 import type { OutputPlugin } from '@mami/cli'
 import { fromMarkdown, toMarkdown } from '@liuli-util/markdown-util'
@@ -14,6 +14,7 @@ export function output(options?: { root?: string }): OutputPlugin {
       const root = options?.root ?? path.resolve()
       _postsPath = path.resolve(root, 'content/posts')
       resourcePath = path.resolve(root, 'content/resources')
+      await Promise.all([emptyDir(_postsPath), emptyDir(resourcePath)])
       await mkdirp(_postsPath)
       await mkdirp(resourcePath)
     },

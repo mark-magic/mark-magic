@@ -87,6 +87,39 @@ importers:
       '@mami/plugin-obsidian': link:../../packages/plugin-obsidian
       typescript: 4.8.4
 
+  demos/obsidian2hexo-demo:
+    specifiers:
+      '@mami/cli': workspace:^
+      '@mami/plugin-hexo': workspace:^
+      '@mami/plugin-obsidian': workspace:^
+      hexo: ^6.3.0
+      hexo-generator-archive: ^1.0.0
+      hexo-generator-category: ^1.0.0
+      hexo-generator-index: ^2.0.0
+      hexo-generator-tag: ^1.0.0
+      hexo-renderer-ejs: ^2.0.0
+      hexo-renderer-marked: ^6.0.0
+      hexo-renderer-stylus: ^2.1.0
+      hexo-server: ^3.0.0
+      hexo-theme-landscape: ^0.0.3
+      typescript: ^4.8.4
+    dependencies:
+      hexo: 6.3.0
+      hexo-generator-archive: 1.0.0
+      hexo-generator-category: 1.0.0
+      hexo-generator-index: 2.0.0
+      hexo-generator-tag: 1.0.0
+      hexo-renderer-ejs: 2.0.0
+      hexo-renderer-marked: 6.0.0
+      hexo-renderer-stylus: 2.1.0
+      hexo-server: 3.0.0
+      hexo-theme-landscape: 0.0.3
+    devDependencies:
+      '@mami/cli': link:../../packages/cli
+      '@mami/plugin-hexo': link:../../packages/plugin-hexo
+      '@mami/plugin-obsidian': link:../../packages/plugin-obsidian
+      typescript: 4.8.4
+
   demos/toybox-demo:
     specifiers:
       '@liuli-util/fs-extra': ^0.1.0

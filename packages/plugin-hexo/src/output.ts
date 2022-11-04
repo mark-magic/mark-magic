@@ -1,19 +1,20 @@
 import { AsyncArray } from '@liuli-util/async'
-import { mkdirp, writeFile } from '@liuli-util/fs-extra'
+import { emptyDir, mkdirp, writeFile } from '@liuli-util/fs-extra'
 import path from 'path'
-import type { ConvertConfig, OutputPlugin } from '@mami/cli'
+import type { OutputPlugin } from '@mami/cli'
 import { fromMarkdown, toMarkdown } from '@liuli-util/markdown-util'
 import { addMeta } from './utils/addMeta'
 import { convertLinks } from './utils/convertLinks'
 
-export function hexo(options?: { root?: string }): OutputPlugin {
-  let config: ConvertConfig, _postsPath: string, resourcePath: string
+export function output(options?: { root?: string }): OutputPlugin {
+  let _postsPath: string, resourcePath: string
   return {
-    name: 'hexoOutput',
+    name: 'hexo',
     async start() {
       const root = options?.root ?? path.resolve()
       _postsPath = path.resolve(root, 'source/_posts')
       resourcePath = path.resolve(root, 'source/resources')
+      await Promise.all([emptyDir(_postsPath), emptyDir(resourcePath)])
       await mkdirp(_postsPath)
       await mkdirp(resourcePath)
     },

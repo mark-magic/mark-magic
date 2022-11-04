@@ -1,0 +1,165 @@
+{
+  "main": {
+    "id": "a09af5a8ca04f592",
+    "type": "split",
+    "children": [
+      {
+        "id": "af1f4b05f857d5cd",
+        "type": "leaf",
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "Splitting Notes in Obsidian.md",
+            "mode": "preview"
+          }
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "7d0e838172103d77",
+    "type": "split",
+    "children": [
+      {
+        "id": "2175873e612da383",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "a8fd3021c4337cb1",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {}
+            }
+          },
+          {
+            "id": "76c402d2aff19d8f",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "tag:#pkm",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 430
+  },
+  "right": {
+    "id": "f0cf5d29acb1ab23",
+    "type": "split",
+    "children": [
+      {
+        "id": "89d995169b1cbedd",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "29f0a00a6cd084a4",
+            "type": "leaf",
+            "state": {
+              "type": "localgraph",
+              "state": {
+                "file": "Splitting Notes in Obsidian.md",
+                "options": {
+                  "collapse-filter": true,
+                  "search": "",
+                  "localJumps": 1,
+                  "localBacklinks": true,
+                  "localForelinks": true,
+                  "localInterlinks": false,
+                  "showTags": false,
+                  "showAttachments": false,
+                  "hideUnresolved": false,
+                  "collapse-color-groups": true,
+                  "colorGroups": [],
+                  "collapse-display": true,
+                  "showArrow": false,
+                  "textFadeMultiplier": 0,
+                  "nodeSizeMultiplier": 1,
+                  "lineSizeMultiplier": 1,
+                  "collapse-forces": true,
+                  "centerStrength": 0.518713248970312,
+                  "repelStrength": 10,
+                  "linkStrength": 1,
+                  "linkDistance": 250,
+                  "scale": 1,
+                  "close": true
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "7470c11edf38dfcd",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0ef9e0f6c6e471bb",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "c3bbefcf123ea392",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Splitting Notes in Obsidian.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": false
+              }
+            }
+          },
+          {
+            "id": "1c498afc1512775a",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Splitting Notes in Obsidian.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "active": "af1f4b05f857d5cd",
+  "lastOpenFiles": [
+    "Splitting Notes in Obsidian.md",
+    "Syncing and Embedding Tasks with Todoist.md",
+    "Task Management.md",
+    "The Power of the Local Graph.md",
+    "Timeblocking in Obsidian.md",
+    "Using Obsidian on iOS.md",
+    "Using Templates in Obsidian.md",
+    "Writing.md",
+    "YAML & Dataview.md",
+    "Obsidian Setup.md"
+  ]
+}

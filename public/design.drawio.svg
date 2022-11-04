@@ -1,4 +1,4 @@
-<svg host="65bd71144e" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="645px" height="466px" viewBox="-0.5 -0.5 645 466" content="&lt;mxfile&gt;&lt;diagram id=&quot;NioVWtxVoxtIg05fQNpb&quot; name=&quot;Page-1&quot;&gt;zZjLjtsgFIafJtvKBt9m20x6WVStlEXbJQ2MTYWNhXHszNMXx8e3kkSJJvF4Ffg5NvDx55CTFV6n9WdF8uSbpEyskEPrFX5eIeT6nmc+GuXQKmEQtkKsOIWgQdjyVwaiA2rJKSsmgVpKoXk+FXcyy9hOTzSilKymYS9STGfNScwsYbsjwlZ/cqqTVo1QOOhfGI+TbmY3eGpHUtIFw06KhFBZjSS8WeG1klK3rbReM9HA67i0z306M9ovTLFMX/VAtw596DbHqNkrdKXSiYxlRsRmUD8mOhVm0DVNVnP9a9T+bdrOBx96z82JO13nAJ12xmaas4sGqZCl2kEUWEYTFTOICnpgxmlMpkyrgwlRTBDN99O3EzjyuI8bqJgGgDkNCabeE1HCS79meamN9EOUMc8Ki2FR8VSQrIFVmBVrsDDC/fb3TGlWXwZgbw0eeIJTg6+Ph0KD/KhUgx2RA1HJyIo4ct7OA1k8/spc8MzCoGSZUUbh3KuEa7bNyfFEK5MZpla6iot3kYv3HxfHguKiE1CCOzDBFhP5p+CUk8VRcZHtlYdhcW2vCGkS6dKg9IlwFii2WRSpjPDK86WBwc6MYHyLy/dSv2um9bE3xRFdmWi9wH87j9DikbBaGkUClod7xb8p386YWCIbTRkvF42L58wv9g+W2S7om6iYUmBGKnZ2mfGKvonLrEnXDd71NroNzIn0+zgwrrX9hdZGcILj2ugM1rvXRrZ5UpLyGXxz+d7GwdQ4fnSqRLqXdUx3KNmPY6M/PvDmHw==&lt;/diagram&gt;&lt;/mxfile&gt;">
+<svg host="65bd71144e" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="645px" height="466px" viewBox="-0.5 -0.5 645 466" content="&lt;mxfile&gt;&lt;diagram id=&quot;NioVWtxVoxtIg05fQNpb&quot; name=&quot;Page-1&quot;&gt;zZhNc5swEIZ/DdcOSHzlWsdNe+i0Mz60PaqWCuoIxAhhcH59hVkMRE4mHmzKydKrldl9dr1CdvAma54UKdKvkjLhIJc2Dn50EPIC3zcfrXLslCiMOiFRnILRIOz4MwPRBbXilJUTQy2l0LyYinuZ52yvJxpRStZTsz9STJ9akIRZwm5PhK3+4FSnnRqjaNA/M56k/ZO98KFbyUhvDJGUKaGyHkl46+CNklJ3o6zZMNHC67l0+z69snp2TLFcv2tD74c+9sExamKFqVQ6lYnMidgO6sdUZ8IsembIGq5/jsa/zNj9EMDssc2420+OMLF9BLdLWak9eAEVoolKGFiFndT6N9oGcT0xmTGtjsZAMUE0P0xzRSDlydluoGIGAOYyJPDlQEQFX/olLyptpO+iSnheWgzLmmeC5C2s0oSgoYQRfiv8A1OaNW+GBqsPkDX4+fgoMshPSj2UI3LBKh2VIo7d+TyQxeOvLATPLQxKVjllFPJep1yzXUFOKa5NZ5iWks3Fv5aL/4KLa0Hx0AUo4Q2YYIuJ/F1yysnqqHjIrpW7YfHsWhHSNNK1QTk3wkWg2MWiSG2EZ16sDQx2FwQTWFy+Vfq/dtoA+1Mc8TsbrR8G83lEFo+UNfLWJRJcC+Vlm12wn8Q2kSpZHREPL9lN7NeT+xzHc6mYF/8Fqdi95F4H8lwui7ZYL1zu7JkN5kKzvR8Yzwp/HTchSNj4JgRYlr8J2cWTkYzfum6uPqVxOC2cIL50IbpV6ZjpcEE/rY3+5sDbfw==&lt;/diagram&gt;&lt;/mxfile&gt;">
     <defs/>
     <g>
         <path d="M 200 232.5 L 263.63 232.5" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="stroke"/>
@@ -94,13 +94,13 @@
                     <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 118px; height: 1px; padding-top: 75px; margin-left: 485px;">
                         <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
                             <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: none; white-space: normal; overflow-wrap: normal;">
-                                hexo output
+                                hexo
                             </div>
                         </div>
                     </div>
                 </foreignObject>
                 <text x="544" y="79" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px" text-anchor="middle">
-                    hexo output
+                    hexo
                 </text>
             </switch>
         </g>
@@ -111,13 +111,13 @@
                     <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 118px; height: 1px; padding-top: 160px; margin-left: 485px;">
                         <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
                             <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: none; white-space: normal; overflow-wrap: normal;">
-                                hugo output
+                                hugo
                             </div>
                         </div>
                     </div>
                 </foreignObject>
                 <text x="544" y="164" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px" text-anchor="middle">
-                    hugo output
+                    hugo
                 </text>
             </switch>
         </g>

@@ -18,14 +18,13 @@ import path from 'path'
 import { BiMultiMap } from './utils/BiMultiMap'
 import { WikiLink, wikiLinkFromMarkdown, wikiLinkToMarkdown } from './utils/wiki'
 
-export interface LocalNoteMeta extends Pick<Note, 'id' | 'title' | 'createAt' | 'updateAt'> {
+export interface LocalNoteMeta extends Pick<Note, 'title' | 'createAt' | 'updateAt'> {
   tags: string[]
 }
 
 export function calcMeta(note: Note): LocalNoteMeta {
   return {
     title: note.title,
-    id: note.id,
     tags: note.tags.map((item) => item.title),
     createAt: note.createAt,
     updateAt: note.updateAt,

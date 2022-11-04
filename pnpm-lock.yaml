@@ -75,6 +75,18 @@ importers:
       '@types/node': 18.8.3
       typescript: 4.8.4
 
+  demos/joplin2obsidian-demo:
+    specifiers:
+      '@mami/cli': workspace:^
+      '@mami/plugin-joplin': workspace:^
+      '@mami/plugin-obsidian': workspace:^
+      typescript: ^4.8.4
+    devDependencies:
+      '@mami/cli': link:../../packages/cli
+      '@mami/plugin-joplin': link:../../packages/plugin-joplin
+      '@mami/plugin-obsidian': link:../../packages/plugin-obsidian
+      typescript: 4.8.4
+
   demos/toybox-demo:
     specifiers:
       '@liuli-util/fs-extra': ^0.1.0
@@ -193,7 +205,6 @@ importers:
       '@liuli-util/markdown-util': ^0.4.0
       '@liuli-util/tree': ^3.6.0
       '@mami/cli': workspace:^
-      '@mami/plugin-raw': workspace:^
       '@types/lodash-es': ^4.17.6
       '@types/mime-types': ^2.1.1
       '@types/node': ^18.8.3
@@ -216,7 +227,6 @@ importers:
       utility-types: 3.10.0
     devDependencies:
       '@mami/cli': link:../cli
-      '@mami/plugin-raw': link:../plugin-raw
       '@types/lodash-es': 4.17.6
       '@types/mime-types': 2.1.1
       '@types/node': 18.8.3

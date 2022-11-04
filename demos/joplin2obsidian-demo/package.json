@@ -1,0 +1,18 @@
+{
+  "name": "joplin2obsidian-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "gen": "mami"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@mami/cli": "workspace:^",
+    "@mami/plugin-joplin": "workspace:^",
+    "@mami/plugin-obsidian": "workspace:^",
+    "typescript": "^4.8.4"
+  }
+}

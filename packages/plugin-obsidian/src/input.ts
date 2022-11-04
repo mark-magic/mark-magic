@@ -1,6 +1,6 @@
 import { AsyncArray } from '@liuli-util/async'
 import { stat, readFile } from '@liuli-util/fs-extra'
-import { fromMarkdown, getYamlMeta, setYamlMeta, toMarkdown } from '@liuli-util/markdown-util'
+import { fromMarkdown, getYamlMeta, Heading, select, setYamlMeta, toMarkdown } from '@liuli-util/markdown-util'
 import { InputPlugin, Note, Tag } from '@mami/cli'
 import { dropRight } from 'lodash-es'
 import path from 'path'
@@ -23,7 +23,6 @@ export function input(options: { root: string }): InputPlugin {
     async *generate() {
       const list = await scan(options.root)
       const resourceMap = new BiMultiMap<string, string>()
-      const resourcePath = path.resolve(options.root, '_rosources')
       for (const item of list) {
         const fsPath = path.resolve(options.root, item.relPath)
         const s = await stat(fsPath)
@@ -49,7 +48,7 @@ export function input(options: { root: string }): InputPlugin {
           return r
         })
         const note: Note = {
-          id: meta.id ?? item.id,
+          id: item.id,
           title: meta.title ?? item.title,
           content: toMarkdown(root).replaceAll(/\\\[(.+)\]\\\(:\/(.*)\)/g, '[$1](:/$2)'),
           createAt: meta.createAt ?? s.ctimeMs,

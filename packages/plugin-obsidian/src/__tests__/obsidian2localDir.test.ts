@@ -5,7 +5,7 @@ import { beforeEach, it } from 'vitest'
 import { input } from '..'
 import { output } from '@mami/plugin-local'
 
-const tempPath = path.resolve(__dirname, '.temp')
+const tempPath = path.resolve(__dirname, '.temp/', path.basename(__filename))
 beforeEach(async () => {
   await remove(tempPath)
   await mkdirp(tempPath)

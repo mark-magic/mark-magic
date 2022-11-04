@@ -17,7 +17,7 @@ import { wikiLinkFromMarkdown } from './utils/wiki'
  * @param options
  * @returns
  */
-export function input(options: { root: string }): InputPlugin {
+export function input(options: { root: string; tag?: string }): InputPlugin {
   return {
     name: 'obsidian',
     async *generate() {
@@ -30,6 +30,9 @@ export function input(options: { root: string }): InputPlugin {
           mdastExtensions: [wikiLinkFromMarkdown()],
         })
         const meta = (getYamlMeta(root) ?? {}) as Partial<LocalNoteMeta>
+        if (options.tag && !meta.tags?.includes(options.tag)) {
+          continue
+        }
         root.children = root.children.filter((item) => item.type !== 'yaml')
         const resources = convertLinks({
           root,

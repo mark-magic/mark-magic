@@ -10,7 +10,7 @@ import { pathExists, readFile } from '@liuli-util/fs-extra'
 import { filenamifyPath } from 'filenamify'
 
 it('convertLinks', () => {
-  const tempPath = path.resolve(__dirname, '.temp/output')
+  const tempPath = path.resolve(__dirname, '.temp/', path.basename(__filename))
   const root = fromMarkdown(
     `
 # hello
@@ -46,7 +46,7 @@ it('convertLinks', () => {
   expect(r.includes('[[../c/foo]]')).true
 })
 
-it.skip('output', async () => {
+it('output', async () => {
   const tempPath = path.resolve(__dirname, '.temp/output')
   await convert({
     input: [raw.input({ path: path.resolve(__dirname, '.temp/test.zip') })],

@@ -6,7 +6,7 @@ import * as raw from '@mami/plugin-raw'
 import * as obsidian from '../'
 import { fromAsync } from '../utils/fromAsync'
 
-const tempPath = path.resolve(__dirname, '.temp')
+const tempPath = path.resolve(__dirname, '.temp/', path.basename(__filename))
 beforeEach(async () => {
   await remove(tempPath)
   await mkdirp(tempPath)

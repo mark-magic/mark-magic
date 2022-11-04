@@ -1,5 +1,11 @@
 # @mami/plugin-joplin
 
+## 0.5.1
+
+### Patch Changes
+
+- fix obsidian => joplin
+
 ## 0.5.0
 
 ### Minor Changes

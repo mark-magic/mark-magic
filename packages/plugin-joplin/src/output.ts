@@ -61,6 +61,7 @@ async function createDirs(note: Note, dirs: Map<string, string>): Promise<string
 }
 
 async function createNote(note: Note, parentId: string): Promise<string> {
+  console.log(note, parentId)
   const r = await noteApi.create({
     title: note.title,
     body: note.content,
@@ -91,16 +92,22 @@ export function output(options: Config): OutputPlugin {
   return {
     name: 'joplin',
     async handle(note) {
+      console.log('handle: ', note.title)
       await Promise.all([createTags(note, tags), createResources(note, resourceMap)])
+      console.log('createDirs')
       const parentId = await createDirs(note, dirs)
+      console.log('convert link')
       const root = fromMarkdown(note.content)
       const isAfter = convertLinks({ root, note, noteMap, resourceMap })
       if (isAfter) {
         afterList.push(note)
       }
+      console.log('create note')
       const id = await createNote({ ...note, content: toMarkdown(root) }, parentId)
       noteMap.set(note.id, id)
+      console.log('bind tags')
       await bindTags(note, id, tags)
+      console.log('end')
     },
     async end() {
       await AsyncArray.forEach(afterList, async (note) => {

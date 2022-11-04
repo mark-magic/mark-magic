@@ -74,3 +74,32 @@ it('output', async () => {
   expect(res.mime).eq('application/json')
   expect(res.file_extension).eq('json')
 })
+
+it.only('fix dont output', async () => {
+  await convert({
+    input: [
+      {
+        name: 'test-input',
+        async *generate() {
+          yield {
+            id: '7a436b6754e4484db517fc002532d94d',
+            title: '终之空通关感想',
+            content:
+              // 很神奇，joplin 创建笔记的时候会开始缓存图片
+              '![1642905576354](https://images.weserv.nl/?url=https://lh3.googleusercontent.com/pw/AL9nZEUmvKBtRxGeG-J-0oVDVmdZccu0E0_HiDHaMPlvWBLp1v2wjaA152s9FxkIRFZROAChN-tYgimcK-ZYBFD_KGya40RzSKfDTVJqvoXjg5CsBmAaJPurSPdDmaDm6Bcunj4IxL_YPBnwtH0h7XdwaUxN=w1600-h1200-no)',
+            createAt: 1642903136209,
+            updateAt: 1659274731375,
+            tags: [
+              { id: '00db2306-15e3-4d89-a8b3-66f281e409b7', title: 'galgame' },
+              { id: 'cd5a8bdb-f38b-4a15-a90a-1d5b8124fbea', title: 'blog' },
+            ] as Tag[],
+            resources: [] as Resource[],
+            path: ['其他', 'Galgame'],
+          } as Note
+        },
+      },
+    ],
+
+    output: [output(options)],
+  })
+})

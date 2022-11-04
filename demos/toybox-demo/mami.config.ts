@@ -4,7 +4,9 @@ import * as obsidian from '@mami/plugin-obsidian'
 import * as raw from '@mami/plugin-raw'
 import path from 'path'
 
-const zipPath = path.resolve(__dirname, 'dist/temp-obsidian.zip')
+const zipPath = path.resolve(
+  'C:/Users/rxliuli/Code/Web/mami/packages/plugin-joplin/src/__tests__/assets/temp-obsidian-bak.zip',
+)
 const config: Parameters<typeof joplin.input>[0] = {
   baseUrl: 'http://127.0.0.1:27583',
   token:
@@ -14,13 +16,13 @@ const config: Parameters<typeof joplin.input>[0] = {
 
 export default defineConfig({
   input: [
-    raw.input({ path: zipPath }),
+    // raw.input({ path: zipPath }),
     // joplin.input(config),
-    // obsidian.input({ root: path.resolve(__dirname, '.temp') }),
+    obsidian.input({ root: path.resolve(__dirname, '.temp') }),
   ],
   output: [
-    // raw.output({ path: zipPath }),
-    joplin.output(config),
+    raw.output({ path: zipPath }),
+    // joplin.output(config),
     // obsidian.output({ root: path.resolve(__dirname, '.temp') }),
   ],
 })

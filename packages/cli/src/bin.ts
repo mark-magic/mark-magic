@@ -20,11 +20,13 @@ await convert(mod.default)
   })
   .on('handle', ({ note, time, output }) => {
     if (time > 10 * 1000) {
-      console.warn(`handle slow, plugin ${output.name}, note: ${note.title}`)
+      spinner.warn(`handle slow, plugin ${output.name}, note: ${note.title}`)
     }
   })
   .on('error', (context) => {
-    console.error(`handle error, plugin: ${context.plugin.name}, note: ${context.note.title}`, context.error)
+    const e = context.error as Error
+    spinner.fail(`handle error, plugin: ${context.plugin.name}, note: ${context.note.title}`)
+    console.error(e)
   })
 spinner.stop()
 console.log('end')

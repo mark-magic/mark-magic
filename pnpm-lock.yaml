@@ -193,6 +193,7 @@ importers:
       '@liuli-util/markdown-util': ^0.4.0
       '@liuli-util/tree': ^3.6.0
       '@mami/cli': workspace:^
+      '@mami/plugin-raw': workspace:^
       '@types/lodash-es': ^4.17.6
       '@types/mime-types': ^2.1.1
       '@types/node': ^18.8.3
@@ -215,6 +216,7 @@ importers:
       utility-types: 3.10.0
     devDependencies:
       '@mami/cli': link:../cli
+      '@mami/plugin-raw': link:../plugin-raw
       '@types/lodash-es': 4.17.6
       '@types/mime-types': 2.1.1
       '@types/node': 18.8.3

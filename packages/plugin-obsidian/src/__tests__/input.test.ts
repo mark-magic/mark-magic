@@ -1,6 +1,6 @@
 import { convert } from '@mami/cli'
 import path from 'path'
-import { beforeEach, expect, it } from 'vitest'
+import { beforeEach, expect, it, vi } from 'vitest'
 import * as obsidian from '../input'
 import { remove, mkdirp, pathExists, readFile } from '@liuli-util/fs-extra'
 import * as raw from '@mami/plugin-raw'
@@ -10,6 +10,8 @@ import { fromMarkdown, toMarkdown } from '@liuli-util/markdown-util'
 import { wikiLinkFromMarkdown, wikiLinkToMarkdown } from '../utils/wiki'
 import { BiMultiMap } from '../utils/BiMultiMap'
 import { v4 } from 'uuid'
+import { writeFile } from 'fs/promises'
+import { chain } from 'lodash-es'
 
 const tempPath = path.resolve(__dirname, '.temp/', path.basename(__filename))
 beforeEach(async () => {
@@ -109,11 +111,35 @@ it('obsidianInput', async () => {
   expect(list.length).eq(3)
 })
 
-it.only('input', async () => {
-  const zipPath = path.resolve(tempPath, 'test.zip')
-  const sourcePath = path.resolve(__dirname, 'assets')
-  await convert({
-    input: [obsidian.input({ root: sourcePath })],
-    output: [raw.output({ path: zipPath })],
-  })
+it('input for repate tags', async () => {
+  await writeFile(
+    path.resolve(tempPath, 'test1.md'),
+    `
+---
+tags:
+  - blog
+  - blog
+---
+  `.trim(),
+  )
+  await writeFile(
+    path.resolve(tempPath, 'test2.md'),
+    `
+---
+tags:
+  - blog
+  - blog
+---
+  `.trim(),
+  )
+  const list = await fromAsync(obsidian.input({ root: tempPath }).generate())
+  const r = chain(list)
+    .flatMap((item) => item.tags)
+    .uniqBy((item) => item.id)
+    .groupBy((item) => item.title)
+    .filter((item) => item.length > 1)
+    .map((item) => item[0].title)
+    .value()
+  // console.log(list)
+  expect(r.length).eq(0)
 })

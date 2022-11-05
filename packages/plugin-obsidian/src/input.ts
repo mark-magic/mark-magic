@@ -114,6 +114,7 @@ export function input(options: { root: string; tag?: string }): InputPlugin {
     async *generate() {
       const list = await scan(options.root)
       const resourceMap = new BiMultiMap<string, string>()
+      const tagMap = new Map<string, Tag>()
       for (const item of list) {
         const fsPath = path.resolve(options.root, item.relPath)
         const s = await stat(fsPath)
@@ -132,7 +133,6 @@ export function input(options: { root: string; tag?: string }): InputPlugin {
           resourceMap,
           notePath: fsPath,
         })
-        const tagMap = new Map<string, Tag>()
         const tags = (meta.tags ?? []).map((title) => {
           if (tagMap.has(title)) {
             return tagMap.get(title)!

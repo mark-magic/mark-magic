@@ -1,5 +1,11 @@
 # @mami/plugin-obsidian
 
+## 0.5.3
+
+### Patch Changes
+
+- fix: correctly handle tag deduplication when importing from obsidian
+
 ## 0.5.2
 
 ### Patch Changes

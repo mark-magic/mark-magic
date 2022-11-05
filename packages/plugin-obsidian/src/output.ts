@@ -12,10 +12,10 @@ import {
   u,
 } from '@liuli-util/markdown-util'
 import { Note, OutputPlugin, Resource } from '@mami/cli'
+import { BiMultiMap } from '@mami/utils'
 import filenamify from 'filenamify'
 import { keyBy } from 'lodash-es'
 import path from 'path'
-import { BiMultiMap } from './utils/BiMultiMap'
 import { WikiLink, wikiLinkFromMarkdown, wikiLinkToMarkdown } from './utils/wiki'
 
 export interface LocalNoteMeta extends Pick<Note, 'title' | 'createAt' | 'updateAt'> {

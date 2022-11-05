@@ -18,6 +18,7 @@
   ],
   "devDependencies": {
     "@mami/cli": "workspace:^",
+    "@mami/utils": "workspace:^",
     "@types/lodash-es": "^4.17.6",
     "@types/mime-types": "^2.1.1",
     "@types/node": "^18.8.3",

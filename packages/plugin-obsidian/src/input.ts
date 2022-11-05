@@ -7,8 +7,8 @@ import { dropRight } from 'lodash-es'
 import path from 'path'
 import { v4 } from 'uuid'
 import { LocalNoteMeta } from './output'
-import { BiMultiMap } from './utils/BiMultiMap'
 import { WikiLink, wikiLinkFromMarkdown } from './utils/wiki'
+import { BiMultiMap } from '@mami/utils'
 
 interface ScanNote {
   id: string

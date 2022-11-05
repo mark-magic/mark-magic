@@ -4,10 +4,10 @@ import * as raw from '@mami/plugin-raw'
 import * as obsidian from '../output'
 import path from 'path'
 import { fromMarkdown, toMarkdown } from '@liuli-util/markdown-util'
-import { BiMultiMap } from '../utils/BiMultiMap'
 import { wikiLinkToMarkdown } from '../utils/wiki'
 import { pathExists, readFile } from '@liuli-util/fs-extra'
 import { filenamifyPath } from 'filenamify'
+import { BiMultiMap } from '@mami/utils'
 
 it('convertLinks', () => {
   const tempPath = path.resolve(__dirname, '.temp/', path.basename(__filename))

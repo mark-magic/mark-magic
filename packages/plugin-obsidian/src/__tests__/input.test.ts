@@ -8,10 +8,10 @@ import { fromAsync } from '../utils/fromAsync'
 import { convertLinks, convertYamlTab, scan } from '../input'
 import { fromMarkdown, toMarkdown } from '@liuli-util/markdown-util'
 import { wikiLinkFromMarkdown, wikiLinkToMarkdown } from '../utils/wiki'
-import { BiMultiMap } from '../utils/BiMultiMap'
 import { v4 } from 'uuid'
 import { writeFile } from 'fs/promises'
 import { chain } from 'lodash-es'
+import { BiMultiMap } from '@mami/utils'
 
 const tempPath = path.resolve(__dirname, '.temp/', path.basename(__filename))
 beforeEach(async () => {

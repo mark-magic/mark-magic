@@ -1,13 +1,13 @@
 import { AsyncArray, concatMap } from '@liuli-util/async'
 import { Note, OutputPlugin } from '@mami/cli'
 import { Config, config, tagApi, resourceApi, noteApi, folderApi } from 'joplin-api'
-import { pick } from 'lodash-es'
-import { fromMarkdown, toMarkdown } from '@liuli-util/markdown-util'
-import { convertLinks } from './utils/convertLinks'
-import { BiMultiMap } from './utils/BiMultiMap'
+import { keyBy, pick } from 'lodash-es'
+import { fromMarkdown, Link, Root, toMarkdown, visit, Image } from '@liuli-util/markdown-util'
 import path from 'path'
 import { mkdirp, remove } from '@liuli-util/fs-extra'
 import { fileURLToPath } from 'url'
+import { BiMultiMap } from '@mami/utils'
+import { ValuesType } from 'utility-types'
 
 async function createTags(note: Note, tags: Map<string, string>) {
   await AsyncArray.forEach(
@@ -80,6 +80,47 @@ async function bindTags(note: Note, id: string, tags: Map<string, string>) {
       } catch {}
     },
   )
+}
+
+function formatRelative(s: string): string {
+  const prefix = ['./', '../']
+  const r = s.replaceAll('\\', '/')
+  return encodeURI(prefix.some((i) => r.startsWith(i)) ? r : './' + r)
+}
+
+export function convertLinks({
+  root,
+  note,
+  noteMap,
+  resourceMap,
+}: {
+  root: Root
+  note: { resources: Pick<ValuesType<Note['resources']>, 'id' | 'title'>[] }
+  noteMap: BiMultiMap<string, string>
+  resourceMap: BiMultiMap<string, string>
+}) {
+  const urls: (Image | Link)[] = []
+  visit(root, (node) => {
+    if (['image', 'link'].includes(node.type) && (node as Link).url.startsWith(':/')) {
+      urls.push(node as Link)
+    }
+  })
+  const map = keyBy(note.resources, (item) => item.id)
+  let isAfter = false
+  urls.forEach((item) => {
+    const id = item.url.slice(2)
+    const resource = map[id]
+    if (resource) {
+      item.url = `:/${resourceMap.get(id)}`
+    } else {
+      if (!noteMap.has(id)) {
+        isAfter = true
+        return
+      }
+      item.url = `:/${noteMap.get(id)!}`
+    }
+  })
+  return isAfter
 }
 
 export function output(options: Config): OutputPlugin {

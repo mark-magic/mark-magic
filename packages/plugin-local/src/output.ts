@@ -2,11 +2,73 @@ import { AsyncArray } from '@liuli-util/async'
 import { mkdirp, readFile, writeFile } from '@liuli-util/fs-extra'
 import path from 'path'
 import type { Note, OutputPlugin } from '@mami/cli'
-import { fromMarkdown, setYamlMeta, toMarkdown } from '@liuli-util/markdown-util'
-import { calcMeta } from './utils/calcMeta'
-import { convertLinks } from './utils/convertLinks'
-import { BiMultiMap } from './utils/BiMultiMap'
+import { fromMarkdown, Link, Root, setYamlMeta, toMarkdown, visit, Image } from '@liuli-util/markdown-util'
 import filenamify from 'filenamify'
+import { keyBy } from 'lodash-es'
+import { ValuesType } from 'utility-types'
+import { BiMultiMap } from '@mami/utils'
+
+function formatRelative(s: string): string {
+  const prefix = ['./', '../']
+  const r = s.replaceAll('\\', '/')
+  return encodeURI(prefix.some((i) => r.startsWith(i)) ? r : './' + r)
+}
+
+export function convertLinks({
+  root,
+  note,
+  noteMap,
+  resourceMap,
+  fsPath,
+}: {
+  root: Root
+  note: { resources: Pick<ValuesType<Note['resources']>, 'id' | 'title'>[] }
+  noteMap: BiMultiMap<string, string>
+  resourceMap: BiMultiMap<string, string>
+  fsPath: string
+}) {
+  const urls: (Image | Link)[] = []
+  visit(root, (node) => {
+    if (['image', 'link'].includes(node.type) && (node as Link).url.startsWith(':/')) {
+      urls.push(node as Link)
+    }
+  })
+  const map = keyBy(note.resources, (item) => item.id)
+  let isAfter = false
+  const dirPath = path.dirname(fsPath)
+  urls.forEach((item) => {
+    const id = item.url.slice(2)
+    const resource = map[id]
+    if (resource) {
+      item.url = formatRelative(path.relative(dirPath, resourceMap.get(id)!))
+    } else {
+      if (!noteMap.has(id)) {
+        isAfter = true
+        return
+      }
+      item.url = formatRelative(path.relative(dirPath, noteMap.get(id)!))
+    }
+  })
+  return isAfter
+}
+
+export interface LocalNoteMeta {
+  title: string
+  abbrlink: string
+  tags: string[]
+  date: number
+  updated: number
+}
+
+export function calcMeta(note: Note): LocalNoteMeta {
+  return {
+    title: note.title,
+    abbrlink: note.id,
+    tags: note.tags.map((item) => item.title),
+    date: note.createAt,
+    updated: note.updateAt,
+  }
+}
 
 export function output(options: {
   noteRootPath: string

@@ -246,6 +246,7 @@ importers:
       '@liuli-util/markdown-util': ^0.4.0
       '@liuli-util/tree': ^3.6.0
       '@mami/cli': workspace:^
+      '@mami/utils': workspace:^
       '@types/lodash-es': ^4.17.6
       '@types/mime-types': ^2.1.1
       '@types/node': ^18.8.3
@@ -268,6 +269,7 @@ importers:
       utility-types: 3.10.0
     devDependencies:
       '@mami/cli': link:../cli
+      '@mami/utils': link:../utils
       '@types/lodash-es': 4.17.6
       '@types/mime-types': 2.1.1
       '@types/node': 18.8.3
@@ -283,6 +285,7 @@ importers:
       '@liuli-util/markdown-util': ^0.4.0
       '@mami/cli': workspace:^
       '@mami/plugin-joplin': workspace:^
+      '@mami/utils': workspace:^
       '@types/lodash-es': ^4.17.6
       '@types/node': ^18.8.3
       filenamify: ^5.1.1
@@ -301,6 +304,7 @@ importers:
     devDependencies:
       '@mami/cli': link:../cli
       '@mami/plugin-joplin': link:../plugin-joplin
+      '@mami/utils': link:../utils
       '@types/lodash-es': 4.17.6
       '@types/node': 18.8.3
       tsup: 6.2.3_typescript@4.8.4
@@ -317,6 +321,7 @@ importers:
       '@mami/cli': workspace:^
       '@mami/plugin-local': workspace:^
       '@mami/plugin-raw': workspace:^
+      '@mami/utils': workspace:^
       '@types/lodash-es': ^4.17.6
       '@types/node': ^18.8.3
       '@types/uuid': ^8.3.4
@@ -342,6 +347,7 @@ importers:
       '@mami/cli': link:../cli
       '@mami/plugin-local': link:../plugin-local
       '@mami/plugin-raw': link:../plugin-raw
+      '@mami/utils': link:../utils
       '@types/lodash-es': 4.17.6
       '@types/node': 18.8.3
       '@types/uuid': 8.3.4
@@ -370,6 +376,18 @@ importers:
     devDependencies:
       '@mami/cli': link:../cli
       '@types/lodash-es': 4.17.6
+      tsup: 6.2.3_typescript@4.8.4
+      tsx: 3.10.1
+      typescript: 4.8.4
+      vitest: 0.23.4
+
+  packages/utils:
+    specifiers:
+      tsup: ^6.2.3
+      tsx: ^3.9.0
+      typescript: ^4.8.4
+      vitest: ^0.23.4
+    devDependencies:
       tsup: 6.2.3_typescript@4.8.4
       tsx: 3.10.1
       typescript: 4.8.4

@@ -2,6 +2,7 @@ import { defineConfig, OutputPlugin, Tag } from '@mami/cli'
 import * as joplin from '@mami/plugin-joplin'
 import * as obsidian from '@mami/plugin-obsidian'
 import * as raw from '@mami/plugin-raw'
+import * as local from '@mami/plugin-local'
 import { writeFile } from 'fs/promises'
 import { chain } from 'lodash'
 import { groupBy } from 'lodash-es'
@@ -38,13 +39,17 @@ function testPlugin(): OutputPlugin {
 export default defineConfig({
   input: [
     // raw.input({ path: zipPath }),
-    // joplin.input(config),
-    obsidian.input({ root: path.resolve(__dirname, '.temp') }),
+    joplin.input(config),
+    // obsidian.input({ root: path.resolve(__dirname, '.temp') }),
   ],
   output: [
-    testPlugin(),
+    // testPlugin(),
     // raw.output({ path: zipPath }),
     // joplin.output(config),
     // obsidian.output({ root: path.resolve(__dirname, '.temp') }),
+    local.output({
+      noteRootPath: path.resolve(__dirname, 'dist/assets'),
+      resourceRootPath: path.resolve(__dirname, 'dist/assets/_resources'),
+    }),
   ],
 })

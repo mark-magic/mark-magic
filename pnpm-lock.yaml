@@ -125,6 +125,7 @@ importers:
       '@liuli-util/fs-extra': ^0.1.0
       '@mami/cli': workspace:^
       '@mami/plugin-joplin': workspace:^
+      '@mami/plugin-local': workspace:^
       '@mami/plugin-obsidian': workspace:^
       '@mami/plugin-raw': workspace:^
       '@types/lodash': ^4.14.188
@@ -136,6 +137,7 @@ importers:
       '@liuli-util/fs-extra': 0.1.0
       '@mami/cli': link:../../packages/cli
       '@mami/plugin-joplin': link:../../packages/plugin-joplin
+      '@mami/plugin-local': link:../../packages/plugin-local
       '@mami/plugin-obsidian': link:../../packages/plugin-obsidian
       '@mami/plugin-raw': link:../../packages/plugin-raw
       '@types/lodash': 4.14.188
@@ -288,25 +290,31 @@ importers:
       '@mami/utils': workspace:^
       '@types/lodash-es': ^4.17.6
       '@types/node': ^18.8.3
+      '@types/uuid': ^8.3.4
+      fast-glob: ^3.2.12
       filenamify: ^5.1.1
       lodash-es: ^4.17.21
       tsup: ^6.2.3
       tsx: ^3.10.1
       typescript: ^4.8.4
       utility-types: ^3.10.0
+      uuid: ^9.0.0
       vitest: ^0.24.0
     dependencies:
       '@liuli-util/async': 3.6.0
       '@liuli-util/fs-extra': 0.1.0
       '@liuli-util/markdown-util': 0.4.0
+      fast-glob: 3.2.12
       filenamify: 5.1.1
       lodash-es: 4.17.21
+      uuid: 9.0.0
     devDependencies:
       '@mami/cli': link:../cli
       '@mami/plugin-joplin': link:../plugin-joplin
       '@mami/utils': link:../utils
       '@types/lodash-es': 4.17.6
       '@types/node': 18.8.3
+      '@types/uuid': 8.3.4
       tsup: 6.2.3_typescript@4.8.4
       tsx: 3.10.1
       typescript: 4.8.4

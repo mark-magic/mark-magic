@@ -1,5 +1,5 @@
 import { AsyncArray } from '@liuli-util/async'
-import { mkdirp, readFile, writeFile } from '@liuli-util/fs-extra'
+import { mkdirp, readFile, remove, writeFile } from '@liuli-util/fs-extra'
 import path from 'path'
 import type { Note, OutputPlugin } from '@mami/cli'
 import { fromMarkdown, Link, Root, setYamlMeta, toMarkdown, visit, Image } from '@liuli-util/markdown-util'
@@ -52,21 +52,16 @@ export function convertLinks({
   return isAfter
 }
 
-export interface LocalNoteMeta {
-  title: string
-  abbrlink: string
+export interface LocalNoteMeta extends Pick<Note, 'title' | 'createAt' | 'updateAt'> {
   tags: string[]
-  date: number
-  updated: number
 }
 
 export function calcMeta(note: Note): LocalNoteMeta {
   return {
     title: note.title,
-    abbrlink: note.id,
     tags: note.tags.map((item) => item.title),
-    date: note.createAt,
-    updated: note.updateAt,
+    createAt: note.createAt,
+    updateAt: note.updateAt,
   }
 }
 
@@ -81,6 +76,7 @@ export function output(options: {
   return {
     name: 'local',
     async start() {
+      await Promise.all([remove(options.noteRootPath), remove(options.resourceRootPath)])
       await mkdirp(options.noteRootPath)
       await mkdirp(options.resourceRootPath)
     },

@@ -11,6 +11,7 @@
     "@mami/cli": "workspace:^",
     "@mami/plugin-joplin": "workspace:^",
     "@mami/plugin-obsidian": "workspace:^",
+    "@mami/plugin-local": "workspace:^",
     "@mami/plugin-raw": "workspace:^",
     "@types/lodash": "^4.14.188",
     "@types/lodash-es": "^4.17.6",

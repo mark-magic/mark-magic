@@ -41,7 +41,7 @@ it('utils', () => {
   })
 
   it('convertLinks', async () => {
-    const rootPath = path.resolve(__dirname, '../../__tests__/assets')
+    const rootPath = path.resolve(__dirname, '../assets')
     const notePath = path.resolve(rootPath, 'hello/hello world 2.md')
     const root = fromMarkdown(await readFile(notePath, 'utf-8'), {
       mdastExtensions: [wikiLinkFromMarkdown()],
@@ -70,7 +70,7 @@ it('utils', () => {
   })
 
   it('convertLinks by link', async () => {
-    const rootPath = path.resolve(__dirname, '../../__tests__/assets')
+    const rootPath = path.resolve(__dirname, '../assets')
     const notePath = path.resolve(rootPath, 'hello/hello world 2.md')
     const root = fromMarkdown(
       `

@@ -1,16 +1,107 @@
 import { AsyncArray } from '@liuli-util/async'
 import { stat, readFile } from '@liuli-util/fs-extra'
-import { fromMarkdown, getYamlMeta, Heading, select, setYamlMeta, toMarkdown } from '@liuli-util/markdown-util'
+import { flatMap, fromMarkdown, getYamlMeta, Root, toMarkdown, u } from '@liuli-util/markdown-util'
 import { InputPlugin, Note, Tag } from '@mami/cli'
+import FastGlob from 'fast-glob'
 import { dropRight } from 'lodash-es'
 import path from 'path'
 import { v4 } from 'uuid'
 import { LocalNoteMeta } from './output'
 import { BiMultiMap } from './utils/BiMultiMap'
-import { convertLinks } from './utils/convertLinks'
-import { convertYamlTab } from './utils/convertYamlTab'
-import { scan } from './utils/scan'
-import { wikiLinkFromMarkdown } from './utils/wiki'
+import { WikiLink, wikiLinkFromMarkdown } from './utils/wiki'
+
+interface ScanNote {
+  id: string
+  title: string
+  relPath: string
+}
+
+export async function scan(root: string): Promise<ScanNote[]> {
+  return (
+    await FastGlob('**/*.md', {
+      cwd: root,
+      onlyFiles: true,
+      ignore: ['.obsidian'],
+    })
+  ).map((item) => ({
+    id: v4(),
+    title: path.basename(item, '.md'),
+    relPath: item,
+  }))
+}
+
+export function convertYamlTab(content: string) {
+  const sub = '---\n'
+  const start = content.indexOf(sub)
+  if (start === -1) {
+    return content
+  }
+  const end = content.slice(start + sub.length).indexOf(sub)
+  if (end === -1) {
+    return content
+  }
+  const s = content.substring(start + sub.length, start + sub.length + end)
+  return content.replace(s, s.replaceAll('\t', '  '))
+}
+
+export function convertLinks({
+  root,
+  rootPath,
+  list,
+  resourceMap,
+  notePath,
+}: {
+  root: Root
+  notePath: string
+  rootPath: string
+  list: ScanNote[]
+  resourceMap: BiMultiMap<string, string>
+}): { id: string; fsPath: string }[] {
+  const resources: { id: string; fsPath: string }[] = []
+  flatMap(root, (node) => {
+    if (node.type !== 'wiki') {
+      return [node]
+    }
+    const wiki = node as WikiLink
+    const fileName = wiki.url.endsWith('.md') ? wiki.url.slice(0, wiki.url.length - 3) : wiki.url
+    const fsPath = ['./', '../'].some((s) => fileName.startsWith(s))
+      ? path.resolve(path.dirname(notePath), fileName)
+      : path.resolve(rootPath, fileName)
+    const findNote = list.find(
+      (item) =>
+        // 绝对路径对比
+        path.resolve(rootPath, item.relPath) === fsPath + '.md' ||
+        // 绝对路径
+        item.relPath === fileName + '.md' ||
+        // 绝对路径，使用顶级目录中的文件名
+        item.title === fileName,
+    )
+    if (findNote) {
+      return [
+        u('link', {
+          url: `:/${findNote.id}`,
+          children: [u('text', path.basename(fileName))],
+        }),
+      ]
+    }
+    if (!resourceMap.has(fsPath)) {
+      resourceMap.set(fsPath, v4())
+    }
+    resources.push({ id: resourceMap.get(fsPath)!, fsPath })
+    return [
+      wiki.embed
+        ? u('image', {
+            alt: path.basename(fileName),
+            url: `:/${resourceMap.get(fsPath)}`,
+          })
+        : u('link', {
+            url: `:/${resourceMap.get(fsPath)}`,
+            children: [u('text', path.basename(fileName))],
+          }),
+    ]
+  })
+  return resources
+}
 
 /**
  * 从 obsidian 读取

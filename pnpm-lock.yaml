@@ -127,6 +127,10 @@ importers:
       '@mami/plugin-joplin': workspace:^
       '@mami/plugin-obsidian': workspace:^
       '@mami/plugin-raw': workspace:^
+      '@types/lodash': ^4.14.188
+      '@types/lodash-es': ^4.17.6
+      lodash: ^4.17.21
+      lodash-es: ^4.17.21
       typescript: ^4.8.4
     devDependencies:
       '@liuli-util/fs-extra': 0.1.0
@@ -134,6 +138,10 @@ importers:
       '@mami/plugin-joplin': link:../../packages/plugin-joplin
       '@mami/plugin-obsidian': link:../../packages/plugin-obsidian
       '@mami/plugin-raw': link:../../packages/plugin-raw
+      '@types/lodash': 4.14.188
+      '@types/lodash-es': 4.17.6
+      lodash: 4.17.21
+      lodash-es: 4.17.21
       typescript: 4.8.4
 
   packages/cli:
@@ -948,11 +956,11 @@ packages:
   /@types/lodash-es/4.17.6:
     resolution: {integrity: sha512-R+zTeVUKDdfoRxpAryaQNRKk3105Rrgx2CFRClIgRGaqDTdjsm8h6IYA8ir584W3ePzkZfst5xIgDwYrlh9HLg==}
     dependencies:
-      '@types/lodash': 4.14.186
+      '@types/lodash': 4.14.188
     dev: true
 
-  /@types/lodash/4.14.186:
-    resolution: {integrity: sha512-eHcVlLXP0c2FlMPm56ITode2AgLMSa6aJ05JTTbYbI+7EMkCEE5qk2E41d5g2lCVTqRe0GnnRFurmlCsDODrPw==}
+  /@types/lodash/4.14.188:
+    resolution: {integrity: sha512-zmEmF5OIM3rb7SbLCFYoQhO4dGt2FRM9AMkxvA3LaADOF1n8in/zGJlWji9fmafLoNyz+FoL6FE0SLtGIArD7w==}
     dev: true
 
   /@types/mdast/3.0.10:
@@ -3383,7 +3391,6 @@ packages:
 
   /lodash-es/4.17.21:
     resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
-    dev: false
 
   /lodash.sortby/4.7.0:
     resolution: {integrity: sha512-HDWXG8isMntAyRF5vZ7xKuEvOhT4AhlRt/3czTSjvGUxjYCBVRQY48ViDHyfYz9VIoBkW4TMGQNapx+l3RUwdA==}

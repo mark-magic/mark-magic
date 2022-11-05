@@ -1,7 +1,10 @@
-import { defineConfig } from '@mami/cli'
+import { defineConfig, OutputPlugin, Tag } from '@mami/cli'
 import * as joplin from '@mami/plugin-joplin'
 import * as obsidian from '@mami/plugin-obsidian'
 import * as raw from '@mami/plugin-raw'
+import { writeFile } from 'fs/promises'
+import { chain } from 'lodash'
+import { groupBy } from 'lodash-es'
 import path from 'path'
 
 const zipPath = path.resolve(
@@ -14,6 +17,24 @@ const config: Parameters<typeof joplin.input>[0] = {
   tag: '',
 }
 
+function testPlugin(): OutputPlugin {
+  const map: Record<string, Tag> = {}
+  return {
+    name: 'test',
+    async handle(note) {
+      note.tags.forEach((item) => (map[item.id] = item))
+    },
+    async end() {
+      const list = Object.values(map)
+      // chain(list)
+      //   .groupBy()
+      //   .filter((v) => v.length > 1)
+      //   .value()
+      await writeFile(path.resolve(__dirname, 'dist/tags.json'), JSON.stringify(list))
+    },
+  }
+}
+
 export default defineConfig({
   input: [
     // raw.input({ path: zipPath }),
@@ -21,7 +42,8 @@ export default defineConfig({
     obsidian.input({ root: path.resolve(__dirname, '.temp') }),
   ],
   output: [
-    raw.output({ path: zipPath }),
+    testPlugin(),
+    // raw.output({ path: zipPath }),
     // joplin.output(config),
     // obsidian.output({ root: path.resolve(__dirname, '.temp') }),
   ],

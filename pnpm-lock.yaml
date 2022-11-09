@@ -129,6 +129,7 @@ importers:
       '@mami/plugin-local': workspace:^
       '@mami/plugin-obsidian': workspace:^
       '@mami/plugin-raw': workspace:^
+      '@mami/utils': workspace:^
       '@types/lodash': ^4.14.188
       '@types/lodash-es': ^4.17.6
       lodash: ^4.17.21
@@ -142,6 +143,7 @@ importers:
       '@mami/plugin-local': link:../../packages/plugin-local
       '@mami/plugin-obsidian': link:../../packages/plugin-obsidian
       '@mami/plugin-raw': link:../../packages/plugin-raw
+      '@mami/utils': link:../../packages/utils
       '@types/lodash': 4.14.188
       '@types/lodash-es': 4.17.6
       lodash: 4.17.21
@@ -337,6 +339,7 @@ importers:
       '@types/uuid': ^8.3.4
       fast-glob: ^3.2.12
       filenamify: ^5.1.1
+      hashids: ^2.2.10
       lodash-es: ^4.17.21
       tsup: ^6.2.3
       tsx: ^3.9.0
@@ -350,6 +353,7 @@ importers:
       '@liuli-util/markdown-util': 0.4.0
       fast-glob: 3.2.12
       filenamify: 5.1.1
+      hashids: 2.2.10
       lodash-es: 4.17.21
       utility-types: 3.10.0
       uuid: 9.0.0
@@ -393,11 +397,24 @@ importers:
 
   packages/utils:
     specifiers:
+      '@liuli-util/async': ^3.6.0
+      '@liuli-util/fs-extra': ^0.1.0
+      '@mami/cli': workspace:^
+      '@types/mockjs': ^1.0.7
+      '@types/node': ^18.8.3
+      mockjs: ^1.1.0
       tsup: ^6.2.3
       tsx: ^3.9.0
       typescript: ^4.8.4
       vitest: ^0.23.4
+    dependencies:
+      '@liuli-util/fs-extra': 0.1.0
+      '@mami/cli': link:../cli
     devDependencies:
+      '@liuli-util/async': 3.6.0
+      '@types/mockjs': 1.0.7
+      '@types/node': 18.8.3
+      mockjs: 1.1.0
       tsup: 6.2.3_typescript@4.8.4
       tsx: 3.10.1
       typescript: 4.8.4
@@ -840,7 +857,6 @@ packages:
 
   /@liuli-util/async/3.6.0:
     resolution: {integrity: sha512-cUPE7D7uRToGZEakaC2KzT7S9yQsnk1XYtxTWCTh2sJZkL+PKvJNaoBkgX62gdmYDQ6tfxLZbSPnL09/ZG/LuA==}
-    dev: false
 
   /@liuli-util/fs-extra/0.1.0:
     resolution: {integrity: sha512-eaAyDyMGT23QuRGbITVY3SOJff3G9ekAAyGqB9joAnTBmqvFN+9a1FazOdO70G6IUqgpKV451eBHYSRcOJ/FNQ==}
@@ -1003,6 +1019,10 @@ packages:
 
   /@types/minimist/1.2.2:
     resolution: {integrity: sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==}
+    dev: true
+
+  /@types/mockjs/1.0.7:
+    resolution: {integrity: sha512-OCxXz6hEaJOVpRwuJMiVY5a6LtJcih+br9gwB/Q8ooOBikvk5FpBQ31OlNimXo3EqKha1Z7PFBni+q9m+8NCWg==}
     dev: true
 
   /@types/ms/0.7.31:
@@ -2628,6 +2648,10 @@ packages:
     dependencies:
       function-bind: 1.1.1
 
+  /hashids/2.2.10:
+    resolution: {integrity: sha512-nXnYums7F8B5Y+GSThutLPlKMaamW1yjWNZVt0WModiJfdjaDZHnhYTWblS+h1OoBx3yjwiBwxldPP3nIbFSSA==}
+    dev: false
+
   /hast-util-is-element/2.1.2:
     resolution: {integrity: sha512-thjnlGAnwP8ef/GSO1Q8BfVk2gundnc2peGQqEg2kUt/IqesiGg/5mSwN2fE7nLzy61pg88NG6xV+UrGOrx9EA==}
     dependencies:
@@ -4005,6 +4029,13 @@ packages:
   /mixme/0.5.4:
     resolution: {integrity: sha512-3KYa4m4Vlqx98GPdOHghxSdNtTvcP8E0kkaJ5Dlh+h2DRzF7zpuVVcA8B0QpKd11YJeP9QQ7ASkKzOeu195Wzw==}
     engines: {node: '>= 8.0.0'}
+    dev: true
+
+  /mockjs/1.1.0:
+    resolution: {integrity: sha512-eQsKcWzIaZzEZ07NuEyO4Nw65g0hdWAyurVol1IPl1gahRwY+svqzfgfey8U8dahLwG44d6/RwEzuK52rSa/JQ==}
+    hasBin: true
+    dependencies:
+      commander: 9.4.1
     dev: true
 
   /moize/6.1.3:

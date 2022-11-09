@@ -8,6 +8,7 @@ import { writeFile } from 'fs/promises'
 import { chain } from 'lodash'
 import { groupBy } from 'lodash-es'
 import path from 'path'
+import { outputCache } from '@mami/utils'
 
 const zipPath = path.resolve(
   'C:/Users/rxliuli/Code/Web/mami/packages/plugin-joplin/src/__tests__/assets/temp-obsidian-bak.zip',
@@ -52,6 +53,6 @@ export default defineConfig({
     //   noteRootPath: path.resolve(__dirname, 'dist/assets'),
     //   resourceRootPath: path.resolve(__dirname, 'dist/assets/_resources'),
     // }),
-    hexo.output({ root: path.resolve(__dirname, 'dist/hexo-output') }),
+    outputCache(hexo.output({ root: path.resolve(__dirname, 'dist/hexo-output') })),
   ],
 })

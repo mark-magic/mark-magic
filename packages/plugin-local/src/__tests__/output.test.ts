@@ -51,10 +51,9 @@ describe('utils', () => {
       tags: [] as Tag[],
     } as Note
     const r = calcMeta(note)
-    expect(r.id).eq(note.id)
     expect(r.title).eq(note.title)
-    expect(r.date).eq(note.createAt)
-    expect(r.updated).eq(note.updateAt)
+    expect(r.createAt).eq(note.createAt)
+    expect(r.updateAt).eq(note.updateAt)
   })
 })
 

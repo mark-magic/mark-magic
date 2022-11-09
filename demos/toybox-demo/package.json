@@ -13,6 +13,7 @@
     "@mami/plugin-obsidian": "workspace:^",
     "@mami/plugin-local": "workspace:^",
     "@mami/plugin-raw": "workspace:^",
+    "@mami/plugin-hexo": "workspace:^",
     "@types/lodash": "^4.14.188",
     "@types/lodash-es": "^4.17.6",
     "lodash": "^4.17.21",

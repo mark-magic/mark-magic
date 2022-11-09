@@ -124,6 +124,7 @@ importers:
     specifiers:
       '@liuli-util/fs-extra': ^0.1.0
       '@mami/cli': workspace:^
+      '@mami/plugin-hexo': workspace:^
       '@mami/plugin-joplin': workspace:^
       '@mami/plugin-local': workspace:^
       '@mami/plugin-obsidian': workspace:^
@@ -136,6 +137,7 @@ importers:
     devDependencies:
       '@liuli-util/fs-extra': 0.1.0
       '@mami/cli': link:../../packages/cli
+      '@mami/plugin-hexo': link:../../packages/plugin-hexo
       '@mami/plugin-joplin': link:../../packages/plugin-joplin
       '@mami/plugin-local': link:../../packages/plugin-local
       '@mami/plugin-obsidian': link:../../packages/plugin-obsidian

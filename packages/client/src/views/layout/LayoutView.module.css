@@ -1,0 +1,12 @@
+.LayoutView {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 100px 1fr;
+}
+
+.menus {
+  height: 100%;
+  list-style: none;
+  padding-left: 0;
+  border-right: solid 1px;
+}

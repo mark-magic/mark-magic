@@ -1,5 +1,9 @@
-.app {
-  height: 100vh;
+.HomeView {
+  height: 100%;
   display: grid;
+  grid-template-rows: auto 1fr;
   grid-template-columns: auto 1fr;
+  grid-template-areas:
+    'toolbar toolbar'
+    '. .';
 }

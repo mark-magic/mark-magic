@@ -1,5 +1,6 @@
 import css from './PluginSidebar.module.css'
 import { Schema } from 'jsonschema'
+import { List, Select } from 'antd'
 
 export interface PluginMeta {
   name: string

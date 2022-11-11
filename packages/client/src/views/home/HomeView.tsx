@@ -4,6 +4,7 @@ import { PluginMeta, PluginSidebar } from './components/PluginSidebar'
 import css from './HomeView.module.css'
 import joplinSchema from './assets/joplin.schema.json'
 import hexoSchema from './assets/hexo.schema.json'
+import { Toolbar } from './components/Toolbar'
 
 export function HomeView() {
   const [current, setCurrent] = useState<PluginMeta>()
@@ -13,11 +14,12 @@ export function HomeView() {
     setCurrent(plugin)
   }
   const key = useMemo(() => (current ? current.type + '-' + current.name : ''), [current])
-  function onChange(values: object) {
+  async function onChange(values: object) {
     setConfig({ [key]: { ...config[key], ...values } })
   }
   return (
-    <div className={css.app}>
+    <div className={css.HomeView}>
+      <Toolbar></Toolbar>
       <PluginSidebar
         input={[joplinSchema].map((item) => ({ name: item.$id, type: 'input', config: item }))}
         output={[hexoSchema].map((item) => ({ name: item.$id, type: 'output', config: item }))}

@@ -14,7 +14,8 @@
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts",
     "setup": "pnpm build",
-    "test": "vitest run"
+    "test": "vitest run",
+    "start": "tsx src/bin.ts"
   },
   "sideEffects": false,
   "devDependencies": {

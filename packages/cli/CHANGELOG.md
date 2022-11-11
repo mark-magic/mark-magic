@@ -1,5 +1,11 @@
 # @mami/cli
 
+## 0.5.2
+
+### Patch Changes
+
+- perf: add debug logs for performance analysis
+
 ## 0.5.1
 
 ### Patch Changes

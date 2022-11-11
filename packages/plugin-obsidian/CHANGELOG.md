@@ -1,5 +1,12 @@
 # @mami/plugin-obsidian
 
+## 0.5.4
+
+### Patch Changes
+
+- fix: fix performance issue with obsidian plugin
+- fix: fix a bug where obsidian does not keep id generation stable and causes cache invalidation
+
 ## 0.5.3
 
 ### Patch Changes

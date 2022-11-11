@@ -4,14 +4,13 @@ import { beforeEach, expect, it, vi } from 'vitest'
 import * as obsidian from '../input'
 import { remove, mkdirp, pathExists, readFile } from '@liuli-util/fs-extra'
 import * as raw from '@mami/plugin-raw'
-import { fromAsync } from '../utils/fromAsync'
 import { convertLinks, convertYamlTab, scan } from '../input'
 import { fromMarkdown, toMarkdown } from '@liuli-util/markdown-util'
 import { wikiLinkFromMarkdown, wikiLinkToMarkdown } from '../utils/wiki'
 import { v4 } from 'uuid'
 import { writeFile } from 'fs/promises'
-import { chain } from 'lodash-es'
-import { BiMultiMap } from '@mami/utils'
+import { chain, sortBy } from 'lodash-es'
+import { BiMultiMap, fromAsync } from '@mami/utils'
 
 const tempPath = path.resolve(__dirname, '.temp/', path.basename(__filename))
 beforeEach(async () => {
@@ -142,4 +141,10 @@ tags:
     .value()
   // console.log(list)
   expect(r.length).eq(0)
+})
+
+it.only('input multiple for id', async () => {
+  const r1 = await fromAsync(obsidian.input({ root: path.resolve(__dirname, 'assets') }).generate())
+  const r2 = await fromAsync(obsidian.input({ root: path.resolve(__dirname, 'assets') }).generate())
+  expect(sortBy(r1.map((item) => item.id))).deep.eq(sortBy(r2.map((item) => item.id)))
 })

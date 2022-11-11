@@ -4,7 +4,7 @@ import path from 'path'
 import { beforeEach, expect, it, vi } from 'vitest'
 import * as raw from '@mami/plugin-raw'
 import * as obsidian from '../'
-import { fromAsync } from '../utils/fromAsync'
+import { fromAsync } from '@mami/utils'
 
 const tempPath = path.resolve(__dirname, '.temp/', path.basename(__filename))
 beforeEach(async () => {

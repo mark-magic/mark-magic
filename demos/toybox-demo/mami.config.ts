@@ -10,9 +10,7 @@ import { groupBy } from 'lodash-es'
 import path from 'path'
 import { outputCache } from '@mami/utils'
 
-const zipPath = path.resolve(
-  'C:/Users/rxliuli/Code/Web/mami/packages/plugin-joplin/src/__tests__/assets/temp-obsidian-bak.zip',
-)
+const zipPath = path.resolve(path.resolve(__dirname, './dist/temp-joplin.zip'))
 const config: Parameters<typeof joplin.input>[0] = {
   baseUrl: 'http://127.0.0.1:27583',
   token:
@@ -55,4 +53,5 @@ export default defineConfig({
     // }),
     outputCache(hexo.output({ root: path.resolve(__dirname, 'dist/hexo-output') })),
   ],
+  debug: true,
 })

@@ -1,8 +1,8 @@
-import { pathExists } from '@liuli-util/fs-extra'
+import { pathExists, writeJson } from '@liuli-util/fs-extra'
 import { bundleRequire } from 'bundle-require'
 import ora from 'ora'
 import path from 'path'
-import { convert } from './convert'
+import { convert, ConvertConfig } from './convert'
 
 const configPath = path.resolve('mami.config.ts')
 if (!(await pathExists(configPath))) {
@@ -14,7 +14,8 @@ const { mod } = await bundleRequire({
 console.log('start')
 const spinner = ora().start()
 spinner.color = 'blue'
-await convert(mod.default)
+const config = mod.default as ConvertConfig
+const r = await convert(config)
   .on('generate', ({ note }) => {
     spinner.text = 'handle: ' + note.title
   })
@@ -30,3 +31,6 @@ await convert(mod.default)
   })
 spinner.stop()
 console.log('end')
+if (config.debug) {
+  await writeJson(path.resolve('mami-performance.json'), r.performance)
+}

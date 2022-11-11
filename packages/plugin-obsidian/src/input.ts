@@ -9,6 +9,7 @@ import { v4 } from 'uuid'
 import { LocalNoteMeta } from './output'
 import { WikiLink, wikiLinkFromMarkdown } from './utils/wiki'
 import { BiMultiMap } from '@mami/utils'
+import { sha1 } from './utils/sha1'
 
 interface ScanNote {
   id: string
@@ -17,17 +18,18 @@ interface ScanNote {
 }
 
 export async function scan(root: string): Promise<ScanNote[]> {
-  return (
+  return await AsyncArray.map(
     await FastGlob('**/*.md', {
       cwd: root,
       onlyFiles: true,
       ignore: ['.obsidian'],
-    })
-  ).map((item) => ({
-    id: v4(),
-    title: path.basename(item, '.md'),
-    relPath: item,
-  }))
+    }),
+    async (item) => ({
+      id: await sha1(item),
+      title: path.basename(item, '.md'),
+      relPath: item,
+    }),
+  )
 }
 
 export function convertYamlTab(content: string) {

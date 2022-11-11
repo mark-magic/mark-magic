@@ -189,7 +189,7 @@ importers:
     specifiers:
       '@liuli-util/async': ^3.6.0
       '@liuli-util/fs-extra': ^0.1.0
-      '@liuli-util/markdown-util': ^0.4.0
+      '@liuli-util/markdown-util': ^0.4.1
       '@mami/cli': workspace:^
       '@mami/plugin-joplin': workspace:^
       '@types/lodash-es': ^4.17.6
@@ -203,7 +203,7 @@ importers:
     dependencies:
       '@liuli-util/async': 3.6.0
       '@liuli-util/fs-extra': 0.1.0
-      '@liuli-util/markdown-util': 0.4.0
+      '@liuli-util/markdown-util': 0.4.1
       lodash-es: 4.17.21
     devDependencies:
       '@mami/cli': link:../cli
@@ -220,7 +220,7 @@ importers:
     specifiers:
       '@liuli-util/async': ^3.6.0
       '@liuli-util/fs-extra': ^0.1.0
-      '@liuli-util/markdown-util': ^0.4.0
+      '@liuli-util/markdown-util': ^0.4.1
       '@mami/cli': workspace:^
       '@types/lodash-es': ^4.17.6
       '@types/node': ^18.8.3
@@ -233,7 +233,7 @@ importers:
     dependencies:
       '@liuli-util/async': 3.6.0
       '@liuli-util/fs-extra': 0.1.0
-      '@liuli-util/markdown-util': 0.4.0
+      '@liuli-util/markdown-util': 0.4.1
       lodash-es: 4.17.21
     devDependencies:
       '@mami/cli': link:../cli
@@ -249,7 +249,7 @@ importers:
     specifiers:
       '@liuli-util/async': ^3.6.0
       '@liuli-util/fs-extra': ^0.1.0
-      '@liuli-util/markdown-util': ^0.4.0
+      '@liuli-util/markdown-util': ^0.4.1
       '@liuli-util/tree': ^3.6.0
       '@mami/cli': workspace:^
       '@mami/utils': workspace:^
@@ -267,7 +267,7 @@ importers:
     dependencies:
       '@liuli-util/async': 3.6.0
       '@liuli-util/fs-extra': 0.1.0
-      '@liuli-util/markdown-util': 0.4.0
+      '@liuli-util/markdown-util': 0.4.1
       '@liuli-util/tree': 3.6.0
       joplin-api: 0.5.1
       lodash-es: 4.17.21
@@ -288,7 +288,7 @@ importers:
     specifiers:
       '@liuli-util/async': ^3.6.0
       '@liuli-util/fs-extra': ^0.1.0
-      '@liuli-util/markdown-util': ^0.4.0
+      '@liuli-util/markdown-util': ^0.4.1
       '@mami/cli': workspace:^
       '@mami/plugin-joplin': workspace:^
       '@mami/utils': workspace:^
@@ -307,7 +307,7 @@ importers:
     dependencies:
       '@liuli-util/async': 3.6.0
       '@liuli-util/fs-extra': 0.1.0
-      '@liuli-util/markdown-util': 0.4.0
+      '@liuli-util/markdown-util': 0.4.1
       fast-glob: 3.2.12
       filenamify: 5.1.1
       lodash-es: 4.17.21
@@ -329,18 +329,19 @@ importers:
     specifiers:
       '@liuli-util/async': ^3.6.0
       '@liuli-util/fs-extra': ^0.1.0
-      '@liuli-util/markdown-util': ^0.4.0
+      '@liuli-util/markdown-util': ^0.4.1
       '@mami/cli': workspace:^
       '@mami/plugin-local': workspace:^
       '@mami/plugin-raw': workspace:^
       '@mami/utils': workspace:^
       '@types/lodash-es': ^4.17.6
+      '@types/mockjs': ^1.0.7
       '@types/node': ^18.8.3
       '@types/uuid': ^8.3.4
       fast-glob: ^3.2.12
       filenamify: ^5.1.1
-      hashids: ^2.2.10
       lodash-es: ^4.17.21
+      mockjs: ^1.1.0
       tsup: ^6.2.3
       tsx: ^3.9.0
       typescript: ^4.8.4
@@ -350,10 +351,9 @@ importers:
     dependencies:
       '@liuli-util/async': 3.6.0
       '@liuli-util/fs-extra': 0.1.0
-      '@liuli-util/markdown-util': 0.4.0
+      '@liuli-util/markdown-util': 0.4.1
       fast-glob: 3.2.12
       filenamify: 5.1.1
-      hashids: 2.2.10
       lodash-es: 4.17.21
       utility-types: 3.10.0
       uuid: 9.0.0
@@ -363,8 +363,10 @@ importers:
       '@mami/plugin-raw': link:../plugin-raw
       '@mami/utils': link:../utils
       '@types/lodash-es': 4.17.6
+      '@types/mockjs': 1.0.7
       '@types/node': 18.8.3
       '@types/uuid': 8.3.4
+      mockjs: 1.1.0
       tsup: 6.2.3_typescript@4.8.4
       tsx: 3.10.1
       typescript: 4.8.4
@@ -864,8 +866,8 @@ packages:
       '@types/fs-extra': 9.0.13
       fs-extra: 10.1.0
 
-  /@liuli-util/markdown-util/0.4.0:
-    resolution: {integrity: sha512-OCuyzFA7YbGUFWHDzlEDB454XeIzBow+/TDeOCLuRjKMLBLvvXRyjeFQYZedYfES5OgJQtGaEyWuE9gQGk9X9g==}
+  /@liuli-util/markdown-util/0.4.1:
+    resolution: {integrity: sha512-X0w4EIsNsPhFZPmoyW6momkimMjad3jA8CYDhbjPv43k477KGsGWvtDvgdx9klyq0okLZ0odQD4/rNLuvIbErg==}
     dependencies:
       '@types/unist': 2.0.6
       hast-util-to-html: 8.0.3
@@ -2647,10 +2649,6 @@ packages:
     engines: {node: '>= 0.4.0'}
     dependencies:
       function-bind: 1.1.1
-
-  /hashids/2.2.10:
-    resolution: {integrity: sha512-nXnYums7F8B5Y+GSThutLPlKMaamW1yjWNZVt0WModiJfdjaDZHnhYTWblS+h1OoBx3yjwiBwxldPP3nIbFSSA==}
-    dev: false
 
   /hast-util-is-element/2.1.2:
     resolution: {integrity: sha512-thjnlGAnwP8ef/GSO1Q8BfVk2gundnc2peGQqEg2kUt/IqesiGg/5mSwN2fE7nLzy61pg88NG6xV+UrGOrx9EA==}

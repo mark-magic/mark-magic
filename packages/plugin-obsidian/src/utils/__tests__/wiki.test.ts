@@ -1,4 +1,6 @@
-import { flatMap, fromMarkdown, selectAll, toMarkdown, u, visit } from '@liuli-util/markdown-util'
+import { flatMap, fromMarkdown, Parent, Node, selectAll, toMarkdown, u, Text } from '@liuli-util/markdown-util'
+import { readFile } from 'fs/promises'
+import { Random } from 'mockjs'
 import path from 'path'
 import { expect, it } from 'vitest'
 import { parseUrl, split, stringifyUrl, WikiLink, wikiLinkFromMarkdown, wikiLinkToMarkdown } from '../wiki'
@@ -169,4 +171,31 @@ it('split', () => {
     ['![[Pasted image 20221011232440.png]]', '[[Pasted image 20221011232440.png]]'],
   )
   expect(r).deep.eq(['![[Pasted image 20221011232440.png]]', '\n', '[[Pasted image 20221011232440.png]]'])
+})
+
+it('performance', async () => {
+  const md = `
+# hello
+
+- Helen Perez
+- Margaret Rodriguez
+  - Christopher Hall
+    - Kenneth Hernandez
+    - Eric Johnson
+      - Christopher Jackson
+      - Sandra Young
+        - Jose Clark
+          - Donna Young
+            1. Robert Johnson
+            2. Barbara Young
+            3. Timothy Gonzalez
+                - Jennifer Perez
+                  - Jose White
+            4. Edward Brown
+  `.trim()
+  const start = Date.now()
+  fromMarkdown(md, {
+    mdastExtensions: [wikiLinkFromMarkdown()],
+  })
+  expect(Date.now() - start).lt(100)
 })

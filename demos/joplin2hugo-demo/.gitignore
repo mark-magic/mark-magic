@@ -29,3 +29,5 @@ vendor
 .hugo_build.lock
 content/posts/
 content/resources/
+resources/
+public/

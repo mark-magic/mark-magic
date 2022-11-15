@@ -1,0 +1,16 @@
+{
+  "name": "@mami/website",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:serve": "vitepress serve docs",
+    "docs:deploy": "gh-pages -d docs/.vitepress/dist"
+  },
+  "devDependencies": {
+    "gh-pages": "^4.0.0",
+    "vitepress": "1.0.0-alpha.29",
+    "vue": "^3.2.45"
+  }
+}

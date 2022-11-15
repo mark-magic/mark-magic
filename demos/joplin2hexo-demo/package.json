@@ -6,7 +6,7 @@
     "dev": "hexo server",
     "build": "hexo generate",
     "clean": "hexo clean",
-    "deploy": "hexo deploy",
+    "deploy": "gh-pages -d public -e /demo/joplin2hexo --add",
     "gen": "mami"
   },
   "hexo": {
@@ -28,6 +28,7 @@
     "@mami/cli": "workspace:^",
     "@mami/plugin-hexo": "workspace:^",
     "@mami/plugin-joplin": "workspace:^",
+    "gh-pages": "^4.0.0",
     "typescript": "^4.8.4"
   }
 }

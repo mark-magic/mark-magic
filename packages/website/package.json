@@ -6,7 +6,7 @@
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs",
-    "docs:deploy": "gh-pages -d docs/.vitepress/dist"
+    "docs:deploy": "gh-pages -d docs/.vitepress/dist --add --dotfiles"
   },
   "devDependencies": {
     "gh-pages": "^4.0.0",

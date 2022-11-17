@@ -11,5 +11,9 @@ export default defineConfig({
       tag: 'blog',
     }),
   ],
-  output: [hugo.output()],
+  output: [
+    hugo.output({
+      baseUrl: '/demo/joplin2hugo',
+    }),
+  ],
 })

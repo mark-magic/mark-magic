@@ -1,5 +1,11 @@
 # @mami/plugin-hexo
 
+## 0.5.3
+
+### Patch Changes
+
+- feat: support baseUrl config
+
 ## 0.5.2
 
 ### Patch Changes

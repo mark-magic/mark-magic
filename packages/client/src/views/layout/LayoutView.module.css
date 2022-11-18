@@ -1,7 +1,5 @@
 .LayoutView {
   height: 100vh;
-  display: grid;
-  grid-template-columns: 100px 1fr;
 }
 
 .menus {
@@ -9,4 +7,8 @@
   list-style: none;
   padding-left: 0;
   border-right: solid 1px;
+}
+
+.continer {
+  height: 100%;
 }

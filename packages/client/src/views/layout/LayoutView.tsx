@@ -5,7 +5,7 @@ import css from './LayoutView.module.css'
 export function LayoutView() {
   return (
     <div className={css.LayoutView}>
-      <nav>
+      {/* <nav>
         <ul className={css.menus}>
           {menus.map((item) => (
             <li key={item.path} onClick={() => h.push(item.path)}>
@@ -13,7 +13,7 @@ export function LayoutView() {
             </li>
           ))}
         </ul>
-      </nav>
+      </nav> */}
       <div className={css.continer}>
         <RouterView></RouterView>
       </div>

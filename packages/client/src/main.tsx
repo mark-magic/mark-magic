@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { App } from './App'
 import 'antd/dist/antd.css'
 import './index.css'
 import { ReactRouter, RouterView } from '@liuli-util/react-router'

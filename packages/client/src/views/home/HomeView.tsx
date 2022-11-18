@@ -1,31 +1,56 @@
-import { useMemo, useState } from 'react'
-import { ConfigRenderer } from './components/ConfigRenderer'
-import { PluginMeta, PluginSidebar } from './components/PluginSidebar'
 import css from './HomeView.module.css'
-import joplinSchema from './assets/joplin.schema.json'
-import hexoSchema from './assets/hexo.schema.json'
-import { Toolbar } from './components/Toolbar'
+import { Button, Card, Steps } from 'antd'
+import { useState } from 'react'
+import { ConfigView } from './ConfigView'
+import { ajaxClient } from '../../constants/api'
+import { ExecuteOptions } from '@mami/server'
 
-export function HomeView() {
-  const [current, setCurrent] = useState<PluginMeta>()
-  const [config, setConfig] = useState<Record<string, object>>({})
-  function onSelect(plugin: PluginMeta) {
-    console.log('onSelect: ', plugin)
-    setCurrent(plugin)
-  }
-  const key = useMemo(() => (current ? current.type + '-' + current.name : ''), [current])
-  async function onChange(values: object) {
-    setConfig({ [key]: { ...config[key], ...values } })
+function ExecuteView(props: { config: ExecuteOptions }) {
+  async function onRun() {
+    await ajaxClient.post('/api/execute', props.config)
   }
   return (
+    <Card>
+      <Button type={'primary'} onClick={onRun}>
+        运行
+      </Button>
+    </Card>
+  )
+}
+
+export function HomeView() {
+  const [current, setCurrent] = useState(0)
+  const [executeOptions, setExecuteOptions] = useState<Partial<ExecuteOptions>>({})
+  return (
     <div className={css.HomeView}>
-      <Toolbar></Toolbar>
-      <PluginSidebar
-        input={[joplinSchema].map((item) => ({ name: item.$id, type: 'input', config: item }))}
-        output={[hexoSchema].map((item) => ({ name: item.$id, type: 'output', config: item }))}
-        onSelect={onSelect}
-      />
-      {current && <ConfigRenderer plugin={current} value={config[key] ?? {}} onChange={onChange} />}
+      <Steps current={current}>
+        <Steps.Step title={'输入源'} />
+        <Steps.Step title={'输出源'} />
+        <Steps.Step title={'运行'} />
+      </Steps>
+      <div className={css.container}>
+        {current === 0 && (
+          <ConfigView
+            key={current}
+            type={'input'}
+            onNext={(name, config) => {
+              setExecuteOptions({ input: { name, config } })
+              setCurrent(1)
+            }}
+          />
+        )}
+        {current === 1 && (
+          <ConfigView
+            key={current}
+            type={'output'}
+            onNext={(name, config) => {
+              setExecuteOptions({ ...executeOptions, output: { name, config } })
+              setCurrent(2)
+            }}
+          />
+        )}
+        {current === 2 && <ExecuteView config={executeOptions as ExecuteOptions} />}
+      </div>
     </div>
   )
 }

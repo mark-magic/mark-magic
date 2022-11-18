@@ -1,0 +1,16 @@
+{
+  "$schema": "./plugin-schema.json",
+  "name": "@mami/plugin-hexo",
+  "output": {
+    "type": "object",
+    "title": "hexo",
+    "$id": "hexo",
+    "properties": {
+      "root": {
+        "type": "string",
+        "description": "root path"
+      }
+    },
+    "required": ["root"]
+  }
+}

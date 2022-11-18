@@ -1,0 +1,27 @@
+{
+  "$schema": "./plugin-schema.json",
+  "name": "@mami/plugin-joplin",
+  "input": {
+    "type": "object",
+    "title": "joplin",
+    "$id": "joplin",
+    "properties": {
+      "baseUrl": {
+        "type": "string",
+        "default": "http://localhost:41184",
+        "description": "baseUrl"
+      },
+      "token": {
+        "type": "string",
+        "description": "token"
+      },
+      "tag": {
+        "type": "string",
+        "description": "filter by tag",
+        "default": ""
+      }
+    },
+    "required": ["baseUrl", "token", "tag"]
+  },
+  "output": true
+}

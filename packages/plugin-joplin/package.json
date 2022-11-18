@@ -16,6 +16,9 @@
     "dist",
     "src"
   ],
+  "mami": {
+    "$schema": ""
+  },
   "devDependencies": {
     "@mami/cli": "workspace:^",
     "@mami/utils": "workspace:^",

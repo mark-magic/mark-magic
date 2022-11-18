@@ -5,10 +5,5 @@
       "url": "/api/ping",
       "description": "测试 API 是否可用"
     }
-  ],
-  "paths": {
-    "path": {
-      "get": {}
-    }
-  }
+  ]
 }

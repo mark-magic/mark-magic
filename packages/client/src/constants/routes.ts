@@ -19,14 +19,14 @@ export const menus: MenuConfig[] = [
       icon: '',
     },
   },
-  {
-    path: '/store',
-    component: () => import('../views/store'),
-    meta: {
-      title: '插件商店',
-      icon: '',
-    },
-  },
+  // {
+  //   path: '/store',
+  //   component: () => import('../views/store'),
+  //   meta: {
+  //     title: '插件商店',
+  //     icon: '',
+  //   },
+  // },
 ]
 
 export const routes: RouteConfig[] = [

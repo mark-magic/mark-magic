@@ -6,18 +6,18 @@ export default defineConfigWithTheme({
   themeConfig: {
     nav: [
       {
-        text: 'examples',
+        text: 'Examples',
         items: [
           { text: 'joplin2hexo', link: 'https://mami.rxliuli.com/demo/joplin2hexo/' },
           { text: 'joplin2hugo', link: 'https://mami.rxliuli.com/demo/joplin2hugo/' },
         ],
       },
       {
-        text: 'api',
+        text: 'API Reference',
         link: 'https://mami.rxliuli.com/api/',
       },
       {
-        text: 'github',
+        text: 'GitHub',
         link: 'https://github.com/rxliuli/mami',
       },
     ],

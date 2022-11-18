@@ -195,45 +195,6 @@ importers:
       typescript: 4.8.4
       vitest: 0.24.0
 
-  packages/client:
-    specifiers:
-      '@liuli-util/react-router': ^0.7.1
-      '@mami/server': workspace:*
-      '@types/lodash-es': ^4.17.6
-      '@types/react': ^18.0.22
-      '@types/react-dom': ^18.0.7
-      '@vitejs/plugin-react': ^2.2.0
-      antd: ^4.24.1
-      jsonschema: ^1.4.1
-      lodash-es: ^4.17.21
-      mobx: ^6.6.2
-      mobx-react-lite: ^3.4.0
-      react: ^18.2.0
-      react-dom: ^18.2.0
-      react-markdown: ^8.0.3
-      react-use: ^17.4.0
-      typescript: ^4.6.4
-      vite: ^3.2.0
-    dependencies:
-      '@liuli-util/react-router': 0.7.1_biqbaboplfbrettd7655fr4n2y
-      '@mami/server': link:../server
-      antd: 4.24.1_biqbaboplfbrettd7655fr4n2y
-      jsonschema: 1.4.1
-      lodash-es: 4.17.21
-      mobx: 6.6.2
-      mobx-react-lite: 3.4.0_qrr2ojv4n7h7ey2xj7njerqqr4
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
-      react-markdown: 8.0.3_fan5qbzahqtxlm5dzefqlqx5ia
-      react-use: 17.4.0_biqbaboplfbrettd7655fr4n2y
-    devDependencies:
-      '@types/lodash-es': 4.17.6
-      '@types/react': 18.0.25
-      '@types/react-dom': 18.0.8
-      '@vitejs/plugin-react': 2.2.0_vite@3.2.3
-      typescript: 4.8.4
-      vite: 3.2.3
-
   packages/plugin-hexo:
     specifiers:
       '@liuli-util/async': ^3.6.0
@@ -519,6 +480,45 @@ importers:
       tsx: 3.10.1
       typescript: 4.8.4
       vitest: 0.23.4
+
+  packages/web:
+    specifiers:
+      '@liuli-util/react-router': ^0.7.1
+      '@mami/server': workspace:*
+      '@types/lodash-es': ^4.17.6
+      '@types/react': ^18.0.22
+      '@types/react-dom': ^18.0.7
+      '@vitejs/plugin-react': ^2.2.0
+      antd: ^4.24.1
+      jsonschema: ^1.4.1
+      lodash-es: ^4.17.21
+      mobx: ^6.6.2
+      mobx-react-lite: ^3.4.0
+      react: ^18.2.0
+      react-dom: ^18.2.0
+      react-markdown: ^8.0.3
+      react-use: ^17.4.0
+      typescript: ^4.6.4
+      vite: ^3.2.0
+    dependencies:
+      '@liuli-util/react-router': 0.7.1_biqbaboplfbrettd7655fr4n2y
+      '@mami/server': link:../server
+      antd: 4.24.1_biqbaboplfbrettd7655fr4n2y
+      jsonschema: 1.4.1
+      lodash-es: 4.17.21
+      mobx: 6.6.2
+      mobx-react-lite: 3.4.0_qrr2ojv4n7h7ey2xj7njerqqr4
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      react-markdown: 8.0.3_fan5qbzahqtxlm5dzefqlqx5ia
+      react-use: 17.4.0_biqbaboplfbrettd7655fr4n2y
+    devDependencies:
+      '@types/lodash-es': 4.17.6
+      '@types/react': 18.0.25
+      '@types/react-dom': 18.0.8
+      '@vitejs/plugin-react': 2.2.0_vite@3.2.3
+      typescript: 4.8.4
+      vite: 3.2.3
 
   packages/website:
     specifiers:

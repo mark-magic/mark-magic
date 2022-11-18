@@ -120,7 +120,7 @@ pnpm run gen
 
 ## 插件
 
-> [API 文档](https://paka.dev/npm/@mami/cli@latest/api)
+> [API 文档](https://mami.rxliuli.com/api/)
 
 大致上，插件分为输入和输出插件，输入插件会返回一个 [AsyncGenerator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncGenerator)，而输出插件则会则 `handle hook` 函数中消费它。
 

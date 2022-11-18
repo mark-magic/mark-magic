@@ -120,7 +120,7 @@ Now you will see the converted obsidian file in dist
 
 ## plugins
 
-> [API Documentation](https://paka.dev/npm/@mami/cli@latest/api)
+> [API Documentation](https://mami.rxliuli.com/api/)
 
 Roughly speaking, plugins are divided into input and output plugins. The input plugin will return an [AsyncGenerator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncGenerator), while the output plugin will return an AsyncGenerator will consume it in the `handle hook` function.
 

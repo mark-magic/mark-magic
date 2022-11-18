@@ -8,7 +8,7 @@
     "properties": {
       "baseUrl": {
         "type": "string",
-        "default": "http://localhost:41184",
+        "default": "http://127.0.0.1:41184",
         "description": "baseUrl"
       },
       "token": {

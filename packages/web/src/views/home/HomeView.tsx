@@ -1,17 +1,20 @@
 import css from './HomeView.module.css'
-import { Button, Card, Steps } from 'antd'
-import { useState } from 'react'
+import { Button, Card, message, Steps } from 'antd'
+import { Reducer, useReducer, useState } from 'react'
 import { ConfigView } from './ConfigView'
 import { ajaxClient } from '../../constants/api'
 import { ExecuteOptions } from '@mami/server'
+import { useAsyncFn } from 'react-use'
 
 function ExecuteView(props: { config: ExecuteOptions }) {
-  async function onRun() {
+  const [runState, onRun] = useAsyncFn(async function () {
     await ajaxClient.post('/api/execute', props.config)
-  }
+    message.success('转换完成')
+  })
+
   return (
     <Card>
-      <Button type={'primary'} onClick={onRun}>
+      <Button type={'primary'} onClick={onRun} loading={runState.loading}>
         运行
       </Button>
     </Card>
@@ -19,37 +22,47 @@ function ExecuteView(props: { config: ExecuteOptions }) {
 }
 
 export function HomeView() {
-  const [current, setCurrent] = useState(0)
+  const [step, dispatch] = useReducer<Reducer<{ current: number; max: number }, number>>(
+    (s, a) => ({
+      current: a,
+      max: Math.max(s.max, a),
+    }),
+    { current: 0, max: 0 },
+  )
   const [executeOptions, setExecuteOptions] = useState<Partial<ExecuteOptions>>({})
   return (
     <div className={css.HomeView}>
-      <Steps current={current}>
-        <Steps.Step title={'输入源'} />
-        <Steps.Step title={'输出源'} />
-        <Steps.Step title={'运行'} />
-      </Steps>
+      <Steps
+        items={[{ title: '输入源' }, { title: '输出源' }, { title: '运行' }]}
+        current={step.current}
+        onChange={(v) => {
+          if (v <= step.max) {
+            dispatch(v)
+          }
+        }}
+      />
       <div className={css.container}>
-        {current === 0 && (
+        {step.current === 0 && (
           <ConfigView
-            key={current}
+            key={step.current}
             type={'input'}
             onNext={(name, config) => {
               setExecuteOptions({ input: { name, config } })
-              setCurrent(1)
+              dispatch(1)
             }}
           />
         )}
-        {current === 1 && (
+        {step.current === 1 && (
           <ConfigView
-            key={current}
+            key={step.current}
             type={'output'}
             onNext={(name, config) => {
               setExecuteOptions({ ...executeOptions, output: { name, config } })
-              setCurrent(2)
+              dispatch(2)
             }}
           />
         )}
-        {current === 2 && <ExecuteView config={executeOptions as ExecuteOptions} />}
+        {step.current === 2 && <ExecuteView config={executeOptions as ExecuteOptions} />}
       </div>
     </div>
   )

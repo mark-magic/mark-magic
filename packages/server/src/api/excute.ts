@@ -17,6 +17,7 @@ export async function execute(options: ExecuteOptions) {
   if (!input || !output) {
     throw new Error('input or output is null')
   }
+  console.log('execute input config: ', options.input.config)
   await convert({
     input: [input(options.input.config)],
     output: [output(options.output.config)],

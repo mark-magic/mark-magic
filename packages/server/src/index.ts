@@ -40,7 +40,7 @@ export function start(options: { static: string; port: number }) {
     .use(cors())
     .use(
       logger({
-        transporter(str, args) {
+        transporter(str) {
           console.log(str)
         },
       }),

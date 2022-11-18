@@ -1,0 +1,15 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPointStrategy": "packages",
+  "name": "API Reference",
+  "entryPoints": [
+    "packages/cli",
+    "packages/plugin-hexo",
+    "packages/plugin-hugo",
+    "packages/plugin-joplin",
+    "packages/plugin-local",
+    "packages/plugin-obsidian",
+    "packages/plugin-raw",
+  ],
+  "plugin": ["typedoc-plugin-resolve-crossmodule-references"]
+}

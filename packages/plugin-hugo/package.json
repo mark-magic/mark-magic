@@ -16,6 +16,9 @@
     "dist",
     "src"
   ],
+  "typedoc": {
+    "entryPoint": "./src/index.ts"
+  },
   "devDependencies": {
     "@mami/cli": "workspace:^",
     "@types/lodash-es": "^4.17.6",

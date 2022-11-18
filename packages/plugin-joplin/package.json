@@ -19,6 +19,9 @@
   "mami": {
     "$schema": ""
   },
+  "typedoc": {
+    "entryPoint": "./src/index.ts"
+  },
   "devDependencies": {
     "@mami/cli": "workspace:^",
     "@mami/utils": "workspace:^",

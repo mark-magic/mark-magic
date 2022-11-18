@@ -30,6 +30,9 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
+  "typedoc": {
+    "entryPoint": "./src/index.ts"
+  },
   "dependencies": {
     "@liuli-util/async": "^3.6.0",
     "@liuli-util/fs-extra": "^0.1.0",

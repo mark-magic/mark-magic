@@ -8,4 +8,4 @@ See: <https://github.com/rxliuli/mami>
 
 ## API
 
-See: <https://paka.dev/npm/@mami/cli@latest/api>
+See: <https://mami.rxliuli.com/api/>

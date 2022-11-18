@@ -15,6 +15,9 @@
     "start": "tsx ./src/bin.ts",
     "test": "vitest run"
   },
+  "typedoc": {
+    "entryPoint": "./src/index.ts"
+  },
   "engines": {
     "node": ">=18"
   },

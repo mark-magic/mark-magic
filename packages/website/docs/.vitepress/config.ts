@@ -12,6 +12,14 @@ export default defineConfigWithTheme({
           { text: 'joplin2hugo', link: 'https://mami.rxliuli.com/demo/joplin2hugo/' },
         ],
       },
+      {
+        text: 'api',
+        link: 'https://mami.rxliuli.com/api/',
+      },
+      {
+        text: 'github',
+        link: 'https://github.com/rxliuli/mami',
+      },
     ],
   } as DefaultTheme.Config,
 })

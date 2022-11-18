@@ -1,17 +1,37 @@
 {
-  "name": "client",
-  "version": "1.0.0",
-  "type": "module",
-  "main": "dist/main.cjs",
+  "name": "@mami/client",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/main.js",
+  "description": "cross-tool document converter",
+  "author": {
+    "name": "rxliuli",
+    "email": "rxliuli@gmail.com",
+    "url": "https://github.com/rxliuli"
+  },
   "scripts": {
     "build-web": "pnpm --prefix ../web build && cp -rf ../web/dist ./dist/",
-    "build-main": "tsx build.ts",
-    "dev": "electron ."
+    "build-main": "tsx build.mts",
+    "dev": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
-  "dependencies": {
-    "electron": "^21.3.0"
+  "build": {
+    "appId": "mami.client",
+    "productName": "mami",
+    "asar": false,
+    "files": [
+      "./dist"
+    ],
+    "directories": {
+      "output": "release/${version}"
+    },
+    "mac": {
+      "category": "your.app.category.type"
+    }
   },
   "devDependencies": {
+    "electron": "21.3.0",
     "@mami/plugin-hexo": "workspace:^",
     "@mami/plugin-hugo": "workspace:^",
     "@mami/plugin-joplin": "workspace:^",

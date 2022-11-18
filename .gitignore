@@ -25,3 +25,7 @@ dist/
 .temp
 .cache/
 .env*.local
+
+.turbo
+dist/**
+.next/**

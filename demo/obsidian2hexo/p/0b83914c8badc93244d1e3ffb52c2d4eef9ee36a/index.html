@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Callback URLs in Obsidian | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="One of the things I love about Obsidian is that it offers support for callback URLs. For example, you could include a link to a specific note inside of a task in Things or a link to an email message f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Callback URLs in Obsidian">
+<meta property="og:url" content="http://example.com/p/0b83914c8badc93244d1e3ffb52c2d4eef9ee36a/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="One of the things I love about Obsidian is that it offers support for callback URLs. For example, you could include a link to a specific note inside of a task in Things or a link to an email message f">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thesweetsetup.com/wp-content/uploads/2021/05/copyobsidianurl.jpg">
+<meta property="og:image" content="https://thesweetsetup.com/wp-content/uploads/2021/05/thingsobsidianlink.jpg">
+<meta property="og:image" content="https://thesweetsetup.com/wp-content/uploads/2021/05/dailynoteson.jpg">
+<meta property="og:image" content="https://thesweetsetup.com/wp-content/uploads/2021/05/thingssharelink.jpg">
+<meta property="og:image" content="https://thesweetsetup.com/wp-content/uploads/2021/05/dailynotesurl.jpg">
+<meta property="og:image" content="https://thesweetsetup.com/wp-content/uploads/2021/05/hooklink.jpg">
+<meta property="og:image" content="https://thesweetsetup.com/wp-content/uploads/2021/05/hooklinkobsidian.jpg">
+<meta property="article:published_time" content="2022-11-08T02:03:52.813Z">
+<meta property="article:modified_time" content="2022-11-08T02:03:52.813Z">
+<meta property="article:author" content="obsidian-hexo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thesweetsetup.com/wp-content/uploads/2021/05/copyobsidianurl.jpg">
+  
+    <link rel="alternate" href="/demo/obsidian2hexo/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/demo/obsidian2hexo/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/demo/obsidian2hexo/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/demo/obsidian2hexo/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/demo/obsidian2hexo/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/demo/obsidian2hexo/">Home</a>
+        
+          <a class="main-nav-link" href="/demo/obsidian2hexo/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/demo/obsidian2hexo/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-0b83914c8badc93244d1e3ffb52c2d4eef9ee36a" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/demo/obsidian2hexo/p/0b83914c8badc93244d1e3ffb52c2d4eef9ee36a/" class="article-date">
+  <time class="dt-published" datetime="2022-11-08T02:03:52.813Z" itemprop="datePublished">2022-11-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Callback URLs in Obsidian
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>One of the things I love about Obsidian is that it offers support for <em>callback URLs</em>. For example, you could include a link to a specific note inside of a task in <em>Things</em> or a link to an email message from your Daily Notes in Obsidian.</p>
+<p>In this article, I’ll show you a couple of ways you can connect things in Obsidian to other apps.</p>
+<h2 id="Linking-to-a-Note-in-Obsidian"><a href="#Linking-to-a-Note-in-Obsidian" class="headerlink" title="Linking to a Note in Obsidian"></a>Linking to a Note in Obsidian</h2><p>Each note in Obsidian has its own callback URL that you can use to access that note directly. To get to Obsidian URL, just right-click the note you want and select <em>Copy obsidian url</em>:</p>
+<p><img src="https://thesweetsetup.com/wp-content/uploads/2021/05/copyobsidianurl.jpg"></p>
+<p>The URL is copied to your clipboard, and you can now paste that link in another application like Things. This allows you to manage the task (and all the associated metadata, like due date, project, etc.) in your task manager, and when it’s time to write you just click the Obsidian URL in the task to go straight to the note in Obsidian.</p>
+<p><img src="https://thesweetsetup.com/wp-content/uploads/2021/05/thingsobsidianlink.jpg"></p>
+<p>Here are the different components that make up this specific URL:</p>
+<ul>
+<li><code>obsidian://open?</code> tells the operating system to access the Obsidian application and open a specific file.</li>
+<li><code>vault=Notes</code> tells the Obsidian app which vault to look inside.</li>
+<li><code>&amp;file=Articles%2FObsidian%20vs.%20Roam%20Research</code> specifies the file path in the vault. <em>Articles</em> is the folder, and <em>Obsidian vs. Roam Research</em> is the file name. <em>%2F</em> represents the slash in the directory path, and <em>%20</em> represents the spaces in the file name.</li>
+</ul>
+<p>This URL works on both macOS and iOS, provided that you have the Obsidian application installed and the vault names are the same. (Of course, the file must exist on your other device as well.)</p>
+<h2 id="Linking-to-a-Task-from-Your-Daily-Notes-Page"><a href="#Linking-to-a-Task-from-Your-Daily-Notes-Page" class="headerlink" title="Linking to a Task from Your Daily Notes Page"></a>Linking to a Task from Your Daily Notes Page</h2><p>Another thing you can do is take tasks from your task manager and put those URLs inside of Obsidian. For example, you can use Obsidian like a digital <a target="_blank" rel="noopener" href="https://thesweetsetup.com/mikes-hybrid-bullet-journal-system/">Bullet Journal</a> and link to the task you want to complete today in your Daily Notes.</p>
+<p><em>(In the above post, I was still using Roam Research. I’ve since switched to Obsidian, but the flow is still the same. If you’re wondering which app is right for you, check out <a href="/demo/obsidian2hexo/p/a9223bed492b0d120a101fb86841301f6fb07610">Obsidian vs. Roam Research</a> for a comprehensive comparison.)</em></p>
+<p>First, you need to make sure that you have the Daily Notes core plugin enabled. To do this, click the <em>Settings</em> icon in the lower-left and go to <em>Core Plugins</em> section, then toggle on <em>Daily Notes</em>.</p>
+<p><img src="https://thesweetsetup.com/wp-content/uploads/2021/05/dailynoteson.jpg"></p>
+<p>Now you can create a new Daily Note by clicking the calendar icon in the left sidebar.</p>
+<p>Next, get the URL of the task you want to add to your Daily Notes page. In Things, you can do this by right-clicking on the task and selecting <em>Share → Copy Link</em>.</p>
+<p><img src="https://thesweetsetup.com/wp-content/uploads/2021/05/thingssharelink.jpg"></p>
+<p>Now we can go back to our Daily Notes page and add this link. If we use the formatting <code>- [ ]</code> then Obsidian recognizes this text as a task and creates a clickable checkbox for the item. Here’s what it looks like in split view, with Edit Mode on the left and Preview Mode on the right:</p>
+<p><img src="https://thesweetsetup.com/wp-content/uploads/2021/05/dailynotesurl.jpg"></p>
+<p>There’s a box with an arrow to the right of the link, telling us it’s an external link and will take us out of Obsidian. But when we click on this link, we go straight to the task in Things.</p>
+<h2 id="Grabbing-URLs-with-Hook"><a href="#Grabbing-URLs-with-Hook" class="headerlink" title="Grabbing URLs with Hook"></a>Grabbing URLs with Hook</h2><p>On the Mac, there’s another cool way to grab links to just about anything using an app called <a target="_blank" rel="noopener" href="https://hookproductivity.com/">Hook</a>. For example, you can use Hook to grab a URL to a specific message in your email client. Here’s how it works:</p>
+<p>Using your Mac, open the window of the thing you want to link to and activate Hook. You can set a keyboard shortcut for this (mine is set to <em>Shift-Control-Option-Command-L</em>), and the Hook window will appear on top of the application window:</p>
+<p><img src="https://thesweetsetup.com/wp-content/uploads/2021/05/hooklink.jpg"></p>
+<p>The second button from the left is the one to copy the link, so click that and the link to the message is copied to your clipboard. Now you can paste that URL in Obsidian, just like we did with the link to the task on our Daily Notes page:</p>
+<p><img src="https://thesweetsetup.com/wp-content/uploads/2021/05/hooklinkobsidian.jpg"></p>
+<p>This is actually just the tip of the iceberg with Hook, though. Just like Obsidian creates bidirectional links between your notes, you can actually create bidirectional links between your files with Hook.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/p/0b83914c8badc93244d1e3ffb52c2d4eef9ee36a/" data-id="clarluq6d0000lwwc54gh22oz" data-title="Callback URLs in Obsidian" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/demo/obsidian2hexo/p/c7fe4162f885bd4619edcb3bad74888d2c37e585/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Daily Questions in Obsidian
+        
+      </div>
+    </a>
+  
+  
+    <a href="/demo/obsidian2hexo/p/14e9e0edc33ccc6ee83b5ca8f081748eb8f661a0/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Changing Your Obsidian Theme</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/demo/obsidian2hexo/archives/2022/11/">November 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/demo/obsidian2hexo/p/760291368fdef77872894cab886b0946c61b8242/">Using Templates in Obsidian</a>
+          </li>
+        
+          <li>
+            <a href="/demo/obsidian2hexo/p/82b8fdd152050e51575c9a43a6d22cda69e504c5/">Writing</a>
+          </li>
+        
+          <li>
+            <a href="/demo/obsidian2hexo/p/b319b8a24052c047d9566769cfdb6317d9c36e20/">YAML &amp; Dataview</a>
+          </li>
+        
+          <li>
+            <a href="/demo/obsidian2hexo/p/5793ecc3753457966ad7bd25a3aad26e4b7fadcd/">Timeblocking in Obsidian</a>
+          </li>
+        
+          <li>
+            <a href="/demo/obsidian2hexo/p/9a9e593da7dc695e0dde3dd6bd07f2f98a5faf21/">Turning Obsidian into the Perfect Writing App</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 obsidian-hexo<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/demo/obsidian2hexo/" class="mobile-nav-link">Home</a>
+  
+    <a href="/demo/obsidian2hexo/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/demo/obsidian2hexo/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/demo/obsidian2hexo/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/demo/obsidian2hexo/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

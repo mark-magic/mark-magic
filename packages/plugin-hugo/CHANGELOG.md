@@ -1,5 +1,11 @@
 # @mami/plugin-hexo
 
+## 0.5.4
+
+### Patch Changes
+
+- fix: Fix the problem that hexo-plugin does not support baseUrl
+
 ## 0.5.3
 
 ### Patch Changes

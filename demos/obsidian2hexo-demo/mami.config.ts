@@ -5,5 +5,5 @@ import path from 'path'
 
 export default defineConfig({
   input: [obsidian.input({ root: path.resolve(__dirname, './obsidian-source') })],
-  output: [hexo.output({ root: __dirname })],
+  output: [hexo.output({ root: __dirname, baseUrl: '/demo/obsidian2hexo/' })],
 })

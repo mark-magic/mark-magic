@@ -26,7 +26,7 @@ export function convertLinks({
     if (resource) {
       item.url = path.posix.join('/', baseUrl, '/resources', id + path.extname(resource.title))
     } else {
-      item.url = `/p/${id}`
+      item.url = path.posix.join('/', baseUrl, `/posts/${id}`)
     }
   })
 }

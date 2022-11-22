@@ -6,7 +6,7 @@ import { fromMarkdown, toMarkdown } from '@liuli-util/markdown-util'
 import { addMeta } from './utils/addMeta'
 import { convertLinks } from './utils/convertLinks'
 
-export function output(options?: { root?: string }): OutputPlugin {
+export function output(options?: { root?: string; baseUrl?: string }): OutputPlugin {
   let _postsPath: string, resourcePath: string
   return {
     name: 'hexo',
@@ -21,7 +21,7 @@ export function output(options?: { root?: string }): OutputPlugin {
     async handle(note) {
       const root = fromMarkdown(note.content)
       addMeta(root, note)
-      convertLinks(root, note)
+      convertLinks({ root, note, baseUrl: options?.baseUrl ?? '/' })
       await writeFile(path.resolve(_postsPath, note.id + '.md'), toMarkdown(root))
       await AsyncArray.forEach(note.resources, async (item) => {
         await writeFile(path.resolve(resourcePath, item.id + path.extname(item.title)), item.raw)

@@ -4,7 +4,15 @@ import { ValuesType } from 'utility-types'
 import { visit, Root, Link, Image } from '@liuli-util/markdown-util'
 import path from 'path'
 
-export function convertLinks(root: Root, note: { resources: Pick<ValuesType<Note['resources']>, 'id' | 'title'>[] }) {
+export function convertLinks({
+  root,
+  note,
+  baseUrl,
+}: {
+  root: Root
+  note: { resources: Pick<ValuesType<Note['resources']>, 'id' | 'title'>[] }
+  baseUrl: string
+}) {
   const urls: (Image | Link)[] = []
   visit(root, (node) => {
     if (['image', 'link'].includes(node.type) && (node as Link).url.startsWith(':/')) {
@@ -18,7 +26,7 @@ export function convertLinks(root: Root, note: { resources: Pick<ValuesType<Note
     if (resource) {
       item.url = `/resources/${id + path.extname(resource.title)}`
     } else {
-      item.url = `/p/${id}`
+      item.url = path.posix.join('/', baseUrl, `/p/${id}`)
     }
   })
 }

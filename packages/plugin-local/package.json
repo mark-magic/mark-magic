@@ -6,7 +6,7 @@
   "exports": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsup src/index.ts --format esm --sourcemap && tsc",
+    "build": "tsc && tsup src/index.ts --format esm --sourcemap",
     "dev": "pnpm build --watch",
     "setup": "pnpm build",
     "test": "vitest run"
@@ -21,7 +21,6 @@
   },
   "devDependencies": {
     "@mami/cli": "workspace:^",
-    "@mami/plugin-joplin": "workspace:^",
     "@mami/utils": "workspace:^",
     "@types/lodash-es": "^4.17.6",
     "@types/node": "^18.8.3",

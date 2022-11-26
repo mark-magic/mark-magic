@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@mami/cli": "workspace:^",
-    "@mami/plugin-joplin": "workspace:^",
+    "@mami/plugin-local": "workspace:^",
     "@types/lodash-es": "^4.17.6",
     "@types/node": "^18.8.3",
     "tsup": "^6.2.3",

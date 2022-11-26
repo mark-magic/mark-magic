@@ -6,14 +6,13 @@
   "exports": "./dist/index.js",
   "types": "./dist/index.js",
   "scripts": {
-    "build": "tsup src/index.ts --format esm --sourcemap && tsc",
+    "build": "tsc && tsup src/index.ts --format esm --sourcemap",
     "setup": "pnpm build",
     "test": "vitest run"
   },
   "sideEffects": false,
   "devDependencies": {
     "@mami/cli": "workspace:^",
-    "@mami/plugin-local": "workspace:^",
     "@mami/plugin-raw": "workspace:^",
     "@mami/utils": "workspace:^",
     "@types/lodash-es": "^4.17.6",

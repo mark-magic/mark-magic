@@ -1,17 +1,14 @@
 import path from 'path'
-import { beforeEach, expect, it } from 'vitest'
+import { expect, it } from 'vitest'
 import { input } from '../input'
 import { fromAsync } from '@mami/utils'
-import { mkdirp, readFile, remove, writeFile } from '@liuli-util/fs-extra'
+import { mkdirp, readFile, writeFile } from '@liuli-util/fs-extra'
 import { AsyncArray } from '@liuli-util/async'
 import { keyBy, pick, uniqBy } from 'lodash-es'
 import { Note } from '@mami/cli'
+import { initTempPath } from '../test'
 
-const tempPath = path.resolve(__dirname, '.temp', path.basename(__filename))
-beforeEach(async () => {
-  await remove(tempPath)
-  await mkdirp(tempPath)
-})
+const tempPath = initTempPath(__filename)
 
 it('input', async () => {
   const list = [

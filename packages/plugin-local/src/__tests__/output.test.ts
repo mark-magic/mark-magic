@@ -2,16 +2,15 @@ import { mkdirp, remove, readFile, pathExists } from '@liuli-util/fs-extra'
 import path from 'path'
 import { beforeEach, expect, it, describe } from 'vitest'
 import { convert, InputPlugin, Note, Resource, Tag } from '@mami/cli'
-import { calcMeta, convertLinks, output } from '../output'
-import { filenamifyPath } from 'filenamify'
+import { calcMeta, convertLinks, defaultOptions, output, OutputOptions } from '../output'
+import filenamify, { filenamifyPath } from 'filenamify'
 import { fromMarkdown, toMarkdown } from '@liuli-util/markdown-util'
 import { BiMultiMap } from '@mami/utils'
+import { formatRelative } from '../utils'
+import { Required } from 'utility-types'
+import { initTempPath } from '../test'
 
-const tempPath = path.resolve(__dirname, '.temp', path.basename(__filename))
-beforeEach(async () => {
-  await remove(tempPath)
-  await mkdirp(tempPath)
-})
+const tempPath = initTempPath(__filename)
 
 describe('utils', () => {
   it('convertLinks', () => {
@@ -35,7 +34,15 @@ describe('utils', () => {
     noteMap.set('d867b35e62454483ae697185d93617ab', filenamifyPath(path.resolve(tempPath, 'c/foo:bar')))
     const resourceMap = new BiMultiMap<string, string>()
     resources.forEach((item) => resourceMap.set(item.id, path.resolve(tempPath, '_resources', item.title)))
-    convertLinks({ fsPath: path.resolve(tempPath, 'a/b/test.md'), note: { resources }, noteMap, resourceMap, root })
+    convertLinks({
+      fsPath: path.resolve(tempPath, 'a/b/test.md'),
+      note: { resources } as Note,
+      noteMap,
+      resourceMap,
+      root,
+      noteLink: ({ notePath, linkNotePath }) => formatRelative(path.relative(path.dirname(notePath), linkNotePath)),
+      resourceLink: ({ notePath, resourcePath }) => formatRelative(path.relative(path.dirname(notePath), resourcePath)),
+    })
     const r = toMarkdown(root)
     console.log(r)
     expect(r.includes('../../_resources/test.mp3')).true
@@ -57,7 +64,7 @@ describe('utils', () => {
   })
 })
 
-it('hexoOutput', async () => {
+it('basic', async () => {
   const generateVirtual: InputPlugin = {
     name: 'generateVirtual',
     async *generate() {
@@ -94,14 +101,16 @@ it('hexoOutput', async () => {
       } as Note
     },
   }
+
   await convert({
     input: [generateVirtual],
     output: [
-      output({
-        noteRootPath: tempPath,
-        resourceRootPath: path.resolve(tempPath, '_resources'),
-        meta: calcMeta,
-      }),
+      output(
+        defaultOptions({
+          rootNotePath: tempPath,
+          rootResourcePath: path.resolve(tempPath, '_resources'),
+        }),
+      ),
     ],
   })
 
@@ -112,7 +121,7 @@ it('hexoOutput', async () => {
   expect(await pathExists(path.resolve(tempPath, '_resources/', path.basename(__filename)))).true
   expect(await readFile(test1Path, 'utf-8')).includes('../../c/test2.md')
   expect(await readFile(test2Path, 'utf-8')).includes('../a/b/test1.md')
-  expect(await readFile(test2Path, 'utf-8')).includes('../_resources/localDirOutput.test.ts')
+  expect(await readFile(test2Path, 'utf-8')).includes(`../_resources/${path.basename(__filename)}`)
 })
 
 it('filename', async () => {
@@ -146,11 +155,12 @@ it('filename', async () => {
   await convert({
     input: [generateVirtual],
     output: [
-      output({
-        noteRootPath: tempPath,
-        resourceRootPath: path.resolve(tempPath, '_resources'),
-        meta: calcMeta,
-      }),
+      output(
+        defaultOptions({
+          rootNotePath: tempPath,
+          rootResourcePath: path.resolve(tempPath, '_resources'),
+        }),
+      ),
     ],
   })
 
@@ -160,4 +170,78 @@ it('filename', async () => {
   expect(await pathExists(test2Path)).true
   expect(await readFile(test1Path, 'utf-8')).includes('../../c/foo!bar.md')
   expect(await readFile(test2Path, 'utf-8')).includes('../a/b/test1.md')
+})
+
+it('hexo', async () => {
+  const generateVirtual: InputPlugin = {
+    name: 'generateVirtual',
+    async *generate() {
+      yield {
+        id: 'test1',
+        title: 'test1',
+        content: `
+# test1
+
+[test2](:/test2)
+        `.trim(),
+        resources: [] as Resource[],
+        tags: [{ id: 'test', title: 'test' }] as Tag[],
+        path: ['a', 'b'],
+      } as Note
+      yield {
+        id: 'test2',
+        title: 'test2',
+        content: `
+# test2
+
+[test1](:/test1)
+[localDirOutput.test.ts](:/test)
+[github](https://github.com)
+                `.trim(),
+        resources: [
+          {
+            id: 'test',
+            title: path.basename(__filename),
+            raw: await readFile(__filename),
+          },
+        ] as Resource[],
+        tags: [{ id: 'test', title: 'test' }] as Tag[],
+        path: ['c'],
+      } as Note
+    },
+  }
+
+  await convert({
+    input: [generateVirtual],
+    output: [
+      output(
+        defaultOptions({
+          rootNotePath: path.resolve(tempPath, 'source/_posts'),
+          rootResourcePath: path.resolve(tempPath, 'source/resources'),
+          meta: (note) => ({
+            layout: 'post',
+            title: note.title,
+            abbrlink: note.id,
+            tags: note.tags.map((item) => item.title),
+            categories: note.path.slice(note.path.length - 1),
+            date: note.createAt,
+            updated: note.updateAt,
+          }),
+          noteLink: ({ linkNoteId }) => `/p/${linkNoteId}`,
+          resourceLink: ({ resource }) => `/resources/${resource.id}${path.extname(resource.title)}`,
+          notePath: (note) => path.resolve(tempPath, 'source/_posts', note.id + '.md'),
+          resourcePath: (resource) => path.resolve(tempPath, 'source/resources', filenamify(resource.title)),
+        }),
+      ),
+    ],
+  })
+
+  const test1Path = path.resolve(tempPath, 'source/_posts/test1.md')
+  expect(await pathExists(test1Path)).true
+  const test2Path = path.resolve(tempPath, 'source/_posts/test2.md')
+  expect(await pathExists(test2Path)).true
+  expect(await pathExists(path.resolve(tempPath, 'source/resources/', path.basename(__filename)))).true
+  expect(await readFile(test1Path, 'utf-8')).includes('/p/test2')
+  expect(await readFile(test2Path, 'utf-8')).includes('/p/test1')
+  expect(await readFile(test2Path, 'utf-8')).includes(`/resources/test.ts`)
 })

@@ -235,7 +235,7 @@ importers:
       '@liuli-util/fs-extra': ^0.1.0
       '@liuli-util/markdown-util': ^0.4.1
       '@mami/cli': workspace:^
-      '@mami/plugin-joplin': workspace:^
+      '@mami/plugin-local': workspace:^
       '@types/lodash-es': ^4.17.6
       '@types/node': ^18.8.3
       lodash-es: ^4.17.21
@@ -251,7 +251,7 @@ importers:
       lodash-es: 4.17.21
     devDependencies:
       '@mami/cli': link:../cli
-      '@mami/plugin-joplin': link:../plugin-joplin
+      '@mami/plugin-local': link:../plugin-local
       '@types/lodash-es': 4.17.6
       '@types/node': 18.11.9
       tsup: 6.5.0_typescript@4.9.3
@@ -334,7 +334,6 @@ importers:
       '@liuli-util/fs-extra': ^0.1.0
       '@liuli-util/markdown-util': ^0.4.1
       '@mami/cli': workspace:^
-      '@mami/plugin-joplin': workspace:^
       '@mami/utils': workspace:^
       '@types/lodash-es': ^4.17.6
       '@types/node': ^18.8.3
@@ -358,7 +357,6 @@ importers:
       uuid: 9.0.0
     devDependencies:
       '@mami/cli': link:../cli
-      '@mami/plugin-joplin': link:../plugin-joplin
       '@mami/utils': link:../utils
       '@types/lodash-es': 4.17.6
       '@types/node': 18.11.9
@@ -375,7 +373,6 @@ importers:
       '@liuli-util/fs-extra': ^0.1.0
       '@liuli-util/markdown-util': ^0.4.1
       '@mami/cli': workspace:^
-      '@mami/plugin-local': workspace:^
       '@mami/plugin-raw': workspace:^
       '@mami/utils': workspace:^
       '@types/lodash-es': ^4.17.6
@@ -403,7 +400,6 @@ importers:
       uuid: 9.0.0
     devDependencies:
       '@mami/cli': link:../cli
-      '@mami/plugin-local': link:../plugin-local
       '@mami/plugin-raw': link:../plugin-raw
       '@mami/utils': link:../utils
       '@types/lodash-es': 4.17.6

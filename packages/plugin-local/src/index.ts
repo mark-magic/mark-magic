@@ -1,2 +1,3 @@
 export { input } from './input'
-export { output } from './output'
+export { output, defaultOptions } from './output'
+export type { OutputOptions } from './output'

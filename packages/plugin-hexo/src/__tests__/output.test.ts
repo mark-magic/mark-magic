@@ -3,10 +3,9 @@ import path from 'path'
 import { expect, it } from 'vitest'
 import { convert, InputPlugin, Note, Resource, Tag } from '@mami/cli'
 import { output } from '../output'
-import { initTestDir } from '../utils/initTestDir'
+import { initTempPath } from '../utils/test'
 
-const tempPath = path.resolve(__dirname, '.temp', path.basename(__filename))
-initTestDir(tempPath)
+const tempPath = initTempPath(__filename)
 
 it('hexoOutput', async () => {
   const generateVirtual: InputPlugin = {
@@ -15,15 +14,25 @@ it('hexoOutput', async () => {
       yield {
         id: 'test1',
         title: 'test1',
-        content: '',
+        content: `
+# test1
+
+[test2](:/test2)
+        `.trim(),
         resources: [] as Resource[],
-        tags: [] as Tag[],
-        createAt: Date.now(),
+        tags: [{ id: 'test', title: 'test' }] as Tag[],
+        path: ['a', 'b'],
       } as Note
       yield {
         id: 'test2',
         title: 'test2',
-        content: '',
+        content: `
+# test2
+
+[test1](:/test1)
+[localDirOutput.test.ts](:/test)
+[github](https://github.com)
+                `.trim(),
         resources: [
           {
             id: 'test',
@@ -31,17 +40,24 @@ it('hexoOutput', async () => {
             raw: await readFile(__filename),
           },
         ] as Resource[],
-        tags: [] as Tag[],
-        createAt: Date.now(),
+        tags: [{ id: 'test', title: 'test' }] as Tag[],
+        path: ['c'],
       } as Note
     },
   }
+
   await convert({
     input: [generateVirtual],
     output: [output({ root: tempPath })],
   })
 
-  expect(await pathExists(path.resolve(tempPath, 'source/_posts/test1.md'))).to.be.true
-  expect(await pathExists(path.resolve(tempPath, 'source/_posts/test2.md'))).to.be.true
-  expect(await pathExists(path.resolve(tempPath, 'source/resources/test.ts'))).to.be.true
+  const test1Path = path.resolve(tempPath, 'source/_posts/test1.md')
+  const test2Path = path.resolve(tempPath, 'source/_posts/test2.md')
+  const resourcePath = path.resolve(tempPath, 'source/resources/test.ts')
+  expect(await pathExists(test1Path)).true
+  expect(await pathExists(test2Path)).true
+  expect(await pathExists(resourcePath)).true
+  expect(await readFile(test1Path, 'utf-8')).includes('[test2](/p/test2)')
+  expect(await readFile(test2Path, 'utf-8')).includes('[test1](/p/test1)')
+  expect(await readFile(test2Path, 'utf-8')).includes('[localDirOutput.test.ts](/resources/test.ts)')
 })

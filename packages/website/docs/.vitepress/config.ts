@@ -10,6 +10,7 @@ export default defineConfigWithTheme({
         items: [
           { text: 'joplin2hexo', link: 'https://mami.rxliuli.com/demo/joplin2hexo/' },
           { text: 'joplin2hugo', link: 'https://mami.rxliuli.com/demo/joplin2hugo/' },
+          { text: 'obsidian2hexo', link: 'https://mami.rxliuli.com/demo/obsidian2hexo/' },
         ],
       },
       {

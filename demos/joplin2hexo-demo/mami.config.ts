@@ -11,5 +11,5 @@ export default defineConfig({
       tag: 'blog',
     }),
   ],
-  output: [hexo.output({ root: __dirname })],
+  output: [hexo.output({ root: __dirname, baseUrl: '/demo/joplin2hexo/' })],
 })

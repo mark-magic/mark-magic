@@ -104,6 +104,7 @@ importers:
       '@mami/cli': workspace:^
       '@mami/plugin-hexo': workspace:^
       '@mami/plugin-obsidian': workspace:^
+      gh-pages: ^4.0.0
       hexo: ^6.3.0
       hexo-generator-archive: ^1.0.0
       hexo-generator-category: ^1.0.0
@@ -130,6 +131,7 @@ importers:
       '@mami/cli': link:../../packages/cli
       '@mami/plugin-hexo': link:../../packages/plugin-hexo
       '@mami/plugin-obsidian': link:../../packages/plugin-obsidian
+      gh-pages: 4.0.0
       typescript: 4.9.3
 
   demos/toybox-demo:

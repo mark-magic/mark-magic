@@ -13,11 +13,15 @@ it('convertLinks', () => {
 [github](https://github.com)
   `.trim(),
   )
-  convertLinks(root, {
-    resources: [
-      { id: '4b638fd91af2417e9fd0942c3e04ea0c', title: 'test.mp3' },
-      { id: 'b160280b7d94417bb7f64d5fd1969230', title: 'flower.webm' },
-    ],
+  convertLinks({
+    root,
+    note: {
+      resources: [
+        { id: '4b638fd91af2417e9fd0942c3e04ea0c', title: 'test.mp3' },
+        { id: 'b160280b7d94417bb7f64d5fd1969230', title: 'flower.webm' },
+      ],
+    },
+    baseUrl: '/',
   })
   const r = toMarkdown(root)
   expect(r.includes('/resources/4b638fd91af2417e9fd0942c3e04ea0c.mp3')).true

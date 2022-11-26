@@ -1,0 +1,6 @@
+- Welcome! (Desktop)
+  - [1. Welcome to Joplin!](/p/be76d6d99d81444394bc206e08a8e80c)
+  - [2. Importing and exporting notes](/p/2ba8366ac77c4a93b9eb7595d1343eb6)
+  - [3. Synchronising your notes](/p/6651b9db52e14d278c6134166a4ef71d)
+  - [4. Tips](/p/132e470f077b4299a3db1560b8481bd4)
+  - [5. Joplin Privacy Policy](/p/6649f36bf0ff4aa3ba26f30c808228c0)

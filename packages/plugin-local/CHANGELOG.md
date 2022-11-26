@@ -1,5 +1,11 @@
 # @mami/plugin-local
 
+## 0.5.2
+
+### Patch Changes
+
+- refactor hexo/hugo plguin to be local based
+
 ## 0.5.1
 
 ### Patch Changes

@@ -12,6 +12,8 @@
   "scripts": {
     "build-web": "pnpm --prefix ../web build && cp -rf ../web/dist ./dist/",
     "build-main": "tsx build.mts",
+    "build-cli": "tsx build-cli.mts",
+    "release-cli": "pnpm caxa --input ./cli/ --exclude ./cli/mami-cli.exe --output cli/mami-cli.exe -- \"{{caxa}}/node_modules/.bin/node\" \"{{caxa}}/bin.mjs\"",
     "dev": "electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder"
@@ -31,7 +33,8 @@
     }
   },
   "devDependencies": {
-    "electron": "21.3.0",
+    "@liuli-util/fs-extra": "^0.1.0",
+    "@mami/cli": "^0.5.2",
     "@mami/plugin-hexo": "workspace:^",
     "@mami/plugin-hugo": "workspace:^",
     "@mami/plugin-joplin": "workspace:^",
@@ -40,9 +43,12 @@
     "@mami/plugin-raw": "workspace:^",
     "@mami/server": "workspace:^",
     "@types/node": "^18.8.3",
+    "caxa": "^3.0.1",
+    "electron": "21.3.0",
     "electron-builder": "^23.6.0",
     "esbuild": "^0.15.10",
     "get-port": "^6.1.2",
+    "tsup": "^6.2.3",
     "tsx": "^3.12.1",
     "typescript": "^4.9.3"
   }

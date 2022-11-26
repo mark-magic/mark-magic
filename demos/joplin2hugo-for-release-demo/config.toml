@@ -1,0 +1,4 @@
+baseURL = 'https://mami.rxliuli.com/demo/joplin2hugo/'
+languageCode = 'en-us'
+title = 'My New Hugo Site'
+theme = "ananke"

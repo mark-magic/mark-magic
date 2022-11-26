@@ -1,0 +1,5 @@
+node_modules/
+!docs/
+docs/p
+docs/resources
+docs/_sidebar.md

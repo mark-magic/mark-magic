@@ -8,8 +8,7 @@
   "scripts": {
     "build": "tsc && tsup src/index.ts --format esm --sourcemap",
     "dev": "pnpm build --watch",
-    "setup": "pnpm build",
-    "test": "vitest run"
+    "setup": "pnpm build"
   },
   "sideEffects": false,
   "files": [

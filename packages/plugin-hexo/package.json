@@ -21,7 +21,6 @@
   },
   "devDependencies": {
     "@mami/cli": "workspace:^",
-    "@mami/plugin-local": "workspace:^",
     "@types/lodash-es": "^4.17.6",
     "@types/node": "^18.8.3",
     "tsup": "^6.2.3",
@@ -35,6 +34,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
+    "@mami/plugin-local": "workspace:^",
     "@liuli-util/async": "^3.6.0",
     "@liuli-util/fs-extra": "^0.1.0",
     "@liuli-util/markdown-util": "^0.4.1",

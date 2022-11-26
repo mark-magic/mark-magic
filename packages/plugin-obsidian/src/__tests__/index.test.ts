@@ -1,18 +1,14 @@
-import { mkdirp, remove } from '@liuli-util/fs-extra'
 import { convert, OutputPlugin } from '@mami/cli'
 import path from 'path'
-import { beforeEach, expect, it, vi } from 'vitest'
+import { expect, it, vi } from 'vitest'
 import * as raw from '@mami/plugin-raw'
 import * as obsidian from '../'
 import { fromAsync } from '@mami/utils'
+import { initTempPath } from '../utils/test'
 
-const tempPath = path.resolve(__dirname, '.temp/', path.basename(__filename))
-beforeEach(async () => {
-  await remove(tempPath)
-  await mkdirp(tempPath)
-})
+const tempPath = initTempPath(__filename)
 
-it.only('测试导出最终等于导入', async () => {
+it('测试导出最终等于导入', async () => {
   const zipPath = path.resolve(tempPath, 'test.zip')
   const sourcePath = path.resolve(__dirname, 'assets')
   const outputPath = path.resolve(tempPath, 'output')

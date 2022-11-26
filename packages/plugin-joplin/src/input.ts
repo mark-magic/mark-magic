@@ -13,9 +13,9 @@ import {
 import type { InputPlugin, Note, Resource } from '@mami/cli'
 import { AsyncArray } from '@liuli-util/async'
 import { listToTree, treeToList } from '@liuli-util/tree'
-import { chain, keyBy, pick } from 'lodash-es'
+import { keyBy, pick } from 'lodash-es'
 import path from 'path'
-import { extension, lookup } from 'mime-types'
+import { extension } from 'mime-types'
 
 async function getFolders(): Promise<Record<string, FolderListAllRes & Pick<Note, 'path'>>> {
   const list = await folderApi.listAll()
@@ -25,10 +25,10 @@ async function getFolders(): Promise<Record<string, FolderListAllRes & Pick<Note
     path: 'path',
   }) as unknown as (FolderListAllRes & Pick<Note, 'path'>)[]
   const map = keyBy(treeList, (item) => item.id)
-  const r = chain(treeList)
-    .map((item) => ({ ...item, path: item.path.map((s) => map[s].title) }))
-    .keyBy((item) => item.id)
-    .value()
+  const r = keyBy(
+    treeList.map((item) => ({ ...item, path: item.path.map((s) => map[s].title) })),
+    (item) => item.id,
+  )
   return r
 }
 

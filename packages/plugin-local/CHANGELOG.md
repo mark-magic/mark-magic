@@ -1,5 +1,11 @@
 # @mami/plugin-local
 
+## 0.5.3
+
+### Patch Changes
+
+- fix the problem that resources may have duplicate names
+
 ## 0.5.2
 
 ### Patch Changes

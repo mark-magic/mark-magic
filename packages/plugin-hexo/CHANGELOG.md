@@ -1,5 +1,13 @@
 # @mami/plugin-hexo
 
+## 0.5.5
+
+### Patch Changes
+
+- fix the problem that resources may have duplicate names
+- Updated dependencies
+  - @mami/plugin-local@0.5.3
+
 ## 0.5.4
 
 ### Patch Changes

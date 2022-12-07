@@ -108,10 +108,10 @@ export function output(options: OutputOptions): OutputPlugin {
         let fsPath = options.resourcePath(item)
         if (resourceMap.has(fsPath)) {
           const ext = path.extname(item.title)
-          fsPath = path.basename(filenamify(item.title), ext) + '_' + item.id + ext
+          fsPath = path.resolve(path.dirname(fsPath), path.basename(filenamify(item.title), ext) + '_' + item.id + ext)
         }
-        await writeFile(fsPath, item.raw)
         resourceMap.set(item.id, fsPath)
+        await writeFile(fsPath, item.raw)
       })
 
       // let fsPath = path.resolve(options.rootNotePath, note.path.join('/'), filenamify(note.title) + '.md')

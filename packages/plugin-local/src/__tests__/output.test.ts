@@ -245,3 +245,46 @@ it('hexo', async () => {
   expect(await readFile(test2Path, 'utf-8')).includes('/p/test1')
   expect(await readFile(test2Path, 'utf-8')).includes(`/resources/test.ts`)
 })
+
+it('duplicate resource filename', async () => {
+  const generateVirtual: InputPlugin = {
+    name: 'generateVirtual',
+    async *generate() {
+      yield {
+        id: 'test1',
+        title: 'test1',
+        content: `
+# test1
+        `.trim(),
+        resources: [
+          {
+            id: 'test',
+            title: path.basename(__filename),
+            raw: await readFile(__filename),
+          },
+          {
+            id: 'test2',
+            title: path.basename(__filename),
+            raw: await readFile(__filename),
+          },
+        ] as Resource[],
+        tags: [] as Tag[],
+        path: [] as string[],
+      } as Note
+    },
+  }
+  await convert({
+    input: [generateVirtual],
+    output: [
+      output(
+        defaultOptions({
+          rootNotePath: path.resolve(tempPath, 'source/_posts'),
+          rootResourcePath: path.resolve(tempPath, 'source/resources'),
+        }),
+      ),
+    ],
+  })
+  expect(await pathExists(path.resolve(tempPath, 'source/resources/', path.basename(__filename)))).true
+  expect(await pathExists(path.resolve(tempPath, 'source/resources/', path.basename(__filename, '.ts') + '_test2.ts')))
+    .true
+})

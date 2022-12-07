@@ -68,7 +68,8 @@ it('basic', async () => {
   expect(await pathExists(resourcePath)).true
   expect(await readFile(test1Path, 'utf-8')).includes('[test2](/p/test2)')
   expect(await readFile(test2Path, 'utf-8')).includes('[test1](/p/test1)')
-  expect(await readFile(test2Path, 'utf-8')).includes('[localDirOutput.test.ts](/resources/test.ts)')
+  console.log(await readFile(test2Path, 'utf-8'))
+  expect(await readFile(test2Path, 'utf-8')).includes('[localDirOutput.test.ts](../resources/test.ts)')
   expect(await pathExists(path.resolve(tempPath, '_sidebar.md'))).true
 })
 

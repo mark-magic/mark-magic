@@ -1,6 +1,5 @@
 import { app, BrowserWindow } from 'electron'
 import { start } from '@mami/server'
-import path from 'path'
 import getPort from 'get-port'
 
 const createWindow = async () => {
@@ -10,8 +9,9 @@ const createWindow = async () => {
   })
 
   const port = await getPort()
+  console.log()
   start({
-    static: path.resolve(__dirname, 'dist'),
+    static: __dirname,
     port: port,
   })
   win.loadURL(`http://localhost:${port}`)

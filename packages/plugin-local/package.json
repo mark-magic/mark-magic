@@ -1,6 +1,6 @@
 {
   "name": "@mami/plugin-local",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "license": "MIT",
   "type": "module",
   "exports": "./dist/index.js",

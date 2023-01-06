@@ -1,5 +1,13 @@
 # @mami/plugin-hexo
 
+## 0.5.6
+
+### Patch Changes
+
+- update lib markdown-util
+- Updated dependencies
+  - @mami/plugin-local@0.5.4
+
 ## 0.5.5
 
 ### Patch Changes

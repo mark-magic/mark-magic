@@ -1,5 +1,11 @@
 # @mami/plugin-obsidian
 
+## 0.5.5
+
+### Patch Changes
+
+- update lib markdown-util
+
 ## 0.5.4
 
 ### Patch Changes

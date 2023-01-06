@@ -1,5 +1,13 @@
 # @mami/plugin-vuepress
 
+## 0.5.2
+
+### Patch Changes
+
+- update lib markdown-util
+- Updated dependencies
+  - @mami/plugin-vitepress@0.5.2
+
 ## 0.5.1
 
 ### Patch Changes

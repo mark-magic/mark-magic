@@ -1,7 +1,7 @@
 {
   "name": "@mami/server",
   "private": true,
-  "version": "0.2.1",
+  "version": "0.2.2",
   "license": "MIT",
   "type": "module",
   "exports": {

@@ -1,5 +1,11 @@
 # @mami/plugin-local
 
+## 0.5.4
+
+### Patch Changes
+
+- update lib markdown-util
+
 ## 0.5.3
 
 ### Patch Changes

@@ -1,5 +1,5 @@
-import { readFile, pathExists, writeFile } from '@liuli-util/fs-extra'
-import { fromMarkdown, Root, toMarkdown, u } from '@liuli-util/markdown-util'
+import { readFile, pathExists } from '@liuli-util/fs-extra'
+import { fromMarkdown, getYamlMeta } from '@liuli-util/markdown-util'
 import { InputPlugin, Resource, Tag, Note, convert } from '@mami/cli'
 import path from 'path'
 import { expect, it } from 'vitest'
@@ -71,6 +71,8 @@ it('basic', async () => {
   console.log(await readFile(test2Path, 'utf-8'))
   expect(await readFile(test2Path, 'utf-8')).includes('[localDirOutput.test.ts](../resources/test.ts)')
   expect(await pathExists(path.resolve(tempPath, '_sidebar.md'))).true
+  const r = await readFile(test1Path, 'utf-8')
+  expect(getYamlMeta(fromMarkdown(r))).null
 })
 
 it('generateSidebar', async () => {
@@ -89,50 +91,4 @@ it('generateSidebar', async () => {
   - [test3](/p/test3)
   `.trim(),
   )
-
-  // console.log(
-  //   toMarkdown(
-  //     {
-  //       type: 'list',
-  //       spread: false,
-  //       children: [
-  //         {
-  //           type: 'listItem',
-  //           spread: false,
-  //           children: [
-  //             { type: 'paragraph', children: [{ type: 'text', value: 'c' }] },
-  //             {
-  //               type: 'list',
-  //               spread: false,
-  //               children: [
-  //                 {
-  //                   type: 'listItem',
-  //                   children: [
-  //                     {
-  //                       type: 'paragraph',
-  //                       children: [{ type: 'link', url: 'test1', children: [{ type: 'text', value: 'test1' }] }],
-  //                     },
-  //                   ],
-  //                 },
-  //                 {
-  //                   type: 'listItem',
-  //                   children: [
-  //                     {
-  //                       type: 'paragraph',
-  //                       children: [{ type: 'link', url: 'test2', children: [{ type: 'text', value: 'test2' }] }],
-  //                     },
-  //                   ],
-  //                 },
-  //               ],
-  //             },
-  //           ],
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       bullet: '-',
-  //       listItemIndent: 'one',
-  //     },
-  //   ),
-  // )
 })

@@ -2,7 +2,6 @@ import path from 'path'
 import type { OutputPlugin } from '@mami/cli'
 import * as local from '@mami/plugin-local'
 import { List, toMarkdown } from '@liuli-util/markdown-util'
-import { inspect } from 'unist-util-inspect'
 import { writeFile } from 'fs/promises'
 
 interface Sidebar {
@@ -67,15 +66,7 @@ export function output(options?: { root?: string }): OutputPlugin {
     local.defaultOptions({
       rootNotePath: postsPath,
       rootResourcePath: resourcePath,
-      meta: (note) => ({
-        layout: 'post',
-        title: note.title,
-        abbrlink: note.id,
-        tags: note.tags.map((item) => item.title),
-        categories: note.path,
-        date: note.createAt,
-        updated: note.updateAt,
-      }),
+      meta: () => null,
       noteLink: ({ linkNoteId }) => `/p/${linkNoteId}`,
       resourceLink: ({ resource }) => `../resources/${resource.id}${path.extname(resource.title)}`,
       notePath: (note) => path.resolve(postsPath, note.id + '.md'),

@@ -236,7 +236,7 @@ importers:
       vitest: ^0.23.4
     dependencies:
       '@liuli-util/fs-extra': 0.1.0
-      '@liuli-util/markdown-util': 0.4.2
+      '@liuli-util/markdown-util': link:../../../mdbook/libs/markdown-util
       '@liuli-util/tree': 3.6.0
       '@mami/cli': link:../cli
       '@mami/plugin-local': link:../plugin-local
@@ -353,7 +353,7 @@ importers:
     specifiers:
       '@liuli-util/async': ^3.6.0
       '@liuli-util/fs-extra': ^0.1.0
-      '@liuli-util/markdown-util': ^0.4.1
+      '@liuli-util/markdown-util': ^0.5.2
       '@mami/cli': workspace:^
       '@mami/utils': workspace:^
       '@types/lodash-es': ^4.17.6
@@ -371,7 +371,7 @@ importers:
     dependencies:
       '@liuli-util/async': 3.6.0
       '@liuli-util/fs-extra': 0.1.0
-      '@liuli-util/markdown-util': 0.4.1
+      '@liuli-util/markdown-util': 0.5.2
       fast-glob: 3.2.12
       filenamify: 5.1.1
       lodash-es: 4.17.21
@@ -1539,8 +1539,8 @@ packages:
       - supports-color
     dev: false
 
-  /@liuli-util/markdown-util/0.4.2:
-    resolution: {integrity: sha512-82YbxoteBaD65fHFaPxBKZjxV+N7dASv29pzCzPKr4ru9oy1Jjaqous1D4KDBDmJCUx2P02JWCuAu3Tk297I3Q==}
+  /@liuli-util/markdown-util/0.5.2:
+    resolution: {integrity: sha512-HFVOhX34PGhx4FrcPLSagBsxYZVeXJtLSSGT5HO5r3Jld5hfUWq+Dki13h7CUPMpZUnWw1LdBNts8giRAFR1mw==}
     dependencies:
       '@types/mdast': 3.0.10
       '@types/unist': 2.0.6
@@ -1548,8 +1548,8 @@ packages:
       mdast-util-from-markdown: 1.2.0
       mdast-util-frontmatter: 1.0.0
       mdast-util-gfm: 2.0.1
-      mdast-util-to-hast: 12.2.4
-      mdast-util-to-markdown: 1.3.0
+      mdast-util-to-hast: 12.2.5
+      mdast-util-to-markdown: 1.5.0
       micromark-extension-frontmatter: 1.0.0
       micromark-extension-gfm: 2.0.1
       micromark-util-types: 1.0.2
@@ -1557,10 +1557,10 @@ packages:
       unist-util-inspect: 7.0.1
       unist-util-map: 3.1.2
       unist-util-remove: 3.1.0
-      unist-util-select: 4.0.1
+      unist-util-select: 4.0.2
       unist-util-visit: 4.1.1
       unist-util-visit-parents: 5.1.1
-      yaml: 2.1.3
+      yaml: 2.2.1
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -4307,8 +4307,8 @@ packages:
     dependencies:
       function-bind: 1.1.1
 
-  /hast-util-is-element/2.1.2:
-    resolution: {integrity: sha512-thjnlGAnwP8ef/GSO1Q8BfVk2gundnc2peGQqEg2kUt/IqesiGg/5mSwN2fE7nLzy61pg88NG6xV+UrGOrx9EA==}
+  /hast-util-is-element/2.1.3:
+    resolution: {integrity: sha512-O1bKah6mhgEq2WtVMk+Ta5K7pPMqsBBlmzysLdcwKVrqzZQ0CHqUPiIVspNhAG1rvxpvJjtGee17XfauZYKqVA==}
     dependencies:
       '@types/hast': 2.3.4
       '@types/unist': 2.0.6
@@ -4320,10 +4320,10 @@ packages:
       '@types/hast': 2.3.4
       ccount: 2.0.1
       comma-separated-tokens: 2.0.3
-      hast-util-is-element: 2.1.2
-      hast-util-whitespace: 2.0.0
+      hast-util-is-element: 2.1.3
+      hast-util-whitespace: 2.0.1
       html-void-elements: 2.0.1
-      property-information: 6.1.1
+      property-information: 6.2.0
       space-separated-tokens: 2.0.2
       stringify-entities: 4.0.3
       unist-util-is: 5.1.1
@@ -4331,6 +4331,10 @@ packages:
 
   /hast-util-whitespace/2.0.0:
     resolution: {integrity: sha512-Pkw+xBHuV6xFeJprJe2BBEoDV+AvQySaz3pPDRUs5PNZEMQjpXJJueqrpcHIXxnWTcAGi/UOCgVShlkY6kLoqg==}
+    dev: false
+
+  /hast-util-whitespace/2.0.1:
+    resolution: {integrity: sha512-nAxA0v8+vXSBDt3AnRUNjyRIQ0rD+ntpbAp4LnPkumc5M9yUbSMa4XDU9Q6etY4f1Wp4bNgvc1yjiZtsTTrSng==}
     dev: false
 
   /hexo-cli/4.3.0:
@@ -5514,8 +5518,8 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /markdown-table/3.0.2:
-    resolution: {integrity: sha512-y8j3a5/DkJCmS5x4dMCQL+OR0+2EAq3DOtio1COSHsmW2BGXnNCK3v12hJt1LrUz5iZH5g0LmuYOjDdI+czghA==}
+  /markdown-table/3.0.3:
+    resolution: {integrity: sha512-Z1NL3Tb1M9wH4XESsCDEksWoKTdlUafKc4pt0GRwjUyXaCFZ+dc3g2erqB6zm3szA2IUSi7VnPI+o/9jnxh9hw==}
     dev: false
 
   /marked/1.2.9:
@@ -5583,7 +5587,7 @@ packages:
     resolution: {integrity: sha512-p+PrYlkw9DeCRkTVw1duWqPRHX6Ywh2BNKJQcZbCwAuP/59B0Lk9kakuAd7KbQprVO4GzdW8eS5++A9PUSqIyw==}
     dependencies:
       '@types/mdast': 3.0.10
-      mdast-util-to-markdown: 1.3.0
+      mdast-util-to-markdown: 1.5.0
       micromark-util-normalize-identifier: 1.0.0
     dev: false
 
@@ -5591,16 +5595,16 @@ packages:
     resolution: {integrity: sha512-T/4DVHXcujH6jx1yqpcAYYwd+z5lAYMw4Ls6yhTfbMMtCt0PHY4gEfhW9+lKsLBtyhUGKRIzcUA2FATVqnvPDA==}
     dependencies:
       '@types/mdast': 3.0.10
-      mdast-util-to-markdown: 1.3.0
+      mdast-util-to-markdown: 1.5.0
     dev: false
 
   /mdast-util-gfm-table/1.0.6:
     resolution: {integrity: sha512-uHR+fqFq3IvB3Rd4+kzXW8dmpxUhvgCQZep6KdjsLK4O6meK5dYZEayLtIxNus1XO3gfjfcIFe8a7L0HZRGgag==}
     dependencies:
       '@types/mdast': 3.0.10
-      markdown-table: 3.0.2
+      markdown-table: 3.0.3
       mdast-util-from-markdown: 1.2.0
-      mdast-util-to-markdown: 1.3.0
+      mdast-util-to-markdown: 1.5.0
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -5609,7 +5613,7 @@ packages:
     resolution: {integrity: sha512-KZ4KLmPdABXOsfnM6JHUIjxEvcx2ulk656Z/4Balw071/5qgnhz+H1uGtf2zIGnrnvDC8xR4Fj9uKbjAFGNIeA==}
     dependencies:
       '@types/mdast': 3.0.10
-      mdast-util-to-markdown: 1.3.0
+      mdast-util-to-markdown: 1.5.0
     dev: false
 
   /mdast-util-gfm/2.0.1:
@@ -5621,13 +5625,34 @@ packages:
       mdast-util-gfm-strikethrough: 1.0.2
       mdast-util-gfm-table: 1.0.6
       mdast-util-gfm-task-list-item: 1.0.1
-      mdast-util-to-markdown: 1.3.0
+      mdast-util-to-markdown: 1.5.0
     transitivePeerDependencies:
       - supports-color
     dev: false
 
+  /mdast-util-phrasing/3.0.0:
+    resolution: {integrity: sha512-S+QYsDRLkGi8U7o5JF1agKa/sdP+CNGXXLqC17pdTVL8FHHgQEiwFGa9yE5aYtUxNiFGYoaDy9V1kC85Sz86Gg==}
+    dependencies:
+      '@types/mdast': 3.0.10
+      unist-util-is: 5.1.1
+    dev: false
+
   /mdast-util-to-hast/12.2.4:
     resolution: {integrity: sha512-a21xoxSef1l8VhHxS1Dnyioz6grrJkoaCUgGzMD/7dWHvboYX3VW53esRUfB5tgTyz4Yos1n25SPcj35dJqmAg==}
+    dependencies:
+      '@types/hast': 2.3.4
+      '@types/mdast': 3.0.10
+      mdast-util-definitions: 5.1.1
+      micromark-util-sanitize-uri: 1.1.0
+      trim-lines: 3.0.1
+      unist-builder: 3.0.0
+      unist-util-generated: 2.0.0
+      unist-util-position: 4.0.3
+      unist-util-visit: 4.1.1
+    dev: false
+
+  /mdast-util-to-hast/12.2.5:
+    resolution: {integrity: sha512-EFNhT35ZR/VZ85/EedDdCNTq0oFM+NM/+qBomVGQ0+Lcg0nhI8xIwmdCzNMlVlCJNXRprpobtKP/IUh8cfz6zQ==}
     dependencies:
       '@types/hast': 2.3.4
       '@types/mdast': 3.0.10
@@ -5646,6 +5671,19 @@ packages:
       '@types/mdast': 3.0.10
       '@types/unist': 2.0.6
       longest-streak: 3.1.0
+      mdast-util-to-string: 3.1.0
+      micromark-util-decode-string: 1.0.2
+      unist-util-visit: 4.1.1
+      zwitch: 2.0.4
+    dev: false
+
+  /mdast-util-to-markdown/1.5.0:
+    resolution: {integrity: sha512-bbv7TPv/WC49thZPg3jXuqzuvI45IL2EVAr/KxF0BSdHsU0ceFHOmwQn6evxAh1GaoK/6GQ1wp4R4oW2+LFL/A==}
+    dependencies:
+      '@types/mdast': 3.0.10
+      '@types/unist': 2.0.6
+      longest-streak: 3.1.0
+      mdast-util-phrasing: 3.0.0
       mdast-util-to-string: 3.1.0
       micromark-util-decode-string: 1.0.2
       unist-util-visit: 4.1.1
@@ -6693,6 +6731,10 @@ packages:
 
   /property-information/6.1.1:
     resolution: {integrity: sha512-hrzC564QIl0r0vy4l6MvRLhafmUowhO/O3KgVSoXIbbA2Sz4j8HGpJc6T2cubRVwMwpdiG/vKGfhT4IixmKN9w==}
+    dev: false
+
+  /property-information/6.2.0:
+    resolution: {integrity: sha512-kma4U7AFCTwpqq5twzC1YVIDXSqg6qQK6JN0smOw8fgRy1OkMi0CYSzFmsy6dnqSenamAtj0CyXMUJ1Mf6oROg==}
     dev: false
 
   /pseudomap/1.0.2:
@@ -8737,6 +8779,15 @@ packages:
       zwitch: 2.0.4
     dev: false
 
+  /unist-util-select/4.0.2:
+    resolution: {integrity: sha512-96sw4SP/daTCYzhQbsEhkATTQ+Uo4GJks8l9XduW4cg+tNQLN/fqEXq4kAvK9iuWFxYTPn/Jhqj+DK9Tdimk7w==}
+    dependencies:
+      '@types/unist': 2.0.6
+      css-selector-parser: 1.4.1
+      nth-check: 2.1.1
+      zwitch: 2.0.4
+    dev: false
+
   /unist-util-stringify-position/3.0.2:
     resolution: {integrity: sha512-7A6eiDCs9UtjcwZOcCpM4aPII3bAAGv13E96IkawkOAW0OhH+yRxtY0lzo8KiHpzEMfH7Q+FizUmwp8Iqy5EWg==}
     dependencies:
@@ -9326,6 +9377,11 @@ packages:
   /yaml/2.1.3:
     resolution: {integrity: sha512-AacA8nRULjKMX2DvWvOAdBZMOfQlypSFkjcOcu9FalllIDJ1kvlREzcdIZmidQUqqeMv7jorHjq2HlLv/+c2lg==}
     engines: {node: '>= 14'}
+
+  /yaml/2.2.1:
+    resolution: {integrity: sha512-e0WHiYql7+9wr4cWMx3TVQrNwejKaEe7/rHNmQmqRjazfOP5W8PB6Jpebb5o6fIapbz9o9+2ipcaTM2ZwDI6lw==}
+    engines: {node: '>= 14'}
+    dev: false
 
   /yargonaut/1.1.4:
     resolution: {integrity: sha512-rHgFmbgXAAzl+1nngqOcwEljqHGG9uUZoPjsdZEs1w5JW9RXYzrSvH/u70C1JE5qFi0qjsdhnUX/dJRpWqitSA==}

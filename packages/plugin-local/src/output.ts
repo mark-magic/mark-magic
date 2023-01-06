@@ -40,7 +40,6 @@ export function convertLinks({
   const urls = (selectAll('image,link', root) as (Image | Link)[]).filter((item) => item.url.startsWith(':/'))
   const map = keyBy(note.resources, (item) => item.id)
   let isAfter = false
-  const dirPath = path.dirname(fsPath)
   urls.forEach((item) => {
     const id = item.url.slice(2)
     const resource = map[id]
@@ -92,20 +91,21 @@ export interface OutputOptions {
 }
 
 export function output(options: OutputOptions): OutputPlugin {
+  const _options = defaultOptions(options)
   const resourceMap = new BiMultiMap<string, string>(),
     noteMap = new BiMultiMap<string, string>(),
     afterList: { fsPath: string; note: Note }[] = []
   return {
     name: 'local',
     async start() {
-      await Promise.all([remove(options.rootNotePath), remove(options.rootResourcePath)])
-      await mkdirp(options.rootNotePath)
-      await mkdirp(options.rootResourcePath)
+      await Promise.all([remove(_options.rootNotePath), remove(_options.rootResourcePath)])
+      await mkdirp(_options.rootNotePath)
+      await mkdirp(_options.rootResourcePath)
     },
     async handle(note) {
       await AsyncArray.forEach(note.resources, async (item) => {
         // let fsPath = path.resolve(options.rootResourcePath, filenamify(item.title))
-        let fsPath = options.resourcePath(item)
+        let fsPath = _options.resourcePath(item)
         if (resourceMap.has(fsPath)) {
           const ext = path.extname(item.title)
           fsPath = path.resolve(path.dirname(fsPath), path.basename(filenamify(item.title), ext) + '_' + item.id + ext)
@@ -115,14 +115,18 @@ export function output(options: OutputOptions): OutputPlugin {
       })
 
       // let fsPath = path.resolve(options.rootNotePath, note.path.join('/'), filenamify(note.title) + '.md')
-      let fsPath = options.notePath(note)
+      let fsPath = _options.notePath(note)
       if (noteMap.has(fsPath)) {
-        fsPath = path.resolve(options.rootNotePath, note.path.join('/'), filenamify(note.title) + '_' + note.id + '.md')
+        fsPath = path.resolve(
+          _options.rootNotePath,
+          note.path.join('/'),
+          filenamify(note.title) + '_' + note.id + '.md',
+        )
       }
       noteMap.set(note.id, fsPath)
       const root = fromMarkdown(note.content)
-      setYamlMeta(root, options.meta(note))
-      const isAfter = convertLinks({ root, note, fsPath, noteMap, resourceMap, ...options })
+      setYamlMeta(root, _options.meta(note))
+      const isAfter = convertLinks({ root, note, fsPath, noteMap, resourceMap, ..._options })
       if (isAfter) {
         afterList.push({ fsPath, note })
       }
@@ -132,7 +136,7 @@ export function output(options: OutputOptions): OutputPlugin {
     async end() {
       await AsyncArray.forEach(afterList, async (item) => {
         const root = fromMarkdown(await readFile(item.fsPath, 'utf-8'))
-        convertLinks({ ...item, root, noteMap, resourceMap, ...options })
+        convertLinks({ ...item, root, noteMap, resourceMap, ..._options })
         await writeFile(item.fsPath, toMarkdown(root))
       })
     },

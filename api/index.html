@@ -20,7 +20,7 @@
 <a href="#introduction" id="introduction" style="color: inherit; text-decoration: none;">
   <h2>Introduction</h2>
 </a>
-<p>mami is a conversion tool that can connect different markdown-based frameworks and tools, and can convert the data of one tool to another tool, which is very helpful for cross-application migration and multi-platform release, currently supports <code>joplin/obsidian/hexo/hugo/docsify/vuepress/raw</code>.</p>
+<p>mami is a conversion tool that can connect different markdown-based frameworks and tools, and can convert the data of one tool to another tool, which is very helpful for cross-application migration and multi-platform release, currently supports <code>joplin/obsidian/hexo/hugo/docsify/vuepress/vitepress/raw</code>.</p>
 
 <a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
   <h2>Usage</h2>
@@ -87,13 +87,13 @@
 </blockquote>
 
 <a href="#plugins" id="plugins" style="color: inherit; text-decoration: none;">
-  <h2>plugins</h2>
+  <h2>Plugins</h2>
 </a>
 <blockquote>
 <p><a href="https://mami.rxliuli.com/api/">API Documentation</a></p>
 </blockquote>
 <p>Roughly speaking, plugins are divided into input and output plugins. The input plugin will return an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncGenerator">AsyncGenerator</a>, while the output plugin will return an AsyncGenerator will consume it in the <code>handle hook</code> function.</p>
-<p><img src="./public/design.drawio.svg" alt="design"></p>
+<p><img src="https://github.com/rxliuli/mami/raw/master/public/design.drawio.svg" alt="design"></p>
 <p>Intermediate format</p>
 <pre><code class="language-json"><span class="hl-0">{</span><br/><span class="hl-0">  </span><span class="hl-3">&quot;id&quot;</span><span class="hl-0">: </span><span class="hl-4">&quot;0e2510c9272449dbafe3e0f3fba12d74&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-3">&quot;title&quot;</span><span class="hl-0">: </span><span class="hl-4">&quot;Welcome to Joplin!&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-3">&quot;content&quot;</span><span class="hl-0">: </span><span class="hl-4">&quot;content body&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-3">&quot;createAt&quot;</span><span class="hl-0">: </span><span class="hl-9">1666288266591</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-3">&quot;updateAt&quot;</span><span class="hl-0">: </span><span class="hl-9">1666288266591</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-3">&quot;path&quot;</span><span class="hl-0">: [</span><span class="hl-4">&quot;Welcome! (Desktop)&quot;</span><span class="hl-0">],</span><br/><span class="hl-0">  </span><span class="hl-3">&quot;tags&quot;</span><span class="hl-0">: [</span><br/><span class="hl-0">    {</span><br/><span class="hl-0">      </span><span class="hl-3">&quot;id&quot;</span><span class="hl-0">: </span><span class="hl-4">&quot;04dfa5cf19e4435f9f3f09a73a7edfb2&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-3">&quot;title&quot;</span><span class="hl-0">: </span><span class="hl-4">&quot;blog&quot;</span><br/><span class="hl-0">    }</span><br/><span class="hl-0">  ],</span><br/><span class="hl-0">  </span><span class="hl-3">&quot;resources&quot;</span><span class="hl-0">: [</span><br/><span class="hl-0">    {</span><br/><span class="hl-0">      </span><span class="hl-3">&quot;id&quot;</span><span class="hl-0">: </span><span class="hl-4">&quot;63b83e548b7b4adfae18544b7038b0bc&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-3">&quot;title&quot;</span><span class="hl-0">: </span><span class="hl-4">&quot;AllClients.png&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-3">&quot;raw&quot;</span><span class="hl-0">: </span><span class="hl-4">&quot;&lt;nodejs buffer&gt;&quot;</span><br/><span class="hl-0">    }</span><br/><span class="hl-0">  ]</span><br/><span class="hl-0">}</span>
 </code></pre>

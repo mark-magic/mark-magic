@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "joplin2vitepress-demo",
+  "name": "@mami-demo/joplin2vitepress",
   "version": "1.0.0",
   "type": "module",
   "exports": {

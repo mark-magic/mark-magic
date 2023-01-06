@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "joplin2vuepress-demo",
+  "name": "@mami-demo/joplin2vuepress",
   "version": "1.0.0",
   "type": "module",
   "exports": {

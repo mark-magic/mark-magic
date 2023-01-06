@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "joplin2docsify",
+  "name": "@mami-demo/joplin2docsify",
   "version": "1.0.0",
   "type": "module",
   "exports": {

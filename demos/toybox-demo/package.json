@@ -1,5 +1,5 @@
 {
-  "name": "toybox-demo",
+  "name": "@mami-demo/toybox",
   "private": true,
   "version": "1.0.0",
   "type": "module",

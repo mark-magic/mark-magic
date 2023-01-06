@@ -2,7 +2,7 @@
 
 ## Introduction
 
-mami is a conversion tool that can connect different markdown-based frameworks and tools, and can convert the data of one tool to another tool, which is very helpful for cross-application migration and multi-platform release, currently supports `joplin/obsidian/hexo/hugo/docsify/vuepress/raw`.
+mami is a conversion tool that can connect different markdown-based frameworks and tools, and can convert the data of one tool to another tool, which is very helpful for cross-application migration and multi-platform release, currently supports `joplin/obsidian/hexo/hugo/docsify/vuepress/vitepress/raw`.
 
 ## Usage
 

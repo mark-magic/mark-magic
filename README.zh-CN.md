@@ -2,7 +2,7 @@
 
 ## 简介
 
-mami 是一个转换工具，可以连接不同的基于 markdown 框架和工具，能将一种工具的数据转换到另一种工具，这对于跨应用迁移以及多平台发布很有帮助，目前已支持 `joplin/obsidian/hexo/hugo/docsify/vuepress/raw`。
+mami 是一个转换工具，可以连接不同的基于 markdown 框架和工具，能将一种工具的数据转换到另一种工具，这对于跨应用迁移以及多平台发布很有帮助，目前已支持 `joplin/obsidian/hexo/hugo/docsify/vuepress/vitepress/raw`。
 
 ## 使用
 
@@ -124,7 +124,7 @@ pnpm run gen
 
 大致上，插件分为输入和输出插件，输入插件会返回一个 [AsyncGenerator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncGenerator)，而输出插件则会则 `handle hook` 函数中消费它。
 
-![design](./public/design.drawio.svg)
+![design](https://github.com/rxliuli/mami/raw/master/public/design.drawio.svg)
 
 中间格式
 

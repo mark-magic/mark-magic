@@ -131,7 +131,7 @@ importers:
       gh-pages: ^4.0.0
       typescript: ^4.8.4
       vue: ^3.2.45
-      vuepress: 2.0.0-beta.60
+      vuepress-vite: 2.0.0-beta.60
     devDependencies:
       '@mami/cli': link:../../packages/cli
       '@mami/plugin-joplin': link:../../packages/plugin-joplin
@@ -141,7 +141,7 @@ importers:
       gh-pages: 4.0.0
       typescript: 4.9.3
       vue: 3.2.45
-      vuepress: 2.0.0-beta.60_dlgznq46b2nyvtu5wqobknojfm
+      vuepress-vite: 2.0.0-beta.60_dlgznq46b2nyvtu5wqobknojfm
 
   demos/obsidian2hexo-demo:
     specifiers:
@@ -10081,26 +10081,6 @@ packages:
       - supports-color
       - terser
       - ts-node
-    dev: true
-
-  /vuepress/2.0.0-beta.60_dlgznq46b2nyvtu5wqobknojfm:
-    resolution: {integrity: sha512-evkv5PtX5pdlEyY5EcEV+rN/HTmi8iG7ZcvAnMFfYKWdvKiUjE+/DPwZfmE8emx33FEE2htbAKgtruABTocEjA==}
-    hasBin: true
-    dependencies:
-      vuepress-vite: 2.0.0-beta.60_dlgznq46b2nyvtu5wqobknojfm
-    transitivePeerDependencies:
-      - '@types/node'
-      - '@vue/composition-api'
-      - '@vuepress/client'
-      - less
-      - sass
-      - sass-loader
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-      - ts-node
-      - vue
     dev: true
 
   /w3c-xmlserializer/3.0.0:

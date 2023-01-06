@@ -1,4 +1,4 @@
-import { defineUserConfig, defaultTheme } from 'vuepress'
+import { defineUserConfig, defaultTheme } from 'vuepress-vite'
 import sidebar from './docs/sidebar.json'
 
 export default defineUserConfig({

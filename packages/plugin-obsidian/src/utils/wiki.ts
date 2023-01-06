@@ -90,6 +90,6 @@ export function wikiLinkToMarkdown(): ToMarkdownExtension {
   return {
     handlers: {
       wiki: stringifyUrl,
-    },
+    } as any,
   }
 }

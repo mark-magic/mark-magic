@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@liuli-util/fs-extra": "^0.1.0",
-    "@liuli-util/markdown-util": "^0.4.2",
+    "@liuli-util/markdown-util": "^0.5.3",
     "@liuli-util/tree": "^3.6.0",
     "@mami/cli": "workspace:^",
     "@mami/plugin-local": "workspace:^",

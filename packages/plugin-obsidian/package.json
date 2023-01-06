@@ -6,7 +6,7 @@
   "exports": "./dist/index.js",
   "types": "./dist/index.js",
   "scripts": {
-    "build": "tsc && tsup src/index.ts --format esm --sourcemap",
+    "build": "tsup src/index.ts --format esm --sourcemap --dts --clean",
     "setup": "pnpm build",
     "test": "vitest run"
   },
@@ -35,7 +35,7 @@
   "dependencies": {
     "@liuli-util/async": "^3.6.0",
     "@liuli-util/fs-extra": "^0.1.0",
-    "@liuli-util/markdown-util": "^0.4.1",
+    "@liuli-util/markdown-util": "^0.5.3",
     "fast-glob": "^3.2.12",
     "filenamify": "^5.1.1",
     "lodash-es": "^4.17.21",

@@ -143,8 +143,12 @@ tags:
   expect(r.length).eq(0)
 })
 
-it.only('input multiple for id', async () => {
+it('input multiple for id', async () => {
   const r1 = await fromAsync(obsidian.input({ root: path.resolve(__dirname, 'assets') }).generate())
   const r2 = await fromAsync(obsidian.input({ root: path.resolve(__dirname, 'assets') }).generate())
   expect(sortBy(r1.map((item) => item.id))).deep.eq(sortBy(r2.map((item) => item.id)))
+})
+
+it('test toMarkdown', async () => {
+  toMarkdown(fromMarkdown(`- test`))
 })

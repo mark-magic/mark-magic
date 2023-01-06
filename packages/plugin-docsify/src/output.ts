@@ -62,17 +62,15 @@ export function output(options?: { root?: string }): OutputPlugin {
   const root = options?.root ?? path.resolve('docs')
   const postsPath = path.resolve(root, 'p')
   const resourcePath = path.resolve(root, 'resources')
-  const p = local.output(
-    local.defaultOptions({
-      rootNotePath: postsPath,
-      rootResourcePath: resourcePath,
-      meta: () => null,
-      noteLink: ({ linkNoteId }) => `/p/${linkNoteId}`,
-      resourceLink: ({ resource }) => `../resources/${resource.id}${path.extname(resource.title)}`,
-      notePath: (note) => path.resolve(postsPath, note.id + '.md'),
-      resourcePath: (resource) => path.resolve(resourcePath, resource.id + path.extname(resource.title)),
-    }),
-  )
+  const p = local.output({
+    rootNotePath: postsPath,
+    rootResourcePath: resourcePath,
+    meta: () => null,
+    noteLink: ({ linkNoteId }) => `/p/${linkNoteId}`,
+    resourceLink: ({ resource }) => `../resources/${resource.id}${path.extname(resource.title)}`,
+    notePath: (note) => path.resolve(postsPath, note.id + '.md'),
+    resourcePath: (resource) => path.resolve(resourcePath, resource.id + path.extname(resource.title)),
+  })
   p.name = 'docsify'
   const list: Sidebar[] = []
   return {

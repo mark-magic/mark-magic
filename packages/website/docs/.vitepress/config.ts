@@ -11,6 +11,7 @@ export default defineConfigWithTheme({
           { text: 'joplin2hexo', link: 'https://mami.rxliuli.com/demo/joplin2hexo/' },
           { text: 'joplin2hugo', link: 'https://mami.rxliuli.com/demo/joplin2hugo/' },
           { text: 'joplin2docsify', link: 'https://mami.rxliuli.com/demo/joplin2docsify/' },
+          { text: 'joplin2vuepress', link: 'https://mami.rxliuli.com/demo/joplin2vuepress/' },
           { text: 'obsidian2hexo', link: 'https://mami.rxliuli.com/demo/obsidian2hexo/' },
         ],
       },

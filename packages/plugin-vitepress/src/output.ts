@@ -2,6 +2,7 @@ import path from 'path'
 import type { OutputPlugin } from '@mami/cli'
 import * as local from '@mami/plugin-local'
 import { writeFile } from 'fs/promises'
+import type { PageData } from 'vitepress'
 
 export interface Sidebar {
   id: string
@@ -62,7 +63,10 @@ export function output(options?: { root?: string }): OutputPlugin {
   const p = local.output({
     rootNotePath: postsPath,
     rootResourcePath: resourcePath,
-    meta: () => null,
+    meta: (item) =>
+      ({
+        title: item.title,
+      } as PageData),
     noteLink: ({ linkNoteId }) => `/p/${linkNoteId}`,
     resourceLink: ({ resource }) => `../resources/${resource.id}${path.extname(resource.title)}`,
     notePath: (note) => path.resolve(postsPath, note.id + '.md'),

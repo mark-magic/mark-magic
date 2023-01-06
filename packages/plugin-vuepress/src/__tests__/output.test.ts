@@ -5,6 +5,7 @@ import path from 'path'
 import { it, expect } from 'vitest'
 import { initTempPath } from '../test'
 import * as vitepress from '@mami/plugin-vitepress'
+import { fromMarkdown, getYamlMeta } from '@liuli-util/markdown-util'
 
 const tempPath = initTempPath(__filename)
 
@@ -71,6 +72,20 @@ it('basic', async () => {
   console.log(await readFile(test2Path, 'utf-8'))
   expect(await readFile(test2Path, 'utf-8')).includes('[localDirOutput.test.ts](../resources/test.ts)')
   expect(await pathExists(path.resolve(tempPath, 'sidebar.json'))).true
+})
+
+it('yaml meta', async () => {
+  await convert({
+    input: [generateVirtual],
+    output: [
+      output({
+        root: tempPath,
+      }),
+    ],
+  })
+  const test1Path = path.resolve(tempPath, 'p/test1.md')
+  const r = getYamlMeta(fromMarkdown(await readFile(test1Path, 'utf-8')))!
+  expect(Object.keys(r)).deep.eq(['title', 'date'])
 })
 
 it('siderListToTree', () => {

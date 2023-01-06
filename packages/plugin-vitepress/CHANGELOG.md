@@ -1,5 +1,11 @@
 # @mami/plugin-vuepress
 
+## 0.5.3
+
+### Patch Changes
+
+- Fix the error that metadata is not set
+
 ## 0.5.2
 
 ### Patch Changes

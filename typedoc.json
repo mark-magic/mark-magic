@@ -9,8 +9,11 @@
     "packages/plugin-hexo",
     "packages/plugin-hugo",
     "packages/plugin-docsify",
+    "packages/plugin-vuepress",
+    "packages/plugin-vitepress",
     "packages/plugin-local",
     "packages/plugin-raw"
   ],
-  "plugin": ["typedoc-plugin-resolve-crossmodule-references"]
+  "plugin": ["typedoc-plugin-resolve-crossmodule-references"],
+  "out": "dist"
 }

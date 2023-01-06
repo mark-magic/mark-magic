@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "joplin2vuepress-demo",
+  "name": "joplin2vitepress-demo",
   "version": "1.0.0",
   "type": "module",
   "exports": {
@@ -8,19 +8,17 @@
     "require": "./dist/index.cjs"
   },
   "scripts": {
-    "dev": "vuepress dev docs",
-    "build": "vuepress build docs",
-    "deploy": "gh-pages -d docs/.vuepress/dist -e /demo/joplin2vuepress --add",
+    "dev": "vitepress dev docs",
+    "build": "vitepress build docs",
+    "deploy": "gh-pages -d docs/.vitepress/dist -e /demo/joplin2vitepress --add",
     "gen": "mami"
   },
   "devDependencies": {
     "@mami/cli": "workspace:^",
     "@mami/plugin-joplin": "workspace:^",
-    "@mami/plugin-vuepress": "workspace:^",
-    "@vuepress/client": "2.0.0-beta.60",
+    "@mami/plugin-vitepress": "workspace:^",
     "gh-pages": "^4.0.0",
     "typescript": "^4.8.4",
-    "vue": "^3.2.45",
-    "vuepress-vite": "2.0.0-beta.60"
+    "vitepress": "1.0.0-alpha.29"
   }
 }

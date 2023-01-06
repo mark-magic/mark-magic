@@ -1,13 +1,8 @@
 import path from 'path'
 import type { OutputPlugin } from '@mami/cli'
-import * as local from '@mami/plugin-local'
+import * as vitepress from '@mami/plugin-vitepress'
 import { writeFile } from 'fs/promises'
-
-export interface Sidebar {
-  id: string
-  title: string
-  path: string[]
-}
+import { treeMap } from '@liuli-util/tree'
 
 export interface VuepressSidebar {
   text: string
@@ -15,61 +10,25 @@ export interface VuepressSidebar {
   children?: VuepressSidebar[]
 }
 
-/**
- * 转换列表到 vuepress 需要的树结构
- */
-export function siderListToTree(data: Sidebar[]): VuepressSidebar[] {
-  const r: VuepressSidebar = {
-    text: 'root',
-    children: [],
-  }
-  const dirMap = new Map<string, VuepressSidebar>()
-  function mkdirp(s: string[]): VuepressSidebar {
-    if (s.length === 0) {
-      return r
-    }
-    const k = JSON.stringify(s)
-    if (dirMap.has(k)) {
-      return dirMap.get(k)!
-    }
-    const p = mkdirp(s.slice(0, s.length - 1))
-    const c: VuepressSidebar = {
-      text: s[s.length - 1],
-      children: [],
-    }
-    p.children!.push(c)
-    dirMap.set(k, c)
-    return c
-  }
-  data.forEach((item) => {
-    const k = JSON.stringify(item.path)
-    if (!dirMap.has(k)) {
-      const p = mkdirp(item.path)
-      dirMap.set(k, p)
-    }
-    dirMap.get(k)!.children!.push({
-      text: item.title,
-      link: `/p/${item.id}.md`,
-    })
-  })
-  return r.children!
+export function siderListToTree(list: vitepress.Sidebar[]): VuepressSidebar[] {
+  return treeMap(
+    vitepress.siderListToTree(list),
+    ({ items, ...o }) =>
+      (items
+        ? {
+            ...o,
+            children: items,
+          }
+        : o) as VuepressSidebar,
+    { id: 'link', children: 'items' },
+  )
 }
 
 export function output(options?: { root?: string }): OutputPlugin {
   const root = options?.root ?? path.resolve('docs')
-  const postsPath = path.resolve(root, 'p')
-  const resourcePath = path.resolve(root, 'resources')
-  const p = local.output({
-    rootNotePath: postsPath,
-    rootResourcePath: resourcePath,
-    meta: () => null,
-    noteLink: ({ linkNoteId }) => `/p/${linkNoteId}`,
-    resourceLink: ({ resource }) => `../resources/${resource.id}${path.extname(resource.title)}`,
-    notePath: (note) => path.resolve(postsPath, note.id + '.md'),
-    resourcePath: (resource) => path.resolve(resourcePath, resource.id + path.extname(resource.title)),
-  })
-  p.name = 'docsify'
-  const list: Sidebar[] = []
+  const p = vitepress.output({ root })
+  p.name = 'vuepress'
+  const list: vitepress.Sidebar[] = []
   return {
     ...p,
     async handle(note) {

@@ -1,5 +1,5 @@
 {
-  "name": "@mami/plugin-vuepress",
+  "name": "@mami/plugin-vitepress",
   "version": "0.5.0",
   "license": "MIT",
   "type": "module",
@@ -32,8 +32,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "@liuli-util/tree": "^3.6.0",
     "@mami/cli": "workspace:^",
-    "@mami/plugin-vitepress": "workspace:^"
+    "@mami/plugin-local": "workspace:^"
   }
 }

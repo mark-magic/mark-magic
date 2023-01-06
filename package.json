@@ -8,7 +8,7 @@
     "test-all": "pnpm -r run test",
     "clean-all": "pnpx rimraf **/node_modules **/dist",
     "docs-build": "typedoc --options typedoc.json",
-    "docs-deploy": "gh-pages -d docs -e /api --add"
+    "docs-deploy": "gh-pages -d dist -e /api --add"
   },
   "prettier": "@liuli-util/prettier-standard-config",
   "commitlint": {

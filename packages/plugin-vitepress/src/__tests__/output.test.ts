@@ -1,10 +1,9 @@
 import { readFile, pathExists } from '@liuli-util/fs-extra'
 import { InputPlugin, Resource, Tag, Note, convert } from '@mami/cli'
-import { output, siderListToTree, VuepressSidebar } from '../output'
+import { output, Sidebar, siderListToTree, VitepressSidebar } from '../output'
 import path from 'path'
 import { it, expect } from 'vitest'
 import { initTempPath } from '../test'
-import * as vitepress from '@mami/plugin-vitepress'
 
 const tempPath = initTempPath(__filename)
 
@@ -100,11 +99,11 @@ it('siderListToTree', () => {
       title: '5. Joplin Privacy Policy',
       path: ['Welcome! (Desktop)'],
     },
-  ] as vitepress.Sidebar[])
+  ] as Sidebar[])
   expect(r).deep.eq([
     {
       text: 'Welcome! (Desktop)',
-      children: [
+      items: [
         {
           text: '1. Welcome to Joplin!',
           link: '/p/be76d6d99d81444394bc206e08a8e80c.md',
@@ -127,5 +126,5 @@ it('siderListToTree', () => {
         },
       ],
     },
-  ] as VuepressSidebar[])
+  ] as VitepressSidebar[])
 })

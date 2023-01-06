@@ -5,7 +5,6 @@ node_modules/
 .idea
 #.vscode
 .history
-docs/
 
 # build dist
 *.tgz

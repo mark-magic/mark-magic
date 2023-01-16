@@ -14,9 +14,9 @@
     "gen": "mami"
   },
   "devDependencies": {
-    "@mami/cli": "workspace:^",
-    "@mami/plugin-joplin": "workspace:^",
-    "@mami/plugin-vuepress": "workspace:^",
+    "@mami/cli": "*",
+    "@mami/plugin-joplin": "*",
+    "@mami/plugin-vuepress": "*",
     "@vuepress/client": "2.0.0-beta.60",
     "gh-pages": "^4.0.0",
     "typescript": "^4.8.4",

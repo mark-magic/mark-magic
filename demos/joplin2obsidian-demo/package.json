@@ -11,9 +11,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@mami/cli": "workspace:^",
-    "@mami/plugin-joplin": "workspace:^",
-    "@mami/plugin-obsidian": "workspace:^",
+    "@mami/cli": "*",
+    "@mami/plugin-joplin": "*",
+    "@mami/plugin-obsidian": "*",
     "typescript": "^4.8.4"
   }
 }

@@ -14,9 +14,9 @@
     "gen": "mami"
   },
   "devDependencies": {
-    "@mami/cli": "workspace:^",
-    "@mami/plugin-joplin": "workspace:^",
-    "@mami/plugin-vitepress": "workspace:^",
+    "@mami/cli": "*",
+    "@mami/plugin-joplin": "*",
+    "@mami/plugin-vitepress": "*",
     "gh-pages": "^4.0.0",
     "typescript": "^4.8.4",
     "vitepress": "1.0.0-alpha.29"

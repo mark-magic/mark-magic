@@ -36,9 +36,9 @@ importers:
 
   demos/joplin2docsify-demo:
     specifiers:
-      '@mami/cli': workspace:^
-      '@mami/plugin-docsify': workspace:^
-      '@mami/plugin-joplin': workspace:^
+      '@mami/cli': '*'
+      '@mami/plugin-docsify': '*'
+      '@mami/plugin-joplin': '*'
       docsify-cli: ^4.4.4
       gh-pages: ^4.0.0
       typescript: ^4.8.4
@@ -52,9 +52,9 @@ importers:
 
   demos/joplin2hexo-demo:
     specifiers:
-      '@mami/cli': workspace:^
-      '@mami/plugin-hexo': workspace:^
-      '@mami/plugin-joplin': workspace:^
+      '@mami/cli': '*'
+      '@mami/plugin-hexo': '*'
+      '@mami/plugin-joplin': '*'
       gh-pages: ^4.0.0
       hexo: ^6.3.0
       hexo-generator-archive: ^1.0.0
@@ -87,10 +87,10 @@ importers:
 
   demos/joplin2hugo-demo:
     specifiers:
-      '@mami/cli': workspace:^
-      '@mami/plugin-hugo': workspace:^
-      '@mami/plugin-joplin': workspace:^
-      '@mami/plugin-local': workspace:^
+      '@mami/cli': '*'
+      '@mami/plugin-hugo': '*'
+      '@mami/plugin-joplin': '*'
+      '@mami/plugin-local': '*'
       '@types/node': ^18.8.3
       gh-pages: ^4.0.0
       typescript: ^4.8.4
@@ -111,9 +111,9 @@ importers:
 
   demos/joplin2obsidian-demo:
     specifiers:
-      '@mami/cli': workspace:^
-      '@mami/plugin-joplin': workspace:^
-      '@mami/plugin-obsidian': workspace:^
+      '@mami/cli': '*'
+      '@mami/plugin-joplin': '*'
+      '@mami/plugin-obsidian': '*'
       typescript: ^4.8.4
     devDependencies:
       '@mami/cli': link:../../packages/cli
@@ -123,9 +123,9 @@ importers:
 
   demos/joplin2vitepress-demo:
     specifiers:
-      '@mami/cli': workspace:^
-      '@mami/plugin-joplin': workspace:^
-      '@mami/plugin-vitepress': workspace:^
+      '@mami/cli': '*'
+      '@mami/plugin-joplin': '*'
+      '@mami/plugin-vitepress': '*'
       gh-pages: ^4.0.0
       typescript: ^4.8.4
       vitepress: 1.0.0-alpha.29
@@ -139,9 +139,9 @@ importers:
 
   demos/joplin2vuepress-demo:
     specifiers:
-      '@mami/cli': workspace:^
-      '@mami/plugin-joplin': workspace:^
-      '@mami/plugin-vuepress': workspace:^
+      '@mami/cli': '*'
+      '@mami/plugin-joplin': '*'
+      '@mami/plugin-vuepress': '*'
       '@vuepress/client': 2.0.0-beta.60
       gh-pages: ^4.0.0
       typescript: ^4.8.4
@@ -159,9 +159,9 @@ importers:
 
   demos/obsidian2hexo-demo:
     specifiers:
-      '@mami/cli': workspace:^
-      '@mami/plugin-hexo': workspace:^
-      '@mami/plugin-obsidian': workspace:^
+      '@mami/cli': '*'
+      '@mami/plugin-hexo': '*'
+      '@mami/plugin-obsidian': '*'
       gh-pages: ^4.0.0
       hexo: ^6.3.0
       hexo-generator-archive: ^1.0.0
@@ -195,13 +195,13 @@ importers:
   demos/toybox-demo:
     specifiers:
       '@liuli-util/fs-extra': ^0.1.0
-      '@mami/cli': workspace:^
-      '@mami/plugin-hexo': workspace:^
-      '@mami/plugin-joplin': workspace:^
-      '@mami/plugin-local': workspace:^
-      '@mami/plugin-obsidian': workspace:^
-      '@mami/plugin-raw': workspace:^
-      '@mami/utils': workspace:^
+      '@mami/cli': '*'
+      '@mami/plugin-hexo': '*'
+      '@mami/plugin-joplin': '*'
+      '@mami/plugin-local': '*'
+      '@mami/plugin-obsidian': '*'
+      '@mami/plugin-raw': '*'
+      '@mami/utils': '*'
       '@types/lodash': ^4.14.188
       '@types/lodash-es': ^4.17.6
       lodash: ^4.17.21

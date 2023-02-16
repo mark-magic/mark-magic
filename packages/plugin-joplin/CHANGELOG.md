@@ -1,5 +1,11 @@
 # @mami/plugin-joplin
 
+## 0.5.3
+
+### Patch Changes
+
+- fix obsidian to joplin tags not convert error
+
 ## 0.5.2
 
 ### Patch Changes

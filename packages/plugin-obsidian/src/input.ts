@@ -10,6 +10,7 @@ import { LocalNoteMeta } from './output'
 import { WikiLink, wikiLinkFromMarkdown } from './utils/wiki'
 import { BiMultiMap } from '@mami/utils'
 import { sha1 } from './utils/sha1'
+import { lowcaseObjectKeys } from './utils/lowcase'
 
 interface ScanNote {
   id: string
@@ -123,7 +124,13 @@ export function input(options: { root: string; tag?: string }): InputPlugin {
         const root = fromMarkdown(convertYamlTab(await readFile(fsPath, 'utf-8')), {
           mdastExtensions: [wikiLinkFromMarkdown()],
         })
-        const meta = (getYamlMeta(root) ?? {}) as Partial<LocalNoteMeta>
+        const meta = lowcaseObjectKeys(getYamlMeta(root) ?? {}) as Partial<LocalNoteMeta>
+        if (typeof meta.tags === 'string') {
+          meta.tags = (meta.tags as string)
+            .split(',')
+            .map((it) => it.trim())
+            .filter((it) => it.length !== 0)
+        }
         if (options.tag && !meta.tags?.includes(options.tag)) {
           continue
         }

@@ -192,6 +192,18 @@ importers:
       gh-pages: 4.0.0
       typescript: 4.9.3
 
+  demos/obsidian2joplin-demo:
+    specifiers:
+      '@mami/cli': '*'
+      '@mami/plugin-joplin': '*'
+      '@mami/plugin-obsidian': '*'
+      typescript: ^4.8.4
+    devDependencies:
+      '@mami/cli': link:../../packages/cli
+      '@mami/plugin-joplin': link:../../packages/plugin-joplin
+      '@mami/plugin-obsidian': link:../../packages/plugin-obsidian
+      typescript: 4.8.4
+
   demos/toybox-demo:
     specifiers:
       '@liuli-util/fs-extra': ^0.1.0
@@ -1363,11 +1375,11 @@ packages:
       '@types/node': 14.18.33
       chalk: 4.1.2
       cosmiconfig: 7.1.0
-      cosmiconfig-typescript-loader: 4.2.0_qoh33be55smklb2oyrgdyddh4a
+      cosmiconfig-typescript-loader: 4.2.0_zhrz2lclwdmp54iaqottwiuipu
       lodash: 4.17.21
       resolve-from: 5.0.0
-      ts-node: 10.9.1_kluoused5zacjtflizwvdqgpom
-      typescript: 4.9.3
+      ts-node: 10.9.1_yodorn5kzjgomblrsstrk2spaa
+      typescript: 4.8.4
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
@@ -3594,7 +3606,7 @@ packages:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
     dev: false
 
-  /cosmiconfig-typescript-loader/4.2.0_qoh33be55smklb2oyrgdyddh4a:
+  /cosmiconfig-typescript-loader/4.2.0_zhrz2lclwdmp54iaqottwiuipu:
     resolution: {integrity: sha512-NkANeMnaHrlaSSlpKGyvn2R4rqUDeE/9E5YHx+b4nwo0R8dZyAqcih8/gxpCZvqWP9Vf6xuLpMSzSgdVEIM78g==}
     engines: {node: '>=12', npm: '>=6'}
     peerDependencies:
@@ -3605,8 +3617,8 @@ packages:
     dependencies:
       '@types/node': 14.18.33
       cosmiconfig: 7.1.0
-      ts-node: 10.9.1_kluoused5zacjtflizwvdqgpom
-      typescript: 4.9.3
+      ts-node: 10.9.1_yodorn5kzjgomblrsstrk2spaa
+      typescript: 4.8.4
     dev: true
 
   /cosmiconfig/7.1.0:
@@ -9166,7 +9178,7 @@ packages:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
     dev: true
 
-  /ts-node/10.9.1_kluoused5zacjtflizwvdqgpom:
+  /ts-node/10.9.1_yodorn5kzjgomblrsstrk2spaa:
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
     hasBin: true
     peerDependencies:
@@ -9192,7 +9204,7 @@ packages:
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
-      typescript: 4.9.3
+      typescript: 4.8.4
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     dev: true

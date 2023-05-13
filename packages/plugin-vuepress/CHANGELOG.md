@@ -1,5 +1,14 @@
 # @mami/plugin-vuepress
 
+## 0.5.5
+
+### Patch Changes
+
+- Updated dependencies
+  - @mami/cli@0.5.3
+  - @mami/plugin-local@0.5.5
+  - @mami/plugin-vitepress@0.5.5
+
 ## 0.5.4
 
 ### Patch Changes

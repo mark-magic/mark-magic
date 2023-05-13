@@ -2,12 +2,13 @@ import { AsyncArray } from '@liuli-util/async'
 import { mkdirp, readFile, remove, writeFile } from '@liuli-util/fs-extra'
 import path from 'path'
 import type { Note, OutputPlugin, Resource } from '@mami/cli'
-import { fromMarkdown, Link, Root, setYamlMeta, toMarkdown, visit, Image, selectAll } from '@liuli-util/markdown-util'
+import { fromMarkdown, Link, Root, setYamlMeta, toMarkdown, Image, selectAll, HTML } from '@liuli-util/markdown-util'
 import filenamify from 'filenamify'
 import { keyBy } from 'lodash-es'
 import { Required, ValuesType } from 'utility-types'
 import { BiMultiMap } from '@mami/utils'
 import { formatRelative } from './utils'
+import { parse } from 'node-html-parser'
 
 export function defaultOptions(
   options: Required<Partial<OutputOptions>, 'rootNotePath' | 'rootResourcePath'>,
@@ -40,6 +41,54 @@ export function convertLinks({
   const urls = (selectAll('image,link', root) as (Image | Link)[]).filter((item) => item.url.startsWith(':/'))
   const map = keyBy(note.resources, (item) => item.id)
   let isAfter = false
+  const htmls = (selectAll('html', root) as HTML[])
+    .filter((it) => ['<audio', '<video', '<img'].some((p) => it.value.startsWith(p)))
+    .map((it) => {
+      const htmlType = ['<audio', '<video', '<img'].find((p) => it.value.startsWith(p))!.slice(1)
+      // console.log(it.value, htmlType)
+      const dom = parse(it.value).querySelector(htmlType)!
+      return {
+        md: it,
+        dom,
+      }
+      // dom.setAttribute('src', 'test')
+      // console.log(dom.attributes.src)
+      // console.log(dom.toString())
+    })
+    .filter((it) => it.dom.attrs.src.startsWith(':/'))
+  htmls.forEach((it) => {
+    const dom = it.dom
+    const src = dom.getAttribute('src')!
+    const id = src.slice(2)
+    const resource = map[id]
+    if (resource) {
+      // item.url = formatRelative(path.relative(dirPath, resourceMap.get(id)!))
+      dom.setAttribute(
+        'src',
+        resourceLink({
+          resource,
+          notePath: fsPath,
+          resourcePath: resourceMap.get(id)!,
+        })!,
+      )
+    } else {
+      if (!noteMap.has(id)) {
+        isAfter = true
+        return
+      }
+      // item.url = formatRelative(path.relative(dirPath, noteMap.get(id)!))
+      dom.setAttribute(
+        'src',
+        noteLink({
+          note,
+          notePath: fsPath,
+          linkNotePath: noteMap.get(id)!,
+          linkNoteId: id,
+        })!,
+      )
+    }
+    it.md.value = dom.toString()
+  })
   urls.forEach((item) => {
     const id = item.url.slice(2)
     const resource = map[id]

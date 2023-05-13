@@ -4,11 +4,11 @@ import { beforeEach, expect, it, describe } from 'vitest'
 import { convert, InputPlugin, Note, Resource, Tag } from '@mami/cli'
 import { calcMeta, convertLinks, defaultOptions, output, OutputOptions } from '../output'
 import filenamify, { filenamifyPath } from 'filenamify'
-import { fromMarkdown, toMarkdown } from '@liuli-util/markdown-util'
+import { fromMarkdown, select, selectAll, toMarkdown, HTML } from '@liuli-util/markdown-util'
 import { BiMultiMap } from '@mami/utils'
 import { formatRelative } from '../utils'
-import { Required } from 'utility-types'
 import { initTempPath } from '../test'
+import { parse } from 'node-html-parser'
 
 const tempPath = initTempPath(__filename)
 
@@ -287,4 +287,44 @@ it('duplicate resource filename', async () => {
   expect(await pathExists(path.resolve(tempPath, 'source/resources/', path.basename(__filename)))).true
   expect(await pathExists(path.resolve(tempPath, 'source/resources/', path.basename(__filename, '.ts') + '_test2.ts')))
     .true
+})
+
+describe('html', () => {
+  it('convertHTMLLinks', () => {
+    const root = fromMarkdown(
+      `
+  # hello
+
+  <audio src=":/4b638fd91af2417e9fd0942c3e04ea0c" loop="loop"></audio>
+  <video src=":/b160280b7d94417bb7f64d5fd1969230" loop="loop"></video>
+  <img src=":/b6175f189a4e4c1cbea14c72848c54cb" alt="IMG_9101.JPG" width="623" height="415" class="jop-noMdConv">
+  <img src="https://github.com" alt="IMG_9101.JPG" width="623" height="415" class="jop-noMdConv">
+  [foo:bar](:/d867b35e62454483ae697185d93617ab)
+  [github](https://github.com)
+  `.trim(),
+    )
+    const resources = [
+      { id: '4b638fd91af2417e9fd0942c3e04ea0c', title: 'test.mp3' },
+      { id: 'b160280b7d94417bb7f64d5fd1969230', title: 'flower.webm' },
+    ] as Resource[]
+    const noteMap = new BiMultiMap<string, string>()
+    noteMap.set('b6175f189a4e4c1cbea14c72848c54cb', path.resolve(tempPath, 'c/Welcome to Joplin.md'))
+    noteMap.set('d867b35e62454483ae697185d93617ab', filenamifyPath(path.resolve(tempPath, 'c/foo:bar')))
+    const resourceMap = new BiMultiMap<string, string>()
+    resources.forEach((item) => resourceMap.set(item.id, path.resolve(tempPath, '_resources', item.title)))
+    convertLinks({
+      fsPath: path.resolve(tempPath, 'a/b/test.md'),
+      note: { resources } as Note,
+      noteMap,
+      resourceMap,
+      root,
+      noteLink: ({ notePath, linkNotePath }) => formatRelative(path.relative(path.dirname(notePath), linkNotePath)),
+      resourceLink: ({ notePath, resourcePath }) => formatRelative(path.relative(path.dirname(notePath), resourcePath)),
+    })
+    const r = toMarkdown(root)
+    console.log(r)
+    expect(r.includes('../../_resources/test.mp3')).true
+    expect(r.includes('../../_resources/flower.webm')).true
+    expect(r.includes(encodeURI('../c/Welcome to Joplin.md'))).true
+  })
 })

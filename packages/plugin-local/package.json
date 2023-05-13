@@ -42,6 +42,8 @@
     "fast-glob": "^3.2.12",
     "filenamify": "^5.1.1",
     "lodash-es": "^4.17.21",
+    "mdast-util-to-hast": "^12.3.0",
+    "node-html-parser": "^6.1.5",
     "uuid": "^9.0.0"
   }
 }

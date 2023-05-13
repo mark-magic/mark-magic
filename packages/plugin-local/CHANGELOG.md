@@ -1,5 +1,11 @@
 # @mami/plugin-local
 
+## 0.5.5
+
+### Patch Changes
+
+- Supports parsing HTML tags in markdown, including img/audio/video.
+
 ## 0.5.4
 
 ### Patch Changes

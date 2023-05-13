@@ -1,5 +1,14 @@
 # @mami/plugin-vuepress
 
+## 0.5.4
+
+### Patch Changes
+
+- Supports parsing HTML tags in markdown, including img/audio/video.
+- Updated dependencies
+  - @mami/plugin-local@0.5.5
+  - @mami/plugin-vitepress@0.5.4
+
 ## 0.5.3
 
 ### Patch Changes

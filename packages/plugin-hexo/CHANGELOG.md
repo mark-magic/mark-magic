@@ -1,5 +1,13 @@
 # @mami/plugin-hexo
 
+## 0.5.7
+
+### Patch Changes
+
+- Supports parsing HTML tags in markdown, including img/audio/video.
+- Updated dependencies
+  - @mami/plugin-local@0.5.5
+
 ## 0.5.6
 
 ### Patch Changes

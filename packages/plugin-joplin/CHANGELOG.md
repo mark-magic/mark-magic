@@ -1,5 +1,11 @@
 # @mami/plugin-joplin
 
+## 0.5.4
+
+### Patch Changes
+
+- Supports parsing HTML tags in markdown, including img/audio/video.
+
 ## 0.5.3
 
 ### Patch Changes

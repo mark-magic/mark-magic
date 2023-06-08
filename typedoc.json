@@ -1,0 +1,8 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPointStrategy": "packages",
+  "name": "API Reference",
+  "entryPoints": [],
+  "plugin": ["typedoc-plugin-resolve-crossmodule-references"],
+  "out": "dist"
+}

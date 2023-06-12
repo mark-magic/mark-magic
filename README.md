@@ -27,21 +27,21 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/rxliuli/mark-magic/main/schema/mark-magic.schema.json
 # mark-magic.yml
 generate:
-  - type: epub
+  - name: book-01
     input:
       - type: local
         path: ./books/01/
     output:
       - type: epub
         path: ./dist/epub/01.epub
-  - type: epub
+  - name: book-02
     input:
       - type: local
         path: ./books/02/
     output:
       - type: epub
         path: ./dist/epub/02.epub
-  - type: docs
+  - name: docs
     input:
       - type: local
         path: ./books/

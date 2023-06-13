@@ -18,7 +18,12 @@
   },
   "devDependencies": {
     "@liuli-util/vite-plugin-node": "^0.1.1",
+    "@types/lodash-es": "^4.17.7",
     "@types/node": "^20.3.0",
+    "lodash-es": "^4.17.21",
+    "micromark-factory-space": "^1.1.0",
+    "micromark-util-character": "^1.2.0",
+    "micromark-util-symbol": "^1.1.0",
     "typescript": "^5.1.3",
     "vite": "^4.3.9",
     "vitest": "^0.32.0"

@@ -1,5 +1,5 @@
-import { mkdir, rm } from 'fs/promises'
-import path from 'path'
+import { mkdirp, remove } from '@liuli-util/fs-extra'
+import path from 'pathe'
 import { beforeEach } from 'vitest'
 
 /**
@@ -10,8 +10,8 @@ import { beforeEach } from 'vitest'
 export function initTempPath(__filename: string) {
   const tempPath = path.resolve(path.dirname(__filename), '.temp', path.basename(__filename))
   beforeEach(async () => {
-    await rm(tempPath, { recursive: true, force: true })
-    await mkdir(tempPath, { recursive: true })
+    await remove(tempPath)
+    await mkdirp(tempPath)
   })
   return tempPath
 }

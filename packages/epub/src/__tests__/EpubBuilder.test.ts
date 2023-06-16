@@ -1,7 +1,7 @@
 import { it, beforeEach } from 'vitest'
 import path from 'path'
 import { v4 } from 'uuid'
-import { initTempPath } from '@mark-magic/test'
+import { initTempPath } from '@liuli-util/test'
 import { EpubBuilder } from '../EpubBuilder'
 import { readFile, writeFile } from 'fs/promises'
 

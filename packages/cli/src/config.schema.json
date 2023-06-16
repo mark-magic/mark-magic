@@ -1,0 +1,99 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "generate": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/GenerateConfig"
+      }
+    }
+  },
+  "required": ["generate"],
+  "definitions": {
+    "GenerateConfig": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "生成任务的名字"
+        },
+        "input": {
+          "$ref": "#/definitions/PluginConfig"
+        },
+        "output": {
+          "$ref": "#/definitions/PluginConfig"
+        }
+      },
+      "required": ["name", "input", "output"]
+    },
+    "PluginConfig": {
+      "anyOf": [
+        { "$ref": "#/definitions/BasePluginConfig" },
+        { "$ref": "#/definitions/LocalPluginConfig" },
+        { "$ref": "#/definitions/EpubPluginConfig" }
+      ]
+    },
+    "LocalPluginConfig": {
+      "type": "object",
+      "description": "从本地目录读取或输出到本地目录",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "插件名字",
+          "enum": ["@mark-magic/plugin-local"]
+        },
+        "config": {
+          "type": "object",
+          "description": "插件配置",
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "本地目录的路径"
+            }
+          },
+          "required": ["path"]
+        }
+      },
+      "required": ["name", "config"]
+    },
+    "EpubPluginConfig": {
+      "type": "object",
+      "description": "输出为 epub",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "插件名字",
+          "enum": ["@mark-magic/plugin-epub"]
+        },
+        "config": {
+          "type": "object",
+          "description": "插件配置",
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "输出文件的路径"
+            }
+          },
+          "required": ["path"]
+        }
+      },
+      "required": ["name", "config"]
+    },
+    "BasePluginConfig": {
+      "type": "object",
+      "description": "插件配置",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "插件名字"
+        },
+        "config": {
+          "type": "object",
+          "description": "插件配置"
+        }
+      },
+      "required": ["name"]
+    }
+  }
+}

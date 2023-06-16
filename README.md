@@ -29,38 +29,44 @@
 generate:
   - name: book-01
     input:
-      - type: local
-        path: ./books/01/
+      - name: '@mark-magic/plugin-local'
+        config:
+          path: ./books/01/
     output:
-      - type: epub
-        path: ./dist/epub/01.epub
+      - name: '@mark-magic/plugin-epub'
+        config:
+          path: ./dist/epub/01.epub
   - name: book-02
     input:
-      - type: local
-        path: ./books/02/
+      - name: '@mark-magic/plugin-local'
+        config:
+          path: ./books/02/
     output:
-      - type: epub
-        path: ./dist/epub/02.epub
+      - name: '@mark-magic/plugin-epub'
+        config:
+          path: ./dist/epub/02.epub
   - name: docs
     input:
-      - type: local
-        path: ./books/
+      - name: '@mark-magic/plugin-local'
+        config:
+          path: ./books/
     output:
-      - type: docs
-        path: ./dist/docs/
-        sidebar:
-          - title: 量子纠缠
-            children:
-              - title: 第一卷-量子纠缠
-                path: ./books/01/readme.md
-              - title: 一个愿望
-                path: ./books/01/001.md
-          - title: 第二卷-宇宙膨胀
-            children:
-              - title: 量子纠缠
-                path: ./books/02/readme.md
-              - title: 一个愿望
-                path: ./books/02/001.md
+      - name: '@mark-magic/plugin-docs'
+        config:
+          path: ./dist/docs/
+          sidebar:
+            - title: 量子纠缠
+              children:
+                - title: 第一卷-量子纠缠
+                  path: ./books/01/readme.md
+                - title: 一个愿望
+                  path: ./books/01/001.md
+            - title: 第二卷-宇宙膨胀
+              children:
+                - title: 量子纠缠
+                  path: ./books/02/readme.md
+                - title: 一个愿望
+                  path: ./books/02/001.md
 ```
 
 - 输入

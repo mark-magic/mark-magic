@@ -1,1 +1,1 @@
-export * from './EpubBuilder.js'
+export { EpubBuilder } from './EpubBuilder'

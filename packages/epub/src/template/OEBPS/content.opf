@@ -11,6 +11,7 @@
     <item id="chapter1" href="Text/chapter1.xhtml" media-type="application/xhtml+xml" />
     <item id="chapter2" href="Text/chapter2.xhtml" media-type="application/xhtml+xml" />
     <item id="css" href="Styles/style.css" media-type="text/css" />
+    <item id="nav" href="Text/nav.xhtml" media-type="application/xhtml+xml" properties="nav" />
   </manifest>
   <spine toc="ncx">
     <itemref idref="chapter1" />

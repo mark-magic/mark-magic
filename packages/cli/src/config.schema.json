@@ -73,6 +73,37 @@
             "path": {
               "type": "string",
               "description": "输出文件的路径"
+            },
+            "metadata": {
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "书籍唯一标识"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "书籍标题"
+                },
+                "creator": {
+                  "type": "string",
+                  "description": "作者"
+                },
+                "publisher": {
+                  "type": "string",
+                  "description": "发布者"
+                },
+                "language": {
+                  "type": "string",
+                  "description": "语言"
+                },
+                "cover": {
+                  "type": "string",
+                  "description": "封面图片"
+                }
+              },
+              "required": ["id", "title", "creator", "publisher", "language", "cover"]
             }
           },
           "required": ["path"]

@@ -66,6 +66,7 @@ export type {
 export type { Node } from 'unist'
 export { u } from 'unist-builder'
 export { select, selectAll } from 'unist-util-select'
+export { toString } from 'mdast-util-to-string'
 export type { Extension as MicromarkSyntaxExtension } from 'micromark-util-types'
 export type { Extension as MdastExtension } from 'mdast-util-from-markdown'
 export type { Options as ToMarkdownExtension } from 'mdast-util-to-markdown'

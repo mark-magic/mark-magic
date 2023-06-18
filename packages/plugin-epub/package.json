@@ -19,6 +19,7 @@
     "@liuli-util/vite-plugin-node": "^0.2.0",
     "@mark-magic/plugin-local": "workspace:^",
     "@mark-magic/utils": "workspace:^",
+    "@types/fs-extra": "^11.0.1",
     "@types/lodash-es": "^4.17.7",
     "@types/uuid": "^9.0.2",
     "typescript": "^5.0.4",
@@ -30,10 +31,11 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "@liuli-util/markdown-util": "^0.5.3",
-    "@liuli-util/tree": "^3.7.0",
+    "@liuli-util/markdown-util": "workspace:^",
+    "@liuli-util/tree": "^3.8.0",
     "@mark-magic/core": "workspace:^",
     "@mark-magic/epub": "workspace:^",
+    "fs-extra": "^11.1.1",
     "lodash-es": "^4.17.21",
     "pathe": "^1.1.1",
     "uuid": "^9.0.0"

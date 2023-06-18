@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "bin": {
-    "cli": "./bin.js"
+    "mark-magic": "./bin.js"
   },
   "scripts": {
     "setup": "pnpm build",
@@ -20,6 +20,8 @@
   },
   "devDependencies": {
     "@liuli-util/vite-plugin-node": "^0.3.0",
+    "@mark-magic/plugin-epub": "workspace:^",
+    "@mark-magic/plugin-local": "workspace:^",
     "@types/lodash-es": "^4.17.7",
     "@types/node": "^20.1.4",
     "json-schema-to-typescript": "^13.0.2",
@@ -30,6 +32,7 @@
   },
   "dependencies": {
     "@liuli-util/async": "^3.6.0",
+    "@liuli-util/fs": "^0.1.0",
     "@mark-magic/core": "workspace:^",
     "lodash-es": "^4.17.21",
     "pathe": "^1.1.1",

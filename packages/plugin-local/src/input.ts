@@ -89,20 +89,20 @@ export function convertLinks({
   return uniqBy(resources, (item) => item.id)
 }
 
-export function input(options: { root: string }): InputPlugin {
+export function input(options: { path: string }): InputPlugin {
   return {
     name: 'local',
     async *generate() {
-      const list = await scan(options.root)
+      const list = await scan(options.path)
       const resourceMap = new BiMultiMap<string, string>()
       // const tagMap = new Map<string, Tag>()
       for (const it of list) {
-        const fsPath = pathe.resolve(options.root, it.relPath)
+        const fsPath = pathe.resolve(options.path, it.relPath)
         const root = fromMarkdown(convertYamlTab(await readFile(fsPath, 'utf-8')))
         const meta = (getYamlMeta(root) ?? {}) as Partial<LocalNoteMeta>
         const resources = convertLinks({
           root,
-          rootPath: options.root,
+          rootPath: options.path,
           notePath: fsPath,
           list,
           resourceMap,

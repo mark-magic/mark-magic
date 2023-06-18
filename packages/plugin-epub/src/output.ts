@@ -1,25 +1,16 @@
 import { OutputPlugin } from '@mark-magic/core'
 import { EpubBuilder, GenerateOptions, MetaData, Toc, Chapter } from '@mark-magic/epub'
-import { Image, Link, fromMarkdown, selectAll, toHtml } from '@liuli-util/markdown-util'
+import { Heading, Image, Link, fromMarkdown, selectAll, toString, toHtml } from '@liuli-util/markdown-util'
 import { v4 } from 'uuid'
 import { treeMap } from '@liuli-util/tree'
 import { readFile, writeFile } from 'fs/promises'
+import { mkdirp } from 'fs-extra/esm'
 import pathe from 'pathe'
-import { extractZipToFolder } from '@mark-magic/utils'
 import { keyBy } from 'lodash-es'
 import path from 'path'
-import { extractResourceId, isContentLink, isResourceLink } from './utils'
+import { extractResourceId, isContentLink, isIndex, isResourceLink } from './utils'
 
-interface RenderNavToc extends Omit<Toc, 'id' | 'chapterId' | 'children'> {
-  /** 标题 */
-  title: string
-  /** 路径 */
-  path: string
-  /** 子目录，注意，它会被扁平化生成 spine */
-  children?: RenderNavToc[]
-}
-
-export function sortChapter<T extends Pick<RenderNavToc, 'path'>>(chapters: T[]): T[] {
+export function sortChapter<T extends { path: string }>(chapters: T[]): T[] {
   return chapters.sort((a, b) => {
     const aPath = a.path
     const bPath = b.path
@@ -32,12 +23,9 @@ export function sortChapter<T extends Pick<RenderNavToc, 'path'>>(chapters: T[])
     const aDir = pathe.dirname(aPath)
     const bDir = pathe.dirname(bPath)
 
-    const aFileName = pathe.basename(aPath)
-    const bFileName = pathe.basename(bPath)
-
     if (aDir === bDir) {
-      if (['readme.md', 'index.md'].includes(aFileName!)) return -1
-      if (['readme.md', 'index.md'].includes(bFileName!)) return 1
+      if (isIndex(aPath)) return -1
+      if (isIndex(bPath)) return 1
     }
 
     // Default: natural sort
@@ -45,7 +33,77 @@ export function sortChapter<T extends Pick<RenderNavToc, 'path'>>(chapters: T[])
   })
 }
 
-export function output(options: { metadata: MetaData; toc: RenderNavToc[]; output: string }): OutputPlugin {
+export interface Sidebar extends Omit<Toc, 'children'> {
+  /** 章节对应的内容路径，方便将其转换为 tree */
+  path: string
+  children?: Sidebar[]
+}
+
+export function treeSidebarByPath<T extends Pick<Sidebar, 'path' | 'children'>>(sidebar: T[]): T[] {
+  const tree = {}
+
+  // First, build a tree structure
+  for (const item of sidebar) {
+    const parts = item.path.split('/')
+    let node = tree as any
+    for (let i = 0; i < parts.length; i++) {
+      const part = parts[i]
+      if (!node[part]) {
+        node[part] = {}
+      }
+      node = node[part]
+    }
+    node._self = item
+  }
+
+  // Then, convert the tree structure to the desired format
+  function convert(node: any, prefix = ''): any[] {
+    const children = []
+    for (const key in node) {
+      if (key !== '_self') {
+        const childNode = node[key]
+        const childPath = path.join(prefix, key)
+        if (childNode._self) {
+          children.push(childNode._self)
+        }
+        const grandChildren = convert(childNode, childPath)
+        if (grandChildren.length > 0) {
+          children.push({ path: childPath, children: grandChildren })
+        }
+      }
+    }
+    return children
+  }
+
+  const result = convert(tree)
+
+  // Finally, remove top-level 'readme.md' or 'index.md'
+  const r = result.filter((item) => !isIndex(item.path))
+  return treeMap(
+    sortChapter(r),
+    (it) => {
+      if (!it.children) {
+        return it
+      }
+      const findIndex = (it.children as Sidebar[]).find((it) =>
+        ['readme.md', 'index.md'].includes(pathe.basename(it.path).toLocaleLowerCase()),
+      )
+      it.children = sortChapter(it.children as Sidebar[])
+      if (!findIndex) {
+        throw new Error(it.path + ' 下必须存在 readme.md 或者 index.md')
+      }
+      Object.assign(it, findIndex)
+      it.children = it.children.filter((it) => !isIndex(it.path))
+      return it
+    },
+    {
+      id: 'path',
+      children: 'children',
+    },
+  )
+}
+
+export function output(options: { metadata: MetaData; path: string }): OutputPlugin {
   const _options: Omit<GenerateOptions, 'text'> & {
     text: (Chapter & {
       path: string
@@ -56,7 +114,8 @@ export function output(options: { metadata: MetaData; toc: RenderNavToc[]; outpu
     text: [],
     toc: [],
   }
-  const map = new Map<string, string>()
+
+  const sidebars: Sidebar[] = []
   return {
     name: 'epub',
     async start() {
@@ -97,6 +156,17 @@ export function output(options: { metadata: MetaData; toc: RenderNavToc[]; outpu
         .forEach((it) => {
           it.url = './' + extractResourceId(it.url) + '.xhtml'
         })
+      const findHeader = (selectAll('heading', root) as Heading[]).find((it) => it.depth === 1)
+      if (findHeader?.children[0]) {
+        content.name = toString(findHeader.children[0])
+      }
+      const sidebar: Sidebar = {
+        id: content.id,
+        title: content.name,
+        path: pathe.join(...content.path),
+        chapterId: content.id,
+      }
+      sidebars.push(sidebar)
       const c: Chapter & {
         path: string
       } = {
@@ -112,29 +182,15 @@ export function output(options: { metadata: MetaData; toc: RenderNavToc[]; outpu
           buffer: it.raw,
         })
       })
-      map.set(pathe.join(...content.path), content.id)
     },
     async end() {
-      _options.toc = treeMap(
-        options.toc,
-        (it) => {
-          return {
-            id: v4(),
-            title: it.title,
-            chapterId: map.get(it.path)!,
-            children: it.children,
-          } as Toc
-        },
-        {
-          id: 'path',
-          children: 'children',
-        },
-      )
+      _options.toc = treeSidebarByPath(sidebars)
       _options.text = sortChapter(_options.text)
       const zip = new EpubBuilder().gen(_options)
-      const debugDirPath = pathe.join(pathe.dirname(options.output), pathe.basename(options.output, '.epub'))
-      await extractZipToFolder(zip, debugDirPath)
-      await writeFile(pathe.resolve(options.output), await zip.generateAsync({ type: 'nodebuffer' }))
+      // const debugDirPath = pathe.join(pathe.dirname(options.path), pathe.basename(options.path, '.epub'))
+      // await extractZipToFolder(zip, debugDirPath)
+      await mkdirp(pathe.dirname(options.path))
+      await writeFile(pathe.resolve(options.path), await zip.generateAsync({ type: 'nodebuffer' }))
     },
   }
 }

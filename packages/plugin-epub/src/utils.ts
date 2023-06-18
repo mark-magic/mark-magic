@@ -1,3 +1,5 @@
+import pathe from 'pathe'
+
 export function formatRelative(s: string): string {
   const prefix = ['./', '../']
   const r = s.replaceAll('\\', '/')
@@ -10,3 +12,5 @@ export const extractResourceId = (link: string) => link.slice(':/resource/'.leng
 export const extractContentId = (link: string) => link.slice(':/content/'.length)
 export const wrapContentLink = (id: string) => ':/content/' + id
 export const wrapResourceLink = (id: string) => ':/resource/' + id
+
+export const isIndex = (path: string) => ['readme.md', 'index.md'].includes(pathe.basename(path).toLocaleLowerCase())

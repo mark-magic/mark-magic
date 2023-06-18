@@ -53,7 +53,7 @@ tags:
     await writeFile(fsPath, item.content)
   })
 
-  const r = keyBy(await fromAsync(input({ root: tempPath }).generate()), (it) => it.name)
+  const r = keyBy(await fromAsync(input({ path: tempPath }).generate()), (it) => it.name)
   expect(Object.keys(r).length).eq(2)
   // 验证资源会自动去重
   expect(r['test'].resources.length).eq(1)
@@ -86,6 +86,6 @@ it('input 读取目录下的文件', async () => {
   await mkdir(srcPath)
   await writeFile(path.resolve(srcPath, './a.md'), 'a')
   await writeFile(path.resolve(srcPath, './b.md'), 'b')
-  const list = await fromAsync(input({ root: srcPath }).generate())
+  const list = await fromAsync(input({ path: srcPath }).generate())
   list.forEach((it) => expect(it.path).length(1))
 })

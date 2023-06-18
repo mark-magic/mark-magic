@@ -18,7 +18,7 @@ import { keyBy, dropRight, uniqBy, omit } from 'lodash-es'
 import pathe from 'pathe'
 import { v4 } from 'uuid'
 import { LocalNoteMeta } from './output'
-import { wrapContentLink, wrapResourceLink } from './utils'
+import { extractContentId, isContentLink, isResourceLink, wrapContentLink, wrapResourceLink } from './utils'
 
 interface ScanNote {
   id: string
@@ -75,7 +75,7 @@ export function convertLinks({
       return
     }
     const fsPath = pathe.resolve(pathe.dirname(notePath), item.url)
-    const relPath = pathe.relative(rootPath, fsPath).replaceAll('\\', '/')
+    const relPath = pathe.relative(rootPath, fsPath)
     if (noteMap[relPath]) {
       item.url = wrapContentLink(noteMap[relPath].id)
       return
@@ -84,7 +84,7 @@ export function convertLinks({
       resourceMap.set(fsPath, v4())
     }
     resources.push({ id: resourceMap.get(fsPath)!, fsPath })
-    item.url = wrapResourceLink(noteMap[relPath].id)
+    item.url = wrapResourceLink(resourceMap.get(fsPath)!)
   })
   return uniqBy(resources, (item) => item.id)
 }
@@ -136,10 +136,7 @@ export function input(options: { root: string }): InputPlugin {
                 updated: Math.floor(s.mtimeMs),
               }
             }),
-          path: dropRight(
-            it.relPath.split('/').filter((s) => s.length !== 0),
-            1,
-          ),
+          path: it.relPath.split('/').filter((s) => s.length !== 0),
         }
         yield note
       }

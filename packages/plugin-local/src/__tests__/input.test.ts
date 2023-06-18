@@ -7,10 +7,11 @@ import { AsyncArray } from '@liuli-util/async'
 import { keyBy, omit, pick, uniqBy } from 'lodash-es'
 import { Content } from '@mark-magic/core'
 import { initTempPath } from '../test'
+import { mkdir } from 'fs/promises'
 
 const tempPath = initTempPath(__filename)
 
-it('input', async () => {
+it('basic', async () => {
   const list = [
     {
       path: 'a/b/test1.md',
@@ -78,4 +79,13 @@ tags:
   //   (i) => i.id,
   // )
   // expect(tags.length).eq(2)
+})
+
+it('input 读取目录下的文件', async () => {
+  const srcPath = path.resolve(tempPath, './books/')
+  await mkdir(srcPath)
+  await writeFile(path.resolve(srcPath, './a.md'), 'a')
+  await writeFile(path.resolve(srcPath, './b.md'), 'b')
+  const list = await fromAsync(input({ root: srcPath }).generate())
+  list.forEach((it) => expect(it.path).length(1))
 })

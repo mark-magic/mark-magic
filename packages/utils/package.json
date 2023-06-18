@@ -4,11 +4,10 @@
   "license": "MIT",
   "type": "module",
   "private": true,
-  "exports": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "exports": "./src/index.ts",
+  "types": "./src/index.ts",
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts",
-    "setup": "pnpm build",
     "test": "vitest run"
   },
   "sideEffects": false,
@@ -23,8 +22,10 @@
     "vitest": "^0.23.4"
   },
   "dependencies": {
+    "@liuli-util/fs": "^0.1.0",
     "@liuli-util/fs-extra": "^0.1.0",
-    "@mark-magic/core": "workspace:^"
+    "@mark-magic/core": "workspace:^",
+    "jszip": "^3.10.1"
   },
   "publishConfig": {
     "access": "public",

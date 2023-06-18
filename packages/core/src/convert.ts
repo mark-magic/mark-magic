@@ -23,7 +23,7 @@ export interface Resource extends Data {
 export interface Content extends Data {
   /** 文本内容，实质上并不真的关心格式 */
   content: string
-  /** 文件的路径，用于规划目录 */
+  /** 文件的路径，用于规划目录，包括文件名本身，例如 books/01/001.md */
   path: string[]
   /** 引用的资源，重复的资源可以指向同一个 */
   resources: Resource[]

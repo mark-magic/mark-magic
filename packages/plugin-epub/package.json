@@ -15,7 +15,12 @@
   },
   "sideEffects": false,
   "devDependencies": {
+    "@liuli-util/test": "^3.6.0",
     "@liuli-util/vite-plugin-node": "^0.2.0",
+    "@mark-magic/plugin-local": "workspace:^",
+    "@mark-magic/utils": "workspace:^",
+    "@types/lodash-es": "^4.17.7",
+    "@types/uuid": "^9.0.2",
     "typescript": "^5.0.4",
     "vite": "^4.3.9",
     "vitest": "^0.31.0"
@@ -26,7 +31,11 @@
   },
   "dependencies": {
     "@liuli-util/markdown-util": "^0.5.3",
+    "@liuli-util/tree": "^3.7.0",
     "@mark-magic/core": "workspace:^",
-    "@mark-magic/epub": "workspace:^"
+    "@mark-magic/epub": "workspace:^",
+    "lodash-es": "^4.17.21",
+    "pathe": "^1.1.1",
+    "uuid": "^9.0.0"
   }
 }

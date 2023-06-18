@@ -103,9 +103,10 @@ export function renderNavXML(toc: RenderNavToc[]) {
 export class EpubBuilder {
   private renderMetadata(meta: MetaData) {
     return `<metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
-    <dc:identifier opf:scheme="uuid" id="uuid_id">${meta.id}</dc:identifier>
+    <dc:identifier id="book-id">${meta.id}</dc:identifier>
     <dc:title>${meta.title}</dc:title>
     <dc:creator>${meta.creator}</dc:creator>
+    <dc:publisher>${meta.publisher}</dc:publisher>
     <dc:language>${meta.language}</dc:language>
     <meta name="cover" content="${meta.cover}"/>
   </metadata>`

@@ -4,7 +4,7 @@
   "license": "GPL",
   "scripts": {
     "postinstall": "npx simple-git-hooks",
-    "init-all": "pnpm -r run init",
+    "setup-all": "pnpm -r run setup",
     "test-all": "pnpm -r run test",
     "clean-all": "pnpx rimraf **/node_modules **/dist",
     "docs-build": "typedoc --options typedoc.json",

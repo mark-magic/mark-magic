@@ -7,7 +7,7 @@
     "cli": "./bin.js"
   },
   "scripts": {
-    "init": "pnpm build",
+    "setup": "pnpm build",
     "build": "vite build",
     "dev": "pnpm build --watch",
     "start": "vite-node src/bin.ts",
@@ -19,7 +19,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
-    "@liuli-util/vite-plugin-node": "^0.2.0",
+    "@liuli-util/vite-plugin-node": "^0.3.0",
     "@types/lodash-es": "^4.17.7",
     "@types/node": "^20.1.4",
     "json-schema-to-typescript": "^13.0.2",

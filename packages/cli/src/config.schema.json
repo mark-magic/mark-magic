@@ -28,11 +28,7 @@
       "required": ["name", "input", "output"]
     },
     "PluginConfig": {
-      "anyOf": [
-        { "$ref": "#/definitions/BasePluginConfig" },
-        { "$ref": "#/definitions/LocalPluginConfig" },
-        { "$ref": "#/definitions/EpubPluginConfig" }
-      ]
+      "anyOf": [{ "$ref": "#/definitions/LocalPluginConfig" }, { "$ref": "#/definitions/EpubPluginConfig" }]
     },
     "LocalPluginConfig": {
       "type": "object",

@@ -1,12 +1,12 @@
 import path from 'pathe'
 import { expect, it } from 'vitest'
-import { input } from '../input'
+import { input, scan } from '../input'
 import { fromAsync } from '@mark-magic/utils'
 import { mkdirp, readFile, writeFile } from '@liuli-util/fs-extra'
 import { AsyncArray } from '@liuli-util/async'
 import { keyBy, omit, pick, uniqBy } from 'lodash-es'
 import { Content } from '@mark-magic/core'
-import { initTempPath } from '../test'
+import { initTempPath } from '@liuli-util/test'
 import { mkdir } from 'fs/promises'
 
 const tempPath = initTempPath(__filename)
@@ -88,4 +88,51 @@ it('input 读取目录下的文件', async () => {
   await writeFile(path.resolve(srcPath, './b.md'), 'b')
   const list = await fromAsync(input({ path: srcPath }).generate())
   list.forEach((it) => expect(it.path).length(1))
+})
+
+it('hashid', async () => {
+  const list = [
+    {
+      path: 'a/b/test1.md',
+      content: `
+---
+name: test
+tags:
+  - blog
+  - test
+created: 1667644025993
+updated: 1667644025993
+---
+# test1
+[test2](../../c/test2.md)
+[input.test.ts](../../input.test.ts)
+[input.test.ts](../../input.test.ts)
+      `.trim(),
+    },
+    {
+      path: 'c/test2.md',
+      content: `
+---
+tags:
+  - blog
+---
+# test2
+[test1](../a/b/test1.md)
+[input.test.ts](../input.test.ts)
+      `.trim(),
+    },
+    {
+      path: 'input.test.ts',
+      content: await readFile(__filename),
+    },
+  ]
+  await AsyncArray.forEach(list, async (item) => {
+    const fsPath = path.resolve(tempPath, item.path)
+    await mkdirp(path.dirname(fsPath))
+    await writeFile(fsPath, item.content)
+  })
+
+  const r1 = await scan(path.resolve(tempPath))
+  const r2 = await scan(path.resolve(tempPath))
+  expect(r1).deep.eq(r2)
 })

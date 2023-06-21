@@ -5,10 +5,11 @@ import { expect, it, describe } from 'vitest'
 import { convert, InputPlugin, Content, Resource } from '@mark-magic/core'
 import { calcMeta, convertLinks, defaultOptions, output } from '../output'
 import filenamify, { filenamifyPath } from 'filenamify'
-import { fromMarkdown, toMarkdown } from '@liuli-util/markdown-util'
+import { Image, Link, fromMarkdown, select, toMarkdown } from '@liuli-util/markdown-util'
 import { BiMultiMap } from '@mark-magic/utils'
 import { formatRelative } from '../utils'
-import { initTempPath } from '../test'
+import { fromVirtual } from '@mark-magic/utils'
+import { initTempPath } from '@liuli-util/test'
 
 const tempPath = initTempPath(__filename)
 
@@ -321,4 +322,55 @@ describe('html', () => {
     expect(r.includes('../../_resources/flower.webm')).true
     // expect(r.includes(encodeURI('../c/Welcome to Joplin.md'))).true
   })
+})
+
+it('output', async () => {
+  const list: (Pick<Content, 'id' | 'content'> & {
+    path: string
+    resources?: Pick<Resource, 'id' | 'name' | 'raw'>[]
+  })[] = [
+    {
+      id: 'a',
+      path: '/a.md',
+      content: `
+    # a
+    [b](:/content/b)
+    ![c](:/resource/c)
+    `
+        .split('\n')
+        .map((it) => it.trim())
+        .join('\n'),
+      resources: [
+        {
+          id: 'c',
+          name: 'c.jpg',
+          raw: Buffer.from(''),
+        } as Resource,
+      ],
+    },
+    { id: 'b', path: '/b.md', content: '# b' },
+  ]
+  const rootPath = pathe.resolve(tempPath, './docs/')
+  const postsPath = pathe.resolve(rootPath, 'p')
+  const resourcePath = pathe.resolve(rootPath, 'resources')
+  await convert({
+    input: fromVirtual(list),
+    output: output({
+      rootNotePath: postsPath,
+      rootResourcePath: resourcePath,
+      meta: () => null,
+      noteLink: ({ linkNoteId }) => `/p/${linkNoteId}`,
+      resourceLink: ({ resource }) => `../resources/${resource.id}${pathe.extname(resource.name)}`,
+      notePath: (note) => pathe.resolve(postsPath, note.id + '.md'),
+      resourcePath: (resource) => pathe.resolve(resourcePath, resource.id + pathe.extname(resource.name)),
+    }),
+  })
+  expect(await pathExists(pathe.resolve(rootPath, 'p/a.md'))).true
+  expect(await pathExists(pathe.resolve(rootPath, 'p/b.md'))).true
+  expect(await pathExists(pathe.resolve(rootPath, 'resources/c.jpg'))).true
+  const t = await readFile(pathe.resolve(rootPath, 'p/a.md'), 'utf-8')
+  console.log(t)
+  const root = fromMarkdown(t)
+  expect((select('link', root) as Link).url).eq('/p/b')
+  expect((select('image', root) as Image).url).eq('../resources/c.jpg')
 })

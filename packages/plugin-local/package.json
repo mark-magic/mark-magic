@@ -6,7 +6,7 @@
   "exports": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc && tsup src/index.ts --format esm --sourcemap",
+    "build": "vite build",
     "dev": "pnpm build --watch",
     "setup": "pnpm build",
     "test": "vitest run"
@@ -20,8 +20,11 @@
     "entryPoint": "./src/index.ts"
   },
   "devDependencies": {
+    "@liuli-util/test": "^3.6.0",
+    "@liuli-util/vite-plugin-node": "^0.3.0",
     "@mark-magic/core": "workspace:^",
     "@mark-magic/utils": "workspace:^",
+    "@types/crypto-js": "^4.1.1",
     "@types/lodash-es": "^4.17.6",
     "@types/node": "^18.8.3",
     "@types/uuid": "^8.3.4",
@@ -29,7 +32,8 @@
     "tsx": "^3.10.1",
     "typescript": "^4.8.4",
     "utility-types": "^3.10.0",
-    "vitest": "^0.24.0"
+    "vite": "^4.3.9",
+    "vitest": "^0.32.2"
   },
   "publishConfig": {
     "access": "public",
@@ -38,7 +42,8 @@
   "dependencies": {
     "@liuli-util/async": "^3.6.0",
     "@liuli-util/fs-extra": "^0.1.0",
-    "@liuli-util/markdown-util": "^0.5.3",
+    "@liuli-util/markdown-util": "workspace:*",
+    "crypto-js": "^4.1.1",
     "fast-glob": "^3.2.12",
     "filenamify": "^5.1.1",
     "lodash-es": "^4.17.21",

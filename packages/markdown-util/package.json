@@ -4,9 +4,12 @@
   "version": "0.6.0",
   "sideEffects": false,
   "exports": {
-    "import": "./dist/index.js",
-    "types": "./dist/index.d.ts"
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
   },
+  "types": "./dist/index.d.ts",
   "scripts": {
     "setup": "pnpm build",
     "build": "vite build",

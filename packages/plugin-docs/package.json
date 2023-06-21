@@ -1,0 +1,40 @@
+{
+  "name": "@mark-magic/plugin-docs",
+  "private": true,
+  "version": "0.1.0",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    "import": "./dist/index.js",
+    "types": "./dist/index.d.ts"
+  },
+  "scripts": {
+    "build": "vite build",
+    "setup": "pnpm build",
+    "test": "vitest run"
+  },
+  "sideEffects": false,
+  "devDependencies": {
+    "@liuli-util/fs": "^0.1.0",
+    "@liuli-util/test": "^3.6.0",
+    "@liuli-util/vite-plugin-node": "^0.2.0",
+    "@mark-magic/utils": "workspace:^",
+    "@types/node": "^20.3.1",
+    "@types/uuid": "^9.0.2",
+    "typescript": "^5.0.4",
+    "uuid": "^9.0.0",
+    "vite": "^4.3.9",
+    "vitest": "^0.31.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "@liuli-util/markdown-util": "workspace:^",
+    "@liuli-util/tree": "^3.8.0",
+    "@mark-magic/core": "workspace:^",
+    "@mark-magic/plugin-local": "workspace:^",
+    "pathe": "^1.1.1"
+  }
+}

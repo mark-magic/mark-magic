@@ -1,14 +1,22 @@
 import { AsyncArray } from '@liuli-util/async'
 import { mkdirp, readFile, remove, writeFile } from '@liuli-util/fs-extra'
 import pathe from 'pathe'
-import type { Content, OutputPlugin, Resource } from '@mark-magic/core'
+import {
+  extractContentId,
+  extractResourceId,
+  isContentLink,
+  isResourceLink,
+  type Content,
+  type OutputPlugin,
+  type Resource,
+} from '@mark-magic/core'
 import { fromMarkdown, Link, Root, setYamlMeta, toMarkdown, Image, selectAll, HTML } from '@liuli-util/markdown-util'
 import filenamify from 'filenamify'
 import { keyBy } from 'lodash-es'
 import { Required, ValuesType } from 'utility-types'
 import { BiMultiMap } from '@mark-magic/utils'
-import { extractContentId, extractResourceId, formatRelative, isContentLink, isResourceLink } from './utils'
 import { parse } from 'node-html-parser'
+import { formatRelative } from './utils'
 
 export function defaultOptions(
   options: Required<Partial<OutputOptions>, 'rootNotePath' | 'rootResourcePath'>,

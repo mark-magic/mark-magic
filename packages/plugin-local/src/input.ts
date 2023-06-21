@@ -10,15 +10,18 @@ import {
   selectAll,
   setYamlMeta,
 } from '@liuli-util/markdown-util'
-import { InputPlugin, Content } from '@mark-magic/core'
+import { InputPlugin, Content, wrapContentLink, wrapResourceLink } from '@mark-magic/core'
 import { BiMultiMap } from '@mark-magic/utils'
 import FastGlob from 'fast-glob'
 import { readFile } from 'fs/promises'
-import { keyBy, dropRight, uniqBy, omit } from 'lodash-es'
+import { keyBy, uniqBy, omit } from 'lodash-es'
 import pathe from 'pathe'
-import { v4 } from 'uuid'
 import { LocalNoteMeta } from './output'
-import { extractContentId, isContentLink, isResourceLink, wrapContentLink, wrapResourceLink } from './utils'
+import crypto from 'crypto'
+
+function hashString(s: string) {
+  return crypto.createHash('md5').update(s).digest('hex')
+}
 
 interface ScanNote {
   id: string
@@ -34,7 +37,7 @@ export async function scan(root: string): Promise<ScanNote[]> {
       ignore: ['.obsidian'],
     })
   ).map((item) => ({
-    id: v4(),
+    id: hashString(item).toString(),
     name: pathe.basename(item, '.md'),
     relPath: item,
   }))
@@ -81,7 +84,7 @@ export function convertLinks({
       return
     }
     if (!resourceMap.has(fsPath)) {
-      resourceMap.set(fsPath, v4())
+      resourceMap.set(fsPath, hashString(fsPath).toString())
     }
     resources.push({ id: resourceMap.get(fsPath)!, fsPath })
     item.url = wrapResourceLink(resourceMap.get(fsPath)!)

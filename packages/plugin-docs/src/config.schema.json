@@ -1,0 +1,130 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "output": {
+      "type": "object",
+      "description": "输出为文档网站",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "插件名称",
+          "enum": ["@mark-magic/plugin-docs"]
+        },
+        "config": {
+          "$ref": "#/definitions/DocsOutputConfig"
+        }
+      },
+      "required": ["name", "config"],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "DocsOutputConfig": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "输出文件的路径"
+        },
+        "public": {
+          "type": "string",
+          "description": "静态资源目录"
+        },
+        "name": {
+          "type": "string",
+          "description": "网站名称"
+        },
+        "logo": {
+          "type": "string",
+          "description": "网站 logo"
+        },
+        "repo": {
+          "type": "string",
+          "description": "仓库地址"
+        },
+        "theme": {
+          "type": "object",
+          "properties": {
+            "dark": {
+              "type": "boolean"
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        "giscus": {
+          "type": "object",
+          "properties": {
+            "repo": {
+              "type": "string"
+            },
+            "repoId": {
+              "type": "string"
+            },
+            "category": {
+              "type": "string"
+            },
+            "categoryId": {
+              "type": "string"
+            },
+            "mapping": {
+              "type": "string"
+            },
+            "reactionsEnabled": {
+              "type": "string"
+            },
+            "emitMetadata": {
+              "type": "string"
+            },
+            "inputPosition": {
+              "type": "string"
+            },
+            "theme": {
+              "type": "string"
+            },
+            "lang": {
+              "type": "string"
+            },
+            "crossorigin": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "repo",
+            "repoId",
+            "category",
+            "categoryId",
+            "mapping",
+            "reactionsEnabled",
+            "emitMetadata",
+            "inputPosition",
+            "theme",
+            "lang",
+            "crossorigin"
+          ],
+          "additionalProperties": false
+        },
+        "gtag": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "additionalItems": false
+            }
+          ]
+        }
+      },
+      "required": ["path", "name"],
+      "additionalItems": false,
+      "additionalProperties": false
+    }
+  }
+}

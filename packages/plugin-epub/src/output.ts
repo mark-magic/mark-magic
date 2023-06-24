@@ -9,6 +9,7 @@ import pathe from 'pathe'
 import { keyBy } from 'lodash-es'
 import path from 'path'
 import { extractResourceId, isContentLink, isIndex, isResourceLink } from './utils'
+import { EpubOutputConfig } from './config.schema'
 
 export function sortChapter<T extends { path: string }>(chapters: T[]): T[] {
   return chapters.sort((a, b) => {
@@ -103,7 +104,7 @@ export function treeSidebarByPath<T extends Pick<Sidebar, 'path' | 'children'>>(
   )
 }
 
-export function output(options: { metadata: MetaData; path: string }): OutputPlugin {
+export function output(options: EpubOutputConfig): OutputPlugin {
   const _options: Omit<GenerateOptions, 'text'> & {
     text: (Chapter & {
       path: string

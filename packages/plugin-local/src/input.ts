@@ -16,20 +16,21 @@ import FastGlob from 'fast-glob'
 import { readFile } from 'fs/promises'
 import { keyBy, uniqBy, omit } from 'lodash-es'
 import pathe from 'pathe'
-import { LocalNoteMeta } from './output'
+import { LocalContentMeta } from './output'
 import crypto from 'crypto'
+import { LocalInputConfig } from './config.schema'
 
 function hashString(s: string) {
   return crypto.createHash('md5').update(s).digest('hex')
 }
 
-interface ScanNote {
+interface ScanContent {
   id: string
   name: string
   relPath: string
 }
 
-export async function scan(root: string): Promise<ScanNote[]> {
+export async function scan(root: string): Promise<ScanContent[]> {
   return (
     await FastGlob('**/*.md', {
       cwd: root,
@@ -61,26 +62,26 @@ export function convertLinks({
   root,
   resourceMap,
   list,
-  notePath,
+  contentPath,
   rootPath,
 }: {
   root: Root
-  list: ScanNote[]
+  list: ScanContent[]
   resourceMap: BiMultiMap<string, string>
-  notePath: string
+  contentPath: string
   rootPath: string
 }): { id: string; fsPath: string }[] {
   const urls = selectAll('image,link', root) as (Image | Link)[]
-  const noteMap = keyBy(list, (item) => item.relPath)
+  const contentMap = keyBy(list, (item) => item.relPath)
   const resources: { id: string; fsPath: string }[] = []
   urls.forEach((item) => {
     if (!['../', './'].some((s) => item.url.startsWith(s))) {
       return
     }
-    const fsPath = pathe.resolve(pathe.dirname(notePath), item.url)
+    const fsPath = pathe.resolve(pathe.dirname(contentPath), item.url)
     const relPath = pathe.relative(rootPath, fsPath)
-    if (noteMap[relPath]) {
-      item.url = wrapContentLink(noteMap[relPath].id)
+    if (contentMap[relPath]) {
+      item.url = wrapContentLink(contentMap[relPath].id)
       return
     }
     if (!resourceMap.has(fsPath)) {
@@ -92,7 +93,7 @@ export function convertLinks({
   return uniqBy(resources, (item) => item.id)
 }
 
-export function input(options: { path: string }): InputPlugin {
+export function input(options: LocalInputConfig): InputPlugin {
   return {
     name: 'local',
     async *generate() {
@@ -102,11 +103,11 @@ export function input(options: { path: string }): InputPlugin {
       for (const it of list) {
         const fsPath = pathe.resolve(options.path, it.relPath)
         const root = fromMarkdown(convertYamlTab(await readFile(fsPath, 'utf-8')))
-        const meta = (getYamlMeta(root) ?? {}) as Partial<LocalNoteMeta>
+        const meta = (getYamlMeta(root) ?? {}) as Partial<LocalContentMeta>
         const resources = convertLinks({
           root,
           rootPath: options.path,
-          notePath: fsPath,
+          contentPath: fsPath,
           list,
           resourceMap,
         })
@@ -120,7 +121,7 @@ export function input(options: { path: string }): InputPlugin {
         //   return r
         // })
         const s = await stat(fsPath)
-        const note: Content = {
+        const content: Content = {
           id: it.id,
           name: meta.name ?? it.name,
           content: toMarkdown(root),
@@ -141,7 +142,7 @@ export function input(options: { path: string }): InputPlugin {
             }),
           path: it.relPath.split('/').filter((s) => s.length !== 0),
         }
-        yield note
+        yield content
       }
     },
   }

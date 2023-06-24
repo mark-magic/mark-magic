@@ -30,20 +30,21 @@ describe('utils', () => {
       { id: '4b638fd91af2417e9fd0942c3e04ea0c', name: 'test.mp3' },
       { id: 'b160280b7d94417bb7f64d5fd1969230', name: 'flower.webm' },
     ] as Resource[]
-    const noteMap = new BiMultiMap<string, string>()
-    noteMap.set('b6175f189a4e4c1cbea14c72848c54cb', pathe.resolve(tempPath, 'c/Welcome to Joplin.md'))
-    noteMap.set('d867b35e62454483ae697185d93617ab', filenamifyPath(pathe.resolve(tempPath, 'c/foo:bar')))
+    const contentMap = new BiMultiMap<string, string>()
+    contentMap.set('b6175f189a4e4c1cbea14c72848c54cb', pathe.resolve(tempPath, 'c/Welcome to Joplin.md'))
+    contentMap.set('d867b35e62454483ae697185d93617ab', filenamifyPath(pathe.resolve(tempPath, 'c/foo:bar')))
     const resourceMap = new BiMultiMap<string, string>()
     resources.forEach((item) => resourceMap.set(item.id, pathe.resolve(tempPath, '_resources', item.name)))
     convertLinks({
       fsPath: pathe.resolve(tempPath, 'a/b/test.md'),
-      note: { resources } as Content,
-      noteMap,
+      content: { resources } as Content,
+      contentMap,
       resourceMap,
       root,
-      noteLink: ({ notePath, linkNotePath }) => formatRelative(pathe.relative(pathe.dirname(notePath), linkNotePath)),
-      resourceLink: ({ notePath, resourcePath }) =>
-        formatRelative(pathe.relative(pathe.dirname(notePath), resourcePath)),
+      contentLink: ({ contentPath: contentPath, linkContentPath: linkcontentPath }) =>
+        formatRelative(pathe.relative(pathe.dirname(contentPath), linkcontentPath)),
+      resourceLink: ({ contentPath: contentPath, resourcePath }) =>
+        formatRelative(pathe.relative(pathe.dirname(contentPath), resourcePath)),
     })
     const r = toMarkdown(root)
     expect(r.includes('../../_resources/test.mp3')).true
@@ -51,17 +52,17 @@ describe('utils', () => {
     expect(r.includes(encodeURI('../c/Welcome to Joplin.md'))).true
   })
   it('addMetas', () => {
-    const note = {
+    const content = {
       id: 'test',
       name: 'test-name',
       created: Date.now(),
       updated: Date.now(),
       // tags: [] as Tag[],
     } as Content
-    const r = calcMeta(note)
-    expect(r.name).eq(note.name)
-    expect(r.created).eq(note.created)
-    expect(r.updated).eq(note.updated)
+    const r = calcMeta(content)
+    expect(r.name).eq(content.name)
+    expect(r.created).eq(content.created)
+    expect(r.updated).eq(content.updated)
   })
 })
 
@@ -107,7 +108,7 @@ it('basic', async () => {
     input: generateVirtual,
     output: output(
       defaultOptions({
-        rootNotePath: tempPath,
+        rootContentPath: tempPath,
         rootResourcePath: pathe.resolve(tempPath, '_resources'),
       }),
     ),
@@ -155,7 +156,7 @@ it('filename', async () => {
     input: generateVirtual,
     output: output(
       defaultOptions({
-        rootNotePath: tempPath,
+        rootContentPath: tempPath,
         rootResourcePath: pathe.resolve(tempPath, '_resources'),
       }),
     ),
@@ -212,20 +213,20 @@ it('hexo', async () => {
     input: generateVirtual,
     output: output(
       defaultOptions({
-        rootNotePath: pathe.resolve(tempPath, 'source/_posts'),
+        rootContentPath: pathe.resolve(tempPath, 'source/_posts'),
         rootResourcePath: pathe.resolve(tempPath, 'source/resources'),
-        meta: (note) => ({
+        meta: (content) => ({
           layout: 'post',
-          name: note.name,
-          abbrlink: note.id,
-          // tags: note.tags.map((item) => item.name),
-          categories: note.path.slice(note.path.length - 1),
-          date: note.created,
-          updated: note.updated,
+          name: content.name,
+          abbrlink: content.id,
+          // tags: content.tags.map((item) => item.name),
+          categories: content.path.slice(content.path.length - 1),
+          date: content.created,
+          updated: content.updated,
         }),
-        noteLink: ({ linkNoteId }) => `/p/${linkNoteId}`,
+        contentLink: ({ linkContentId: linkcontentId }) => `/p/${linkcontentId}`,
         resourceLink: ({ resource }) => `/resources/${resource.id}${pathe.extname(resource.name)}`,
-        notePath: (note) => pathe.resolve(tempPath, 'source/_posts', note.id + '.md'),
+        contentPath: (content) => pathe.resolve(tempPath, 'source/_posts', content.id + '.md'),
         resourcePath: (resource) => pathe.resolve(tempPath, 'source/resources', filenamify(resource.name)),
       }),
     ),
@@ -272,7 +273,7 @@ it('duplicate resource filename', async () => {
     input: generateVirtual,
     output: output(
       defaultOptions({
-        rootNotePath: pathe.resolve(tempPath, 'source/_posts'),
+        rootContentPath: pathe.resolve(tempPath, 'source/_posts'),
         rootResourcePath: pathe.resolve(tempPath, 'source/resources'),
       }),
     ),
@@ -301,20 +302,21 @@ describe('html', () => {
       { id: '4b638fd91af2417e9fd0942c3e04ea0c', name: 'test.mp3' },
       { id: 'b160280b7d94417bb7f64d5fd1969230', name: 'flower.webm' },
     ] as Resource[]
-    const noteMap = new BiMultiMap<string, string>()
-    noteMap.set('b6175f189a4e4c1cbea14c72848c54cb', pathe.resolve(tempPath, 'c/Welcome to Joplin.md'))
-    noteMap.set('d867b35e62454483ae697185d93617ab', filenamifyPath(pathe.resolve(tempPath, 'c/foo:bar')))
+    const contentMap = new BiMultiMap<string, string>()
+    contentMap.set('b6175f189a4e4c1cbea14c72848c54cb', pathe.resolve(tempPath, 'c/Welcome to Joplin.md'))
+    contentMap.set('d867b35e62454483ae697185d93617ab', filenamifyPath(pathe.resolve(tempPath, 'c/foo:bar')))
     const resourceMap = new BiMultiMap<string, string>()
     resources.forEach((item) => resourceMap.set(item.id, pathe.resolve(tempPath, '_resources', item.name)))
     convertLinks({
       fsPath: pathe.resolve(tempPath, 'a/b/test.md'),
-      note: { resources } as Content,
-      noteMap,
+      content: { resources } as Content,
+      contentMap,
       resourceMap,
       root,
-      noteLink: ({ notePath, linkNotePath }) => formatRelative(pathe.relative(pathe.dirname(notePath), linkNotePath)),
-      resourceLink: ({ notePath, resourcePath }) =>
-        formatRelative(pathe.relative(pathe.dirname(notePath), resourcePath)),
+      contentLink: ({ contentPath: contentPath, linkContentPath: linkcontentPath }) =>
+        formatRelative(pathe.relative(pathe.dirname(contentPath), linkcontentPath)),
+      resourceLink: ({ contentPath: contentPath, resourcePath }) =>
+        formatRelative(pathe.relative(pathe.dirname(contentPath), resourcePath)),
     })
     const r = toMarkdown(root)
     console.log(r)
@@ -356,12 +358,12 @@ it('output', async () => {
   await convert({
     input: fromVirtual(list),
     output: output({
-      rootNotePath: postsPath,
+      rootContentPath: postsPath,
       rootResourcePath: resourcePath,
       meta: () => null,
-      noteLink: ({ linkNoteId }) => `/p/${linkNoteId}`,
+      contentLink: ({ linkContentId: linkcontentId }) => `/p/${linkcontentId}`,
       resourceLink: ({ resource }) => `../resources/${resource.id}${pathe.extname(resource.name)}`,
-      notePath: (note) => pathe.resolve(postsPath, note.id + '.md'),
+      contentPath: (content) => pathe.resolve(postsPath, content.id + '.md'),
       resourcePath: (resource) => pathe.resolve(resourcePath, resource.id + pathe.extname(resource.name)),
     }),
   })

@@ -2,7 +2,7 @@ import { OutputPlugin } from '@mark-magic/core'
 import pathe from 'pathe'
 import * as local from '@mark-magic/plugin-local'
 import { Heading, fromMarkdown, selectAll, toString } from '@liuli-util/markdown-util'
-import { mkdir, writeFile, rename } from 'fs/promises'
+import { mkdir, writeFile, rename, copyFile } from 'fs/promises'
 import { pathExists } from '@liuli-util/fs'
 import indexHtml from './template/index.html?raw'
 import giscusJs from './template/giscus.js?raw'
@@ -10,8 +10,9 @@ import gtagJs from './template/gtag.js?raw'
 import { isIndex } from './utils'
 import { treeMap, treeReduce } from '@liuli-util/tree'
 import Mustache from 'mustache'
-import { copy } from 'fs-extra/esm'
+import { copy, remove } from 'fs-extra/esm'
 import { pick } from 'lodash-es'
+import { DocsOutputConfig } from './config.schema'
 
 export interface Sidebar {
   id: string
@@ -127,41 +128,17 @@ export function treeSidebarByPath<T extends Pick<Sidebar, 'path' | 'children'>>(
   )
 }
 
-interface DocsPluginConfig {
-  path: string
-  public?: string
-  name: string
-  repo?: string
-  theme?: {
-    dark?: boolean
-  }
-  giscus?: {
-    repo: string
-    repoId: string
-    category: string
-    categoryId: string
-    mapping: string
-    reactionsEnabled: string
-    emitMetadata: string
-    inputPosition: string
-    theme: string
-    lang: string
-    crossorigin: string
-  }
-  gtag?: string | string[]
-}
-
-export function output(options: DocsPluginConfig): OutputPlugin {
+export function output(options: DocsOutputConfig): OutputPlugin {
   const rootPath = options.path
   const postsPath = pathe.resolve(rootPath, 'p')
   const resourcePath = pathe.resolve(rootPath, 'resources')
   const p = local.output({
-    rootNotePath: postsPath,
+    rootContentPath: postsPath,
     rootResourcePath: resourcePath,
     meta: () => null,
-    noteLink: ({ linkNoteId }) => `/p/${linkNoteId}`,
+    contentLink: ({ linkContentId }) => `/p/${linkContentId}`,
     resourceLink: ({ resource }) => `../resources/${resource.id}${pathe.extname(resource.name)}`,
-    notePath: (note) => pathe.resolve(postsPath, note.id + '.md'),
+    contentPath: (content) => pathe.resolve(postsPath, content.id + '.md'),
     resourcePath: (resource) => pathe.resolve(resourcePath, resource.id + pathe.extname(resource.name)),
   })
   const sidebars: Sidebar[] = []
@@ -192,13 +169,17 @@ export function output(options: DocsPluginConfig): OutputPlugin {
         ['_sidebar.md', generateSidebar(treeSidebarByPath(sidebars))],
       ].map(([p, s]) => writeFile(pathe.resolve(rootPath, p), s))
       if (options.public) {
-        all.unshift(copy(options.public, options.path))
+        all.unshift(copy(options.public, rootPath))
       }
       if (options.giscus) {
-        all.unshift(writeFile(pathe.resolve(options.path, 'giscus.js'), giscusJs))
+        all.unshift(writeFile(pathe.resolve(rootPath, 'giscus.js'), giscusJs))
       }
       if (options.gtag) {
-        all.unshift(writeFile(pathe.resolve(options.path, 'gtag.js'), gtagJs))
+        all.unshift(writeFile(pathe.resolve(rootPath, 'gtag.js'), gtagJs))
+      }
+      if (options.logo) {
+        const distPath = pathe.resolve(rootPath, pathe.basename(options.logo))
+        all.unshift(remove(distPath).then(() => copy(options.logo!, distPath)))
       }
       await Promise.all(all)
       await p.end?.()
@@ -206,8 +187,13 @@ export function output(options: DocsPluginConfig): OutputPlugin {
   }
 }
 
-function renderIndexHTML(options: DocsPluginConfig) {
-  const styles: string[] = []
+function renderIndexHTML(options: DocsOutputConfig) {
+  const links: (
+    | string
+    | {
+        value: string
+      }
+  )[] = []
   const scripts: string[] = ['//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js']
   const docsifyConfig: any = {
     ...pick(options, ['name', 'repo', 'giscus', 'gtag']),
@@ -221,18 +207,25 @@ function renderIndexHTML(options: DocsPluginConfig) {
     },
   }
   if (options.theme?.dark) {
-    styles.push('https://cdn.jsdelivr.net/npm/docsify/themes/dark.css')
+    links.push('https://cdn.jsdelivr.net/npm/docsify/themes/dark.css')
   }
   if (options.giscus) {
-    styles.push('https://unpkg.com/docsify-giscus@1.0.0/dist/giscus.css')
+    links.push('https://unpkg.com/docsify-giscus@1.0.0/dist/giscus.css')
     scripts.push('./giscus.js')
   }
   if (options.gtag) {
     scripts.push('./gtag.js')
   }
+  if (options.logo) {
+    links.push({
+      value: `<link rel="icon" href="./${pathe.basename(options.logo)}" type="image/${pathe
+        .extname(options.logo)
+        .slice(1)}">`,
+    })
+  }
 
   return Mustache.render(indexHtml, {
-    styles: styles.map((it) => `<link rel="stylesheet" href="${it}">`).join('\n'),
+    styles: links.map((it) => (typeof it === 'string' ? `<link rel="stylesheet" href="${it}">` : it.value)).join('\n'),
     scripts: scripts.map((it) => `<script src="${it}"></script>`).join('\n'),
     docsifyConfig: JSON.stringify(docsifyConfig, null, 2),
   })

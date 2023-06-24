@@ -95,6 +95,21 @@ it('giscus', async () => {
     .include('DIC_kwDOG4H1084CQhBn')
 })
 
+it('logo', async () => {
+  await convert({
+    input: fromVirtual(list),
+    output: output({
+      path: pathe.resolve(tempPath, 'dist/'),
+      name: 'test',
+      logo: pathe.resolve(__dirname, 'assets/logo.jpeg'),
+    }),
+  })
+  expect(await pathExists(pathe.resolve(tempPath, 'dist/logo.jpeg'))).true
+  expect(await readFile(pathe.resolve(tempPath, 'dist/index.html'), 'utf-8')).include(
+    '<link rel="icon" href="./logo.jpeg" type="image/jpeg">',
+  )
+})
+
 describe('generateSidebar', () => {
   it('basic', async () => {
     const sidebars: Sidebar[] = [

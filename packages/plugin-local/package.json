@@ -3,13 +3,20 @@
   "version": "0.5.5",
   "license": "GPL",
   "type": "module",
-  "exports": "./dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./config.schema.json": "./src/config.schema.json"
+  },
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "vite build",
     "dev": "pnpm build --watch",
     "setup": "pnpm build",
-    "test": "vitest run"
+    "test": "vitest run",
+    "dts": "json2ts -i src/config.schema.json -o src/config.schema.d.ts"
   },
   "sideEffects": false,
   "files": [
@@ -20,6 +27,7 @@
     "entryPoint": "./src/index.ts"
   },
   "devDependencies": {
+    "json-schema-to-typescript": "^13.0.2",
     "@liuli-util/test": "^3.6.0",
     "@liuli-util/vite-plugin-node": "^0.3.0",
     "@mark-magic/core": "workspace:^",

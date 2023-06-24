@@ -13,43 +13,46 @@ import {
 import { fromMarkdown, Link, Root, setYamlMeta, toMarkdown, Image, selectAll, HTML } from '@liuli-util/markdown-util'
 import filenamify from 'filenamify'
 import { keyBy } from 'lodash-es'
-import { Required, ValuesType } from 'utility-types'
+import { Required } from 'utility-types'
 import { BiMultiMap } from '@mark-magic/utils'
 import { parse } from 'node-html-parser'
 import { formatRelative } from './utils'
 
 export function defaultOptions(
-  options: Required<Partial<OutputOptions>, 'rootNotePath' | 'rootResourcePath'>,
+  options: Required<Partial<OutputOptions>, 'rootContentPath' | 'rootResourcePath'>,
 ): OutputOptions {
   return {
     meta: calcMeta,
-    notePath: (note) => pathe.resolve(options.rootNotePath, note.path.join('/'), filenamify(note.name) + '.md'),
+    contentPath: (content) =>
+      pathe.resolve(options.rootContentPath, content.path.join('/'), filenamify(content.name) + '.md'),
     resourcePath: (resource) => pathe.resolve(options.rootResourcePath, filenamify(resource.name)),
-    noteLink: ({ notePath, linkNotePath }) => formatRelative(pathe.relative(pathe.dirname(notePath), linkNotePath)),
-    resourceLink: ({ notePath, resourcePath }) => formatRelative(pathe.relative(pathe.dirname(notePath), resourcePath)),
+    contentLink: ({ contentPath: contentPath, linkContentPath: linkContentPath }) =>
+      formatRelative(pathe.relative(pathe.dirname(contentPath), linkContentPath)),
+    resourceLink: ({ contentPath: contentPath, resourcePath }) =>
+      formatRelative(pathe.relative(pathe.dirname(contentPath), resourcePath)),
     ...options,
   }
 }
 
 export function convertLinks({
   root,
-  note,
-  noteMap,
+  content,
+  contentMap,
   resourceMap,
   fsPath,
-  noteLink,
+  contentLink,
   resourceLink,
 }: {
   root: Root
-  note: Content
-  noteMap: BiMultiMap<string, string>
+  content: Content
+  contentMap: BiMultiMap<string, string>
   resourceMap: BiMultiMap<string, string>
   fsPath: string
-} & Pick<OutputOptions, 'noteLink' | 'resourceLink'>) {
+} & Pick<OutputOptions, 'contentLink' | 'resourceLink'>) {
   const urls = (selectAll('image,link', root) as (Image | Link)[]).filter(
     (it) => isContentLink(it.url) || isResourceLink(it.url),
   )
-  const map = keyBy(note.resources, (item) => item.id)
+  const map = keyBy(content.resources, (item) => item.id)
   let isAfter = false
   const htmls = (selectAll('html', root) as HTML[])
     .filter((it) => ['<audio', '<video', '<img'].some((p) => it.value.startsWith(p)))
@@ -77,24 +80,24 @@ export function convertLinks({
         'src',
         resourceLink({
           resource,
-          notePath: fsPath,
+          contentPath: fsPath,
           resourcePath: resourceMap.get(id)!,
         })!,
       )
     } else {
       const id = extractContentId(src)
-      if (!noteMap.has(id)) {
+      if (!contentMap.has(id)) {
         isAfter = true
         return
       }
-      // item.url = formatRelative(path.relative(dirPath, noteMap.get(id)!))
+      // item.url = formatRelative(path.relative(dirPath, contentMap.get(id)!))
       dom.setAttribute(
         'src',
-        noteLink({
-          note,
-          notePath: fsPath,
-          linkNotePath: noteMap.get(id)!,
-          linkNoteId: id,
+        contentLink({
+          content: content,
+          contentPath: fsPath,
+          linkContentPath: contentMap.get(id)!,
+          linkContentId: id,
         })!,
       )
     }
@@ -107,64 +110,69 @@ export function convertLinks({
       // item.url = formatRelative(path.relative(dirPath, resourceMap.get(id)!))
       item.url = resourceLink({
         resource,
-        notePath: fsPath,
+        contentPath: fsPath,
         resourcePath: resourceMap.get(id)!,
       })!
     } else {
       const id = extractContentId(item.url)
-      if (!noteMap.has(id)) {
+      if (!contentMap.has(id)) {
         isAfter = true
         return
       }
-      // item.url = formatRelative(path.relative(dirPath, noteMap.get(id)!))
-      item.url = noteLink({
-        note,
-        notePath: fsPath,
-        linkNotePath: noteMap.get(id)!,
-        linkNoteId: id,
+      // item.url = formatRelative(path.relative(dirPath, contentMap.get(id)!))
+      item.url = contentLink({
+        content: content,
+        contentPath: fsPath,
+        linkContentPath: contentMap.get(id)!,
+        linkContentId: id,
       })!
     }
   })
   return isAfter
 }
 
-export interface LocalNoteMeta extends Pick<Content, 'name' | 'created' | 'updated'> {
+export interface LocalContentMeta extends Pick<Content, 'name' | 'created' | 'updated'> {
   // tags: string[]
 }
 
-export function calcMeta(note: Content): LocalNoteMeta {
+export function calcMeta(content: Content): LocalContentMeta {
   return {
-    name: note.name,
-    // tags: note.tags.map((item) => item.title),
-    created: note.created,
-    updated: note.updated,
+    name: content.name,
+    // tags: content.tags.map((item) => item.title),
+    created: content.created,
+    updated: content.updated,
   }
 }
 
 export interface OutputOptions {
-  rootNotePath: string
+  rootContentPath: string
   rootResourcePath: string
-  meta(note: Content): any
-  notePath(note: Content): string
-  resourcePath(note: Resource): string
-  noteLink(o: { note: Content; notePath: string; linkNotePath: string; linkNoteId: string }): string | undefined
-  resourceLink(o: { resource: Resource; notePath: string; resourcePath: string }): string | undefined
+  meta(content: Content): any
+  contentPath(content: Content): string
+  resourcePath(content: Resource): string
+  contentLink(o: {
+    content: Content
+    contentPath: string
+    linkContentPath: string
+    linkContentId: string
+  }): string | undefined
+  resourceLink(o: { resource: Resource; contentPath: string; resourcePath: string }): string | undefined
 }
 
 export function output(options: OutputOptions): OutputPlugin {
   const _options = defaultOptions(options)
   const resourceMap = new BiMultiMap<string, string>(),
-    noteMap = new BiMultiMap<string, string>(),
-    afterList: { fsPath: string; note: Content }[] = []
+    contentMap = new BiMultiMap<string, string>(),
+    afterList: { fsPath: string; content: Content }[] = []
   return {
     name: 'local',
     async start() {
-      await Promise.all([remove(_options.rootNotePath), remove(_options.rootResourcePath)])
-      await mkdirp(_options.rootNotePath)
+      await Promise.all([remove(_options.rootContentPath), remove(_options.rootResourcePath)])
+      await mkdirp(_options.rootContentPath)
       await mkdirp(_options.rootResourcePath)
     },
-    async handle(note) {
-      await AsyncArray.forEach(note.resources, async (item) => {
+    async handle(content) {
+      await AsyncArray.forEach(content.resources, async (item) => {
         // let fsPath = path.resolve(options.rootResourcePath, filenamify(item.title))
         let fsPath = _options.resourcePath(item)
         if (resourceMap.has(fsPath)) {
@@ -178,21 +186,21 @@ export function output(options: OutputOptions): OutputPlugin {
         await writeFile(fsPath, item.raw)
       })
 
-      // let fsPath = path.resolve(options.rootNotePath, note.path.join('/'), filenamify(note.name) + '.md')
-      let fsPath = _options.notePath(note)
-      if (noteMap.has(fsPath)) {
+      // let fsPath = path.resolve(options.rootcontentPath, content.path.join('/'), filenamify(content.name) + '.md')
+      let fsPath = _options.contentPath(content)
+      if (contentMap.has(fsPath)) {
         fsPath = pathe.resolve(
-          _options.rootNotePath,
-          note.path.join('/'),
-          filenamify(note.name) + '_' + note.id + '.md',
+          _options.rootContentPath,
+          content.path.join('/'),
+          filenamify(content.name) + '_' + content.id + '.md',
         )
       }
-      noteMap.set(note.id, fsPath)
-      const root = fromMarkdown(note.content)
-      setYamlMeta(root, _options.meta(note))
-      const isAfter = convertLinks({ root, note, fsPath, noteMap, resourceMap, ..._options })
+      contentMap.set(content.id, fsPath)
+      const root = fromMarkdown(content.content)
+      setYamlMeta(root, _options.meta(content))
+      const isAfter = convertLinks({ root, content, fsPath, contentMap: contentMap, resourceMap, ..._options })
       if (isAfter) {
-        afterList.push({ fsPath, note })
+        afterList.push({ fsPath, content: content })
       }
       await mkdirp(pathe.dirname(fsPath))
       await writeFile(fsPath, toMarkdown(root))
@@ -200,7 +208,7 @@ export function output(options: OutputOptions): OutputPlugin {
     async end() {
       await AsyncArray.forEach(afterList, async (item) => {
         const root = fromMarkdown(await readFile(item.fsPath, 'utf-8'))
-        convertLinks({ ...item, root, noteMap, resourceMap, ..._options })
+        convertLinks({ ...item, root, contentMap: contentMap, resourceMap, ..._options })
         await writeFile(item.fsPath, toMarkdown(root))
       })
     },

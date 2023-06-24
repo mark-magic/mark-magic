@@ -39,16 +39,17 @@ it('generateDocsify', async () => {
     input: fromVirtual(list),
     output: output({
       path: pathe.resolve(tempPath, 'dist/'),
+      name: 'test',
     }),
   })
   expect(await pathExists(pathe.resolve(tempPath, 'dist/p/a.md'))).true
   expect(await pathExists(pathe.resolve(tempPath, 'dist/p/b.md'))).true
-  expect(await pathExists(pathe.resolve(tempPath, 'dist/readme.md'))).true
+  expect(await pathExists(pathe.resolve(tempPath, 'dist/README.md'))).true
   expect(await pathExists(pathe.resolve(tempPath, 'dist/resources/c.jpg'))).true
   const t = await readFile(pathe.resolve(tempPath, 'dist/p/a.md'), 'utf-8')
   const root = fromMarkdown(t)
   expect((select('link', root) as Link).url).eq('/p/b')
-  expect((select('image', root) as Image).url).eq('/resources/c.jpg')
+  expect((select('image', root) as Image).url).eq('../resources/c.jpg')
 })
 
 describe('generateSidebar', () => {
@@ -79,13 +80,31 @@ describe('generateSidebar', () => {
   })
 })
 
-it.only('generate real docsify', async () => {
+it('generate for tts', async () => {
   await convert({
     input: local.input({
       path: pathe.resolve(__dirname, './assets/to-the-stars/books/'),
     }),
     output: output({
       path: pathe.resolve(tempPath, 'dist/'),
+      name: 'to-the-stars',
+      repo: 'https://github.com/liuli-moe/to-the-stars',
+      theme: {
+        dark: true,
+      },
+      giscus: {
+        repo: 'liuli-moe/to-the-stars',
+        repoId: 'R_kgDOG4H10w',
+        category: 'General',
+        categoryId: 'DIC_kwDOG4H1084CQhBn',
+        mapping: 'pathname',
+        'reactions-enabled': '1',
+        'emit-metadata': '0',
+        'input-position': 'bottom',
+        theme: 'preferred_color_scheme',
+        lang: 'zh-CN',
+        crossorigin: 'anonymous',
+      },
     }),
   })
 })

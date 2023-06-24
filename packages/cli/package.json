@@ -6,6 +6,13 @@
   "bin": {
     "mark-magic": "./bin.js"
   },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "types": "./dist/index.d.ts",
   "scripts": {
     "setup": "pnpm build",
     "build": "vite build",
@@ -20,6 +27,7 @@
   },
   "devDependencies": {
     "@liuli-util/vite-plugin-node": "^0.3.0",
+    "@mark-magic/plugin-docs": "workspace:^",
     "@mark-magic/plugin-epub": "workspace:^",
     "@mark-magic/plugin-local": "workspace:^",
     "@types/lodash-es": "^4.17.7",
@@ -34,8 +42,12 @@
     "@liuli-util/async": "^3.6.0",
     "@liuli-util/fs": "^0.1.0",
     "@mark-magic/core": "workspace:^",
+    "bundle-require": "^4.0.1",
+    "commander": "^11.0.0",
+    "esbuild": "^0.18.7",
     "lodash-es": "^4.17.21",
     "pathe": "^1.1.1",
+    "pino": "^8.14.1",
     "yaml": "^2.3.1"
   }
 }

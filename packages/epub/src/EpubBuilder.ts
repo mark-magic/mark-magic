@@ -15,7 +15,7 @@ export interface MetaData {
   /** 语言 */
   language: string
   /** 封面图片 */
-  cover: string
+  cover?: string
 }
 
 export interface Chapter {
@@ -108,7 +108,7 @@ export class EpubBuilder {
     <dc:creator>${meta.creator}</dc:creator>
     <dc:publisher>${meta.publisher}</dc:publisher>
     <dc:language>${meta.language}</dc:language>
-    <meta name="cover" content="${meta.cover}"/>
+    ${meta.cover ? `<meta name="cover" content="${meta.cover}" />` : ''}
   </metadata>`
   }
 

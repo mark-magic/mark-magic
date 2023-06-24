@@ -119,6 +119,9 @@ export function output(options: { metadata: MetaData; path: string }): OutputPlu
   return {
     name: 'epub',
     async start() {
+      if (!options.metadata.cover) {
+        return
+      }
       const id = v4() + pathe.extname(options.metadata.cover)
       _options.media.push({
         id: id,

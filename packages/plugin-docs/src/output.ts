@@ -5,9 +5,11 @@ import { Heading, fromMarkdown, selectAll, toString } from '@liuli-util/markdown
 import { mkdir, writeFile, rename } from 'fs/promises'
 import { pathExists } from '@liuli-util/fs'
 import indexHtml from './template/index.html?raw'
-import nojekyll from './template/.nojekyll?raw'
+import docsifyGiscusJs from './template/docsify-giscus.js?raw'
 import { isIndex } from './utils'
 import { treeMap, treeReduce } from '@liuli-util/tree'
+import Mustache from 'mustache'
+import { copy } from 'fs-extra/esm'
 
 export interface Sidebar {
   id: string
@@ -123,7 +125,30 @@ export function treeSidebarByPath<T extends Pick<Sidebar, 'path' | 'children'>>(
   )
 }
 
-export function output(options: { path: string }): OutputPlugin {
+interface DocsPluginConfig {
+  path: string
+  public?: string
+  name: string
+  repo?: string
+  theme?: {
+    dark?: boolean
+  }
+  giscus?: {
+    repo: string
+    repoId: string
+    category: string
+    categoryId: string
+    mapping: string
+    reactionsEnabled: string
+    emitMetadata: string
+    inputPosition: string
+    theme: string
+    lang: string
+    crossorigin: string
+  }
+}
+
+export function output(options: DocsPluginConfig): OutputPlugin {
   const rootPath = options.path
   const postsPath = pathe.resolve(rootPath, 'p')
   const resourcePath = pathe.resolve(rootPath, 'resources')
@@ -152,21 +177,48 @@ export function output(options: { path: string }): OutputPlugin {
       })
       await p.handle(content)
       if (content.path.length === 1 && isIndex(pathe.join(...content.path))) {
-        await rename(pathe.resolve(postsPath, content.id + '.md'), pathe.resolve(options.path, 'readme.md'))
+        await rename(pathe.resolve(postsPath, content.id + '.md'), pathe.resolve(options.path, 'README.md'))
       }
     },
     async end() {
       if (!(await pathExists(rootPath))) {
         await mkdir(rootPath, { recursive: true })
       }
-      await Promise.all(
-        [
-          ['index.html', indexHtml],
-          ['.nojekyll', nojekyll],
-          ['_sidebar.md', generateSidebar(treeSidebarByPath(sidebars))],
-        ].map(([p, s]) => writeFile(pathe.resolve(rootPath, p), s)),
-      )
+      const all = [
+        ['index.html', renderIndexHTML(options)],
+        ['_sidebar.md', generateSidebar(treeSidebarByPath(sidebars))],
+      ].map(([p, s]) => writeFile(pathe.resolve(rootPath, p), s))
+      if (options.public) {
+        all.unshift(copy(options.public, options.path))
+      }
+      if (options.giscus) {
+        all.unshift(writeFile(pathe.resolve(options.path, 'docsify-giscus.js'), docsifyGiscusJs))
+      }
+      await Promise.all(all)
       await p.end?.()
     },
   }
+}
+
+function renderIndexHTML(options: DocsPluginConfig) {
+  const styles: string[] = []
+  const scripts: string[] = []
+  const docsifyConfig: any = {
+    name: options.name,
+    repo: options.repo,
+    loadSidebar: true,
+    giscus: options.giscus,
+  }
+  if (options.theme?.dark) {
+    styles.push('https://cdn.jsdelivr.net/npm/docsify/themes/dark.css')
+  }
+  if (options.giscus) {
+    styles.push('https://unpkg.com/docsify-giscus@1.0.0/dist/giscus.css')
+    scripts.push('./docsify-giscus.js')
+  }
+  return Mustache.render(indexHtml, {
+    styles: styles.map((it) => `<link rel="stylesheet" href="${it}">`).join('\n'),
+    scripts: scripts.map((it) => `<script src="${it}"></script>`).join('\n'),
+    docsifyConfig: JSON.stringify(docsifyConfig, null, 2),
+  })
 }

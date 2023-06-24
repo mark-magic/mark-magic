@@ -5,36 +5,19 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export type PluginConfig = BasePluginConfig | LocalPluginConfig | EpubPluginConfig
+export type InputPluginConfig = LocalPluginConfig
+export type OutputPluginConfig = LocalPluginConfig | EpubPluginConfig | DocsPluginConfig
 
 export interface ConfigSchema {
   generate: GenerateConfig[]
-  [k: string]: unknown
 }
 export interface GenerateConfig {
   /**
    * 生成任务的名字
    */
   name: string
-  input: PluginConfig
-  output: PluginConfig
-  [k: string]: unknown
-}
-/**
- * 插件配置
- */
-export interface BasePluginConfig {
-  /**
-   * 插件名字
-   */
-  name: string
-  /**
-   * 插件配置
-   */
-  config?: {
-    [k: string]: unknown
-  }
-  [k: string]: unknown
+  input: InputPluginConfig
+  output: OutputPluginConfig
 }
 /**
  * 从本地目录读取或输出到本地目录
@@ -52,9 +35,7 @@ export interface LocalPluginConfig {
      * 本地目录的路径
      */
     path: string
-    [k: string]: unknown
   }
-  [k: string]: unknown
 }
 /**
  * 输出为 epub
@@ -72,7 +53,68 @@ export interface EpubPluginConfig {
      * 输出文件的路径
      */
     path: string
-    [k: string]: unknown
+    metadata?: {
+      /**
+       * 书籍唯一标识
+       */
+      id: string
+      /**
+       * 书籍标题
+       */
+      title: string
+      /**
+       * 作者
+       */
+      creator: string
+      /**
+       * 发布者
+       */
+      publisher: string
+      /**
+       * 语言
+       */
+      language: string
+      /**
+       * 封面图片
+       */
+      cover?: string
+    }
   }
-  [k: string]: unknown
+}
+/**
+ * 输出为文档网站
+ */
+export interface DocsPluginConfig {
+  /**
+   * 插件名称
+   */
+  name: '@mark-magic/plugin-docs'
+  config: {
+    /**
+     * 输出文件的路径
+     */
+    path: string
+    /**
+     * 静态资源目录
+     */
+    public?: string
+    name: string
+    repo: string
+    theme: {
+      dark?: boolean
+    }
+    giscus?: {
+      repo: string
+      repoId: string
+      category: string
+      categoryId: string
+      mapping: string
+      'reactions-enabled': string
+      'emit-metadata': string
+      'input-position': string
+      theme: string
+      lang: string
+      crossorigin: string
+    }
+  }
 }

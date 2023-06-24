@@ -10,6 +10,8 @@
     }
   },
   "required": ["generate"],
+  "additionalProperties": false,
+  "additionalItems": false,
   "definitions": {
     "GenerateConfig": {
       "type": "object",
@@ -19,16 +21,24 @@
           "description": "生成任务的名字"
         },
         "input": {
-          "$ref": "#/definitions/PluginConfig"
+          "$ref": "#/definitions/InputPluginConfig"
         },
         "output": {
-          "$ref": "#/definitions/PluginConfig"
+          "$ref": "#/definitions/OutputPluginConfig"
         }
       },
-      "required": ["name", "input", "output"]
+      "required": ["name", "input", "output"],
+      "additionalProperties": false
     },
-    "PluginConfig": {
-      "anyOf": [{ "$ref": "#/definitions/LocalPluginConfig" }, { "$ref": "#/definitions/EpubPluginConfig" }]
+    "InputPluginConfig": {
+      "anyOf": [{ "$ref": "#/definitions/LocalPluginConfig" }]
+    },
+    "OutputPluginConfig": {
+      "anyOf": [
+        { "$ref": "#/definitions/LocalPluginConfig" },
+        { "$ref": "#/definitions/EpubPluginConfig" },
+        { "$ref": "#/definitions/DocsPluginConfig" }
+      ]
     },
     "LocalPluginConfig": {
       "type": "object",
@@ -48,10 +58,12 @@
               "description": "本地目录的路径"
             }
           },
-          "required": ["path"]
+          "required": ["path"],
+          "additionalProperties": false
         }
       },
-      "required": ["name", "config"]
+      "required": ["name", "config"],
+      "additionalProperties": false
     },
     "EpubPluginConfig": {
       "type": "object",
@@ -99,13 +111,114 @@
                   "description": "封面图片"
                 }
               },
-              "required": ["id", "title", "creator", "publisher", "language", "cover"]
+              "required": ["id", "title", "creator", "publisher", "language"],
+              "additionalProperties": false
             }
           },
-          "required": ["path"]
+          "required": ["path"],
+          "additionalProperties": false
         }
       },
-      "required": ["name", "config"]
+      "required": ["name", "config"],
+      "additionalProperties": false
+    },
+    "DocsPluginConfig": {
+      "type": "object",
+      "description": "输出为文档网站",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "插件名称",
+          "enum": ["@mark-magic/plugin-docs"]
+        },
+        "config": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "输出文件的路径"
+            },
+            "public": {
+              "type": "string",
+              "description": "静态资源目录"
+            },
+            "name": {
+              "type": "string"
+            },
+            "repo": {
+              "type": "string"
+            },
+            "theme": {
+              "type": "object",
+              "properties": {
+                "dark": {
+                  "type": "boolean"
+                }
+              },
+              "required": [],
+              "additionalProperties": false
+            },
+            "giscus": {
+              "type": "object",
+              "properties": {
+                "repo": {
+                  "type": "string"
+                },
+                "repoId": {
+                  "type": "string"
+                },
+                "category": {
+                  "type": "string"
+                },
+                "categoryId": {
+                  "type": "string"
+                },
+                "mapping": {
+                  "type": "string"
+                },
+                "reactionsEnabled": {
+                  "type": "string"
+                },
+                "emitMetadata": {
+                  "type": "string"
+                },
+                "inputPosition": {
+                  "type": "string"
+                },
+                "theme": {
+                  "type": "string"
+                },
+                "lang": {
+                  "type": "string"
+                },
+                "crossorigin": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "repo",
+                "repoId",
+                "category",
+                "categoryId",
+                "mapping",
+                "reactionsEnabled",
+                "emitMetadata",
+                "inputPosition",
+                "theme",
+                "lang",
+                "crossorigin"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": ["path", "name", "repo", "theme"],
+          "additionalItems": false,
+          "additionalProperties": false
+        }
+      },
+      "required": ["name", "config"],
+      "additionalProperties": false
     },
     "BasePluginConfig": {
       "type": "object",
@@ -120,7 +233,8 @@
           "description": "插件配置"
         }
       },
-      "required": ["name"]
+      "required": ["name"],
+      "additionalProperties": false
     }
   }
 }

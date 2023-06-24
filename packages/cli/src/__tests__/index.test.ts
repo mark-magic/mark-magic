@@ -1,5 +1,5 @@
 import { it, expect } from 'vitest'
-import { loadConfig, parseConfig } from '..'
+import { loadConfig, parseYamlConfig } from '../configParser'
 import pathe from 'pathe'
 
 it('loadConfig', async () => {
@@ -9,9 +9,9 @@ it('loadConfig', async () => {
 
 it('parseConfig', async () => {
   const c = await loadConfig(pathe.resolve(__dirname, './assets/to-the-stars'))
-  const config = await parseConfig(c)
+  const config = await parseYamlConfig(c)
   config.forEach((it) => {
-    expect(it.input.plugin).not.undefined
-    expect(it.output.plugin).not.undefined
+    expect(it.input).not.undefined
+    expect(it.output).not.undefined
   })
 })

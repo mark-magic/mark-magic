@@ -100,7 +100,7 @@ export interface DocsPluginConfig {
     public?: string
     name: string
     repo: string
-    theme: {
+    theme?: {
       dark?: boolean
     }
     giscus?: {
@@ -109,12 +109,13 @@ export interface DocsPluginConfig {
       category: string
       categoryId: string
       mapping: string
-      'reactions-enabled': string
-      'emit-metadata': string
-      'input-position': string
+      reactionsEnabled: string
+      emitMetadata: string
+      inputPosition: string
       theme: string
       lang: string
       crossorigin: string
     }
+    gtag?: string | string[]
   }
 }

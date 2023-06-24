@@ -5,11 +5,13 @@ import { Heading, fromMarkdown, selectAll, toString } from '@liuli-util/markdown
 import { mkdir, writeFile, rename } from 'fs/promises'
 import { pathExists } from '@liuli-util/fs'
 import indexHtml from './template/index.html?raw'
-import docsifyGiscusJs from './template/docsify-giscus.js?raw'
+import giscusJs from './template/giscus.js?raw'
+import gtagJs from './template/gtag.js?raw'
 import { isIndex } from './utils'
 import { treeMap, treeReduce } from '@liuli-util/tree'
 import Mustache from 'mustache'
 import { copy } from 'fs-extra/esm'
+import { pick } from 'lodash-es'
 
 export interface Sidebar {
   id: string
@@ -146,6 +148,7 @@ interface DocsPluginConfig {
     lang: string
     crossorigin: string
   }
+  gtag?: string | string[]
 }
 
 export function output(options: DocsPluginConfig): OutputPlugin {
@@ -192,7 +195,10 @@ export function output(options: DocsPluginConfig): OutputPlugin {
         all.unshift(copy(options.public, options.path))
       }
       if (options.giscus) {
-        all.unshift(writeFile(pathe.resolve(options.path, 'docsify-giscus.js'), docsifyGiscusJs))
+        all.unshift(writeFile(pathe.resolve(options.path, 'giscus.js'), giscusJs))
+      }
+      if (options.gtag) {
+        all.unshift(writeFile(pathe.resolve(options.path, 'gtag.js'), gtagJs))
       }
       await Promise.all(all)
       await p.end?.()
@@ -202,20 +208,29 @@ export function output(options: DocsPluginConfig): OutputPlugin {
 
 function renderIndexHTML(options: DocsPluginConfig) {
   const styles: string[] = []
-  const scripts: string[] = []
+  const scripts: string[] = ['//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js']
   const docsifyConfig: any = {
-    name: options.name,
-    repo: options.repo,
+    ...pick(options, ['name', 'repo', 'giscus', 'gtag']),
     loadSidebar: true,
-    giscus: options.giscus,
+    auto2top: true,
+    pagination: {
+      previousText: 'Previous',
+      nextText: 'Next',
+      crossChapter: true,
+      crossChapterText: true,
+    },
   }
   if (options.theme?.dark) {
     styles.push('https://cdn.jsdelivr.net/npm/docsify/themes/dark.css')
   }
   if (options.giscus) {
     styles.push('https://unpkg.com/docsify-giscus@1.0.0/dist/giscus.css')
-    scripts.push('./docsify-giscus.js')
+    scripts.push('./giscus.js')
   }
+  if (options.gtag) {
+    scripts.push('./gtag.js')
+  }
+
   return Mustache.render(indexHtml, {
     styles: styles.map((it) => `<link rel="stylesheet" href="${it}">`).join('\n'),
     scripts: scripts.map((it) => `<script src="${it}"></script>`).join('\n'),

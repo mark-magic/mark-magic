@@ -210,9 +210,23 @@
                 "crossorigin"
               ],
               "additionalProperties": false
+            },
+            "gtag": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "additionalItems": false
+                }
+              ]
             }
           },
-          "required": ["path", "name", "repo", "theme"],
+          "required": ["path", "name", "repo"],
           "additionalItems": false,
           "additionalProperties": false
         }

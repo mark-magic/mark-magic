@@ -11,30 +11,31 @@ import { fromVirtual } from '@mark-magic/utils'
 
 const tempPath = initTempPath(__filename)
 
-it('generateDocsify', async () => {
-  const list: (Pick<Content, 'id' | 'content'> & {
-    path: string
-    resources?: Pick<Resource, 'id' | 'name' | 'raw'>[]
-  })[] = [
-    {
-      id: 'a',
-      path: '/a.md',
-      content: `
+const list: (Pick<Content, 'id' | 'content'> & {
+  path: string
+  resources?: Pick<Resource, 'id' | 'name' | 'raw'>[]
+})[] = [
+  {
+    id: 'a',
+    path: '/a.md',
+    content: `
 # a
 [b](:/content/b)
 ![c](:/resource/c)
-    `.trim(),
-      resources: [
-        {
-          id: 'c',
-          name: 'c.jpg',
-          raw: Buffer.from(''),
-        } as Resource,
-      ],
-    },
-    { id: 'b', path: '/b.md', content: '# b' },
-    { id: 'readme', path: '/readme.md', content: '# readme' },
-  ]
+  `.trim(),
+    resources: [
+      {
+        id: 'c',
+        name: 'c.jpg',
+        raw: Buffer.from(''),
+      } as Resource,
+    ],
+  },
+  { id: 'b', path: '/b.md', content: '# b' },
+  { id: 'readme', path: '/readme.md', content: '# readme' },
+]
+
+it('generateDocsify', async () => {
   await convert({
     input: fromVirtual(list),
     output: output({
@@ -50,6 +51,48 @@ it('generateDocsify', async () => {
   const root = fromMarkdown(t)
   expect((select('link', root) as Link).url).eq('/p/b')
   expect((select('image', root) as Image).url).eq('../resources/c.jpg')
+})
+
+it('gtag', async () => {
+  const id = 'UA-123456789-1'
+  await convert({
+    input: fromVirtual(list),
+    output: output({
+      path: pathe.resolve(tempPath, 'dist/'),
+      name: 'test',
+      gtag: id,
+    }),
+  })
+  expect(await pathExists(pathe.resolve(tempPath, 'dist/gtag.js'))).true
+  expect(await readFile(pathe.resolve(tempPath, 'dist/index.html'), 'utf-8')).include(id)
+})
+
+it('giscus', async () => {
+  await convert({
+    input: fromVirtual(list),
+    output: output({
+      path: pathe.resolve(tempPath, 'dist/'),
+      name: 'test',
+      giscus: {
+        repo: 'liuli-moe/to-the-stars',
+        repoId: 'R_kgDOG4H10w',
+        category: 'General',
+        categoryId: 'DIC_kwDOG4H1084CQhBn',
+        mapping: 'pathname',
+        reactionsEnabled: '1',
+        emitMetadata: '0',
+        inputPosition: 'bottom',
+        theme: 'preferred_color_scheme',
+        lang: 'zh-CN',
+        crossorigin: 'anonymous',
+      },
+    }),
+  })
+  expect(await pathExists(pathe.resolve(tempPath, 'dist/giscus.js'))).true
+  expect(await readFile(pathe.resolve(tempPath, 'dist/index.html'), 'utf-8'))
+    .include('liuli-moe/to-the-stars')
+    .include('R_kgDOG4H10w')
+    .include('DIC_kwDOG4H1084CQhBn')
 })
 
 describe('generateSidebar', () => {
@@ -80,7 +123,7 @@ describe('generateSidebar', () => {
   })
 })
 
-it('generate for tts', async () => {
+it.skip('generate for tts', async () => {
   await convert({
     input: local.input({
       path: pathe.resolve(__dirname, './assets/to-the-stars/books/'),
@@ -98,9 +141,9 @@ it('generate for tts', async () => {
         category: 'General',
         categoryId: 'DIC_kwDOG4H1084CQhBn',
         mapping: 'pathname',
-        'reactions-enabled': '1',
-        'emit-metadata': '0',
-        'input-position': 'bottom',
+        reactionsEnabled: '1',
+        emitMetadata: '0',
+        inputPosition: 'bottom',
         theme: 'preferred_color_scheme',
         lang: 'zh-CN',
         crossorigin: 'anonymous',

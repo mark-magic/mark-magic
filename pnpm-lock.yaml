@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@apidevtools/json-schema-ref-parser@10.1.0':
+    hash: nyp73u6gqztbkbcgun4zdrfg74
+    path: patches/@apidevtools__json-schema-ref-parser@10.1.0.patch
+
 importers:
 
   .:
@@ -86,7 +91,7 @@ importers:
     devDependencies:
       '@apidevtools/json-schema-ref-parser':
         specifier: ^10.1.0
-        version: 10.1.0
+        version: 10.1.0(patch_hash=nyp73u6gqztbkbcgun4zdrfg74)
       '@liuli-util/vite-plugin-node':
         specifier: ^0.3.0
         version: 0.3.0(@types/node@20.3.1)(rollup@3.25.1)(vite@4.3.9)
@@ -562,7 +567,7 @@ importers:
 
 packages:
 
-  /@apidevtools/json-schema-ref-parser@10.1.0:
+  /@apidevtools/json-schema-ref-parser@10.1.0(patch_hash=nyp73u6gqztbkbcgun4zdrfg74):
     resolution: {integrity: sha512-3e+viyMuXdrcK8v5pvP+SDoAQ77FH6OyRmuK48SZKmdHJRFm87RsSs8qm6kP39a/pOPURByJw+OXzQIqcfmKtA==}
     engines: {node: '>= 16'}
     dependencies:
@@ -572,6 +577,7 @@ packages:
       js-yaml: 4.1.0
       lodash.clonedeep: 4.5.0
     dev: true
+    patched: true
 
   /@babel/code-frame@7.22.5:
     resolution: {integrity: sha512-Xmwn266vad+6DAqEB2A6V/CcZVp62BbwVmcOJc2RPuwih1kw02TjQvWVWlcKGbBPd+8/0V5DEkOcizRGYsspYQ==}

@@ -14,12 +14,13 @@
   },
   "types": "./dist/index.d.ts",
   "scripts": {
-    "setup": "pnpm build",
-    "build": "vite build && vite-node src/generate.ts",
+    "setup": "pnpm build && pnpm build-schema",
+    "build": "vite build",
+    "build-schema": "vite-node src/generate.ts",
     "dev": "pnpm build --watch",
     "start": "vite-node src/bin.ts",
     "test": "vitest run",
-    "dts": "json2ts --cwd ./src/ -i ./src/config.schema.json -o ./src/config.schema.d.ts"
+    "dts": "json2ts -i ./dist/config.schema.json -o ./src/config.schema.d.ts"
   },
   "publishConfig": {
     "access": "public",

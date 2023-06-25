@@ -41,5 +41,10 @@
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged",
     "commit-msg": "pnpm commitlint --edit $1"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@apidevtools/json-schema-ref-parser@10.1.0": "patches/@apidevtools__json-schema-ref-parser@10.1.0.patch"
+    }
   }
 }

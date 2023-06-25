@@ -5,8 +5,8 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export type InputPluginConfig = Input
-export type OutputPluginConfig = Output | Output1
+export type InputPluginConfig = LocalPluginConfig
+export type OutputPluginConfig = EpubPluginConfig | DocsPluginConfig
 
 export interface ConfigSchema {
   generate: GenerateConfig[]
@@ -22,103 +22,110 @@ export interface GenerateConfig {
 /**
  * 从本地目录读取或输出到本地目录
  */
-export interface Input {
+export interface LocalPluginConfig {
   /**
    * 插件名字
    */
   name: '@mark-magic/plugin-local'
-  config: LocalInputConfig
-}
-/**
- * 插件配置
- */
-export interface LocalInputConfig {
   /**
-   * 本地目录的路径
+   * 插件配置
    */
-  path: string
+  config: {
+    /**
+     * 本地目录的路径
+     */
+    path: string
+  }
 }
 /**
  * 输出为 epub
  */
-export interface Output {
+export interface EpubPluginConfig {
   /**
    * 插件名字
    */
   name: '@mark-magic/plugin-epub'
-  config: EpubOutputConfig
-}
-/**
- * 插件配置
- */
-export interface EpubOutputConfig {
   /**
-   * 输出文件的路径
+   * 插件配置
    */
-  path: string
-  metadata: {
+  config: {
     /**
-     * 书籍唯一标识
+     * 输出文件的路径
      */
-    id: string
-    /**
-     * 书籍标题
-     */
-    title: string
-    /**
-     * 作者
-     */
-    creator: string
-    /**
-     * 发布者
-     */
-    publisher: string
-    /**
-     * 语言
-     */
-    language: string
-    /**
-     * 封面图片
-     */
-    cover?: string
+    path: string
+    metadata: {
+      /**
+       * 书籍唯一标识
+       */
+      id: string
+      /**
+       * 书籍标题
+       */
+      title: string
+      /**
+       * 作者
+       */
+      creator: string
+      /**
+       * 发布者
+       */
+      publisher: string
+      /**
+       * 语言
+       */
+      language: string
+      /**
+       * 封面图片
+       */
+      cover?: string
+    }
   }
 }
 /**
  * 输出为文档网站
  */
-export interface Output1 {
+export interface DocsPluginConfig {
   /**
    * 插件名称
    */
   name: '@mark-magic/plugin-docs'
-  config: DocsOutputConfig
-}
-export interface DocsOutputConfig {
-  /**
-   * 输出文件的路径
-   */
-  path: string
-  /**
-   * 静态资源目录
-   */
-  public?: string
-  name: string
-  repo?: string
-  theme?: {
-    dark?: boolean
+  config: {
+    /**
+     * 输出文件的路径
+     */
+    path: string
+    /**
+     * 静态资源目录
+     */
+    public?: string
+    /**
+     * 网站名称
+     */
+    name: string
+    /**
+     * 网站 logo
+     */
+    logo?: string
+    /**
+     * 仓库地址
+     */
+    repo?: string
+    theme?: {
+      dark?: boolean
+    }
+    giscus?: {
+      repo: string
+      repoId: string
+      category: string
+      categoryId: string
+      mapping: string
+      reactionsEnabled: string
+      emitMetadata: string
+      inputPosition: string
+      theme: string
+      lang: string
+      crossorigin: string
+    }
+    gtag?: string | string[]
   }
-  giscus?: {
-    repo: string
-    repoId: string
-    category: string
-    categoryId: string
-    mapping: string
-    reactionsEnabled: string
-    emitMetadata: string
-    inputPosition: string
-    theme: string
-    lang: string
-    crossorigin: string
-  }
-  gtag?: string | string[]
 }

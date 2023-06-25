@@ -1,0 +1,102 @@
+diff --git a/dist/lib/refs.js b/dist/lib/refs.js
+index 6e92deb30d9cea9a4ce958e7cd05abffd2df18ea..2ea8299550ac0996b9db6d917760e9d3cb656565 100644
+--- a/dist/lib/refs.js
++++ b/dist/lib/refs.js
+@@ -29,8 +29,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
+ const ono_1 = require("@jsdevtools/ono");
+ const ref_js_1 = __importDefault(require("./ref.js"));
+ const url = __importStar(require("./util/url.js"));
+-const isWindows = /^win/.test(globalThis.process ? globalThis.process.platform : "");
+-const getPathFromOs = (filePath) => (isWindows ? filePath.replace(/\\/g, "/") : filePath);
++const is_windows_js_1 = require("./util/is-windows.js");
++const getPathFromOs = (filePath) => ((0, is_windows_js_1.isWindows)() ? filePath.replace(/\\/g, "/") : filePath);
+ /**
+  * When you call the resolve method, the value that gets passed to the callback function (or Promise) is a $Refs object. This same object is accessible via the parser.$refs property of $RefParser objects.
+  *
+diff --git a/dist/lib/util/is-windows.d.ts b/dist/lib/util/is-windows.d.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..9d12b539e1efd8b3b612c835bf30114fac7bc58b
+--- /dev/null
++++ b/dist/lib/util/is-windows.d.ts
+@@ -0,0 +1,5 @@
++/**
++ * Returns if the system is a Windows system or not
++ * @returns
++ */
++export declare function isWindows(): boolean;
+diff --git a/dist/lib/util/is-windows.js b/dist/lib/util/is-windows.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..4f346e848143ca0293944ef6873ef9a772128231
+--- /dev/null
++++ b/dist/lib/util/is-windows.js
+@@ -0,0 +1,11 @@
++"use strict";
++Object.defineProperty(exports, "__esModule", { value: true });
++exports.isWindows = void 0;
++/**
++ * Returns if the system is a Windows system or not
++ * @returns
++ */
++function isWindows() {
++    return /^win/.test(globalThis.process ? globalThis.process.platform : "");
++}
++exports.isWindows = isWindows;
+diff --git a/dist/lib/util/url.js b/dist/lib/util/url.js
+index 8f6867460d609d3e27d325ac10d9281898c528f0..b27828be271acb908ec26a65594c7c35c9989724 100644
+--- a/dist/lib/util/url.js
++++ b/dist/lib/util/url.js
+@@ -1,8 +1,9 @@
+ "use strict";
+ Object.defineProperty(exports, "__esModule", { value: true });
+ exports.safePointerToPath = exports.toFileSystemPath = exports.fromFileSystemPath = exports.isFileSystemPath = exports.isHttp = exports.stripHash = exports.getHash = exports.stripQuery = exports.getExtension = exports.getProtocol = exports.cwd = exports.resolve = exports.parse = void 0;
+-const isWindows = /^win/.test(globalThis.process ? globalThis.process.platform : ""), forwardSlashPattern = /\//g, protocolPattern = /^(\w{2,}):\/\//i, jsonPointerSlash = /~1/g, jsonPointerTilde = /~0/g;
++const forwardSlashPattern = /\//g, protocolPattern = /^(\w{2,}):\/\//i, jsonPointerSlash = /~1/g, jsonPointerTilde = /~0/g;
+ const path_1 = require("path");
++const is_windows_1 = require("./is-windows");
+ const projectDir = (0, path_1.join)(__dirname, "..", "..");
+ // RegExp patterns to URL-encode special characters in local filesystem paths
+ const urlEncodePatterns = [/\?/g, "%3F", /#/g, "%23"];
+@@ -173,15 +174,14 @@ exports.isFileSystemPath = isFileSystemPath;
+ function fromFileSystemPath(path) {
+     // Step 1: On Windows, replace backslashes with forward slashes,
+     // rather than encoding them as "%5C"
+-    if (isWindows) {
++    if ((0, is_windows_1.isWindows)()) {
+         const hasProjectDir = path.toUpperCase().includes(projectDir.replace(/\\/g, "\\").toUpperCase());
+         const hasProjectUri = path.toUpperCase().includes(projectDir.replace(/\\/g, "/").toUpperCase());
+-        if (hasProjectDir || hasProjectUri) {
+-            path = path.replace(/\\/g, "/");
+-        }
+-        else {
+-            path = `${projectDir}/${path}`.replace(/\\/g, "/");
++        const isAbsolutePath = (0, path_1.isAbsolute)(path);
++        if (!(hasProjectDir || hasProjectUri || isAbsolutePath)) {
++            path = (0, path_1.join)(projectDir, path);
+         }
++        path = path.replace(/\\/g, "/");
+     }
+     // Step 2: `encodeURI` will take care of MOST characters
+     path = encodeURI(path);
+@@ -213,7 +213,7 @@ function toFileSystemPath(path, keepFileProtocol) {
+         // Strip-off the protocol, and the initial "/", if there is one
+         path = path[7] === "/" ? path.substr(8) : path.substr(7);
+         // insert a colon (":") after the drive letter on Windows
+-        if (isWindows && path[1] === "/") {
++        if ((0, is_windows_1.isWindows)() && path[1] === "/") {
+             path = path[0] + ":" + path.substr(1);
+         }
+         if (keepFileProtocol) {
+@@ -225,11 +225,11 @@ function toFileSystemPath(path, keepFileProtocol) {
+             // On Windows, it will start with something like "C:/".
+             // On Posix, it will start with "/"
+             isFileUrl = false;
+-            path = isWindows ? path : "/" + path;
++            path = (0, is_windows_1.isWindows)() ? path : "/" + path;
+         }
+     }
+     // Step 4: Normalize Windows paths (unless it's a "file://" URL)
+-    if (isWindows && !isFileUrl) {
++    if ((0, is_windows_1.isWindows)() && !isFileUrl) {
+         // Replace forward slashes with backslashes
+         path = path.replace(forwardSlashPattern, "\\");
+         // Capitalize the drive letter

@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest'
 import { u } from 'unist-builder'
-import { Node } from 'unist-util-visit'
+import { Node } from 'unist'
 import { flatMap, MdastExtension, ToMarkdownExtension, Root, Text } from '../utils'
 import { selectAll } from 'unist-util-select'
 import { fromMarkdown } from 'mdast-util-from-markdown'

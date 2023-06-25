@@ -1,14 +1,21 @@
-import { toHast } from 'mdast-util-to-hast'
-import { toHtml as hastToHtml } from 'hast-util-to-html'
+import { toHast, Options as HastOptions } from 'mdast-util-to-hast'
+import { toHtml as hastToHtml, Options as HtmlOptions } from 'hast-util-to-html'
 import { Root } from './utils'
+import type { HastNodes } from 'mdast-util-to-hast/lib'
 
 /**
  * 将一段 markdown ast 序列化为 html
  * @param node
  * @returns
  */
-export function toHtml(node: Root): string {
-  return hastToHtml(toHast(node)!)
+export function toHtml(
+  node: Root,
+  options?: {
+    hast?: HastOptions
+    html?: HtmlOptions
+  },
+): string {
+  return hastToHtml(toHast(node, options?.hast)!, options?.html)
 }
 
 /**

@@ -3,11 +3,23 @@ import { getHighlighter } from 'shiki'
 
 it('render', async () => {
   const highlighter = await getHighlighter({
-    theme: 'github-dark',
+    themes: ['github-dark', 'github-light'],
     langs: ['javascript'],
   })
-  const code = highlighter.codeToHtml(`console.log('shiki');`, {
-    lang: 'javascript',
-  })
-  expect(code).contain('shiki github-dark')
+  expect(
+    highlighter
+      .codeToHtml(`console.log('shiki');`, {
+        lang: 'javascript',
+        theme: 'github-dark',
+      })
+      .replace('<pre class="shiki ', '<pre class="shiki shiki-dark '),
+  ).contain('shiki shiki-dark')
+  expect(
+    highlighter
+      .codeToHtml(`console.log('shiki');`, {
+        lang: 'javascript',
+        theme: 'github-light',
+      })
+      .replace('<pre class="shiki ', '<pre class="shiki shiki-light '),
+  ).contain('shiki shiki-light')
 })

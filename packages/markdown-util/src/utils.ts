@@ -1,11 +1,14 @@
 import { visit as unistUtilVisit } from 'unist-util-visit'
-import { Parent, PhrasingContent, Root, YAML } from 'mdast'
+import { Code, Parent, PhrasingContent, Root, YAML } from 'mdast'
 import { Node } from 'unist'
 import * as yaml from 'yaml'
 import { select } from 'unist-util-select'
 import { remove } from 'unist-util-remove'
 import { Extension } from 'mdast-util-from-markdown'
 import { Options as ToMarkdownExtension } from 'mdast-util-to-markdown'
+import { fromHtml } from 'hast-util-from-html'
+import { Handler } from 'mdast-util-to-hast'
+import { Highlighter, Lang } from 'shiki'
 
 export type {
   AlignType,
@@ -181,5 +184,25 @@ export function breaksToMarkdown(): ToMarkdownExtension {
     handlers: {
       break: () => '\n',
     },
+  }
+}
+
+/**
+ * 支持使用 shiki 高亮代码¬
+ * @param high
+ * @returns
+ */
+export function shikiHandler(high: Highlighter): Handler {
+  return (_state, node: Code, _parent) => {
+    const f = (theme: 'light' | 'dark', themeValue: string) =>
+      select(
+        'element[tagName="pre"]',
+        fromHtml(
+          high
+            .codeToHtml(node.value, { lang: node.lang as Lang, theme: themeValue })
+            .replace('<pre class="shiki ', `<pre class="shiki shiki-${theme} `),
+        ),
+      )
+    return [f('dark', 'github-dark'), f('light', 'github-light')] as any
   }
 }

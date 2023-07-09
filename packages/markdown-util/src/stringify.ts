@@ -1,7 +1,6 @@
 import { toHast, Options as HastOptions } from 'mdast-util-to-hast'
 import { toHtml as hastToHtml, Options as HtmlOptions } from 'hast-util-to-html'
 import { Root } from './utils'
-import type { HastNodes } from 'mdast-util-to-hast/lib'
 
 /**
  * 将一段 markdown ast 序列化为 html

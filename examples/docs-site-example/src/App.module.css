@@ -1,0 +1,20 @@
+:root {
+  --sidebar-width: 300px;
+  --nav-height: 60px;
+}
+
+.navbar {
+  @apply w-full fixed top-0 bg-white;
+  height: var(--nav-height);
+}
+
+.sidebar {
+  @apply fixed overflow-y-auto bottom-0 left-0;
+  width: var(--sidebar-width);
+  height: calc(100vh - var(--nav-height));
+}
+
+.content {
+  margin-left: var(--sidebar-width);
+  margin-top: var(--nav-height);
+}

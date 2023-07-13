@@ -3,60 +3,78 @@ import { Random } from 'mockjs'
 import React from 'react'
 import css from './LayoutView.module.css'
 import { ButtonShadcn, cn } from '@liuli-util/ui'
-import { Link, RouterView } from '@liuli-util/react-router'
+import { Link, RouterView, useRouter } from '@liuli-util/react-router'
+import { treeMap } from '@liuli-util/tree'
+import { contents } from '../../constants/router'
 
 const Navbar: React.FC = () => {
   return (
-    <header>
-      <h1>Header</h1>
+    <header className="flex items-center h-full shadow-lg">
+      <h1 className="pl-4 font-bold">魔法少女小圆 飞向星空</h1>
     </header>
   )
 }
 
-interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
-  items: {
-    href: string
-    title: string
-  }[]
-  activeKey?: string
-}
-
-function SidebarNav({ className, items, activeKey, ...props }: SidebarNavProps) {
+function SidebarItem(props: { href: string; title: string; active: boolean; deps: number }) {
   return (
-    <nav className={cn('flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1', className)} {...props}>
-      {items.map((item) => (
-        <Link
-          key={item.href}
-          to={item.href}
-          className={cn(
-            ButtonShadcn.buttonVariants({ variant: 'ghost' }),
-            activeKey === item.href ? 'bg-muted hover:bg-muted' : 'hover:bg-transparent hover:underline',
-            'justify-start',
-          )}
-        >
-          {item.title}
-        </Link>
-      ))}
-    </nav>
+    <Link
+      to={props.href}
+      className={cn(
+        ButtonShadcn.buttonVariants({ variant: 'ghost' }),
+        props.active ? 'bg-muted' : '',
+        'justify-start w-full hover:bg-muted',
+        {
+          0: 'pl-0',
+          1: 'pl-2',
+          2: 'pl-4',
+          3: 'pl-6',
+          4: 'pl-8',
+          5: 'pl-10',
+          6: 'pl-12',
+        }[props.deps ?? 0],
+      )}
+    >
+      {props.title}
+    </Link>
   )
 }
 
 const Sidebar: React.FC = () => {
-  const list = range(1, 100).map(() => ({
-    id: Random.id(),
-    title: Random.ctitle(),
-  }))
+  const router = useRouter()
   return (
-    <div>
-      <ul className={'flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1'}>
-        <SidebarNav
-          items={list.map((it) => ({
-            href: `${it.id}`,
-            title: it.title,
-          }))}
-        />
+    <nav className={'flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1'}>
+      <ul>
+        {treeMap(
+          contents,
+          (it, path) => {
+            const isActive = decodeURI(router.location.pathname) === it.routePath
+            if (it.children) {
+              return (
+                <li key={it.routePath}>
+                  <SidebarItem
+                    key={it.routePath}
+                    href={it.routePath}
+                    active={isActive}
+                    deps={path.length}
+                    title={it.path!}
+                  />
+                  <ul className={'flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1'}>{it.children}</ul>
+                </li>
+              )
+            }
+            return (
+              <li key={it.routePath}>
+                <SidebarItem href={it.routePath} active={isActive} deps={path.length} title={it.path!} />
+              </li>
+            )
+          },
+          {
+            id: 'path',
+            children: 'children',
+          },
+        )}
       </ul>
-    </div>
+    </nav>
   )
 }
 

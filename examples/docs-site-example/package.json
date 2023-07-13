@@ -11,12 +11,15 @@
   "dependencies": {
     "@liuli-util/markdown-util": "workspace:^",
     "@liuli-util/react-router": "^0.9.4",
+    "@liuli-util/tree": "^3.8.1",
     "@liuli-util/ui": "link:/Users/rxliuli/code/web/liuli-tools/packages/ui",
     "clsx": "^1.2.1",
     "lodash-es": "^4.17.21",
     "mockjs": "^1.1.0",
+    "pathe": "^1.1.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-use": "^17.4.0"
   },
   "devDependencies": {
     "@liuli-util/vite-plugin-css-dts": "^0.2.0",
@@ -31,6 +34,7 @@
     "shiki": "^0.14.2",
     "tailwindcss": "^3.3.2",
     "typescript": "^5.0.2",
-    "vite": "^4.4.0"
+    "vite": "^4.4.0",
+    "vite-plugin-pages": "^0.31.0"
   }
 }

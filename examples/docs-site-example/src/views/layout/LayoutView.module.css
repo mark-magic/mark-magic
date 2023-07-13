@@ -17,4 +17,5 @@
 .content {
   margin-left: var(--sidebar-width);
   margin-top: var(--nav-height);
+  @apply p-8;
 }

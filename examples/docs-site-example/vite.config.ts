@@ -7,6 +7,7 @@ import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fromMarkdown, shikiHandler, toHtml } from '@liuli-util/markdown-util'
 import { getHighlighter } from 'shiki'
+import pages from 'vite-plugin-pages'
 
 async function markdown(): Promise<Plugin> {
   const high = await getHighlighter({
@@ -20,6 +21,7 @@ async function markdown(): Promise<Plugin> {
     },
     async transform(code, id) {
       if (id.endsWith('.md')) {
+        console.log('id', id)
         const htmlContent = toHtml(fromMarkdown(code), {
           hast: {
             handlers: {
@@ -54,11 +56,32 @@ async function markdown(): Promise<Plugin> {
   }
 }
 
-export default defineConfig({
-  plugins: [react(), cssdts(), markdown()],
-  css: {
-    postcss: {
-      plugins: [tailwindcss() as any, autoprefixer()],
+export default defineConfig(() => {
+  return {
+    plugins: [
+      react(),
+      cssdts(),
+      markdown(),
+      pages({
+        dirs: ['src/views/content/assets/books'],
+        extensions: ['md'],
+        async extendRoute(route, parent) {
+          if (route.element?.endsWith('.md')) {
+            const code = await readFile(path.join(process.cwd(), route.element), 'utf-8')
+            const htmlContent = toHtml(fromMarkdown(code))
+
+            return {
+              ...route,
+              html: htmlContent,
+            }
+          }
+        },
+      }),
+    ],
+    css: {
+      postcss: {
+        plugins: [tailwindcss() as any, autoprefixer()],
+      },
     },
-  },
+  }
 })

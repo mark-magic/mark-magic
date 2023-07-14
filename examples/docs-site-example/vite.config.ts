@@ -5,9 +5,10 @@ import autoprefixer from 'autoprefixer'
 import { cssdts } from '@liuli-util/vite-plugin-css-dts'
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
-import { fromMarkdown, shikiHandler, toHtml } from '@liuli-util/markdown-util'
+import { fromMarkdown, Image, selectAll, shikiHandler, toHtml } from '@liuli-util/markdown-util'
 import { getHighlighter } from 'shiki'
 import pages from 'vite-plugin-pages'
+import pathe from 'pathe'
 
 async function markdown(): Promise<Plugin> {
   const high = await getHighlighter({
@@ -21,8 +22,14 @@ async function markdown(): Promise<Plugin> {
     },
     async transform(code, id) {
       if (id.endsWith('.md')) {
-        console.log('id', id)
-        const htmlContent = toHtml(fromMarkdown(code), {
+        const root = fromMarkdown(code)
+        ;(selectAll('image', root) as Image[])
+          .filter((it) => it.url.startsWith('./') || it.url.startsWith('../'))
+          .forEach((it) => {
+            it.url = pathe.join('/@file', pathe.resolve(pathe.dirname(id), it.url))
+          })
+
+        const htmlContent = toHtml(root, {
           hast: {
             handlers: {
               code: shikiHandler(high),
@@ -38,19 +45,24 @@ async function markdown(): Promise<Plugin> {
     },
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
-        if (!req.url?.endsWith('.md')) {
-          return next()
-        }
+        if (req.url?.endsWith('.md')) {
+          try {
+            const fileContent = await readFile(path.resolve(rootPath, req.url), 'utf-8')
+            const htmlContent = toHtml(fromMarkdown(fileContent))
 
-        try {
-          const fileContent = await readFile(path.resolve(rootPath, req.url), 'utf-8')
-          const htmlContent = toHtml(fromMarkdown(fileContent))
-
-          res.setHeader('Content-Type', 'text/html; charset=utf-8')
-          res.end(htmlContent)
-        } catch {
-          next()
+            res.setHeader('Content-Type', 'text/html; charset=utf-8')
+            res.end(htmlContent)
+          } catch {
+            next()
+          }
+          return
         }
+        if (req.url.startsWith('/@file')) {
+          res.end(await readFile(req.url.slice(6)))
+          return
+        }
+        // console.log(req.url)
+        return next()
       })
     },
   }

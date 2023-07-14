@@ -70,6 +70,11 @@ export default {
             },
           },
         },
+        DEFAULT: {
+          css: {
+            maxWidth: '800px',
+          },
+        },
       }),
     },
     container: {

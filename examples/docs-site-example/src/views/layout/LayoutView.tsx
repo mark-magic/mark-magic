@@ -1,5 +1,3 @@
-import { range } from 'lodash-es'
-import { Random } from 'mockjs'
 import React from 'react'
 import css from './LayoutView.module.css'
 import { ButtonShadcn, cn } from '@liuli-util/ui'
@@ -10,7 +8,9 @@ import { contents } from '../../constants/router'
 const Navbar: React.FC = () => {
   return (
     <header className="flex items-center h-full shadow-lg">
-      <h1 className="pl-4 font-bold">魔法少女小圆 飞向星空</h1>
+      <h1 className="pl-4 font-bold">
+        <Link to={'/'}>魔法少女小圆 飞向星空</Link>
+      </h1>
     </header>
   )
 }
@@ -21,7 +21,7 @@ function SidebarItem(props: { href: string; title: string; active: boolean; deps
       to={props.href}
       className={cn(
         ButtonShadcn.buttonVariants({ variant: 'ghost' }),
-        props.active ? 'bg-muted' : '',
+        props.active ? 'bg-muted bg-accent text-accent-foreground' : '',
         'justify-start w-full hover:bg-muted',
         {
           0: 'pl-0',
@@ -42,7 +42,7 @@ function SidebarItem(props: { href: string; title: string; active: boolean; deps
 const Sidebar: React.FC = () => {
   const router = useRouter()
   return (
-    <nav className={'flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1'}>
+    <nav className={'flex flex-col'}>
       <ul>
         {treeMap(
           contents,
@@ -58,7 +58,7 @@ const Sidebar: React.FC = () => {
                     deps={path.length}
                     title={it.path!}
                   />
-                  <ul className={'flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1'}>{it.children}</ul>
+                  <ul className={'flex flex-col'}>{it.children}</ul>
                 </li>
               )
             }

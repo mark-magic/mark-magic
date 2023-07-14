@@ -4,7 +4,7 @@
 }
 
 .navbar {
-  @apply w-full fixed top-0 bg-white;
+  @apply w-full fixed top-0;
   height: var(--nav-height);
 }
 

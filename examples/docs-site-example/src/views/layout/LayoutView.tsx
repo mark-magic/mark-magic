@@ -5,6 +5,7 @@ import { treeMap } from '@liuli-util/tree'
 import { contentRoutes } from '../../constants/router'
 import { cn } from '../../utils/cn'
 import { useMedia } from 'react-use'
+import clsx from 'clsx'
 
 const Navbar: React.FC = () => {
   const { toggleSidebar } = useContext(AppContext)
@@ -128,6 +129,7 @@ export const LayoutView: React.FC = () => {
       sidebarRef.current!.className = css.sidebar
     }
   }, [isWide, config.sidebar])
+  const c = clsx('bg-white text-black dark:bg-black dark:text-white')
   return (
     <AppContext.Provider
       value={{
@@ -141,10 +143,10 @@ export const LayoutView: React.FC = () => {
       }}
     >
       <div>
-        <aside ref={sidebarRef} className={cn(css.sidebar)}>
+        <aside ref={sidebarRef} className={cn(css.sidebar, c)}>
           <Sidebar />
         </aside>
-        <div className={css.navbar}>
+        <div className={cn(css.navbar, c)}>
           <Navbar />
         </div>
         <main className={css.content}>

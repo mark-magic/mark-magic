@@ -4,12 +4,12 @@
 }
 
 .navbar {
-  @apply w-full fixed top-0 shadow-lg bg-white dark:bg-black h-[var(--nav-height)];
+  @apply w-full fixed top-0 shadow-lg h-[var(--nav-height)];
 }
 
 .sidebar {
   --sidebar-height: calc(100vh - var(--nav-height));
-  @apply fixed overflow-y-auto bottom-0 left-0 p-2 border-r-2 bg-white dark:bg-black shadow-lg w-[var(--sidebar-width)] h-[var(--sidebar-height)] max-w-[80%];
+  @apply fixed overflow-y-auto bottom-0 left-0 p-2 border-r-2 shadow-lg w-[var(--sidebar-width)] h-[var(--sidebar-height)] max-w-[80%];
 }
 
 @keyframes left-slide-in {

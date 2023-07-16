@@ -4,10 +4,17 @@ import tailwindcss from 'tailwindcss'
 import autoprefixer from 'autoprefixer'
 import { cssdts } from '@liuli-util/vite-plugin-css-dts'
 import { readFile } from 'node:fs/promises'
-import { fromMarkdown, Image, selectAll, shikiHandler, toHtml } from '@liuli-util/markdown-util'
+import {
+  fromMarkdown,
+  hastToHtml,
+  hastToJsx,
+  Image,
+  mdToHast,
+  selectAll,
+  shikiHandler,
+} from '@liuli-util/markdown-util'
 import { getHighlighter } from 'shiki'
 import pathe from 'pathe'
-import { transform } from 'esbuild'
 import { AsyncArray } from '@liuli-util/async'
 import crypto from 'node:crypto'
 
@@ -45,21 +52,18 @@ async function markdown(): Promise<Plugin> {
           },
         )
 
-        const htmlContent = toHtml(root, {
-          hast: {
-            handlers: {
-              code: shikiHandler(high),
-            },
-          },
-          html: {
-            closeSelfClosing: true,
+        const hast = mdToHast(root, {
+          handlers: {
+            code: shikiHandler(high),
           },
         })
-        return {
-          code: `import React from 'react'; export default () => ${
-            (await transform(`<>${htmlContent}</>`, { loader: 'jsx' })).code
-          };`,
-        }
+        return `import React from 'react'; export default () => React.createElement(React.Fragment, null, [${hastToJsx(
+          hast,
+        )}]);`
+
+        // return `import React from 'react'; export default () => React.createElement('div', { dangerouslySetInnerHTML: { __html: ${JSON.stringify(
+        //   hastToHtml(hast),
+        // )}, } });`
       }
     },
     configureServer(server) {

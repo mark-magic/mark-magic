@@ -1,8 +1,9 @@
 import { expect, it } from 'vitest'
-import { toHtml } from '../stringify'
+import { hastToJsx, mdToHast, toHtml } from '../stringify'
 import { shikiHandler } from '../utils'
 import { fromMarkdown } from '../parse'
 import { getHighlighter } from 'shiki'
+import { HastNodes } from 'mdast-util-to-hast/lib'
 
 it('Handler', async () => {
   const root = fromMarkdown(
@@ -26,4 +27,9 @@ console.log('hello world');
     },
   })
   expect(r).include('shiki shiki-dark').include('shiki shiki-light')
+})
+
+it('hastToJsx', () => {
+  const r = hastToJsx(mdToHast(fromMarkdown('{test,}'))!)
+  expect(r).include('React.createElement').include('{test,}')
 })

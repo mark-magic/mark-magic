@@ -116,6 +116,9 @@ importers:
       fast-glob:
         specifier: ^3.2.12
         version: 3.3.0
+      get-port:
+        specifier: ^7.0.0
+        version: 7.0.0
       postcss:
         specifier: ^8.4.25
         version: 8.4.25
@@ -4979,6 +4982,11 @@ packages:
       has: 1.0.3
       has-proto: 1.0.1
       has-symbols: 1.0.3
+    dev: true
+
+  /get-port@7.0.0:
+    resolution: {integrity: sha512-mDHFgApoQd+azgMdwylJrv2DX47ywGq1i5VFJE7fZ0dttNq3iQMfsU4IvEgBHojA3KqEudyu7Vq+oN8kNaNkWw==}
+    engines: {node: '>=16'}
     dev: true
 
   /get-stdin@8.0.0:

@@ -27,6 +27,7 @@
     "@vitejs/plugin-vue": "^4.2.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "rollup": "^3.25.1",
     "typescript": "^5.0.4",
     "vitest": "^0.31.0",
     "vue": "^3.3.4"

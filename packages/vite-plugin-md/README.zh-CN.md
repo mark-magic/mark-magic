@@ -25,34 +25,23 @@ export default defineConfig({
 
 ### html
 
-配置 src/vite-env.d.ts
-
-```ts
-declare module '*.md' {
-  const content: string
-  export default content
-}
-```
-
-使用组件
-
 ```ts
 import HTML from './README.md'
 
 console.log(HTML)
 ```
 
-### react
-
-配置 src/vite-env.d.ts
+类型
 
 ```ts
+// vite-env.d.ts
 declare module '*.md' {
-  import { FC } from 'react'
-  const component: FC
-  export default component
+  const content: string
+  export default content
 }
 ```
+
+### react
 
 使用组件
 
@@ -63,17 +52,18 @@ import ReactComponent from './README.md'
 const App = () => <ReactComponent />
 ```
 
-### vue
-
-配置 src/vite-env.d.ts
+类型
 
 ```ts
+// vite-env.d.ts
 declare module '*.md' {
-  import { ComponentOptions } from 'vue'
-  const component: ComponentOptions
+  import { FC } from 'react'
+  const component: FC
   export default component
 }
 ```
+
+### vue
 
 使用组件
 
@@ -84,6 +74,17 @@ import VueComponent from './README.md'
 <template>
   <VueComponent />
 </template>
+```
+
+类型
+
+```ts
+// vite-env.d.ts
+declare module '*.md' {
+  import { ComponentOptions } from 'vue'
+  const component: ComponentOptions
+  export default component
+}
 ```
 
 ## 为什么不使用现有插件

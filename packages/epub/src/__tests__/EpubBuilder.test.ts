@@ -69,7 +69,7 @@ it('basic', async () => {
   })
 
   await extractZipToFolder(zip, path.resolve(tempPath, 'dist'))
-  await writeFile(path.resolve(tempPath, 'test.epub'), await zip.generateAsync({ type: 'nodebuffer' }))
+  await writeFile(path.resolve(tempPath, 'test.zip'), await zip.generateAsync({ type: 'nodebuffer' }))
 })
 
 it('multi-level toc', async () => {

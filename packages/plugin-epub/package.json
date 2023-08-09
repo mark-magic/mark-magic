@@ -20,14 +20,14 @@
   },
   "sideEffects": false,
   "devDependencies": {
-    "@liuli-util/test": "^3.6.0",
-    "json-schema-to-typescript": "^13.0.2",
+    "@liuli-util/test": "^3.7.0",
     "@liuli-util/vite-plugin-node": "^0.2.0",
     "@mark-magic/plugin-local": "workspace:^",
     "@mark-magic/utils": "workspace:^",
     "@types/fs-extra": "^11.0.1",
     "@types/lodash-es": "^4.17.7",
     "@types/uuid": "^9.0.2",
+    "json-schema-to-typescript": "^13.0.2",
     "typescript": "^5.0.4",
     "vite": "^4.3.9",
     "vitest": "^0.31.0"

@@ -1,6 +1,15 @@
 import { OutputPlugin } from '@mark-magic/core'
 import { EpubBuilder, GenerateOptions, MetaData, Toc, Chapter } from '@mark-magic/epub'
-import { Heading, Image, Link, fromMarkdown, selectAll, toString, toHtml } from '@liuli-util/markdown-util'
+import {
+  Heading,
+  Image,
+  Link,
+  fromMarkdown,
+  selectAll,
+  toString,
+  mdToHast,
+  hastToHtml,
+} from '@liuli-util/markdown-util'
 import { v4 } from 'uuid'
 import { treeMap } from '@liuli-util/tree'
 import { readFile, writeFile } from 'fs/promises'
@@ -176,7 +185,9 @@ export function output(options: EpubOutputConfig): OutputPlugin {
       } = {
         id: content.id,
         title: content.name,
-        content: toHtml(root),
+        content: hastToHtml(mdToHast(root)!, {
+          closeSelfClosing: true,
+        }),
         path: pathe.join(...content.path),
       }
       _options.text.push(c)

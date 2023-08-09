@@ -507,8 +507,8 @@ importers:
         version: 9.0.0
     devDependencies:
       '@liuli-util/test':
-        specifier: ^3.6.0
-        version: 3.6.0
+        specifier: ^3.7.0
+        version: 3.7.0
       '@liuli-util/vite-plugin-node':
         specifier: ^0.2.0
         version: 0.2.0(@types/node@20.3.1)(rollup@3.26.3)(vite@4.3.9)
@@ -1862,6 +1862,28 @@ packages:
 
   /@liuli-util/test@3.6.0:
     resolution: {integrity: sha512-m68LSVDnPOPxZ+dyr3b/jZA+pllz9pdoM+Xg4Gm4y0oTliBAjB48CJvZ9PyxzHmwsqfeDzj9H69/5e/i85xwXQ==}
+    dev: true
+
+  /@liuli-util/test@3.7.0:
+    resolution: {integrity: sha512-35jTcH078L4fugvdlkQ6VhF6YND3HOj/ooqQQLG9Vxpahy4UZlTfJsBI5lLMwMNXQIfnhUkSLbshQeJzlqri4w==}
+    optionalDependencies:
+      vitest: 0.31.0
+    transitivePeerDependencies:
+      - '@edge-runtime/vm'
+      - '@vitest/browser'
+      - '@vitest/ui'
+      - happy-dom
+      - jsdom
+      - less
+      - lightningcss
+      - playwright
+      - safaridriver
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - webdriverio
     dev: true
 
   /@liuli-util/tree@3.7.0:

@@ -1,6 +1,6 @@
 {
   "name": "@mark-magic/plugin-local",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "license": "GPL",
   "type": "module",
   "exports": {
@@ -19,10 +19,6 @@
     "dts": "json2ts -i src/config.schema.json -o src/config.schema.d.ts"
   },
   "sideEffects": false,
-  "files": [
-    "dist",
-    "src"
-  ],
   "typedoc": {
     "entryPoint": "./src/index.ts"
   },
@@ -30,8 +26,6 @@
     "json-schema-to-typescript": "^13.0.2",
     "@liuli-util/test": "^3.6.0",
     "@liuli-util/vite-plugin-node": "^0.3.0",
-    "@mark-magic/core": "workspace:^",
-    "@mark-magic/utils": "workspace:^",
     "@types/crypto-js": "^4.1.1",
     "@types/lodash-es": "^4.17.6",
     "@types/node": "^18.8.3",
@@ -48,6 +42,8 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
+    "@mark-magic/core": "workspace:^",
+    "@mark-magic/utils": "workspace:^",
     "@liuli-util/async": "^3.6.0",
     "@liuli-util/fs-extra": "^0.1.0",
     "@liuli-util/markdown-util": "workspace:*",

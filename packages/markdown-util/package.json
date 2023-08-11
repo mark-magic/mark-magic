@@ -1,7 +1,7 @@
 {
   "name": "@liuli-util/markdown-util",
   "type": "module",
-  "version": "0.6.0",
+  "version": "0.7.1",
   "sideEffects": false,
   "exports": {
     ".": {

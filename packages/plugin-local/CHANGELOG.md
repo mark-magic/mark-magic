@@ -1,4 +1,14 @@
-# @mami/plugin-local
+# @mark-magic/plugin-local
+
+## 0.5.6
+
+### Patch Changes
+
+- init publish
+- Updated dependencies
+  - @liuli-util/markdown-util@0.7.1
+  - @mark-magic/utils@0.2.3
+  - @mark-magic/core@0.1.1
 
 ## 0.5.5
 

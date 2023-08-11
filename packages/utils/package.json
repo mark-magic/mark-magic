@@ -1,9 +1,8 @@
 {
   "name": "@mark-magic/utils",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "license": "MIT",
   "type": "module",
-  "private": true,
   "exports": "./dist/index.js",
   "types": "./src/index.ts",
   "scripts": {

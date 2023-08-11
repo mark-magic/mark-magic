@@ -1,9 +1,9 @@
-# @mark-magic/utils
+# @mark-magic/epub
 
-## 0.2.3
+## 0.1.1
 
 ### Patch Changes
 
 - init publish
 - Updated dependencies
-  - @mark-magic/core@0.1.1
+  - @mark-magic/utils@0.2.3

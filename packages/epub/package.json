@@ -1,6 +1,6 @@
 {
   "name": "@mark-magic/epub",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "license": "GPL",
   "sideEffects": false,
@@ -21,7 +21,6 @@
     "@liuli-util/fs": "^0.1.0",
     "@liuli-util/test": "^3.6.0",
     "@liuli-util/vite-plugin-node": "^0.1.1",
-    "@mark-magic/utils": "workspace:^",
     "@types/mime-types": "^2.1.1",
     "@types/mustache": "^4.2.2",
     "@types/node": "^20.3.1",
@@ -32,6 +31,7 @@
     "vitest": "^0.32.0"
   },
   "dependencies": {
+    "@mark-magic/utils": "workspace:^",
     "@liuli-util/tree": "^3.7.0",
     "jszip": "^3.10.1",
     "mime-types": "^2.1.35",

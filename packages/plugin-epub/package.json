@@ -1,7 +1,6 @@
 {
   "name": "@mark-magic/plugin-epub",
-  "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -22,8 +21,6 @@
   "devDependencies": {
     "@liuli-util/test": "^3.7.0",
     "@liuli-util/vite-plugin-node": "^0.2.0",
-    "@mark-magic/plugin-local": "workspace:^",
-    "@mark-magic/utils": "workspace:^",
     "@types/fs-extra": "^11.0.1",
     "@types/lodash-es": "^4.17.7",
     "@types/uuid": "^9.0.2",
@@ -37,6 +34,8 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
+    "@mark-magic/plugin-local": "workspace:^",
+    "@mark-magic/utils": "workspace:^",
     "@liuli-util/markdown-util": "workspace:^",
     "@liuli-util/tree": "^3.8.0",
     "@mark-magic/core": "workspace:^",

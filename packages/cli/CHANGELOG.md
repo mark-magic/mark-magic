@@ -1,5 +1,14 @@
 # @mark-magic/cli
 
+## 0.1.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/plugin-local@0.5.7
+  - @mark-magic/plugin-docs@0.1.2
+  - @mark-magic/plugin-epub@0.1.2
+
 ## 0.1.1
 
 ### Patch Changes

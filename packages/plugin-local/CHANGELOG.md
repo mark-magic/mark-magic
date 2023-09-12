@@ -1,5 +1,11 @@
 # @mark-magic/plugin-local
 
+## 0.5.7
+
+### Patch Changes
+
+- fix: 修复 publish config
+
 ## 0.5.6
 
 ### Patch Changes

@@ -159,7 +159,9 @@ export interface OutputOptions {
   resourceLink(o: { resource: Resource; contentPath: string; resourcePath: string }): string | undefined
 }
 
-export function output(options: OutputOptions): OutputPlugin {
+export function output(
+  options: Required<Partial<OutputOptions>, 'rootContentPath' | 'rootResourcePath'>,
+): OutputPlugin {
   const _options = defaultOptions(options)
   const resourceMap = new BiMultiMap<string, string>(),
     contentMap = new BiMultiMap<string, string>(),

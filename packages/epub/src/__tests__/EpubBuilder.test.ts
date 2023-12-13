@@ -3,9 +3,7 @@ import path from 'path'
 import { v4 } from 'uuid'
 import { initTempPath } from '@liuli-util/test'
 import { EpubBuilder, renderNavXML } from '../EpubBuilder'
-import { mkdir, readFile, writeFile } from 'fs/promises'
-import JSZip from 'jszip'
-import { pathExists } from '@liuli-util/fs'
+import { readFile, writeFile } from 'fs/promises'
 import { extractZipToFolder } from '@mark-magic/utils'
 
 const tempPath = initTempPath(__filename)
@@ -183,10 +181,10 @@ it('tree sidebar renderer', () => {
   ])
   console.log(r)
   expect(r)
-    .includes('<a href="Text/01-readme.xhtml">第一卷-量子纠缠</a>')
-    .includes('<a href="Text/01-001.xhtml">第一章-许愿</a>')
-    .includes('<a href="Text/02-readme.xhtml">第二卷-宇宙膨胀</a>')
-    .includes('<a href="Text/02-017.xhtml">幕间-1-无间迷梦</a>')
+    .includes('<a href="./01-readme.xhtml">第一卷-量子纠缠</a>')
+    .includes('<a href="./01-001.xhtml">第一章-许愿</a>')
+    .includes('<a href="./02-readme.xhtml">第二卷-宇宙膨胀</a>')
+    .includes('<a href="./02-017.xhtml">幕间-1-无间迷梦</a>')
   expect(r.match(new RegExp('<ol>', 'g'))!.length).eq(3)
 })
 

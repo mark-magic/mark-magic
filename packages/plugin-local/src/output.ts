@@ -12,7 +12,7 @@ import {
 } from '@mark-magic/core'
 import { fromMarkdown, Link, Root, setYamlMeta, toMarkdown, Image, selectAll, HTML } from '@liuli-util/markdown-util'
 import filenamify from 'filenamify'
-import { keyBy } from 'lodash-es'
+import { dropRight, keyBy } from 'lodash-es'
 import { Required } from 'utility-types'
 import { BiMultiMap } from '@mark-magic/utils'
 import { parse } from 'node-html-parser'
@@ -24,7 +24,7 @@ export function defaultOptions(
   return {
     meta: calcMeta,
     contentPath: (content) =>
-      pathe.resolve(options.rootContentPath, content.path.join('/'), filenamify(content.name) + '.md'),
+      pathe.resolve(options.rootContentPath, dropRight(content.path, 1).join('/'), filenamify(content.name) + '.md'),
     resourcePath: (resource) => pathe.resolve(options.rootResourcePath, filenamify(resource.name)),
     contentLink: ({ contentPath: contentPath, linkContentPath: linkContentPath }) =>
       formatRelative(pathe.relative(pathe.dirname(contentPath), linkContentPath)),
@@ -200,6 +200,7 @@ export function output(
       contentMap.set(content.id, fsPath)
       const root = fromMarkdown(content.content)
       setYamlMeta(root, _options.meta(content))
+      console.log('fsPath', content.name, fsPath)
       const isAfter = convertLinks({ root, content, fsPath, contentMap: contentMap, resourceMap, ..._options })
       if (isAfter) {
         afterList.push({ fsPath, content: content })

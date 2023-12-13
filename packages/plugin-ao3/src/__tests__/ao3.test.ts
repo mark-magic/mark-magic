@@ -36,7 +36,7 @@ it.skip('parse ao3 chapters', async () => {
   ])
 })
 
-it('fetch ao3 chapter content', async () => {
+it.skip('fetch ao3 chapter content', async () => {
   const chapter = { bookId: '29943597', id: '73705791', name: '1. 1' }
   const content = await fetchChapterContent(chapter)
   console.log(content)

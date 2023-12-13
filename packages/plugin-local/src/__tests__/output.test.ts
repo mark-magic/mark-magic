@@ -6,9 +6,8 @@ import { convert, InputPlugin, Content, Resource } from '@mark-magic/core'
 import { calcMeta, convertLinks, defaultOptions, output } from '../output'
 import filenamify, { filenamifyPath } from 'filenamify'
 import { Image, Link, fromMarkdown, select, toMarkdown } from '@liuli-util/markdown-util'
-import { BiMultiMap } from '@mark-magic/utils'
+import { BiMultiMap, fromAsync, fromVirtual } from '@mark-magic/utils'
 import { formatRelative } from '../utils'
-import { fromVirtual } from '@mark-magic/utils'
 import { initTempPath } from '@liuli-util/test'
 
 const tempPath = initTempPath(__filename)
@@ -67,51 +66,44 @@ describe('utils', () => {
 })
 
 it('basic', async () => {
-  const generateVirtual: InputPlugin = {
-    name: 'generateVirtual',
-    async *generate() {
-      yield {
-        id: 'test1',
-        name: 'test1',
-        content: `
+  const list: Parameters<typeof fromVirtual>[0] = [
+    {
+      id: 'test1',
+      content: `
 # test1
 
 [test2](:/content/test2)
         `.trim(),
-        resources: [] as Resource[],
-        // tags: [{ id: 'test', name: 'test' }] as Tag[],
-        path: ['a/b'],
-      } as Content
-      yield {
-        id: 'test2',
-        name: 'test2',
-        content: `
+      resources: [] as Resource[],
+      // tags: [{ id: 'test', name: 'test' }] as Tag[],
+      path: 'a/b/test1.md',
+    },
+    {
+      id: 'test2',
+      content: `
 # test2
 
 [test1](:/content/test1)
 [localDirOutput.test.ts](:/resource/test)
                 `.trim(),
-        resources: [
-          {
-            id: 'test',
-            name: pathe.basename(__filename),
-            raw: await readFile(__filename),
-          },
-        ] as Resource[],
-        // tags: [{ id: 'test', name: 'test' }] as Tag[],
-        path: ['c'],
-      } as Content
+      resources: [
+        {
+          id: 'test',
+          name: pathe.basename(__filename),
+          raw: await readFile(__filename),
+        },
+      ] as Resource[],
+      // tags: [{ id: 'test', name: 'test' }] as Tag[],
+      path: 'c/test2.md',
     },
-  }
-
+  ]
+  // console.log(await fromAsync(fromVirtual(list).generate()))
   await convert({
-    input: generateVirtual,
-    output: output(
-      defaultOptions({
-        rootContentPath: tempPath,
-        rootResourcePath: pathe.resolve(tempPath, '_resources'),
-      }),
-    ),
+    input: fromVirtual(list),
+    output: output({
+      rootContentPath: tempPath,
+      rootResourcePath: pathe.resolve(tempPath, '_resources'),
+    }),
   })
 
   const test1Path = pathe.resolve(tempPath, 'a/b/test1.md')
@@ -136,7 +128,7 @@ it('filename', async () => {
         `.trim(),
         resources: [] as Resource[],
         // tags: [{ id: 'test', name: 'test' }] as Tag[],
-        path: ['a/b'],
+        path: ['a/b', 'test1.md'],
       } as Content
       yield {
         id: 'test2',
@@ -148,18 +140,16 @@ it('filename', async () => {
                 `.trim(),
         resources: [] as Resource[],
         // tags: [{ id: 'test', name: 'test' }] as Tag[],
-        path: ['c'],
+        path: ['c', 'foo:bar.md'],
       } as Content
     },
   }
   await convert({
     input: generateVirtual,
-    output: output(
-      defaultOptions({
-        rootContentPath: tempPath,
-        rootResourcePath: pathe.resolve(tempPath, '_resources'),
-      }),
-    ),
+    output: output({
+      rootContentPath: tempPath,
+      rootResourcePath: pathe.resolve(tempPath, '_resources'),
+    }),
   })
 
   const test1Path = pathe.resolve(tempPath, 'a/b/test1.md')

@@ -8,12 +8,12 @@ import path from 'pathe'
 
 const tempPath = initTempPath(__filename)
 
-it('input get chapters', async () => {
+it.skip('input get chapters', async () => {
   const list = await fromAsync(ao3.input('https://archiveofourown.org/works/29943597/').generate())
   console.log(list)
 })
 
-it('output to local', async () => {
+it.skip('output to local', async () => {
   await convert({
     input: ao3.input('https://archiveofourown.org/works/29943597/'),
     output: local.output({

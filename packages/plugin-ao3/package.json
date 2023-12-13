@@ -33,7 +33,7 @@
     "typescript": "^4.8.4",
     "utility-types": "^3.10.0",
     "vite": "^4.3.9",
-    "vitest": "^0.32.2"
+    "vitest": "^1.0.4"
   },
   "publishConfig": {
     "access": "public",

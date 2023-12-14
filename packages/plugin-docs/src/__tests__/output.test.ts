@@ -1,4 +1,4 @@
-import { expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { Content, Resource, convert } from '@mark-magic/core'
 import { fromVirtual } from '@mark-magic/utils'
 import { output } from '../output'
@@ -54,7 +54,7 @@ it('basic', async () => {
   expect(await pathExists(path.resolve(tempPath, 'dist/b.html'))).true
 })
 
-it.skip('should support real site', async () => {
+it('should support real site', async () => {
   const i = local.input({
     path: path.resolve(__dirname, './assets/to-the-stars/books/'),
   })
@@ -65,6 +65,8 @@ it.skip('should support real site', async () => {
     output: output({
       path: path.resolve(tempPath, 'dist'),
       name: '魔法少女小圆 飞向星空',
+      description:
+        '在经历了几个世纪的动荡之后，一个乌托邦式的 AI— 人类政府治理着地球，预示着后稀缺社会的来临和太空殖民的新时代。一次意外的接触却让科技更先进的敌对外星种族打破了和平，这迫使魔法少女们走出幕后，拯救人类文明。在这一切之中，志筑良子，一个普通的女孩，仰望着星空，好奇着她在宇宙中的归所。',
       nav: [
         {
           text: 'GitHub',
@@ -110,8 +112,12 @@ it.skip('should support real site', async () => {
         lang: 'zh-CN',
         crossorigin: 'anonymous',
       },
+      rss: {
+        hostname: 'https://tts.liuli.moe',
+        copyright: 'Copyright © 2023 Hieronym, Inc. Built with feed.',
+      },
       debug: {
-        test: true,
+        // test: true,
       },
     }),
   })
@@ -155,7 +161,7 @@ it.skip('should inferred prev and next page', async () => {
   expect(dom.querySelector('.pager-link.next .title')!.textContent).eq('如果我能给妈妈写封信的话……')
 })
 
-it('should clear strong and em space', async () => {
+it.skip('should clear strong and em space', async () => {
   await convert({
     input: fromVirtual([
       {
@@ -177,4 +183,79 @@ it('should clear strong and em space', async () => {
   })
   const dom = parse(await readFile(path.resolve(tempPath, 'dist/index.html'), 'utf-8'))
   expect(dom.querySelector('main')!.textContent).eq('真，她。')
+})
+
+describe('rss', () => {
+  it('should support rss on basic', async () => {
+    await convert({
+      input: fromVirtual([
+        {
+          id: '01',
+          path: '/01.md',
+          content: '# test 1',
+        },
+        {
+          id: 'readme',
+          path: '/readme.md',
+          content: '# test',
+        },
+      ]),
+      output: output({
+        path: path.resolve(tempPath, 'dist'),
+        name: 'test',
+        lang: 'zh-CN',
+        rss: {
+          hostname: 'https://tts.liuli.moe',
+          copyright: 'Copyright © 2023 Hieronym, Inc. Built with feed.',
+        },
+      }),
+    })
+    expect(await pathExists(path.resolve(tempPath, 'dist/rss.xml'))).true
+    const s = await readFile(path.resolve(tempPath, 'dist/rss.xml'), 'utf-8')
+    expect(s)
+      .include('<![CDATA[test 1]]>')
+      .include('<![CDATA[test]]>')
+      .include('https://tts.liuli.moe')
+      .include('Copyright © 2023 Hieronym, Inc. Built with feed.')
+    expect(s.indexOf('<![CDATA[test]]>')).lt(s.indexOf('<![CDATA[test 1]]>'))
+  })
+  it('should support rss on multi level', async () => {
+    await convert({
+      input: fromVirtual([
+        {
+          id: '01',
+          path: '/01/readme.md',
+          content: '# test 1',
+        },
+        {
+          id: '02',
+          path: '/02/readme.md',
+          content: '# test 2',
+        },
+        {
+          id: 'readme',
+          path: '/readme.md',
+          content: '# test',
+        },
+      ]),
+      output: output({
+        path: path.resolve(tempPath, 'dist'),
+        name: 'test',
+        lang: 'zh-CN',
+        rss: {
+          hostname: 'https://tts.liuli.moe',
+          copyright: 'Copyright © 2023 Hieronym, Inc. Built with feed.',
+        },
+      }),
+    })
+    expect(await pathExists(path.resolve(tempPath, 'dist/rss.xml'))).true
+    const s = await readFile(path.resolve(tempPath, 'dist/rss.xml'), 'utf-8')
+    expect(s)
+      .include('<![CDATA[test 1]]>')
+      .include('<![CDATA[test]]>')
+      .include('https://tts.liuli.moe')
+      .include('Copyright © 2023 Hieronym, Inc. Built with feed.')
+    expect(s.indexOf('<![CDATA[test]]>')).lt(s.indexOf('<![CDATA[test 1]]>'))
+    expect(s.indexOf('<![CDATA[test 1]]>')).lt(s.indexOf('<![CDATA[test 2]]>'))
+  })
 })

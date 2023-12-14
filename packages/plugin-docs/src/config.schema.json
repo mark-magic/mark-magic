@@ -33,6 +33,10 @@
           "type": "string",
           "description": "网站名称"
         },
+        "description": {
+          "type": "string",
+          "description": "网站名称"
+        },
         "public": {
           "type": "string",
           "description": "静态资源目录"
@@ -46,7 +50,6 @@
           "type": "array",
           "description": "导航栏",
           "items": {
-            "type": "object",
             "anyOf": [
               {
                 "type": "object",
@@ -84,11 +87,10 @@
                     }
                   }
                 },
-                "required": ["text", "items"]
+                "required": ["text", "items"],
+                "additionalProperties": false
               }
-            ],
-            "required": ["text", "link"],
-            "additionalProperties": false
+            ]
           }
         },
         "logo": {
@@ -112,10 +114,6 @@
             }
           ]
         },
-        "repo": {
-          "type": "string",
-          "description": "仓库地址"
-        },
         "sitemap": {
           "type": "object",
           "properties": {
@@ -124,7 +122,21 @@
               "format": "uri"
             }
           },
-          "required": [],
+          "required": ["hostname"],
+          "additionalProperties": false
+        },
+        "rss": {
+          "type": "object",
+          "properties": {
+            "hostname": {
+              "type": "string",
+              "format": "uri"
+            },
+            "copyright": {
+              "type": "string"
+            }
+          },
+          "required": ["hostname", "copyright"],
           "additionalProperties": false
         },
         "giscus": {

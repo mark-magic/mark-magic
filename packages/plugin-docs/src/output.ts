@@ -30,9 +30,10 @@ function generateSidebar(sidebars: Sidebar[]): DefaultTheme.SidebarItem[] {
   )
 }
 
-interface OutputOptions {
+export interface OutputOptions {
   path: string
   name: string
+  description?: string
   public?: string
   lang?: 'en-US' | 'zh-CN' | string
   nav?: DefaultTheme.NavItem[]
@@ -59,9 +60,24 @@ interface OutputOptions {
     lang: string
     crossorigin: string
   }
+  rss?: {
+    hostname: string
+    copyright: string
+    author?: {
+      name: string
+      email: string
+      link: string
+    }[]
+  }
   debug?: {
     test?: boolean
   }
+}
+
+export interface RenderRssOptions extends NonNullable<OutputOptions['rss']> {
+  title: string
+  description?: string
+  lang?: string
 }
 
 export function output(options: OutputOptions): OutputPlugin {
@@ -91,6 +107,13 @@ export function output(options: OutputOptions): OutputPlugin {
   }
   const sidebars: Sidebar[] = []
   let tempPath: string, p: OutputPlugin
+  function findTitle(content: string): string | undefined {
+    const root = fromMarkdown(content)
+    const findHeader = (selectAll('heading', root) as Heading[]).find((it) => it.depth === 1)
+    if (findHeader?.children[0]) {
+      return toString(findHeader.children[0])
+    }
+  }
   return {
     name: 'docs',
     async start() {
@@ -101,7 +124,9 @@ export function output(options: OutputOptions): OutputPlugin {
       p = local.output({
         rootContentPath: tempPath,
         rootResourcePath: path.resolve(tempPath, 'resources'),
-        meta: () => null,
+        meta: (o) => ({
+          title: findTitle(o.content) ?? o.name,
+        }),
       })
       await p.start?.()
     },
@@ -113,14 +138,10 @@ export function output(options: OutputOptions): OutputPlugin {
       await p.handle(content)
       const sidebar: Sidebar = {
         path: path.join(...content.path),
-        text: content.name,
+        text: findTitle(content.content) ?? content.name,
         link: content.path.map((it) => '/' + it).join(''),
       }
-      const root = fromMarkdown(content.content)
-      const findHeader = (selectAll('heading', root) as Heading[]).find((it) => it.depth === 1)
-      if (findHeader?.children[0]) {
-        sidebar.text = toString(findHeader.children[0])
-      }
+
       sidebars.push(sidebar)
     },
     async end() {
@@ -130,7 +151,15 @@ export function output(options: OutputOptions): OutputPlugin {
       await mkdir(path.resolve(tempPath, '.vitepress'), { recursive: true })
       await writeFile(
         path.resolve(tempPath, '.vitepress/config.mjs'),
-        configRaw.replace('{{config}}', JSON.stringify(config)),
+        configRaw.replace('"{{config}}"', JSON.stringify(config)).replace(
+          '"{{rss}}"',
+          JSON.stringify({
+            ...options.rss,
+            title: options.name,
+            description: options.description,
+            lang: options.lang,
+          } as RenderRssOptions),
+        ),
       )
       if (options.public) {
         await copy(path.resolve(options.public), path.resolve(tempPath, 'public'))

@@ -71,6 +71,7 @@ export interface OutputOptions {
   }
   debug?: {
     test?: boolean
+    root?: string
   }
 }
 
@@ -118,6 +119,7 @@ export function output(options: OutputOptions): OutputPlugin {
     name: 'docs',
     async start() {
       const root =
+        options.debug?.root ??
         (await findParent(__dirname, async (it) => await pathExists(path.resolve(it, 'package.json')))) ??
         path.resolve()
       tempPath = path.resolve(root, '.temp')

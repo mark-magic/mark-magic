@@ -71,6 +71,9 @@ export default mergeConfig(
         const posts = await createContentLoader('**/*.md', {
           excerpt: true,
           render: true,
+          globOptions: {
+            ignore: ['dist'],
+          },
         }).load()
 
         for (const it of sortBy(posts, (it) => it.url).slice(posts.length - 10)) {

@@ -258,4 +258,39 @@ describe.skip('rss', () => {
     expect(s.indexOf('<![CDATA[test]]>')).lt(s.indexOf('<![CDATA[test 1]]>'))
     expect(s.indexOf('<![CDATA[test 1]]>')).lt(s.indexOf('<![CDATA[test 2]]>'))
   })
+  it('should working on node_modules', async () => {
+    await convert({
+      input: fromVirtual([
+        {
+          id: '01',
+          path: '/01.md',
+          content: '# test 1',
+        },
+        {
+          id: 'readme',
+          path: '/readme.md',
+          content: '# test',
+        },
+      ]),
+      output: output({
+        path: path.resolve(tempPath, 'dist'),
+        name: 'test',
+        lang: 'zh-CN',
+        rss: {
+          hostname: 'https://tts.liuli.moe',
+          copyright: 'Copyright © 2023 Hieronym, Inc. Built with feed.',
+        },
+        debug: {
+          root: path.resolve(tempPath, 'node_modules/@mark-magic/plugin-docs'),
+        },
+      }),
+    })
+    expect(await pathExists(path.resolve(tempPath, 'dist/rss.xml'))).true
+    const s = await readFile(path.resolve(tempPath, 'dist/rss.xml'), 'utf-8')
+    expect(s)
+      .include('<![CDATA[test 1]]>')
+      .include('<![CDATA[test]]>')
+      .include('https://tts.liuli.moe')
+      .include('Copyright © 2023 Hieronym, Inc. Built with feed.')
+  })
 })

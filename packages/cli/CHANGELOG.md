@@ -1,5 +1,16 @@
 # @mark-magic/cli
 
+## 0.4.0
+
+### Minor Changes
+
+- feat: 生成 rss 支持 ignore 配置
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/plugin-docs@0.4.0
+
 ## 0.3.3
 
 ### Patch Changes

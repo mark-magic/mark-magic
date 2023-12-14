@@ -68,6 +68,7 @@ export interface OutputOptions {
       email: string
       link: string
     }[]
+    ignore?: string[]
   }
   debug?: {
     test?: boolean

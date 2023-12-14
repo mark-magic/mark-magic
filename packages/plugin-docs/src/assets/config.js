@@ -58,7 +58,7 @@ var config_default = mergeConfig(
           excerpt: true,
           render: true,
           globOptions: {
-            ignore: ['dist'],
+            ignore: ['dist', ...(rss.ignore ?? [])],
           },
         }).load()
         for (const it of sortBy(posts, (it2) => it2.url).slice(posts.length - 10)) {

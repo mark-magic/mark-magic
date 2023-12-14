@@ -195,6 +195,11 @@ describe.skip('rss', () => {
           content: '# test 1',
         },
         {
+          id: '02',
+          path: '/02/readme.md',
+          content: '# test 2',
+        },
+        {
           id: 'readme',
           path: '/readme.md',
           content: '# test',
@@ -207,14 +212,16 @@ describe.skip('rss', () => {
         rss: {
           hostname: 'https://tts.liuli.moe',
           copyright: 'Copyright © 2023 Hieronym, Inc. Built with feed.',
+          ignore: ['**/02/**'],
         },
       }),
     })
     expect(await pathExists(path.resolve(tempPath, 'dist/rss.xml'))).true
     const s = await readFile(path.resolve(tempPath, 'dist/rss.xml'), 'utf-8')
     expect(s)
-      .include('<![CDATA[test 1]]>')
       .include('<![CDATA[test]]>')
+      .include('<![CDATA[test 1]]>')
+      // .not.include('<![CDATA[test 2]]>')
       .include('https://tts.liuli.moe')
       .include('Copyright © 2023 Hieronym, Inc. Built with feed.')
     expect(s.indexOf('<![CDATA[test]]>')).lt(s.indexOf('<![CDATA[test 1]]>'))

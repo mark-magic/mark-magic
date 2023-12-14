@@ -72,7 +72,7 @@ export default mergeConfig(
           excerpt: true,
           render: true,
           globOptions: {
-            ignore: ['dist'],
+            ignore: ['dist', ...(rss.ignore ?? [])],
           },
         }).load()
 

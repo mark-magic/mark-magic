@@ -1,6 +1,6 @@
 {
   "name": "@mark-magic/plugin-epub",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -17,6 +17,9 @@
     "test": "vitest run",
     "dts": "json2ts -i src/config.schema.json -o src/config.schema.d.ts"
   },
+  "files": [
+    "dist"
+  ],
   "sideEffects": false,
   "devDependencies": {
     "@mark-magic/plugin-local": "workspace:^",

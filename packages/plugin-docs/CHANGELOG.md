@@ -1,5 +1,11 @@
 # @mark-magic/plugin-docs
 
+## 0.3.1
+
+### Patch Changes
+
+- chore: 更新发布配置，显式指定 files
+
 ## 0.3.0
 
 ### Minor Changes

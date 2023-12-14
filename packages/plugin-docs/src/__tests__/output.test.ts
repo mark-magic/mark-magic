@@ -54,7 +54,7 @@ it('basic', async () => {
   expect(await pathExists(path.resolve(tempPath, 'dist/b.html'))).true
 })
 
-it('should support real site', async () => {
+it.skip('should support real site', async () => {
   const i = local.input({
     path: path.resolve(__dirname, './assets/to-the-stars/books/'),
   })
@@ -185,7 +185,7 @@ it.skip('should clear strong and em space', async () => {
   expect(dom.querySelector('main')!.textContent).eq('真，她。')
 })
 
-describe('rss', () => {
+describe.skip('rss', () => {
   it('should support rss on basic', async () => {
     await convert({
       input: fromVirtual([

@@ -1,6 +1,6 @@
 {
   "name": "@mark-magic/cli",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "type": "module",
   "bin": {
     "mark-magic": "./bin.js"
@@ -12,6 +12,10 @@
     }
   },
   "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "bin.js"
+  ],
   "scripts": {
     "setup": "pnpm build && pnpm build-schema",
     "build": "vite build",

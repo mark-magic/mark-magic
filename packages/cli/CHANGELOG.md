@@ -1,5 +1,13 @@
 # @mark-magic/cli
 
+## 0.3.2
+
+### Patch Changes
+
+- fix: 修复安装到 node_modules 下时无法正确生成 rss 的问题
+- Updated dependencies
+  - @mark-magic/plugin-docs@0.3.2
+
 ## 0.3.1
 
 ### Patch Changes

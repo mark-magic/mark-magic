@@ -1,5 +1,11 @@
 # @mark-magic/plugin-docs
 
+## 0.4.1
+
+### Patch Changes
+
+- chore: update jsonschema
+
 ## 0.4.0
 
 ### Minor Changes

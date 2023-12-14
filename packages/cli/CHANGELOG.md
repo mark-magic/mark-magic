@@ -1,5 +1,13 @@
 # @mark-magic/cli
 
+## 0.4.1
+
+### Patch Changes
+
+- chore: update jsonschema
+- Updated dependencies
+  - @mark-magic/plugin-docs@0.4.1
+
 ## 0.4.0
 
 ### Minor Changes

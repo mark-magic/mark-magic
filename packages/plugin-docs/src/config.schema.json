@@ -134,6 +134,12 @@
             },
             "copyright": {
               "type": "string"
+            },
+            "ignore": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           "required": ["hostname", "copyright"],

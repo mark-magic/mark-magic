@@ -154,3 +154,27 @@ it.skip('should inferred prev and next page', async () => {
   expect(dom.querySelector('.pager-link.prev .title')!.textContent).eq('你在开玩笑吧？')
   expect(dom.querySelector('.pager-link.next .title')!.textContent).eq('如果我能给妈妈写封信的话……')
 })
+
+it('should clear strong and em space', async () => {
+  await convert({
+    input: fromVirtual([
+      {
+        id: 'readme',
+        path: '/readme.md',
+        content: '**真，** 她。',
+      },
+      {
+        id: '01',
+        path: '/01.md',
+        content: '**真，** 她。',
+      },
+    ]),
+    output: output({
+      path: path.resolve(tempPath, 'dist'),
+      name: 'test',
+      lang: 'zh-CN',
+    }),
+  })
+  const dom = parse(await readFile(path.resolve(tempPath, 'dist/index.html'), 'utf-8'))
+  expect(dom.querySelector('main')!.textContent).eq('真，她。')
+})

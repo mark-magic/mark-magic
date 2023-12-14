@@ -10,6 +10,7 @@ import { treeMap } from '@liuli-util/tree'
 import { fromMarkdown, selectAll, Heading, toString } from '@liuli-util/markdown-util'
 import Mustache from 'mustache'
 import themeConfigRaw from './assets/theme/index.js?raw'
+import configRaw from './assets/config.js?raw'
 import { findParent } from '@liuli-util/fs'
 
 interface Sidebar extends Omit<DefaultTheme.SidebarItem, 'children'>, ISidebar {}
@@ -71,9 +72,6 @@ export function output(options: OutputOptions): OutputPlugin {
       nav: options.nav,
       sidebar: [],
       logo: options.logo,
-      // search: {
-      //   provider: 'local',
-      // },
     },
     sitemap: options.sitemap,
   }
@@ -130,7 +128,10 @@ export function output(options: OutputOptions): OutputPlugin {
       // 生成一个临时目录，包含 vitepress 配置文件之类的，用于后续写入 markdown 文件
       config.themeConfig!.sidebar = generateSidebar(treeSidebarByPath(sidebars))
       await mkdir(path.resolve(tempPath, '.vitepress'), { recursive: true })
-      await writeFile(path.resolve(tempPath, '.vitepress/config.mjs'), `export default ${JSON.stringify(config)}`)
+      await writeFile(
+        path.resolve(tempPath, '.vitepress/config.mjs'),
+        configRaw.replace('{{config}}', JSON.stringify(config)),
+      )
       if (options.public) {
         await copy(path.resolve(options.public), path.resolve(tempPath, 'public'))
       }

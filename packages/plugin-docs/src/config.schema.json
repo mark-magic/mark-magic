@@ -47,30 +47,46 @@
           "description": "导航栏",
           "items": {
             "type": "object",
-            "properties": {
-              "text": {
-                "type": "string"
-              },
-              "link": {
-                "type": "string"
-              },
-              "items": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "text": {
-                      "type": "string"
-                    },
-                    "link": {
-                      "type": "string"
-                    }
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
                   },
-                  "required": ["text", "link"],
-                  "additionalProperties": false
-                }
+                  "link": {
+                    "type": "string"
+                  }
+                },
+                "required": ["text", "link"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "text": {
+                          "type": "string"
+                        },
+                        "link": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["text", "link"],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": ["text", "items"]
               }
-            },
+            ],
             "required": ["text", "link"],
             "additionalProperties": false
           }
@@ -104,7 +120,8 @@
           "type": "object",
           "properties": {
             "hostname": {
-              "type": "boolean"
+              "type": "string",
+              "format": "uri"
             }
           },
           "required": [],

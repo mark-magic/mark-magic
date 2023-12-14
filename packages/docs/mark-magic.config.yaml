@@ -11,8 +11,6 @@ generate:
       config:
         path: ./dist/docs
         name: Mark Magic
-        theme:
-          dark: true
         public: ./public
         repo: https://github.com/rxliuli/mark-magic.git
   - name: epub

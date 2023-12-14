@@ -1,10 +1,11 @@
 import { convert } from '@mark-magic/core'
-import { it } from 'vitest'
+import { expect, it } from 'vitest'
 import * as local from '@mark-magic/plugin-local'
 import pathe from 'pathe'
 import { output } from '../output'
 import { initTempPath } from '@liuli-util/test'
 import { fromVirtual } from '@mark-magic/utils'
+import { EpubOutputConfig } from '../config.schema'
 
 const tempPath = initTempPath(__filename)
 
@@ -46,6 +47,14 @@ it('multi-level', async () => {
   })
 })
 
+const metadata: EpubOutputConfig['metadata'] = {
+  id: 'to-the-stars-01',
+  title: '第一卷-量子纠缠',
+  creator: 'Hieronym',
+  publisher: 'rxliuli',
+  language: 'zh-CN',
+}
+
 it('no cover', async () => {
   await convert({
     input: fromVirtual([
@@ -56,14 +65,44 @@ it('no cover', async () => {
       },
     ]),
     output: output({
-      metadata: {
-        id: 'to-the-stars-01',
-        title: '第一卷-量子纠缠',
-        creator: 'Hieronym',
-        publisher: 'rxliuli',
-        language: 'zh-CN',
-      },
+      metadata: { ...metadata },
       path: pathe.resolve(tempPath, './01.epub'),
     }),
   })
+})
+
+it('cover is not absolute path', async () => {
+  await convert({
+    input: fromVirtual([
+      {
+        id: '01',
+        path: '01.md',
+        content: '# 第一章',
+      },
+    ]),
+    output: output({
+      metadata: { ...metadata },
+      path: pathe.resolve(tempPath, './01.epub'),
+      root: pathe.resolve(__dirname, './assets/books/01/'),
+    }),
+  })
+})
+
+it('cover not exisit', async () => {
+  await expect(
+    convert({
+      input: fromVirtual([
+        {
+          id: '01',
+          path: '01.md',
+          content: '# 第一章',
+        },
+      ]),
+      output: output({
+        metadata: { ...metadata, cover: './cover.png' },
+        path: pathe.resolve(tempPath, './01.epub'),
+        root: pathe.resolve(__dirname, './assets/books/01/'),
+      }),
+    }),
+  ).rejects.toThrowError()
 })

@@ -34,7 +34,7 @@ async function main(options: CliOptions) {
     if (options.task && !options.task.includes(it.name)) {
       continue
     }
-    console.log(`开始执行任务: ${it.name}`)
+    console.log(`运行任务: ${it.name}`)
     await convert(it)
   }
 }

@@ -9,10 +9,10 @@
         "name": {
           "type": "string",
           "description": "插件名称",
-          "enum": ["@mark-magic/plugin-docs"]
+          "enum": ["@mark-magic/plugin-docsify"]
         },
         "config": {
-          "$ref": "#/definitions/DocsOutputConfig"
+          "$ref": "#/definitions/DocsifyOutputConfig"
         }
       },
       "required": ["name", "config"],
@@ -21,7 +21,7 @@
   },
   "additionalProperties": false,
   "definitions": {
-    "DocsOutputConfig": {
+    "DocsifyOutputConfig": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "type": "object",
       "properties": {

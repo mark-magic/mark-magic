@@ -6,7 +6,7 @@ import { convert, InputPlugin, Content, Resource } from '@mark-magic/core'
 import { calcMeta, convertLinks, defaultOptions, output } from '../output'
 import filenamify, { filenamifyPath } from 'filenamify'
 import { Image, Link, fromMarkdown, select, toMarkdown } from '@liuli-util/markdown-util'
-import { BiMultiMap, fromAsync, fromVirtual } from '@mark-magic/utils'
+import { BiMultiMap, fromVirtual } from '@mark-magic/utils'
 import { formatRelative } from '../utils'
 import { initTempPath } from '@liuli-util/test'
 

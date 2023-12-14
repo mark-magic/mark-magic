@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { Sidebar, generateSidebar, output, treeSidebarByPath } from '../output'
+import { Sidebar, generateSidebar, output } from '../output'
 import { Content, Resource, convert } from '@mark-magic/core'
 import * as local from '@mark-magic/plugin-local'
 import pathe from 'pathe'
@@ -7,7 +7,7 @@ import { initTempPath } from '@liuli-util/test'
 import { pathExists } from '@liuli-util/fs'
 import { readFile } from 'fs/promises'
 import { Image, Link, fromMarkdown, select, selectAll } from '@liuli-util/markdown-util'
-import { fromVirtual } from '@mark-magic/utils'
+import { fromVirtual, treeSidebarByPath } from '@mark-magic/utils'
 
 const tempPath = initTempPath(__filename)
 

@@ -1,9 +1,8 @@
 import { treeMap } from '@liuli-util/tree'
 import path from 'pathe'
+import { isIndex } from './utils'
 
-const isIndex = (p: string) => ['readme.md', 'index.md'].includes(path.basename(p).toLocaleLowerCase())
-
-function sortChapter<T extends { path: string }>(chapters: T[]): T[] {
+export function sortChapter<T extends { path: string }>(chapters: T[]): T[] {
   return chapters.sort((a, b) => {
     const aPath = a.path
     const bPath = b.path

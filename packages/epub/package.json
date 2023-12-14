@@ -1,8 +1,8 @@
 {
   "name": "@mark-magic/epub",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "type": "module",
-  "license": "GPL",
+  "license": "MIT",
   "sideEffects": false,
   "exports": {
     "import": "./dist/index.js",

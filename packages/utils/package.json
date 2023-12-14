@@ -1,6 +1,6 @@
 {
   "name": "@mark-magic/utils",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "license": "MIT",
   "type": "module",
   "exports": "./dist/index.js",

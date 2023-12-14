@@ -1,7 +1,7 @@
 {
   "name": "@mark-magic/all",
   "private": true,
-  "license": "GPL",
+  "license": "MIT",
   "scripts": {
     "postinstall": "npx simple-git-hooks",
     "setup-all": "pnpm -r run setup",

@@ -33,11 +33,7 @@
       "anyOf": [{ "$ref": "#/definitions/LocalPluginConfig" }]
     },
     "OutputPluginConfig": {
-      "anyOf": [
-        { "$ref": "#/definitions/EpubPluginConfig" },
-        { "$ref": "#/definitions/DocsPluginConfig" },
-        { "$ref": "#/definitions/VitepressPluginConfig" }
-      ]
+      "anyOf": [{ "$ref": "#/definitions/EpubPluginConfig" }, { "$ref": "#/definitions/DocsPluginConfig" }]
     },
     "LocalPluginConfig": {
       "$ref": "../node_modules/@mark-magic/plugin-local/src/config.schema.json#/properties/input"
@@ -47,9 +43,6 @@
     },
     "DocsPluginConfig": {
       "$ref": "../node_modules/@mark-magic/plugin-docs/src/config.schema.json#/properties/output"
-    },
-    "VitepressPluginConfig": {
-      "$ref": "../node_modules/@mark-magic/plugin-vitepress/src/config.schema.json#/properties/output"
     },
     "BasePluginConfig": {
       "type": "object",

@@ -1,126 +1,27 @@
+import { DefaultTheme, UserConfig, build } from 'vitepress'
 import { OutputPlugin } from '@mark-magic/core'
-import pathe from 'pathe'
+import path from 'pathe'
 import * as local from '@mark-magic/plugin-local'
-import { Heading, fromMarkdown, selectAll, toString } from '@liuli-util/markdown-util'
-import { mkdir, writeFile, rename } from 'fs/promises'
-import { pathExists } from '@liuli-util/fs'
-import indexHtml from './template/index.html?raw'
-import giscusJs from './template/giscus.js?raw'
-import gtagJs from './template/gtag.js?raw'
-import { isIndex } from './utils'
-import { treeMap, treeReduce } from '@liuli-util/tree'
-import Mustache from 'mustache'
-import { copy, remove } from 'fs-extra/esm'
+import { mkdir, writeFile } from 'fs/promises'
+import { copy, pathExists } from 'fs-extra/esm'
 import { pick } from 'lodash-es'
-import { DocsOutputConfig } from './config.schema'
+import { ISidebar, treeSidebarByPath } from '@mark-magic/utils'
+import { treeMap } from '@liuli-util/tree'
+import { fromMarkdown, selectAll, Heading, toString } from '@liuli-util/markdown-util'
+import Mustache from 'mustache'
+import themeConfigRaw from './assets/theme/index.js?raw'
+import { findParent } from '@liuli-util/fs'
 
-export interface Sidebar {
-  id: string
-  name: string
-  path: string
-}
+interface Sidebar extends Omit<DefaultTheme.SidebarItem, 'children'>, ISidebar {}
 
-export function generateSidebar(sidebars: Sidebar[]): string {
-  return treeReduce(
-    sidebars,
-    (r, it, child, p) => {
-      const s = `${'  '.repeat(p.length - 1)}- [${it.name}](/p/${it.id})`
-      return r + s + '\n' + child
-    },
-    '',
-    {
-      id: 'id',
-      children: 'children',
-    },
-  )
-}
-
-export function sortChapter<T extends { path: string }>(chapters: T[]): T[] {
-  return chapters.sort((a, b) => {
-    const aPath = a.path
-    const bPath = b.path
-
-    // Rule 1: 'cover' should be at the first
-    if (aPath === 'cover') return -1
-    if (bPath === 'cover') return 1
-
-    // Rule 2: 'readme.md' or 'index.md' should be at the first in its directory
-    const aDir = pathe.dirname(aPath)
-    const bDir = pathe.dirname(bPath)
-
-    if (aDir === bDir) {
-      if (isIndex(aPath)) return -1
-      if (isIndex(bPath)) return 1
-    }
-
-    // Default: natural sort
-    return aPath.localeCompare(bPath)
-  })
-}
-
-export interface Sidebar {
-  /** 章节对应的内容路径，方便将其转换为 tree */
-  path: string
-  children?: Sidebar[]
-}
-
-export function treeSidebarByPath<T extends Pick<Sidebar, 'path' | 'children'>>(sidebar: T[]): T[] {
-  const tree = {}
-
-  // First, build a tree structure
-  for (const item of sidebar) {
-    const parts = item.path.split('/')
-    let node = tree as any
-    for (let i = 0; i < parts.length; i++) {
-      const part = parts[i]
-      if (!node[part]) {
-        node[part] = {}
-      }
-      node = node[part]
-    }
-    node._self = item
-  }
-
-  // Then, convert the tree structure to the desired format
-  function convert(node: any, prefix = ''): any[] {
-    const children = []
-    for (const key in node) {
-      if (key !== '_self') {
-        const childNode = node[key]
-        const childPath = pathe.join(prefix, key)
-        if (childNode._self) {
-          children.push(childNode._self)
-        }
-        const grandChildren = convert(childNode, childPath)
-        if (grandChildren.length > 0) {
-          children.push({ path: childPath, children: grandChildren })
-        }
-      }
-    }
-    return children
-  }
-
-  const result = convert(tree)
-
-  // Finally, remove top-level 'readme.md' or 'index.md'
-  const r = result.filter((item) => !isIndex(item.path))
+function generateSidebar(sidebars: Sidebar[]): DefaultTheme.SidebarItem[] {
   return treeMap(
-    sortChapter(r),
-    (it) => {
-      if (!it.children) {
-        return it
-      }
-      const findIndex = (it.children as Sidebar[]).find((it) =>
-        ['readme.md', 'index.md'].includes(pathe.basename(it.path).toLocaleLowerCase()),
-      )
-      it.children = sortChapter(it.children as Sidebar[])
-      if (!findIndex) {
-        throw new Error(it.path + ' 下必须存在 readme.md 或者 index.md')
-      }
-      Object.assign(it, findIndex)
-      it.children = it.children.filter((it) => !isIndex(it.path))
-      return it
-    },
+    sidebars,
+    (it) =>
+      ({
+        ...pick(it, 'text', 'link'),
+        items: it.children,
+      } as DefaultTheme.SidebarItem),
     {
       id: 'path',
       children: 'children',
@@ -128,105 +29,124 @@ export function treeSidebarByPath<T extends Pick<Sidebar, 'path' | 'children'>>(
   )
 }
 
-export function output(options: DocsOutputConfig): OutputPlugin {
-  const rootPath = options.path
-  const postsPath = pathe.resolve(rootPath, 'p')
-  const resourcePath = pathe.resolve(rootPath, 'resources')
-  const p = local.output({
-    rootContentPath: postsPath,
-    rootResourcePath: resourcePath,
-    meta: () => null,
-    contentLink: ({ linkContentId }) => `/p/${linkContentId}`,
-    resourceLink: ({ resource }) => `../resources/${resource.id}${pathe.extname(resource.name)}`,
-    contentPath: (content) => pathe.resolve(postsPath, content.id + '.md'),
-    resourcePath: (resource) => pathe.resolve(resourcePath, resource.id + pathe.extname(resource.name)),
-  })
-  const sidebars: Sidebar[] = []
-  return {
-    ...p,
-    name: 'docs',
-    async handle(content) {
-      const findHeader = (selectAll('heading', fromMarkdown(content.content)) as Heading[]).find((it) => it.depth === 1)
-      if (findHeader?.children[0]) {
-        content.name = toString(findHeader.children[0])
+interface OutputOptions {
+  path: string
+  name: string
+  public?: string
+  lang?: 'en-US' | 'zh-CN' | string
+  nav?: DefaultTheme.NavItem[]
+  logo?:
+    | string
+    | {
+        light: string
+        dark: string
       }
-      sidebars.push({
-        id: content.id,
-        name: content.name,
-        path: pathe.join(...content.path),
-      })
-      await p.handle(content)
-      if (content.path.length === 1 && isIndex(pathe.join(...content.path))) {
-        await rename(pathe.resolve(postsPath, content.id + '.md'), pathe.resolve(options.path, 'README.md'))
-      }
-    },
-    async end() {
-      if (!(await pathExists(rootPath))) {
-        await mkdir(rootPath, { recursive: true })
-      }
-      const all = [
-        ['index.html', renderIndexHTML(options)],
-        ['_sidebar.md', generateSidebar(treeSidebarByPath(sidebars))],
-      ].map(([p, s]) => writeFile(pathe.resolve(rootPath, p), s))
-      if (options.public) {
-        all.unshift(copy(options.public, rootPath))
-      }
-      if (options.giscus) {
-        all.unshift(writeFile(pathe.resolve(rootPath, 'giscus.js'), giscusJs))
-      }
-      if (options.gtag) {
-        all.unshift(writeFile(pathe.resolve(rootPath, 'gtag.js'), gtagJs))
-      }
-      if (options.logo) {
-        const distPath = pathe.resolve(rootPath, pathe.basename(options.logo))
-        all.unshift(remove(distPath).then(() => copy(options.logo!, distPath)))
-      }
-      await Promise.all(all)
-      await p.end?.()
-    },
+  gtag?: string
+  sitemap?: {
+    hostname: string
+  }
+  giscus?: {
+    repo: string
+    repoId: string
+    category: string
+    categoryId: string
+    mapping: string
+    reactionsEnabled: string
+    emitMetadata: string
+    inputPosition: string
+    theme: string
+    lang: string
+    crossorigin: string
+  }
+  debug?: {
+    test?: boolean
   }
 }
 
-function renderIndexHTML(options: DocsOutputConfig) {
-  const links: (
-    | string
-    | {
-        value: string
-      }
-  )[] = []
-  const scripts: string[] = ['//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js']
-  const docsifyConfig: any = {
-    ...pick(options, ['name', 'repo', 'giscus', 'gtag']),
-    loadSidebar: true,
-    auto2top: true,
-    pagination: {
-      previousText: 'Previous',
-      nextText: 'Next',
-      crossChapter: true,
-      crossChapterText: true,
+export function output(options: OutputOptions): OutputPlugin {
+  const config: UserConfig<DefaultTheme.Config> = {
+    lang: options.lang,
+    title: options.name,
+    themeConfig: {
+      nav: options.nav,
+      sidebar: [],
+      logo: options.logo,
+      // search: {
+      //   provider: 'local',
+      // },
     },
-  }
-  if (options.theme?.dark) {
-    links.push('https://cdn.jsdelivr.net/npm/docsify/themes/dark.css')
-  }
-  if (options.giscus) {
-    links.push('https://unpkg.com/docsify-giscus@1.0.0/dist/giscus.css')
-    scripts.push('./giscus.js')
+    sitemap: options.sitemap,
   }
   if (options.gtag) {
-    scripts.push('./gtag.js')
+    config.head = [
+      ...(config.head ?? []),
+      ['script', { async: '', src: `https://www.googletagmanager.com/gtag/js?id=${options.gtag}` }],
+      [
+        'script',
+        {},
+        `window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '${options.gtag}');`,
+      ],
+    ]
   }
-  if (options.logo) {
-    links.push({
-      value: `<link rel="icon" href="./${pathe.basename(options.logo)}" type="image/${pathe
-        .extname(options.logo)
-        .slice(1)}">`,
-    })
+  const sidebars: Sidebar[] = []
+  let tempPath: string, p: OutputPlugin
+  return {
+    name: 'docs',
+    async start() {
+      const root =
+        (await findParent(__dirname, async (it) => await pathExists(path.resolve(it, 'package.json')))) ??
+        path.resolve()
+      tempPath = path.resolve(root, '.temp')
+      p = local.output({
+        rootContentPath: tempPath,
+        rootResourcePath: path.resolve(tempPath, 'resources'),
+        meta: () => null,
+      })
+      await p.start?.()
+    },
+    async handle(content) {
+      if (content.name === 'readme') {
+        content.name = 'index'
+        content.path[content.path.length - 1] = 'index.md'
+      }
+      await p.handle(content)
+      const sidebar: Sidebar = {
+        path: path.join(...content.path),
+        text: content.name,
+        link: content.path.map((it) => '/' + it).join(''),
+      }
+      const root = fromMarkdown(content.content)
+      const findHeader = (selectAll('heading', root) as Heading[]).find((it) => it.depth === 1)
+      if (findHeader?.children[0]) {
+        sidebar.text = toString(findHeader.children[0])
+      }
+      sidebars.push(sidebar)
+    },
+    async end() {
+      await p.end?.()
+      // 生成一个临时目录，包含 vitepress 配置文件之类的，用于后续写入 markdown 文件
+      config.themeConfig!.sidebar = generateSidebar(treeSidebarByPath(sidebars))
+      await mkdir(path.resolve(tempPath, '.vitepress'), { recursive: true })
+      await writeFile(path.resolve(tempPath, '.vitepress/config.mjs'), `export default ${JSON.stringify(config)}`)
+      if (options.public) {
+        await copy(path.resolve(options.public), path.resolve(tempPath, 'public'))
+      }
+      if (options.giscus) {
+        await mkdir(path.resolve(tempPath, '.vitepress/theme'), { recursive: true })
+        await writeFile(
+          path.resolve(tempPath, '.vitepress/theme/index.mjs'),
+          Mustache.render(themeConfigRaw, options.giscus),
+        )
+      }
+      if (!options.debug?.test) {
+        // 调用 vitepress 构建
+        await build(tempPath, {
+          outDir: options.path,
+        })
+      }
+    },
   }
-
-  return Mustache.render(indexHtml, {
-    styles: links.map((it) => (typeof it === 'string' ? `<link rel="stylesheet" href="${it}">` : it.value)).join('\n'),
-    scripts: scripts.map((it) => `<script src="${it}"></script>`).join('\n'),
-    docsifyConfig: JSON.stringify(docsifyConfig, null, 2),
-  })
 }

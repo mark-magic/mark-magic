@@ -1,13 +1,13 @@
-import { describe, expect, it } from 'vitest'
-import { Sidebar, generateSidebar, output, treeSidebarByPath } from '../output'
+import { expect, it } from 'vitest'
 import { Content, Resource, convert } from '@mark-magic/core'
-import * as local from '@mark-magic/plugin-local'
-import pathe from 'pathe'
-import { initTempPath } from '@liuli-util/test'
-import { pathExists } from '@liuli-util/fs'
-import { readFile } from 'fs/promises'
-import { Image, Link, fromMarkdown, select, selectAll } from '@liuli-util/markdown-util'
 import { fromVirtual } from '@mark-magic/utils'
+import { output } from '../output'
+import path from 'pathe'
+import { initTempPath } from '@liuli-util/test'
+import { pathExists } from 'fs-extra/esm'
+import * as local from '@mark-magic/plugin-local'
+import { parse } from 'node-html-parser'
+import { readFile } from 'fs/promises'
 
 const tempPath = initTempPath(__filename)
 
@@ -15,6 +15,7 @@ const list: (Pick<Content, 'id' | 'content'> & {
   path: string
   resources?: Pick<Resource, 'id' | 'name' | 'raw'>[]
 })[] = [
+  { id: 'index', path: '/index.md', content: '# test' },
   {
     id: 'a',
     path: '/a.md',
@@ -32,47 +33,70 @@ const list: (Pick<Content, 'id' | 'content'> & {
     ],
   },
   { id: 'b', path: '/b.md', content: '# b' },
-  { id: 'readme', path: '/readme.md', content: '# readme' },
 ]
 
-it('generateDocsify', async () => {
+it('basic', async () => {
   await convert({
     input: fromVirtual(list),
     output: output({
-      path: pathe.resolve(tempPath, 'dist/'),
+      path: path.resolve(tempPath, 'dist'),
       name: 'test',
+      nav: [
+        {
+          text: 'GitHub',
+          link: 'https://github.com',
+        },
+      ],
     }),
   })
-  expect(await pathExists(pathe.resolve(tempPath, 'dist/p/a.md'))).true
-  expect(await pathExists(pathe.resolve(tempPath, 'dist/p/b.md'))).true
-  expect(await pathExists(pathe.resolve(tempPath, 'dist/README.md'))).true
-  expect(await pathExists(pathe.resolve(tempPath, 'dist/resources/c.jpg'))).true
-  const t = await readFile(pathe.resolve(tempPath, 'dist/p/a.md'), 'utf-8')
-  const root = fromMarkdown(t)
-  expect((select('link', root) as Link).url).eq('/p/b')
-  expect((select('image', root) as Image).url).eq('../resources/c.jpg')
+  expect(await pathExists(path.resolve(tempPath, 'dist/index.html'))).true
+  expect(await pathExists(path.resolve(tempPath, 'dist/a.html'))).true
+  expect(await pathExists(path.resolve(tempPath, 'dist/b.html'))).true
 })
 
-it('gtag', async () => {
-  const id = 'UA-123456789-1'
-  await convert({
-    input: fromVirtual(list),
-    output: output({
-      path: pathe.resolve(tempPath, 'dist/'),
-      name: 'test',
-      gtag: id,
-    }),
+it.skip('should support real site', async () => {
+  const i = local.input({
+    path: path.resolve(__dirname, './assets/to-the-stars/books/'),
   })
-  expect(await pathExists(pathe.resolve(tempPath, 'dist/gtag.js'))).true
-  expect(await readFile(pathe.resolve(tempPath, 'dist/index.html'), 'utf-8')).include(id)
-})
-
-it('giscus', async () => {
+  // const list = await fromAsync(i.generate())
+  // console.log(list.length)
   await convert({
-    input: fromVirtual(list),
+    input: i,
     output: output({
-      path: pathe.resolve(tempPath, 'dist/'),
-      name: 'test',
+      path: path.resolve(tempPath, 'dist'),
+      name: '魔法少女小圆 飞向星空',
+      nav: [
+        {
+          text: 'GitHub',
+          link: 'https://github.com',
+        },
+        {
+          text: '社区',
+          items: [
+            {
+              text: '原作官网',
+              link: 'https://tts.determinismsucks.net',
+            },
+            {
+              text: 'Epub 电子书',
+              link: 'https://github.com/liuli-moe/to-the-stars/releases/latest',
+            },
+            {
+              text: '同人画',
+              link: 'https://ttshieronym.tumblr.com/tagged/fanart',
+            },
+          ],
+        },
+      ],
+      logo: {
+        light: path.resolve(__dirname, '/logo.png'),
+        dark: path.resolve(__dirname, '/logoDark.png'),
+      },
+      gtag: 'G-F20H7RT1RM',
+      sitemap: {
+        hostname: 'https://tts.liuli.moe',
+      },
+      public: path.resolve(__dirname, './assets/to-the-stars/public'),
       giscus: {
         repo: 'liuli-moe/to-the-stars',
         repoId: 'R_kgDOG4H10w',
@@ -86,83 +110,47 @@ it('giscus', async () => {
         lang: 'zh-CN',
         crossorigin: 'anonymous',
       },
+      debug: {
+        test: true,
+      },
     }),
   })
-  expect(await pathExists(pathe.resolve(tempPath, 'dist/giscus.js'))).true
-  expect(await readFile(pathe.resolve(tempPath, 'dist/index.html'), 'utf-8'))
-    .include('liuli-moe/to-the-stars')
-    .include('R_kgDOG4H10w')
-    .include('DIC_kwDOG4H1084CQhBn')
-})
+  // expect(await pathExists(path.resolve(tempPath, 'dist/index.html'))).true
+  // expect(await pathExists(path.resolve(tempPath, 'dist/a.html'))).true
+  // expect(await pathExists(path.resolve(tempPath, 'dist/b.html'))).true
+}, 10_000)
 
-it('logo', async () => {
+it.skip('should inferred prev and next page', async () => {
   await convert({
-    input: fromVirtual(list),
+    input: fromVirtual([
+      {
+        id: 'readme',
+        path: '/readme.md',
+        content: '# test',
+      },
+      {
+        id: '01-你在开玩笑吧？',
+        path: '/01-你在开玩笑吧？.md',
+        content: '# 你在开玩笑吧？',
+      },
+      {
+        id: '02-我才不吃这种嗟来之食',
+        path: '/02-我才不吃这种嗟来之食.md',
+        content: '# 我才不吃这种嗟来之食',
+      },
+      {
+        id: '03-如果我能给妈妈写封信的话',
+        path: '/03-如果我能给妈妈写封信的话.md',
+        content: '# 如果我能给妈妈写封信的话……',
+      },
+    ]),
     output: output({
-      path: pathe.resolve(tempPath, 'dist/'),
+      path: path.resolve(tempPath, 'dist'),
       name: 'test',
-      logo: pathe.resolve(__dirname, 'assets/logo.jpeg'),
+      lang: 'zh-CN',
     }),
   })
-  expect(await pathExists(pathe.resolve(tempPath, 'dist/logo.jpeg'))).true
-  expect(await readFile(pathe.resolve(tempPath, 'dist/index.html'), 'utf-8')).include(
-    '<link rel="icon" href="./logo.jpeg" type="image/jpeg">',
-  )
-})
-
-describe('generateSidebar', () => {
-  it('basic', async () => {
-    const sidebars: Sidebar[] = [
-      { id: 'a', name: 'a', path: 'a.md' },
-      { id: 'b', name: 'b', path: 'b.md' },
-      { id: 'readme', name: 'readme', path: 'readme.md' },
-    ]
-    const root = fromMarkdown(generateSidebar(treeSidebarByPath(sidebars)))
-    expect((selectAll('listItem link', root) as Link[]).map((it) => it.url)).members(['/p/a', '/p/b'])
-  })
-  it('multi-level', () => {
-    const sidebars: Sidebar[] = [
-      { id: '01-001', name: '01-001', path: '01/001.md' },
-      { id: '01-readme', name: '01-readme', path: '01/readme.md' },
-      { id: '01-002', name: '01-002', path: '02/002.md' },
-      { id: '01-readme', name: '01-readme', path: '02/readme.md' },
-      { id: 'readme', name: 'readme', path: 'readme.md' },
-    ]
-    const root = fromMarkdown(generateSidebar(treeSidebarByPath(sidebars)))
-    expect((selectAll('listItem link', root) as Link[]).map((it) => it.url)).members([
-      '/p/01-readme',
-      '/p/01-001',
-      '/p/01-readme',
-      '/p/01-002',
-    ])
-  })
-})
-
-it.skip('generate for tts', async () => {
-  await convert({
-    input: local.input({
-      path: pathe.resolve(__dirname, './assets/to-the-stars/books/'),
-    }),
-    output: output({
-      path: pathe.resolve(tempPath, 'dist/'),
-      name: 'to-the-stars',
-      repo: 'https://github.com/liuli-moe/to-the-stars',
-      theme: {
-        dark: true,
-      },
-      giscus: {
-        repo: 'liuli-moe/to-the-stars',
-        repoId: 'R_kgDOG4H10w',
-        category: 'General',
-        categoryId: 'DIC_kwDOG4H1084CQhBn',
-        mapping: 'pathname',
-        reactionsEnabled: '1',
-        emitMetadata: '0',
-        inputPosition: 'bottom',
-        theme: 'preferred_color_scheme',
-        lang: 'zh-CN',
-        crossorigin: 'anonymous',
-      },
-    }),
-  })
+  const dom = parse(await readFile(path.resolve(tempPath, 'dist/02-我才不吃这种嗟来之食.html'), 'utf-8'))
+  expect(dom.querySelector('.pager-link.prev .title')!.textContent).eq('你在开玩笑吧？')
+  expect(dom.querySelector('.pager-link.next .title')!.textContent).eq('如果我能给妈妈写封信的话……')
 })

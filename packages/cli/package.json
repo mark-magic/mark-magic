@@ -40,7 +40,6 @@
     "@mark-magic/plugin-docs": "workspace:^",
     "@mark-magic/plugin-epub": "workspace:^",
     "@mark-magic/plugin-local": "workspace:^",
-    "@mark-magic/plugin-vitepress": "workspace:^",
     "@liuli-util/async": "^3.6.0",
     "@liuli-util/fs": "^0.1.0",
     "@mark-magic/core": "workspace:^",

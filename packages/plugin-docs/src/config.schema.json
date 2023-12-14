@@ -4,7 +4,7 @@
   "properties": {
     "output": {
       "type": "object",
-      "description": "输出为文档网站",
+      "description": "输出为网站",
       "properties": {
         "name": {
           "type": "string",
@@ -29,26 +29,81 @@
           "type": "string",
           "description": "输出文件的路径"
         },
-        "public": {
-          "type": "string",
-          "description": "静态资源目录"
-        },
         "name": {
           "type": "string",
           "description": "网站名称"
         },
-        "logo": {
+        "public": {
           "type": "string",
-          "description": "网站 logo"
+          "description": "静态资源目录"
+        },
+        "lang": {
+          "type": "string",
+          "description": "语言",
+          "enum": ["en-US", "zh-CN"]
+        },
+        "nav": {
+          "type": "array",
+          "description": "导航栏",
+          "items": {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "link": {
+                "type": "string"
+              },
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string"
+                    },
+                    "link": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["text", "link"],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": ["text", "link"],
+            "additionalProperties": false
+          }
+        },
+        "logo": {
+          "description": "网站 logo",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "light": {
+                  "type": "string"
+                },
+                "dark": {
+                  "type": "string"
+                }
+              },
+              "required": ["light", "dark"],
+              "additionalProperties": false
+            }
+          ]
         },
         "repo": {
           "type": "string",
           "description": "仓库地址"
         },
-        "theme": {
+        "sitemap": {
           "type": "object",
           "properties": {
-            "dark": {
+            "hostname": {
               "type": "boolean"
             }
           },

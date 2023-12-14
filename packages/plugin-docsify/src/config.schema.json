@@ -4,15 +4,15 @@
   "properties": {
     "output": {
       "type": "object",
-      "description": "输出为网站",
+      "description": "输出为文档网站",
       "properties": {
         "name": {
           "type": "string",
           "description": "插件名称",
-          "enum": ["@mark-magic/plugin-vitepress"]
+          "enum": ["@mark-magic/plugin-docs"]
         },
         "config": {
-          "$ref": "#/definitions/VitepressOutputConfig"
+          "$ref": "#/definitions/DocsOutputConfig"
         }
       },
       "required": ["name", "config"],
@@ -21,7 +21,7 @@
   },
   "additionalProperties": false,
   "definitions": {
-    "VitepressOutputConfig": {
+    "DocsOutputConfig": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "type": "object",
       "properties": {
@@ -29,81 +29,26 @@
           "type": "string",
           "description": "输出文件的路径"
         },
-        "name": {
-          "type": "string",
-          "description": "网站名称"
-        },
         "public": {
           "type": "string",
           "description": "静态资源目录"
         },
-        "lang": {
+        "name": {
           "type": "string",
-          "description": "语言",
-          "enum": ["en-US", "zh-CN"]
-        },
-        "nav": {
-          "type": "array",
-          "description": "导航栏",
-          "items": {
-            "type": "object",
-            "properties": {
-              "text": {
-                "type": "string"
-              },
-              "link": {
-                "type": "string"
-              },
-              "items": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "text": {
-                      "type": "string"
-                    },
-                    "link": {
-                      "type": "string"
-                    }
-                  },
-                  "required": ["text", "link"],
-                  "additionalProperties": false
-                }
-              }
-            },
-            "required": ["text", "link"],
-            "additionalProperties": false
-          }
+          "description": "网站名称"
         },
         "logo": {
-          "description": "网站 logo",
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "object",
-              "properties": {
-                "light": {
-                  "type": "string"
-                },
-                "dark": {
-                  "type": "string"
-                }
-              },
-              "required": ["light", "dark"],
-              "additionalProperties": false
-            }
-          ]
+          "type": "string",
+          "description": "网站 logo"
         },
         "repo": {
           "type": "string",
           "description": "仓库地址"
         },
-        "sitemap": {
+        "theme": {
           "type": "object",
           "properties": {
-            "hostname": {
+            "dark": {
               "type": "boolean"
             }
           },

@@ -7,7 +7,7 @@
     "esModuleInterop": true,
     "strict": true,
     "module": "ESNext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "Bundler",
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true

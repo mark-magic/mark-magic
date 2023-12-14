@@ -18,7 +18,7 @@ import { keyBy, uniqBy, omit } from 'lodash-es'
 import pathe from 'pathe'
 import { LocalContentMeta } from './output'
 import crypto from 'crypto'
-import { LocalInputConfig } from './config.schema'
+import type { LocalInputConfig } from './config.schema'
 
 function hashString(s: string) {
   return crypto.createHash('md5').update(s).digest('hex')

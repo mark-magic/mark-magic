@@ -43,13 +43,19 @@ export function sortChapter<T extends { path: string }>(chapters: T[]): T[] {
   })
 }
 
-export interface Sidebar extends Omit<Toc, 'children'> {
+export interface Sidebar extends Omit<Toc, 'children'>, ISidebar {
   /** 章节对应的内容路径，方便将其转换为 tree */
   path: string
   children?: Sidebar[]
 }
 
-export function treeSidebarByPath<T extends Pick<Sidebar, 'path' | 'children'>>(sidebar: T[]): T[] {
+interface ISidebar {
+  /** 章节对应的内容路径，方便将其转换为 tree */
+  path: string
+  children?: ISidebar[]
+}
+
+export function treeSidebarByPath<T extends ISidebar>(sidebar: T[]): T[] {
   const tree = {}
 
   // First, build a tree structure

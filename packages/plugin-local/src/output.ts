@@ -200,7 +200,6 @@ export function output(
       contentMap.set(content.id, fsPath)
       const root = fromMarkdown(content.content)
       setYamlMeta(root, _options.meta(content))
-      console.log('fsPath', content.name, fsPath)
       const isAfter = convertLinks({ root, content, fsPath, contentMap: contentMap, resourceMap, ..._options })
       if (isAfter) {
         afterList.push({ fsPath, content: content })

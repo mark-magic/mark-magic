@@ -1,5 +1,13 @@
 # @mark-magic/plugin-docs
 
+## 0.3.0
+
+### Minor Changes
+
+- feat: 支持 rss 配置
+- fix: 修复无法处理粗体、斜体与东亚字符混排的问题
+- fix: 修复无法渲染 `{}` 的问题，上游 vitepress 已知问题，ref: <https://github.com/vuejs/vitepress/issues/629>
+
 ## 0.2.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @mark-magic/plugin-epub
 
+## 0.3.0
+
+### Minor Changes
+
+- fix: 正确处理 cover 相对路径配置
+
 ## 0.2.0
 
 ### Minor Changes

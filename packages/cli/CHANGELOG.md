@@ -1,5 +1,17 @@
 # @mark-magic/cli
 
+## 0.3.0
+
+### Minor Changes
+
+- chore: 更新终端输出
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/plugin-docs@0.3.0
+  - @mark-magic/plugin-epub@0.3.0
+
 ## 0.2.0
 
 ### Minor Changes

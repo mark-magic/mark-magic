@@ -12,7 +12,7 @@ import {
 } from '@liuli-util/markdown-util'
 import { v4 } from 'uuid'
 import { readFile, writeFile } from 'fs/promises'
-import { mkdirp } from 'fs-extra/esm'
+import { mkdirp, pathExists } from 'fs-extra/esm'
 import pathe from 'pathe'
 import { keyBy } from 'lodash-es'
 import path from 'path'
@@ -25,7 +25,11 @@ export interface Sidebar extends Omit<Toc, 'children'>, ISidebar {
   children?: Sidebar[]
 }
 
-export function output(options: EpubOutputConfig): OutputPlugin {
+export function output(
+  options: EpubOutputConfig & {
+    root?: string
+  },
+): OutputPlugin {
   const _options: Omit<GenerateOptions, 'text'> & {
     text: (Chapter & {
       path: string
@@ -43,6 +47,12 @@ export function output(options: EpubOutputConfig): OutputPlugin {
     async start() {
       if (!options.metadata.cover) {
         return
+      }
+      if (!path.isAbsolute(options.metadata.cover)) {
+        options.metadata.cover = path.resolve(options.root || process.cwd(), options.metadata.cover)
+        if (!(await pathExists(options.metadata.cover))) {
+          throw new Error(`cover don't resolve ${options.metadata.cover}`)
+        }
       }
       const id = v4() + pathe.extname(options.metadata.cover)
       _options.media.push({

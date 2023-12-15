@@ -2,7 +2,7 @@ import { Content, Resource, InputPlugin } from '@mark-magic/core'
 import pathe from 'pathe'
 
 export function fromVirtual(
-  list: (Pick<Content, 'id' | 'content'> & {
+  list: (Pick<Content, 'id' | 'content' | 'extra'> & {
     path: string
     resources?: Pick<Resource, 'id' | 'name' | 'raw'>[]
   })[],
@@ -14,6 +14,7 @@ export function fromVirtual(
         yield {
           id: it.id,
           content: it.content,
+          extra: it.extra,
           name: pathe.basename(it.path, '.md'),
           path: it.path.split('/').filter((it) => it.trim().length !== 0),
           resources: (it.resources ?? []).map((it) => ({

@@ -41,18 +41,19 @@
     "vitest": "^1.0.4"
   },
   "dependencies": {
-    "@mark-magic/plugin-docs": "workspace:^",
-    "@mark-magic/plugin-epub": "workspace:^",
-    "@mark-magic/plugin-local": "workspace:^",
     "@liuli-util/async": "^3.6.0",
     "@liuli-util/fs": "^0.1.0",
     "@mark-magic/core": "workspace:^",
+    "@mark-magic/plugin-docs": "workspace:^",
+    "@mark-magic/plugin-epub": "workspace:^",
+    "@mark-magic/plugin-local": "workspace:^",
     "bundle-require": "^4.0.1",
     "commander": "^11.0.0",
     "esbuild": "^0.18.7",
     "lodash-es": "^4.17.21",
     "pathe": "^1.1.1",
     "pino": "^8.14.1",
+    "pino-pretty": "^10.3.0",
     "yaml": "^2.3.1"
   }
 }

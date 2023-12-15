@@ -12,6 +12,9 @@ interface CliOptions {
 
 const logger = pino({
   level: 'info',
+  transport: {
+    target: 'pino-pretty',
+  },
 })
 
 async function main(options: CliOptions) {
@@ -34,8 +37,14 @@ async function main(options: CliOptions) {
     if (options.task && !options.task.includes(it.name)) {
       continue
     }
-    console.log(`运行任务: ${it.name}`)
+    console.log(`任务开始: ${it.name}`)
     await convert(it)
+      .on('generate', (it) => {
+        logger.debug('生成内容: %O', it.content.name)
+      })
+      .on('handle', (it) => {
+        logger.debug('处理内容: %O', it.content.name)
+      })
   }
 }
 

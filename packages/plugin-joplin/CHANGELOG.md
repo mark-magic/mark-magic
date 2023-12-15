@@ -1,5 +1,12 @@
 # @mami/plugin-joplin
 
+## 0.6.0
+
+### Minor Changes
+
+- fix: 修复没有正确处理 joplin 内部链接的错误
+- feat: 适配 joplin
+
 ## 0.5.4
 
 ### Patch Changes

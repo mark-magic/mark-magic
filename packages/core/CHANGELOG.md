@@ -1,5 +1,11 @@
 # @mark-magic/core
 
+## 0.3.0
+
+### Minor Changes
+
+- feat: 更改 hook 中参数的部分字段名
+
 ## 0.2.0
 
 ### Minor Changes

@@ -1,5 +1,19 @@
 # @mark-magic/cli
 
+## 0.5.0
+
+### Minor Changes
+
+- style: 优化 cli ux
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/plugin-docs@0.5.0
+  - @mark-magic/core@0.3.0
+  - @mark-magic/plugin-epub@0.4.0
+  - @mark-magic/plugin-local@0.7.0
+
 ## 0.4.3
 
 ### Patch Changes

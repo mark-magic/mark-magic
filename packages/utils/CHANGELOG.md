@@ -1,5 +1,14 @@
 # @mark-magic/utils
 
+## 0.4.0
+
+### Minor Changes
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/core@0.3.0
+
 ## 0.3.0
 
 ### Minor Changes

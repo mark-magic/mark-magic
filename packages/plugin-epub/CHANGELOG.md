@@ -1,5 +1,16 @@
 # @mark-magic/plugin-epub
 
+## 0.4.0
+
+### Minor Changes
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/core@0.3.0
+  - @mark-magic/utils@0.4.0
+  - @mark-magic/epub@0.2.1
+
 ## 0.3.1
 
 ### Patch Changes

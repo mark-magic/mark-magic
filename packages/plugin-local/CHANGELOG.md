@@ -1,5 +1,15 @@
 # @mark-magic/plugin-local
 
+## 0.7.0
+
+### Minor Changes
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/core@0.3.0
+  - @mark-magic/utils@0.4.0
+
 ## 0.6.1
 
 ### Patch Changes

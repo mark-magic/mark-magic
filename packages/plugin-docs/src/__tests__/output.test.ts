@@ -40,7 +40,8 @@ it('basic', async () => {
     input: fromVirtual(list),
     output: output({
       path: path.resolve(tempPath, 'dist'),
-      name: 'test',
+      name: 'test name',
+      description: 'test description',
       nav: [
         {
           text: 'GitHub',
@@ -52,6 +53,8 @@ it('basic', async () => {
   expect(await pathExists(path.resolve(tempPath, 'dist/index.html'))).true
   expect(await pathExists(path.resolve(tempPath, 'dist/a.html'))).true
   expect(await pathExists(path.resolve(tempPath, 'dist/b.html'))).true
+  const s = await readFile(path.resolve(tempPath, 'dist/index.html'), 'utf-8')
+  expect(s).include('test name').include('test description').include('GitHub').include('https://github.com')
 })
 
 it.skip('should support real site', async () => {

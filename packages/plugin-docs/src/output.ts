@@ -84,7 +84,7 @@ export interface RenderRssOptions extends NonNullable<OutputOptions['rss']> {
 
 export function output(options: OutputOptions): OutputPlugin {
   const config: UserConfig<DefaultTheme.Config> = {
-    lang: options.lang,
+    ...pick(options, 'lang', 'description'),
     title: options.name,
     themeConfig: {
       nav: options.nav,

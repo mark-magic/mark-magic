@@ -1,6 +1,6 @@
 {
   "name": "@mark-magic/plugin-docs",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "license": "MIT",
   "type": "module",
   "exports": {

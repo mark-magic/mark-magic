@@ -1,5 +1,13 @@
 # @mark-magic/cli
 
+## 0.4.2
+
+### Patch Changes
+
+- fix: 修复 description 没有正确设置的错误
+- Updated dependencies
+  - @mark-magic/plugin-docs@0.4.2
+
 ## 0.4.1
 
 ### Patch Changes

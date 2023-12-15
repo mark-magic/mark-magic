@@ -1,5 +1,4 @@
 import { AsyncArray } from '@liuli-util/async'
-import { pathExists, stat } from '@liuli-util/fs-extra'
 import {
   fromMarkdown,
   getYamlMeta,
@@ -13,12 +12,13 @@ import {
 import { InputPlugin, Content, wrapContentLink, wrapResourceLink } from '@mark-magic/core'
 import { BiMultiMap } from '@mark-magic/utils'
 import FastGlob from 'fast-glob'
-import { readFile } from 'fs/promises'
+import { readFile, stat } from 'fs/promises'
 import { keyBy, uniqBy, omit } from 'lodash-es'
 import pathe from 'pathe'
 import { LocalContentMeta } from './output'
 import crypto from 'crypto'
 import type { LocalInputConfig } from './config.schema'
+import { pathExists } from 'fs-extra/esm'
 
 function hashString(s: string) {
   return crypto.createHash('md5').update(s).digest('hex')
@@ -112,14 +112,6 @@ export function input(options: LocalInputConfig): InputPlugin {
           resourceMap,
         })
         setYamlMeta(root, null)
-        // const tags = (meta.tags ?? []).map((title) => {
-        //   if (tagMap.has(title)) {
-        //     return tagMap.get(title)!
-        //   }
-        //   const r = { id: v4(), title } as Tag
-        //   tagMap.set(title, r)
-        //   return r
-        // })
         const s = await stat(fsPath)
         const content: Content = {
           id: it.id,
@@ -128,7 +120,6 @@ export function input(options: LocalInputConfig): InputPlugin {
           created: meta.created ?? s.ctimeMs,
           updated: meta.updated ?? s.mtimeMs,
           extra: omit(meta, ['name', 'created', 'updated']),
-          // tags,
           resources: await new AsyncArray(resources)
             .filter((item) => pathExists(item.fsPath))
             .map(async (item) => {

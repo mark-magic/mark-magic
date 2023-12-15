@@ -2,12 +2,11 @@ import path from 'pathe'
 import { expect, it } from 'vitest'
 import { input, scan } from '../input'
 import { fromAsync } from '@mark-magic/utils'
-import { mkdirp, readFile, writeFile } from '@liuli-util/fs-extra'
 import { AsyncArray } from '@liuli-util/async'
 import { keyBy, omit, pick, uniqBy } from 'lodash-es'
 import { Content } from '@mark-magic/core'
 import { initTempPath } from '@liuli-util/test'
-import { mkdir } from 'fs/promises'
+import { mkdir, readFile, writeFile } from 'fs/promises'
 
 const tempPath = initTempPath(__filename)
 
@@ -49,7 +48,7 @@ tags:
   ]
   await AsyncArray.forEach(list, async (item) => {
     const fsPath = path.resolve(tempPath, item.path)
-    await mkdirp(path.dirname(fsPath))
+    await mkdir(path.dirname(fsPath), { recursive: true })
     await writeFile(fsPath, item.content)
   })
 
@@ -128,7 +127,7 @@ tags:
   ]
   await AsyncArray.forEach(list, async (item) => {
     const fsPath = path.resolve(tempPath, item.path)
-    await mkdirp(path.dirname(fsPath))
+    await mkdir(path.dirname(fsPath), { recursive: true })
     await writeFile(fsPath, item.content)
   })
 

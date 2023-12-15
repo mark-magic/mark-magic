@@ -1,5 +1,4 @@
 import { AsyncArray } from '@liuli-util/async'
-import { mkdirp, readFile, remove, writeFile } from '@liuli-util/fs-extra'
 import pathe from 'pathe'
 import {
   extractContentId,
@@ -18,6 +17,8 @@ import { BiMultiMap } from '@mark-magic/utils'
 import { parse } from 'node-html-parser'
 import { formatRelative } from './utils'
 import path from 'pathe'
+import { mkdirp, remove } from 'fs-extra/esm'
+import { readFile, writeFile } from 'fs/promises'
 
 export function defaultOptions(
   options: Required<Partial<OutputOptions>, 'rootContentPath' | 'rootResourcePath'>,

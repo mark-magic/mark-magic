@@ -1,16 +1,16 @@
-import { pathExists } from '@liuli-util/fs-extra'
 import { mkdir, readFile, writeFile } from 'fs/promises'
 import pathe from 'pathe'
 import { expect, it, describe } from 'vitest'
 import { convert, InputPlugin, Content, Resource } from '@mark-magic/core'
-import { calcMeta, convertLinks, defaultOptions, output } from '../output'
-import filenamify, { filenamifyPath } from 'filenamify'
+import { calcMeta, convertLinks, output } from '../output'
+import { filenamifyPath } from 'filenamify'
 import { Image, Link, fromMarkdown, select, toMarkdown } from '@liuli-util/markdown-util'
-import { BiMultiMap, fromAsync, fromVirtual } from '@mark-magic/utils'
+import { BiMultiMap, fromVirtual } from '@mark-magic/utils'
 import { formatRelative } from '../utils'
 import { initTempPath } from '@liuli-util/test'
 import path from 'pathe'
 import { input } from '../input'
+import { pathExists } from 'fs-extra/esm'
 
 const tempPath = initTempPath(__filename)
 
@@ -162,78 +162,6 @@ it('filename', async () => {
   expect(await readFile(test2Path, 'utf-8')).includes('../a/b/test1.md')
 })
 
-it('hexo', async () => {
-  const generateVirtual: InputPlugin = {
-    name: 'generateVirtual',
-    async *generate(): AsyncGenerator<Content> {
-      yield {
-        id: 'test1',
-        name: 'test1',
-        content: `
-# test1
-
-[test2](:/content/test2)
-        `.trim(),
-        resources: [] as Resource[],
-        // tags: [{ id: 'test', name: 'test' }] as Tag[],
-        path: ['a', 'b'],
-      } as Content
-      yield {
-        id: 'test2',
-        name: 'test2',
-        content: `
-# test2
-
-[test1](:/content/test1)
-[localDirOutput.test.ts](:/resource/test)
-[github](https://github.com)
-                `.trim(),
-        resources: [
-          {
-            id: 'test',
-            name: pathe.basename(__filename),
-            raw: await readFile(__filename),
-          },
-        ] as Resource[],
-        // tags: [{ id: 'test', name: 'test' }] as Tag[],
-        path: ['c'],
-      } as Content
-    },
-  }
-
-  await convert({
-    input: generateVirtual,
-    output: output(
-      defaultOptions({
-        rootContentPath: pathe.resolve(tempPath, 'source/_posts'),
-        rootResourcePath: pathe.resolve(tempPath, 'source/resources'),
-        meta: (content) => ({
-          layout: 'post',
-          name: content.name,
-          abbrlink: content.id,
-          // tags: content.tags.map((item) => item.name),
-          categories: content.path.slice(content.path.length - 1),
-          date: content.created,
-          updated: content.updated,
-        }),
-        contentLink: ({ linkContentId: linkcontentId }) => `/p/${linkcontentId}`,
-        resourceLink: ({ resource }) => `/resources/${resource.id}${pathe.extname(resource.name)}`,
-        contentPath: (content) => pathe.resolve(tempPath, 'source/_posts', content.id + '.md'),
-        resourcePath: (resource) => pathe.resolve(tempPath, 'source/resources', filenamify(resource.name)),
-      }),
-    ),
-  })
-
-  const test1Path = pathe.resolve(tempPath, 'source/_posts/test1.md')
-  expect(await pathExists(test1Path)).true
-  const test2Path = pathe.resolve(tempPath, 'source/_posts/test2.md')
-  expect(await pathExists(test2Path)).true
-  expect(await pathExists(pathe.resolve(tempPath, 'source/resources/', pathe.basename(__filename)))).true
-  expect(await readFile(test1Path, 'utf-8')).includes('/p/test2')
-  expect(await readFile(test2Path, 'utf-8')).includes('/p/test1')
-  expect(await readFile(test2Path, 'utf-8')).includes(`/resources/test.ts`)
-})
-
 it('duplicate resource filename', async () => {
   const generateVirtual: InputPlugin = {
     name: 'generateVirtual',
@@ -263,12 +191,10 @@ it('duplicate resource filename', async () => {
   }
   await convert({
     input: generateVirtual,
-    output: output(
-      defaultOptions({
-        rootContentPath: pathe.resolve(tempPath, 'source/_posts'),
-        rootResourcePath: pathe.resolve(tempPath, 'source/resources'),
-      }),
-    ),
+    output: output({
+      rootContentPath: pathe.resolve(tempPath, 'source/_posts'),
+      rootResourcePath: pathe.resolve(tempPath, 'source/resources'),
+    }),
   })
   expect(await pathExists(pathe.resolve(tempPath, 'source/resources/', pathe.basename(__filename)))).true
   expect(

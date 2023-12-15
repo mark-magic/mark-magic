@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "input": {
+      "type": "object",
+      "description": "从本地目录读取或输出到本地目录",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "插件名字",
+          "enum": ["@mark-magic/plugin-local"]
+        },
+        "config": {
+          "$ref": "#/definitions/LocalInputConfig"
+        }
+      },
+      "required": ["name", "config"],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "LocalPluginName": {
+      "type": "string",
+      "description": "插件名字",
+      "enum": ["@mark-magic/plugin-local"]
+    },
+    "LocalInputConfig": {
+      "type": "object",
+      "description": "插件配置",
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "本地目录的路径"
+        }
+      },
+      "required": ["path"],
+      "additionalProperties": false
+    }
+  }
+}

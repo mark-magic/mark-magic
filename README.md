@@ -1,166 +1,76 @@
-# mami: cross-tool document converter
+# mark-magic
 
-## Introduction
+## 简介
 
-mami is a conversion tool that can connect different markdown-based frameworks and tools, and can convert the data of one tool to another tool, which is very helpful for cross-application migration and multi-platform release, currently supports `joplin/obsidian/hexo/hugo/docsify/vuepress/vitepress/raw`.
+一个基于 markdown 的转换与生成工具，可以将 markdown 转换为其他格式，例如 blog、docs、epub 等，主要是为了在同一框架下处理 markdown 生成需要的一切，并且支持从不同的数据源导入和同步。
 
-## Usage
+## 为什么不使用现有的工具
 
-> Requirements
->
-> - you need to install [nodejs 18](https://nodejs.org/en/download/)
+吾辈现在已经使用了许多工具用来处理不同的任务，但它们都是基于 markdown 的，例如
 
-### Step 1: Create a new project
+- 使用 joplin 记录笔记
+- 使用 mami(自行实现) 导出笔记为 markdown 到 hexo 需要的格式
+- 使用 hexo 生成 blog
+- 使用 mdbook(自行实现) 生成 epub
+- 使用 docusaurus 生成 seo 更友好的小说网站
+- 使用 vuepress 生成内部 docs 网站
+- 使用 vscode-pdf 插件从 markdown 生成 pdf 文档用于分享
 
-> The following uses pnpm as the package manager, but you can replace it with npm
+真正让吾辈感到痛苦的是使用 docusaurus 时，每个项目都需要配置一堆东西，这非常烦人，所以希望有更好的可以开箱即用处理所有常用功能的工具。
+另一件事是分层，似乎分层的工具很少见，即能满足普通用户的直接开箱即用的使用，也能支持高级用户的定制化，这个需求似乎很常见，以至于有人为 hexo 开发了 hexo-admin 之类的 GUI 界面。
 
-Create a new directory and enter
+## MVP
 
-```sh
-mkdir mami-starter && cd mami-starter
+提供一个 cli 从命令行生成 epub/docs，支持有限的配置。例如
+
+```yaml
+# yaml-language-server: $schema=https://raw.githubusercontent.com/rxliuli/mark-magic/main/schema/mark-magic.schema.json
+# mark-magic.yml
+generate:
+  - name: book-01
+    input:
+      - name: '@mark-magic/plugin-local'
+        config:
+          path: ./books/01/
+    output:
+      - name: '@mark-magic/plugin-epub'
+        config:
+          path: ./dist/epub/01.epub
+  - name: book-02
+    input:
+      - name: '@mark-magic/plugin-local'
+        config:
+          path: ./books/02/
+    output:
+      - name: '@mark-magic/plugin-epub'
+        config:
+          path: ./dist/epub/02.epub
+  - name: docs
+    input:
+      - name: '@mark-magic/plugin-local'
+        config:
+          path: ./books/
+    output:
+      - name: '@mark-magic/plugin-docs'
+        config:
+          path: ./dist/docs/
+          sidebar:
+            - title: 量子纠缠
+              children:
+                - title: 第一卷-量子纠缠
+                  path: ./books/01/readme.md
+                - title: 一个愿望
+                  path: ./books/01/001.md
+            - title: 第二卷-宇宙膨胀
+              children:
+                - title: 量子纠缠
+                  path: ./books/02/readme.md
+                - title: 一个愿望
+                  path: ./books/02/001.md
 ```
 
-Then use your favorite package manager to initialize
-
-```sh
-pnpm init
-```
-
-### Step 2: Install mami
-
-Add @mami/cli and typescript as development dependencies of the project
-
-```sh
-pnpm i -D @mami/cli typescript
-```
-
-Add some scripts to `package.json`
-
-```json
-{
-  ...
-  "scripts": {
-    "gen": "mami"
-  },
-  ...
-}
-```
-
-Create your config file `mami.config.ts`
-
-```ts
-import { defineConfig } from '@mami/cli'
-
-export default defineConfig({
-  input: [],
-  output: [],
-})
-```
-
-then run
-
-```sh
-$ pnpm run gen
-
-> joplin2obsidian-demo@1.0.0 gen
-> mami
-
-start
-end
-```
-
-Well, nothing happens because you have no input or output plugin defined. Continue to the next step.
-
-### Step 3: Install the required plugins
-
-Install the required plug-ins to connect the required tools. Here we use joplin => obsidian as an example
-
-```ts
-pnpm i -D @mami/plugin-joplin @mami/plugin-obsidian
-```
-
-Modify your config file `mami.config.ts`
-
-> The token required by the joplin plugin here comes from the [web clipper service](https://joplinapp.org/clipper/#troubleshooting-the-web-clipper-service)
-
-```ts
-import { defineConfig } from '@mami/cli'
-import * as joplin from '@mami/plugin-joplin'
-import * as obsidian from '@mami/plugin-obsidian'
-import path from 'path'
-
-export default defineConfig({
-  input: [
-    joplin.input({
-      baseUrl: 'http://127.0.0.1:41184',
-      token:
-        '5bcfa49330788dd68efea27a0a133d2df24df68c3fd78731eaa9914ef34811a34a782233025ed8a651677ec303de6a04e54b57a27d48898ff043fd812d8e0b31',
-      tag: '',
-    }),
-  ],
-  output: [
-    obsidian.output({
-      root: path.resolve(__dirname, 'dist'),
-    }),
-  ],
-})
-```
-
-### Step 4: Perform the conversion
-
-Then you can rerun the following command
-
-```sh
-pnpm run gen
-```
-
-Now you will see the converted obsidian file in dist
-
-> [example](https://github.com/rxliuli/mami/tree/master/demos/joplin2obsidian-demo)
-
-## Plugins
-
-> [API Documentation](https://mami.rxliuli.com/api/)
-
-Roughly speaking, plugins are divided into input and output plugins. The input plugin will return an [AsyncGenerator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncGenerator), while the output plugin will return an AsyncGenerator will consume it in the `handle hook` function.
-
-![design](https://github.com/rxliuli/mami/raw/master/public/design.drawio.svg)
-
-Intermediate format
-
-```json
-{
-  "id": "0e2510c9272449dbafe3e0f3fba12d74",
-  "title": "Welcome to Joplin!",
-  "content": "content body",
-  "createAt": 1666288266591,
-  "updateAt": 1666288266591,
-  "path": ["Welcome! (Desktop)"],
-  "tags": [
-    {
-      "id": "04dfa5cf19e4435f9f3f09a73a7edfb2",
-      "title": "blog"
-    }
-  ],
-  "resources": [
-    {
-      "id": "63b83e548b7b4adfae18544b7038b0bc",
-      "title": "AllClients.png",
-      "raw": "<nodejs buffer>"
-    }
-  ]
-}
-```
-
-Writing plugins involves some markdown ast operations. For example, you may need to convert links in markdown. It is recommended to use [mdast](https://github.com/syntax-tree/mdast) to handle it.
-
-## Motivation
-
-Why started this rewrite?
-
-The main reason is that some frameworks are currently supported, but it is still not enough. In my case, I have come into contact with the vitepress documentation generator. I plan to use it to replace vuepress, but this requires some modifications to joplin-blog, which actually does not not very convenient. Some people have also mentioned how to generate more customized files, such as adding additional yaml meta information to the generated markdown (ref: <https://github.com/rxliuli/joplin-utils/issues/55>), which It's actually a bit cumbersome without extension points, the temporary solution given at that time was to use joplin-blog in the form of a lib, and insert some custom logic to do it. There is also mention of supporting hugo, but it is not shown that all is implemented in joplin-blog.
-
-Later, I realized that a plugin system is needed to support generating arbitrary framework files, and further, I can even add input sources such as joplin as plugins, just like pandoc, to connect different note-taking, blogging and wiki tools. One of the current attempts is mami, which intends to use markdown as an intermediate format for conversion.
-At present, this project has just been created, and only supports joplin as input source and hexo/local-dir as output source, but I have already used it in my own blog, reference: <https://github.com/rxliuli/blog/ blob/master/mami.config.ts>
-
-> PS: The origin of the name mami is [Mami Tomoe] in Puella Magi Madoka Magica (https://en.wikipedia.org/wiki/Mami_Tomoe), her magic is a **ribbon** that can connect various things , and can even form a musket (:
+- 输入
+  - 从 markdown 本地目录
+- 输出
+  - 生成 epub
+  - 生成 docs

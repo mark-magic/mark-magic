@@ -1,0 +1,17 @@
+{
+  "name": "@mark-magic/docs",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "mark-magic",
+    "preview": "live-server dist/docs/"
+  },
+  "devDependencies": {
+    "@mark-magic/cli": "workspace:^",
+    "@mark-magic/plugin-docs": "workspace:^",
+    "@mark-magic/plugin-epub": "workspace:^",
+    "@mark-magic/plugin-local": "workspace:^",
+    "live-server": "^1.2.2"
+  }
+}

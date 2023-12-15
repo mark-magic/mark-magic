@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=./node_modules/@mark-magic/cli/dist/config.schema.json
+
+generate:
+  - name: docs
+    input:
+      name: '@mark-magic/plugin-local'
+      config:
+        path: ./docs
+    output:
+      name: '@mark-magic/plugin-docs'
+      config:
+        path: ./dist/docs
+        name: Mark Magic
+        public: ./public
+        repo: https://github.com/rxliuli/mark-magic.git
+  - name: epub
+    input:
+      name: '@mark-magic/plugin-local'
+      config:
+        path: ./docs
+    output:
+      name: '@mark-magic/plugin-epub'
+      config:
+        path: ./dist/epub/mark-magic.epub
+        metadata:
+          id: mark-magic
+          title: Mark Magic
+          creator: rxliuli
+          publisher: rxliuli
+          language: zh-CN

@@ -1,0 +1,51 @@
+{
+  "name": "@mark-magic/plugin-epub",
+  "version": "0.3.1",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./config.schema.json": "./src/config.schema.json"
+  },
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "vite build",
+    "setup": "pnpm build",
+    "test": "vitest run",
+    "dts": "json2ts -i src/config.schema.json -o src/config.schema.d.ts"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "devDependencies": {
+    "@mark-magic/plugin-local": "workspace:^",
+    "@liuli-util/test": "^3.7.0",
+    "@liuli-util/vite-plugin-node": "^0.2.0",
+    "@types/fs-extra": "^11.0.1",
+    "@types/lodash-es": "^4.17.7",
+    "@types/uuid": "^9.0.2",
+    "json-schema-to-typescript": "^13.0.2",
+    "typescript": "^5.0.4",
+    "vite": "^4.3.9",
+    "vitest": "^1.0.4"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "@mark-magic/utils": "workspace:^",
+    "@liuli-util/markdown-util": "^0.8.0",
+    "@liuli-util/tree": "^3.8.0",
+    "@mark-magic/core": "workspace:^",
+    "@mark-magic/epub": "workspace:^",
+    "fs-extra": "^11.1.1",
+    "lodash-es": "^4.17.21",
+    "pathe": "^1.1.1",
+    "uuid": "^9.0.0"
+  }
+}

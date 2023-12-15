@@ -1,5 +1,9 @@
 node_modules/
 .rpt2_cache/
+<<<<<<< HEAD
+=======
+.DS_Store
+>>>>>>> dev
 
 # Editor directories and files
 .idea

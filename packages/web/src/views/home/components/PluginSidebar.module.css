@@ -1,9 +1,0 @@
-.sidebar {
-  width: 320px;
-  display: grid;
-  grid-template-rows: 1fr 1fr;
-}
-
-.sidebar > * {
-  overflow-y: auto;
-}

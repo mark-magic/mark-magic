@@ -10,20 +10,20 @@ import {
   TypeEnum,
   ResourceProperties,
 } from 'joplin-api'
-import type { InputPlugin, Note, Resource } from '@mami/cli'
+import type { InputPlugin, Content, Resource } from '@mark-magic/core'
 import { AsyncArray } from '@liuli-util/async'
 import { listToTree, treeToList } from '@liuli-util/tree'
 import { keyBy, pick } from 'lodash-es'
 import path from 'path'
 import { extension } from 'mime-types'
 
-async function getFolders(): Promise<Record<string, FolderListAllRes & Pick<Note, 'path'>>> {
+async function getFolders(): Promise<Record<string, FolderListAllRes & Pick<Content, 'path'>>> {
   const list = await folderApi.listAll()
   const treeList = treeToList(listToTree(list, { id: 'id', children: 'children', parentId: 'parent_id' }), {
     id: 'id',
     children: 'children',
     path: 'path',
-  }) as unknown as (FolderListAllRes & Pick<Note, 'path'>)[]
+  }) as unknown as (FolderListAllRes & Pick<Content, 'path'>)[]
   const map = keyBy(treeList, (item) => item.id)
   const r = keyBy(
     treeList.map((item) => ({ ...item, path: item.path.map((s) => map[s].title) })),
@@ -75,20 +75,22 @@ export function input(options: Config & { tag: string }): InputPlugin {
           async (item) => {
             return {
               id: item.id,
-              title: calcTitle(item),
+              name: calcTitle(item),
               raw: Buffer.from(await (await resourceApi.fileById(item.id)).arrayBuffer()),
             } as Resource
           },
         )
-        const inputNote: Note = {
+        const inputNote: Content = {
           id: note.id,
-          title: (note.title.startsWith('# ') ? note.title.slice(2) : note.title).trim(),
+          name: (note.title.startsWith('# ') ? note.title.slice(2) : note.title).trim(),
           content: note.body,
-          createAt: note.user_created_time,
-          updateAt: note.user_updated_time,
+          created: note.user_created_time,
+          updated: note.user_updated_time,
           path: folder?.path ?? [],
-          tags: tags,
           resources,
+          extra: {
+            tags,
+          },
         }
         yield inputNote
       }

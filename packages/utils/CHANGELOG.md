@@ -1,14 +1,20 @@
-# @mami/utils
+# @mark-magic/utils
 
-## 0.2.2
+## 0.3.0
+
+### Minor Changes
+
+- feat: 抽离侧边栏生成的部分出来用于 epub/docs
 
 ### Patch Changes
 
 - Updated dependencies
-  - @mami/cli@0.5.3
+  - @mark-magic/core@0.2.0
 
-## 0.2.1
+## 0.2.3
 
 ### Patch Changes
 
-- refactor: extract common functions into private @mami/utils packages
+- init publish
+- Updated dependencies
+  - @mark-magic/core@0.1.1

@@ -1,0 +1,40 @@
+{
+  "name": "@mark-magic/epub",
+  "version": "0.2.0",
+  "type": "module",
+  "license": "MIT",
+  "sideEffects": false,
+  "exports": {
+    "import": "./dist/index.js",
+    "types": "./dist/index.d.ts"
+  },
+  "scripts": {
+    "setup": "pnpm build",
+    "build": "vite build",
+    "test": "vitest run"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "@liuli-util/fs": "^0.1.0",
+    "@liuli-util/test": "^3.6.0",
+    "@liuli-util/vite-plugin-node": "^0.1.1",
+    "@types/mime-types": "^2.1.1",
+    "@types/mustache": "^4.2.2",
+    "@types/node": "^20.3.1",
+    "@types/uuid": "^9.0.2",
+    "typescript": "^5.1.3",
+    "uuid": "^9.0.0",
+    "vite": "^4.3.9",
+    "vitest": "^1.0.4"
+  },
+  "dependencies": {
+    "@mark-magic/utils": "workspace:^",
+    "@liuli-util/tree": "^3.7.0",
+    "jszip": "^3.10.1",
+    "mime-types": "^2.1.35",
+    "mustache": "^4.2.0"
+  }
+}

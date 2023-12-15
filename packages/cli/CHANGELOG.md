@@ -1,56 +1,109 @@
-# @mami/cli
+# @mark-magic/cli
 
-## 0.5.3
-
-### Patch Changes
-
-- fix publish config for files
-
-## 0.5.2
+## 0.4.3
 
 ### Patch Changes
 
-- perf: add debug logs for performance analysis
+- fix: 修复 local 插件写入资源文件时没有正确处理同名资源的问题
+- Updated dependencies
+  - @mark-magic/plugin-docs@0.4.3
+  - @mark-magic/plugin-local@0.6.1
+  - @mark-magic/plugin-epub@0.3.1
 
-## 0.5.1
+## 0.4.2
 
 ### Patch Changes
 
-- fix obsidian => joplin
+- fix: 修复 description 没有正确设置的错误
+- Updated dependencies
+  - @mark-magic/plugin-docs@0.4.2
 
-## 0.5.0
+## 0.4.1
 
-### Minor Changes
+### Patch Changes
 
-- modify plugin interface
+- chore: update jsonschema
+- Updated dependencies
+  - @mark-magic/plugin-docs@0.4.1
 
 ## 0.4.0
 
 ### Minor Changes
 
-- feat: 在配置中分离 input/output 插件，以支持统一插件导入导出
+- feat: 生成 rss 支持 ignore 配置
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/plugin-docs@0.4.0
+
+## 0.3.3
+
+### Patch Changes
+
+- chore: republish 0.3.2
+- Updated dependencies
+  - @mark-magic/plugin-docs@0.3.3
+
+## 0.3.2
+
+### Patch Changes
+
+- fix: 修复安装到 node_modules 下时无法正确生成 rss 的问题
+- Updated dependencies
+  - @mark-magic/plugin-docs@0.3.2
+
+## 0.3.1
+
+### Patch Changes
+
+- chore: 更新发布配置，显式指定 files
+- Updated dependencies
+  - @mark-magic/plugin-docs@0.3.1
+  - @mark-magic/plugin-epub@0.3.1
 
 ## 0.3.0
 
 ### Minor Changes
 
-- Update the configuration items, no longer expose the root option, and use it to specify it in the plugin
-- update hooks `config` => `start`
-
-## 0.2.1
+- chore: 更新终端输出
 
 ### Patch Changes
 
-- fix publish tgz does not contain dist bug
+- Updated dependencies
+  - @mark-magic/plugin-docs@0.3.0
+  - @mark-magic/plugin-epub@0.3.0
 
 ## 0.2.0
 
 ### Minor Changes
 
-- cli add output
+- feat: 重新实现 plugin-docs
 
-## 1.0.0
+### Patch Changes
 
-### Major Changes
+- Updated dependencies
+  - @mark-magic/core@0.2.0
+  - @mark-magic/plugin-docs@0.2.0
+  - @mark-magic/plugin-epub@0.2.0
+  - @mark-magic/plugin-local@0.6.0
+
+## 0.1.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/plugin-local@0.5.7
+  - @mark-magic/plugin-docs@0.1.2
+  - @mark-magic/plugin-epub@0.1.2
+
+## 0.1.1
+
+### Patch Changes
 
 - init publish
+- Updated dependencies
+  - @mark-magic/plugin-local@0.5.6
+  - @mark-magic/plugin-docs@0.1.1
+  - @mark-magic/plugin-epub@0.1.1
+  - @mark-magic/core@0.1.1

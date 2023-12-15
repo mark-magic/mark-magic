@@ -1,52 +1,58 @@
 {
-  "name": "@mami/cli",
-  "version": "0.5.3",
-  "license": "MIT",
+  "name": "@mark-magic/cli",
+  "version": "0.4.3",
   "type": "module",
   "bin": {
-    "mami": "./bin.js"
+    "mark-magic": "./bin.js"
   },
-  "exports": "./dist/index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "tsup src/index.ts --format esm --sourcemap --shims && tsc && tsup src/bin.ts --format esm --target esnext",
-    "dev": "pnpm build --watch",
-    "setup": "pnpm build",
-    "start": "tsx ./src/bin.ts",
-    "test": "vitest run"
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
   },
-  "typedoc": {
-    "entryPoint": "./src/index.ts"
-  },
-  "engines": {
-    "node": ">=18"
-  },
-  "sideEffects": false,
+  "types": "./dist/index.d.ts",
   "files": [
     "dist",
-    "src"
+    "bin.js"
   ],
-  "devDependencies": {
-    "@types/lodash-es": "^4.17.6",
-    "@types/node": "^18.8.3",
-    "tsup": "^6.2.3",
-    "tsx": "^3.10.1",
-    "typescript": "^4.8.4",
-    "vitest": "^0.24.0"
+  "scripts": {
+    "setup": "pnpm build && pnpm build-schema",
+    "build": "vite build",
+    "build-schema": "vite-node src/generate.ts",
+    "dev": "pnpm build --watch",
+    "start": "vite-node src/bin.ts",
+    "test": "vitest run",
+    "dts": "json2ts -i ./dist/config.schema.json -o ./src/config.schema.d.ts"
   },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
+  "devDependencies": {
+    "@apidevtools/json-schema-ref-parser": "^10.1.0",
+    "@liuli-util/vite-plugin-node": "^0.3.0",
+    "@types/lodash-es": "^4.17.7",
+    "@types/node": "^20.1.4",
+    "json-schema-to-typescript": "^13.0.2",
+    "typescript": "^5.0.4",
+    "vite": "^4.3.9",
+    "vite-node": "^0.32.0",
+    "vitest": "^1.0.4"
+  },
   "dependencies": {
+    "@mark-magic/plugin-docs": "workspace:^",
+    "@mark-magic/plugin-epub": "workspace:^",
+    "@mark-magic/plugin-local": "workspace:^",
     "@liuli-util/async": "^3.6.0",
-    "@liuli-util/fs-extra": "^0.1.0",
-    "bundle-require": "^3.1.0",
-    "esbuild": "^0.15.10",
-    "form-data": "^4.0.0",
+    "@liuli-util/fs": "^0.1.0",
+    "@mark-magic/core": "workspace:^",
+    "bundle-require": "^4.0.1",
+    "commander": "^11.0.0",
+    "esbuild": "^0.18.7",
     "lodash-es": "^4.17.21",
-    "node-fetch": "^3.2.10",
-    "ora": "^6.1.2",
-    "type-fest": "^3.1.0"
+    "pathe": "^1.1.1",
+    "pino": "^8.14.1",
+    "yaml": "^2.3.1"
   }
 }

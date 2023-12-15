@@ -1,5 +1,5 @@
 import { mkdirp, pathExists, readJson, writeJson } from '@liuli-util/fs-extra'
-import { OutputPlugin } from '@mami/cli'
+import { OutputPlugin } from '@mark-magic/core'
 import path from 'path'
 
 export interface OutputCacheOptions {
@@ -32,13 +32,13 @@ export function outputCache(
       map = await options.read()
       plugin.start?.()
     },
-    async handle(note) {
-      newMap[note.id] = note.updateAt
-      if (map[note.id] && map[note.id] === note.updateAt) {
-        delete map[note.id]
+    async handle(content) {
+      newMap[content.id] = content.updated
+      if (map[content.id] && map[content.id] === content.updated) {
+        delete map[content.id]
         return
       }
-      await plugin.handle(note)
+      await plugin.handle(content)
     },
     async end() {
       await options.write(newMap)

@@ -1,0 +1,57 @@
+{
+  "name": "@mark-magic/plugin-docs",
+  "version": "0.4.3",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "setup": "pnpm build",
+    "build": "vite build",
+    "dev": "pnpm build --watch",
+    "test": "vitest run"
+  },
+  "sideEffects": false,
+  "devDependencies": {
+    "@liuli-util/test": "^3.7.0",
+    "@liuli-util/vite-plugin-node": "^0.5.0",
+    "@types/fs-extra": "^11.0.1",
+    "@types/lodash-es": "^4.17.12",
+    "@types/markdown-it": "^13.0.7",
+    "@types/mustache": "^4.2.2",
+    "@types/node": "^20.10.4",
+    "esbuild": "^0.18.7",
+    "markdown-it": "^14.0.0",
+    "node-html-parser": "^6.1.5",
+    "typescript": "^5.0.4",
+    "vite": "^4.3.9",
+    "vitest": "^1.0.4"
+  },
+  "dependencies": {
+    "@liuli-util/fs": "^0.1.0",
+    "@liuli-util/markdown-util": "^0.8.0",
+    "@liuli-util/tree": "^3.8.1",
+    "@mark-magic/core": "workspace:^",
+    "@mark-magic/plugin-local": "workspace:^",
+    "@mark-magic/utils": "workspace:^",
+    "feed": "^4.2.2",
+    "fs-extra": "^11.1.1",
+    "lodash-es": "^4.17.21",
+    "mustache": "^4.2.0",
+    "pathe": "^1.1.1",
+    "vitepress": "1.0.0-rc.31",
+    "vitepress-plugin-comment-with-giscus": "^1.1.11"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

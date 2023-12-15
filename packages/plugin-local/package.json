@@ -1,27 +1,32 @@
 {
-  "name": "@mami/plugin-local",
-  "version": "0.5.5",
+  "name": "@mark-magic/plugin-local",
+  "version": "0.6.1",
   "license": "MIT",
   "type": "module",
-  "exports": "./dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./config.schema.json": "./src/config.schema.json"
+  },
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc && tsup src/index.ts --format esm --sourcemap",
+    "build": "vite build",
     "dev": "pnpm build --watch",
     "setup": "pnpm build",
-    "test": "vitest run"
+    "test": "vitest run",
+    "dts": "json2ts -i src/config.schema.json -o src/config.schema.d.ts"
   },
   "sideEffects": false,
-  "files": [
-    "dist",
-    "src"
-  ],
   "typedoc": {
     "entryPoint": "./src/index.ts"
   },
   "devDependencies": {
-    "@mami/cli": "workspace:^",
-    "@mami/utils": "workspace:^",
+    "json-schema-to-typescript": "^13.0.2",
+    "@liuli-util/test": "^3.6.0",
+    "@liuli-util/vite-plugin-node": "^0.3.0",
+    "@types/crypto-js": "^4.1.1",
     "@types/lodash-es": "^4.17.6",
     "@types/node": "^18.8.3",
     "@types/uuid": "^8.3.4",
@@ -29,21 +34,26 @@
     "tsx": "^3.10.1",
     "typescript": "^4.8.4",
     "utility-types": "^3.10.0",
-    "vitest": "^0.24.0"
+    "vite": "^4.3.9",
+    "vitest": "^0.32.2"
   },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
+    "@mark-magic/core": "workspace:^",
+    "@mark-magic/utils": "workspace:^",
     "@liuli-util/async": "^3.6.0",
     "@liuli-util/fs-extra": "^0.1.0",
-    "@liuli-util/markdown-util": "^0.5.3",
+    "@liuli-util/markdown-util": "^0.8.0",
+    "crypto-js": "^4.1.1",
     "fast-glob": "^3.2.12",
     "filenamify": "^5.1.1",
     "lodash-es": "^4.17.21",
     "mdast-util-to-hast": "^12.3.0",
     "node-html-parser": "^6.1.5",
+    "pathe": "^1.1.1",
     "uuid": "^9.0.0"
   }
 }

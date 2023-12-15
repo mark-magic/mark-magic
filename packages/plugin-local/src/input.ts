@@ -6,28 +6,31 @@ import {
   Link,
   Root,
   toMarkdown,
-  visit,
   Image,
   selectAll,
   setYamlMeta,
 } from '@liuli-util/markdown-util'
-import { InputPlugin, Note, Tag } from '@mami/cli'
-import { BiMultiMap } from '@mami/utils'
+import { InputPlugin, Content, wrapContentLink, wrapResourceLink } from '@mark-magic/core'
+import { BiMultiMap } from '@mark-magic/utils'
 import FastGlob from 'fast-glob'
 import { readFile } from 'fs/promises'
-import { keyBy, dropRight, uniqBy } from 'lodash-es'
-import path from 'path'
-import { ValuesType } from 'utility-types'
-import { v4 } from 'uuid'
-import { LocalNoteMeta } from './output'
+import { keyBy, uniqBy, omit } from 'lodash-es'
+import pathe from 'pathe'
+import { LocalContentMeta } from './output'
+import crypto from 'crypto'
+import type { LocalInputConfig } from './config.schema'
 
-interface ScanNote {
+function hashString(s: string) {
+  return crypto.createHash('md5').update(s).digest('hex')
+}
+
+interface ScanContent {
   id: string
-  title: string
+  name: string
   relPath: string
 }
 
-export async function scan(root: string): Promise<ScanNote[]> {
+export async function scan(root: string): Promise<ScanContent[]> {
   return (
     await FastGlob('**/*.md', {
       cwd: root,
@@ -35,8 +38,8 @@ export async function scan(root: string): Promise<ScanNote[]> {
       ignore: ['.obsidian'],
     })
   ).map((item) => ({
-    id: v4(),
-    title: path.basename(item, '.md'),
+    id: hashString(item).toString(),
+    name: pathe.basename(item, '.md'),
     relPath: item,
   }))
 }
@@ -59,87 +62,87 @@ export function convertLinks({
   root,
   resourceMap,
   list,
-  notePath,
+  contentPath,
   rootPath,
 }: {
   root: Root
-  list: ScanNote[]
+  list: ScanContent[]
   resourceMap: BiMultiMap<string, string>
-  notePath: string
+  contentPath: string
   rootPath: string
 }): { id: string; fsPath: string }[] {
   const urls = selectAll('image,link', root) as (Image | Link)[]
-  const noteMap = keyBy(list, (item) => item.relPath)
+  const contentMap = keyBy(list, (item) => item.relPath)
   const resources: { id: string; fsPath: string }[] = []
   urls.forEach((item) => {
     if (!['../', './'].some((s) => item.url.startsWith(s))) {
       return
     }
-    const fsPath = path.resolve(path.dirname(notePath), item.url)
-    const relPath = path.relative(rootPath, fsPath).replaceAll('\\', '/')
-    if (noteMap[relPath]) {
-      item.url = `:/${noteMap[relPath].id}`
+    const fsPath = pathe.resolve(pathe.dirname(contentPath), item.url)
+    const relPath = pathe.relative(rootPath, fsPath)
+    if (contentMap[relPath]) {
+      item.url = wrapContentLink(contentMap[relPath].id)
       return
     }
     if (!resourceMap.has(fsPath)) {
-      resourceMap.set(fsPath, v4())
+      resourceMap.set(fsPath, hashString(fsPath).toString())
     }
     resources.push({ id: resourceMap.get(fsPath)!, fsPath })
-    item.url = `:/${resourceMap.get(fsPath)}`
+    item.url = wrapResourceLink(resourceMap.get(fsPath)!)
   })
   return uniqBy(resources, (item) => item.id)
 }
 
-export function input(options: { root: string }): InputPlugin {
+export function input(options: LocalInputConfig): InputPlugin {
   return {
     name: 'local',
     async *generate() {
-      const list = await scan(options.root)
+      const list = await scan(options.path)
       const resourceMap = new BiMultiMap<string, string>()
-      const tagMap = new Map<string, Tag>()
-      for (const item of list) {
-        const fsPath = path.resolve(options.root, item.relPath)
+      // const tagMap = new Map<string, Tag>()
+      for (const it of list) {
+        const fsPath = pathe.resolve(options.path, it.relPath)
         const root = fromMarkdown(convertYamlTab(await readFile(fsPath, 'utf-8')))
-        const meta = (getYamlMeta(root) ?? {}) as Partial<LocalNoteMeta>
+        const meta = (getYamlMeta(root) ?? {}) as Partial<LocalContentMeta>
         const resources = convertLinks({
           root,
-          rootPath: options.root,
-          notePath: fsPath,
+          rootPath: options.path,
+          contentPath: fsPath,
           list,
           resourceMap,
         })
         setYamlMeta(root, null)
-        const tags = (meta.tags ?? []).map((title) => {
-          if (tagMap.has(title)) {
-            return tagMap.get(title)!
-          }
-          const r = { id: v4(), title } as Tag
-          tagMap.set(title, r)
-          return r
-        })
+        // const tags = (meta.tags ?? []).map((title) => {
+        //   if (tagMap.has(title)) {
+        //     return tagMap.get(title)!
+        //   }
+        //   const r = { id: v4(), title } as Tag
+        //   tagMap.set(title, r)
+        //   return r
+        // })
         const s = await stat(fsPath)
-        const note: Note = {
-          id: item.id,
-          title: meta.title ?? item.title,
+        const content: Content = {
+          id: it.id,
+          name: meta.name ?? it.name,
           content: toMarkdown(root),
-          createAt: meta.createAt ?? s.ctimeMs,
-          updateAt: meta.updateAt ?? s.mtimeMs,
-          tags,
+          created: meta.created ?? s.ctimeMs,
+          updated: meta.updated ?? s.mtimeMs,
+          extra: omit(meta, ['name', 'created', 'updated']),
+          // tags,
           resources: await new AsyncArray(resources)
             .filter((item) => pathExists(item.fsPath))
             .map(async (item) => {
               return {
                 id: item.id,
-                title: path.basename(item.fsPath),
+                name: pathe.basename(item.fsPath),
                 raw: await readFile(item.fsPath),
+                created: Math.floor(s.birthtimeMs),
+                updated: Math.floor(s.mtimeMs),
               }
             }),
-          path: dropRight(
-            item.relPath.split('/').filter((s) => s.length !== 0),
-            1,
-          ),
+          path: it.relPath.split('/').filter((s) => s.length !== 0),
         }
-        yield note
+        yield content
       }
     },
   }

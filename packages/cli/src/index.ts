@@ -1,2 +1,1 @@
-export * from './convert'
-export * from './utils/defineConfig'
+export * from './defineConfig'

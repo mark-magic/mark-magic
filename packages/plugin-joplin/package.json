@@ -1,35 +1,33 @@
 {
-  "name": "@mami/plugin-joplin",
+  "name": "@mark-magic/plugin-joplin",
   "version": "0.5.4",
   "license": "MIT",
   "type": "module",
   "exports": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc && tsup src/index.ts --format esm --sourcemap",
+    "build": "vite build",
     "dev": "pnpm build --watch",
-    "setup": "pnpm build"
+    "setup": "pnpm build",
+    "test": "vitest run"
   },
   "sideEffects": false,
   "files": [
     "dist",
     "src"
   ],
-  "mami": {
-    "$schema": ""
-  },
   "typedoc": {
     "entryPoint": "./src/index.ts"
   },
   "devDependencies": {
-    "@mami/cli": "workspace:^",
-    "@mami/utils": "workspace:^",
+    "@liuli-util/vite-plugin-node": "^0.7.0",
+    "@mark-magic/core": "workspace:^",
+    "@mark-magic/utils": "workspace:^",
     "@types/lodash-es": "^4.17.6",
     "@types/mime-types": "^2.1.1",
     "@types/node": "^18.8.3",
-    "tsup": "^6.2.3",
-    "tsx": "^3.10.1",
     "typescript": "^4.8.4",
+    "vite": "^4.3.9",
     "vitest": "^0.24.0"
   },
   "publishConfig": {

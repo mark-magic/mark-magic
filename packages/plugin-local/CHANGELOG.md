@@ -1,4 +1,40 @@
-# @mami/plugin-local
+# @mark-magic/plugin-local
+
+## 0.6.1
+
+### Patch Changes
+
+- fix: 修复 local 插件写入资源文件时没有正确处理同名资源的问题
+
+## 0.6.0
+
+### Minor Changes
+
+- feat: 重新实现 plugin-docs，基于 vitepress 而不是 docsify
+- fix: 修复没有正确 `path` 字段包含全路径的错误
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/core@0.2.0
+  - @liuli-util/markdown-util@0.8.0
+  - @mark-magic/utils@0.3.0
+
+## 0.5.7
+
+### Patch Changes
+
+- fix: 修复 publish config
+
+## 0.5.6
+
+### Patch Changes
+
+- init publish
+- Updated dependencies
+  - @liuli-util/markdown-util@0.7.1
+  - @mark-magic/utils@0.2.3
+  - @mark-magic/core@0.1.1
 
 ## 0.5.5
 

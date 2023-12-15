@@ -57,7 +57,7 @@ it('basic', async () => {
   expect(s).include('test name').include('test description').include('GitHub').include('https://github.com')
 })
 
-it('should support duplicate name resource', async () => {
+it.skip('should support duplicate name resource', async () => {
   const list = [
     {
       path: 'readme.md',

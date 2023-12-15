@@ -1,5 +1,11 @@
 # @mark-magic/plugin-local
 
+## 0.6.1
+
+### Patch Changes
+
+- fix: 修复 local 插件写入资源文件时没有正确处理同名资源的问题
+
 ## 0.6.0
 
 ### Minor Changes

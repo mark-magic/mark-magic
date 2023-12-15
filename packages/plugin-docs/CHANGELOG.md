@@ -1,5 +1,13 @@
 # @mark-magic/plugin-docs
 
+## 0.4.3
+
+### Patch Changes
+
+- fix: 修复 local 插件写入资源文件时没有正确处理同名资源的问题
+- Updated dependencies
+  - @mark-magic/plugin-local@0.6.1
+
 ## 0.4.2
 
 ### Patch Changes

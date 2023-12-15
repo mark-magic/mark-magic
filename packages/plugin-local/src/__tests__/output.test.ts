@@ -1,14 +1,16 @@
 import { pathExists } from '@liuli-util/fs-extra'
-import { readFile } from 'fs/promises'
+import { mkdir, readFile, writeFile } from 'fs/promises'
 import pathe from 'pathe'
 import { expect, it, describe } from 'vitest'
 import { convert, InputPlugin, Content, Resource } from '@mark-magic/core'
 import { calcMeta, convertLinks, defaultOptions, output } from '../output'
 import filenamify, { filenamifyPath } from 'filenamify'
 import { Image, Link, fromMarkdown, select, toMarkdown } from '@liuli-util/markdown-util'
-import { BiMultiMap, fromVirtual } from '@mark-magic/utils'
+import { BiMultiMap, fromAsync, fromVirtual } from '@mark-magic/utils'
 import { formatRelative } from '../utils'
 import { initTempPath } from '@liuli-util/test'
+import path from 'pathe'
+import { input } from '../input'
 
 const tempPath = initTempPath(__filename)
 
@@ -365,4 +367,63 @@ it('output', async () => {
   const root = fromMarkdown(t)
   expect((select('link', root) as Link).url).eq('/p/b')
   expect((select('image', root) as Image).url).eq('../resources/c.jpg')
+})
+
+it('should support duplicate resource name', async () => {
+  const list = [
+    {
+      path: 'readme.md',
+      content: `# test\n![test](./01/assets/cover.png)`,
+    },
+    {
+      path: '01/readme.md',
+      content: `# test 1\n![test](./assets/cover.png)`,
+    },
+    {
+      path: '02/readme.md',
+      content: `# test 2\n![test](./assets/cover.png)`,
+    },
+    {
+      path: '03/readme.md',
+      content: `# test 3\n![test](./assets/cover.png)`,
+    },
+    {
+      path: '01/assets/cover.png',
+      content: '01',
+    },
+    {
+      path: '02/assets/cover.png',
+      content: '02',
+    },
+    {
+      path: '03/assets/cover.png',
+      content: '03',
+    },
+  ]
+  await Promise.all(
+    list.map(async (it) => {
+      const fsPath = path.resolve(tempPath, 'src', it.path)
+      await mkdir(path.dirname(fsPath), { recursive: true })
+      await writeFile(fsPath, it.content)
+    }),
+  )
+  await convert({
+    input: input({
+      path: path.resolve(tempPath, 'src'),
+    }),
+    output: output({
+      rootContentPath: path.resolve(tempPath, 'dist'),
+      rootResourcePath: path.resolve(tempPath, 'dist/resources'),
+    }),
+  })
+  async function getContent(p: string): Promise<string> {
+    const fsPath = path.resolve(tempPath, 'dist', p)
+    const s = await readFile(fsPath, 'utf-8')
+    const r = path.resolve(path.dirname(fsPath), (select('image', fromMarkdown(s)) as Image).url)
+    return await readFile(r, 'utf-8')
+  }
+  expect(await getContent('readme.md')).eq('01')
+  expect(await getContent('01/readme.md')).eq('01')
+  expect(await getContent('02/readme.md')).eq('02')
+  expect(await getContent('03/readme.md')).eq('03')
 })

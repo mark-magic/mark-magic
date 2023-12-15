@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import { Content, Resource, convert } from '@mark-magic/core'
-import { fromVirtual } from '@mark-magic/utils'
+import { fromAsync, fromVirtual } from '@mark-magic/utils'
 import { output } from '../output'
 import path from 'pathe'
 import { initTempPath } from '@liuli-util/test'
 import { pathExists } from 'fs-extra/esm'
 import * as local from '@mark-magic/plugin-local'
 import { parse } from 'node-html-parser'
-import { readFile } from 'fs/promises'
+import { mkdir, readFile, writeFile } from 'fs/promises'
 
 const tempPath = initTempPath(__filename)
 
@@ -55,6 +55,63 @@ it('basic', async () => {
   expect(await pathExists(path.resolve(tempPath, 'dist/b.html'))).true
   const s = await readFile(path.resolve(tempPath, 'dist/index.html'), 'utf-8')
   expect(s).include('test name').include('test description').include('GitHub').include('https://github.com')
+})
+
+it('should support duplicate name resource', async () => {
+  const list = [
+    {
+      path: 'readme.md',
+      content: `# test\n![test](./01/assets/cover.png)`,
+    },
+    {
+      path: '01/readme.md',
+      content: `# test 1\n![test](./assets/cover.png)`,
+    },
+    {
+      path: '02/readme.md',
+      content: `# test 2\n![test](./assets/cover.png)`,
+    },
+    {
+      path: '01/assets/cover.png',
+      content: await readFile(path.resolve(__dirname, './assets/to-the-stars/books/01/assets/cover.png')),
+    },
+    {
+      path: '02/assets/cover.png',
+      content: await readFile(path.resolve(__dirname, './assets/to-the-stars/books/02/assets/cover.png')),
+    },
+  ]
+  await Promise.all(
+    list.map(async (it) => {
+      const fsPath = path.resolve(tempPath, 'src', it.path)
+      await mkdir(path.dirname(fsPath), { recursive: true })
+      await writeFile(fsPath, it.content)
+    }),
+  )
+  await convert({
+    input: local.input({
+      path: path.resolve(tempPath, 'src'),
+    }),
+    output: output({
+      path: path.resolve(tempPath, 'dist'),
+      name: 'test name',
+      description: 'test description',
+      nav: [
+        {
+          text: 'GitHub',
+          link: 'https://github.com',
+        },
+      ],
+    }),
+  })
+  // await convert({
+  //   input: local.input({
+  //     path: path.resolve(tempPath, 'src'),
+  //   }),
+  //   output: local.output({
+  //     rootContentPath: path.resolve(tempPath, 'dist'),
+  //     rootResourcePath: path.resolve(tempPath, 'dist/resources'),
+  //   }),
+  // })
 })
 
 it.skip('should support real site', async () => {

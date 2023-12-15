@@ -17,6 +17,7 @@ import { Required } from 'utility-types'
 import { BiMultiMap } from '@mark-magic/utils'
 import { parse } from 'node-html-parser'
 import { formatRelative } from './utils'
+import path from 'pathe'
 
 export function defaultOptions(
   options: Required<Partial<OutputOptions>, 'rootContentPath' | 'rootResourcePath'>,
@@ -174,18 +175,19 @@ export function output(
       await mkdirp(_options.rootResourcePath)
     },
     async handle(content) {
-      await AsyncArray.forEach(content.resources, async (item) => {
-        // let fsPath = path.resolve(options.rootResourcePath, filenamify(item.title))
-        let fsPath = _options.resourcePath(item)
-        if (resourceMap.has(fsPath)) {
-          const ext = pathe.extname(item.name)
-          fsPath = pathe.resolve(
-            pathe.dirname(fsPath),
-            pathe.basename(filenamify(item.name), ext) + '_' + item.id + ext,
-          )
+      await AsyncArray.forEach(content.resources, async (it) => {
+        // Check if the resource has been processed
+        if (resourceMap.has(it.id)) {
+          return
         }
-        resourceMap.set(item.id, fsPath)
-        await writeFile(fsPath, item.raw)
+        // let fsPath = path.resolve(options.rootResourcePath, filenamify(item.title))
+        let fsPath = _options.resourcePath(it)
+        if (resourceMap.has(fsPath)) {
+          const ext = pathe.extname(it.name)
+          fsPath = pathe.resolve(pathe.dirname(fsPath), pathe.basename(filenamify(it.name), ext) + '_' + it.id + ext)
+        }
+        resourceMap.set(it.id, fsPath)
+        await writeFile(fsPath, it.raw)
       })
 
       // let fsPath = path.resolve(options.rootcontentPath, content.path.join('/'), filenamify(content.name) + '.md')

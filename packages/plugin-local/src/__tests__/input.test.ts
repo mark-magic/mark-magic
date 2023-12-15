@@ -136,3 +136,44 @@ tags:
   const r2 = await scan(path.resolve(tempPath))
   expect(r1).deep.eq(r2)
 })
+
+it('重复的资源应该能保持相同的 id', async () => {
+  const list = [
+    {
+      path: 'readme.md',
+      content: `# test\n![test](./01/assets/cover.png)`,
+    },
+    {
+      path: '01/readme.md',
+      content: `# test 1\n![test](./assets/cover.png)`,
+    },
+    {
+      path: '02/readme.md',
+      content: `# test 2\n![test](./assets/cover.png)`,
+    },
+    {
+      path: '01/assets/cover.png',
+      content: '01',
+    },
+    {
+      path: '02/assets/cover.png',
+      content: '02',
+    },
+  ]
+  await Promise.all(
+    list.map(async (it) => {
+      const fsPath = path.resolve(tempPath, 'src', it.path)
+      await mkdir(path.dirname(fsPath), { recursive: true })
+      await writeFile(fsPath, it.content)
+    }),
+  )
+  const contents = await fromAsync(
+    input({
+      path: path.resolve(tempPath, 'src'),
+    }).generate(),
+  )
+  const resources = contents.flatMap((it) => it.resources)
+  expect(resources[0]).deep.eq(resources[1])
+  expect(resources[0].raw.toString()).eq('01')
+  expect(resources[2].raw.toString()).eq('02')
+})

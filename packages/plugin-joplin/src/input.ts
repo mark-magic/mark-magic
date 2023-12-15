@@ -10,12 +10,13 @@ import {
   TypeEnum,
   ResourceProperties,
 } from 'joplin-api'
-import type { InputPlugin, Content, Resource } from '@mark-magic/core'
+import { type InputPlugin, type Content, type Resource, wrapResourceLink, wrapContentLink } from '@mark-magic/core'
 import { AsyncArray } from '@liuli-util/async'
 import { listToTree, treeToList } from '@liuli-util/tree'
 import { keyBy, pick } from 'lodash-es'
 import path from 'path'
 import { extension } from 'mime-types'
+import { Image, Link, fromMarkdown, selectAll, toMarkdown } from '@liuli-util/markdown-util'
 
 async function getFolders(): Promise<Record<string, FolderListAllRes & Pick<Content, 'path'>>> {
   const list = await folderApi.listAll()
@@ -43,6 +44,20 @@ export function calcTitle(resource: Pick<ResourceProperties, 'id' | 'title' | 'f
     return title
   }
   return title + e
+}
+
+export function convertContentLink(body: string, resourceIds: string[]): string {
+  const root = fromMarkdown(body)
+  const list = (selectAll('image,link', root) as (Image | Link)[]).filter((it) => it.url.startsWith(':/'))
+  list.forEach((it) => {
+    const id = it.url.slice(2)
+    if (it.type === 'image' || resourceIds.includes(id)) {
+      it.url = wrapResourceLink(it.url.slice(2))
+      return
+    }
+    it.url = wrapContentLink(it.url)
+  })
+  return toMarkdown(root)
 }
 
 export function input(options: Config & { tag: string }): InputPlugin {
@@ -80,10 +95,14 @@ export function input(options: Config & { tag: string }): InputPlugin {
             } as Resource
           },
         )
+
         const inputNote: Content = {
           id: note.id,
           name: (note.title.startsWith('# ') ? note.title.slice(2) : note.title).trim(),
-          content: note.body,
+          content: convertContentLink(
+            note.body,
+            resources.map((item) => item.id),
+          ),
           created: note.user_created_time,
           updated: note.user_updated_time,
           path: folder?.path ?? [],

@@ -1,24 +1,18 @@
-import { expect, it, vi } from 'vitest'
-import { convert, Content, OutputPlugin } from '@mark-magic/core'
+import { expect, it } from 'vitest'
 import { calcTitle, input } from '../input'
+import { fromAsync } from '@mark-magic/utils'
+import { last } from 'lodash-es'
 
 it.skip('joplinInput', async () => {
-  const mockFn = vi.fn()
-  const outputVirtual: OutputPlugin = {
-    name: 'outputVirtual',
-    handle: mockFn,
-  }
-  await convert({
-    input: input({
-      baseUrl: 'http://127.0.0.1:27583',
-      token:
-        '5bcfa49330788dd68efea27a0a133d2df24df68c3fd78731eaa9914ef34811a34a782233025ed8a651677ec303de6a04e54b57a27d48898ff043fd812d8e0b31',
+  const list = await fromAsync(
+    input({
+      baseUrl: import.meta.env.VITE_JOPLIN_BASE_URL,
+      token: import.meta.env.VITE_JOPLIN_TOKEN,
       tag: '',
-    }),
-    output: outputVirtual,
-  })
-  const r = mockFn.mock.calls.map((item) => (item[0] as Content).name)
-  expect(r).not.empty
+    }).generate(),
+  )
+  console.log(last(list)?.extra)
+  expect(list).not.empty
 })
 
 it('calcTitle', () => {

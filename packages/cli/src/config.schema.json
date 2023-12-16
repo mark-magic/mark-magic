@@ -2,17 +2,17 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "properties": {
-    "generate": {
+    "tasks": {
       "type": "array",
       "items": {
-        "$ref": "#/definitions/GenerateConfig"
+        "$ref": "#/definitions/TaskConfig"
       }
     }
   },
-  "required": ["generate"],
+  "required": ["tasks"],
   "additionalProperties": false,
   "definitions": {
-    "GenerateConfig": {
+    "TaskConfig": {
       "type": "object",
       "properties": {
         "name": {

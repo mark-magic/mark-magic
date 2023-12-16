@@ -21,7 +21,7 @@ export async function loadConfig(rootPath: string): Promise<string> {
 
 export async function parseYamlConfig(configPath: string): Promise<ResolvedConfig[]> {
   const config = yaml.parse(await readFile(configPath, 'utf-8')) as ConfigSchema
-  return await AsyncArray.map(config.generate, async (it) => {
+  return await AsyncArray.map(config.tasks, async (it) => {
     try {
       return {
         name: it.name,

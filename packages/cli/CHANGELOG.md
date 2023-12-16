@@ -1,5 +1,11 @@
 # @mark-magic/cli
 
+## 0.6.0
+
+### Minor Changes
+
+- feat: 修改 yaml 配置中的 generate 字段为 tasks
+
 ## 0.5.0
 
 ### Minor Changes

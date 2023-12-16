@@ -9,9 +9,9 @@ export type InputPluginConfig = LocalPluginConfig
 export type OutputPluginConfig = EpubPluginConfig | DocsPluginConfig
 
 export interface ConfigSchema {
-  generate: GenerateConfig[]
+  tasks: TaskConfig[]
 }
-export interface GenerateConfig {
+export interface TaskConfig {
   /**
    * 生成任务的名字
    */
@@ -82,7 +82,7 @@ export interface EpubPluginConfig {
   }
 }
 /**
- * 输出为文档网站
+ * 输出为网站
  */
 export interface DocsPluginConfig {
   /**
@@ -95,23 +95,53 @@ export interface DocsPluginConfig {
      */
     path: string
     /**
-     * 静态资源目录
-     */
-    public?: string
-    /**
      * 网站名称
      */
     name: string
     /**
+     * 网站名称
+     */
+    description?: string
+    /**
+     * 静态资源目录
+     */
+    public?: string
+    /**
+     * 语言
+     */
+    lang?: 'en-US' | 'zh-CN'
+    /**
+     * 导航栏
+     */
+    nav?: (
+      | {
+          text: string
+          link: string
+        }
+      | {
+          text: string
+          items: {
+            text: string
+            link: string
+          }[]
+        }
+    )[]
+    /**
      * 网站 logo
      */
-    logo?: string
-    /**
-     * 仓库地址
-     */
-    repo?: string
-    theme?: {
-      dark?: boolean
+    logo?:
+      | string
+      | {
+          light: string
+          dark: string
+        }
+    sitemap?: {
+      hostname: string
+    }
+    rss?: {
+      hostname: string
+      copyright: string
+      ignore?: string[]
     }
     giscus?: {
       repo: string

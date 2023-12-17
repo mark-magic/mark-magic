@@ -50,7 +50,7 @@ npm install
 
 4. 修改 .gitignore，忽略自动生成的 `source/_posts` 和 `source/resources` 目录
 
-   ```gitignore
+   ```txt
    source/_posts
    source/resources
    ```

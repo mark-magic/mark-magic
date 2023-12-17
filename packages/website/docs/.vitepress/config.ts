@@ -27,7 +27,7 @@ export default defineConfig({
         link: '/config',
       },
       {
-        text: '插件',
+        text: '使用插件',
         link: '/plugin/',
         items: [
           { text: 'plugin-local', link: '/plugin/plugin-local' },
@@ -37,10 +37,10 @@ export default defineConfig({
           { text: 'plugin-hexo', link: '/plugin/plugin-hexo' },
         ],
       },
-      // {
-      //   text: '开发',
-      //   link: '/development',
-      // },
+      {
+        text: '插件 API',
+        link: '/api-plugin',
+      },
       // {
       //   text: 'API',
       //   link: '/api',

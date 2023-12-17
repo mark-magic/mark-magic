@@ -44,7 +44,7 @@
         "lang": {
           "type": "string",
           "description": "语言",
-          "enum": ["en-US", "zh-CN"]
+          "default": "en-US"
         },
         "nav": {
           "type": "array",
@@ -189,7 +189,6 @@
             "categoryId",
             "mapping",
             "reactionsEnabled",
-            "emitMetadata",
             "inputPosition",
             "theme",
             "lang",

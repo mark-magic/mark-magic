@@ -1,6 +1,6 @@
 {
   "name": "@mark-magic/plugin-epub",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -13,9 +13,9 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "vite build",
-    "setup": "pnpm build",
+    "setup": "pnpm dts && pnpm build",
     "test": "vitest run",
-    "dts": "json2ts -i src/config.schema.json -o src/config.schema.d.ts"
+    "dts": "json2ts -i src/config.schema.json -o src/config.schema.ts"
   },
   "files": [
     "dist"

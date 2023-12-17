@@ -1,6 +1,6 @@
 {
   "name": "@mark-magic/plugin-local",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -14,9 +14,9 @@
   "scripts": {
     "build": "vite build",
     "dev": "pnpm build --watch",
-    "setup": "pnpm build",
+    "setup": "pnpm dts && pnpm build",
     "test": "vitest run",
-    "dts": "json2ts -i src/config.schema.json -o src/config.schema.d.ts"
+    "dts": "json2ts -i src/config.schema.json -o src/config.schema.ts"
   },
   "sideEffects": false,
   "typedoc": {

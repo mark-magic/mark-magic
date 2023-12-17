@@ -1,5 +1,13 @@
 # @mark-magic/plugin-hexo
 
+## 0.9.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/plugin-local@0.9.1
+  - @mark-magic/core@0.9.1
+
 ## 0.9.0
 
 ### Minor Changes

@@ -1,5 +1,16 @@
 # @mark-magic/cli
 
+## 0.9.1
+
+### Patch Changes
+
+- fix: 修改 giscus 的必填项配置
+- Updated dependencies
+  - @mark-magic/plugin-local@0.9.1
+  - @mark-magic/plugin-docs@0.9.1
+  - @mark-magic/plugin-epub@0.9.1
+  - @mark-magic/core@0.9.1
+
 ## 0.9.0
 
 ### Patch Changes

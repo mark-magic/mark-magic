@@ -17,7 +17,7 @@ import { keyBy, uniqBy, omit } from 'lodash-es'
 import pathe from 'pathe'
 import { LocalContentMeta } from './output'
 import crypto from 'crypto'
-import type { LocalInputConfig } from './config.schema'
+import { LocalInputConfig } from './config.schema'
 import { pathExists } from 'fs-extra/esm'
 
 function hashString(s: string) {

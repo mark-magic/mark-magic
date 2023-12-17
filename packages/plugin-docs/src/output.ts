@@ -12,6 +12,7 @@ import Mustache from 'mustache'
 import themeConfigRaw from './assets/theme/index.js?raw'
 import configRaw from './assets/config.js?raw'
 import { findParent } from '@liuli-util/fs'
+import { DocsOutputConfig } from './config.schema'
 
 interface Sidebar extends Omit<DefaultTheme.SidebarItem, 'children'>, ISidebar {}
 
@@ -30,47 +31,7 @@ function generateSidebar(sidebars: Sidebar[]): DefaultTheme.SidebarItem[] {
   )
 }
 
-export interface OutputOptions {
-  path: string
-  name: string
-  base?: string
-  description?: string
-  public?: string
-  lang?: string
-  nav?: DefaultTheme.NavItem[]
-  logo?:
-    | string
-    | {
-        light: string
-        dark: string
-      }
-  gtag?: string
-  sitemap?: {
-    hostname: string
-  }
-  giscus?: {
-    repo: string
-    repoId: string
-    category: string
-    categoryId: string
-    mapping: string
-    reactionsEnabled: string
-    emitMetadata: string
-    inputPosition: string
-    theme: string
-    lang: string
-    crossorigin: string
-  }
-  rss?: {
-    hostname: string
-    copyright: string
-    author?: {
-      name: string
-      email: string
-      link: string
-    }[]
-    ignore?: string[]
-  }
+export interface OutputOptions extends DocsOutputConfig {
   debug?: {
     test?: boolean
     root?: string

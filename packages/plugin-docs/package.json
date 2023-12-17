@@ -1,13 +1,14 @@
 {
   "name": "@mark-magic/plugin-docs",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "license": "MIT",
   "type": "module",
   "exports": {
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
-    }
+    },
+    "./config.schema.json": "./src/config.schema.json"
   },
   "files": [
     "dist"
@@ -17,10 +18,12 @@
     "setup": "pnpm build",
     "build": "vite build",
     "dev": "pnpm build --watch",
-    "test": "vitest run"
+    "test": "vitest run",
+    "dts": "json2ts -i src/config.schema.json -o src/config.schema.ts"
   },
   "sideEffects": false,
   "devDependencies": {
+    "json-schema-to-typescript": "^13.0.2",
     "@liuli-util/test": "^3.7.0",
     "@liuli-util/vite-plugin-node": "^0.5.0",
     "@types/fs-extra": "^11.0.1",

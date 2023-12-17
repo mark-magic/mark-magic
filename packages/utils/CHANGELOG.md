@@ -1,5 +1,11 @@
 # @mark-magic/utils
 
+## 0.4.1
+
+### Patch Changes
+
+- fix: 修复 `fromVirtual` 的类型错误
+
 ## 0.4.0
 
 ### Minor Changes

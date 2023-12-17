@@ -1,6 +1,6 @@
 {
   "name": "@mark-magic/cli",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "type": "module",
   "bin": {
     "mark-magic": "./bin.js"
@@ -31,7 +31,9 @@
   },
   "devDependencies": {
     "@apidevtools/json-schema-ref-parser": "^10.1.0",
+    "@liuli-util/test": "^3.7.0",
     "@liuli-util/vite-plugin-node": "^0.3.0",
+    "@types/fs-extra": "^11.0.1",
     "@types/lodash-es": "^4.17.7",
     "@types/node": "^20.1.4",
     "json-schema-to-typescript": "^13.0.2",
@@ -42,7 +44,6 @@
   },
   "dependencies": {
     "@liuli-util/async": "^3.6.0",
-    "@liuli-util/fs": "^0.1.0",
     "@mark-magic/core": "workspace:^",
     "@mark-magic/plugin-docs": "workspace:^",
     "@mark-magic/plugin-epub": "workspace:^",
@@ -50,10 +51,11 @@
     "bundle-require": "^4.0.1",
     "commander": "^11.0.0",
     "esbuild": "^0.18.7",
+    "fs-extra": "^11.1.1",
     "lodash-es": "^4.17.21",
     "pathe": "^1.1.1",
     "pino": "^8.14.1",
     "pino-pretty": "^10.3.0",
-    "yaml": "^2.3.1"
+    "yaml": "^2.3.4"
   }
 }

@@ -1,7 +1,9 @@
 import { ConvertConfig } from '@mark-magic/core'
 
-export interface ResolvedConfig extends ConvertConfig {
-  name: string
+export interface ResolvedConfig {
+  tasks: (ConvertConfig & {
+    name: string
+  })[]
 }
 
 /**
@@ -9,7 +11,7 @@ export interface ResolvedConfig extends ConvertConfig {
  * @param config
  * @returns
  */
-export function defineConfig<T extends ResolvedConfig[] | (() => ResolvedConfig[]) | (() => Promise<ResolvedConfig[]>)>(
+export function defineConfig<T extends ResolvedConfig | (() => ResolvedConfig) | (() => Promise<ResolvedConfig>)>(
   config: T,
 ): T {
   return config

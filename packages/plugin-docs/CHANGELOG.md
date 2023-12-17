@@ -1,5 +1,11 @@
 # @mark-magic/plugin-docs
 
+## 0.6.0
+
+### Minor Changes
+
+- feat: 将一些字段设置为非必填项，例如 language/base 等
+
 ## 0.5.0
 
 ### Minor Changes

@@ -35,7 +35,11 @@ export function output(
       path: string
     })[]
   } = {
-    metadata: options.metadata,
+    metadata: {
+      language: 'en-US',
+      publisher: 'mark-magic',
+      ...options,
+    },
     media: [],
     text: [],
     toc: [],
@@ -45,19 +49,19 @@ export function output(
   return {
     name: 'epub',
     async start() {
-      if (!options.metadata.cover) {
+      if (!options.cover) {
         return
       }
-      if (!path.isAbsolute(options.metadata.cover)) {
-        options.metadata.cover = path.resolve(options.root || process.cwd(), options.metadata.cover)
-        if (!(await pathExists(options.metadata.cover))) {
-          throw new Error(`cover don't resolve ${options.metadata.cover}`)
+      if (!path.isAbsolute(options.cover)) {
+        options.cover = path.resolve(options.root || process.cwd(), options.cover)
+        if (!(await pathExists(options.cover))) {
+          throw new Error(`cover don't resolve ${options.cover}`)
         }
       }
-      const id = v4() + pathe.extname(options.metadata.cover)
+      const id = v4() + pathe.extname(options.cover)
       _options.media.push({
         id: id,
-        buffer: await readFile(options.metadata.cover),
+        buffer: await readFile(options.cover),
       })
       _options.metadata.cover = id
       _options.text.push({

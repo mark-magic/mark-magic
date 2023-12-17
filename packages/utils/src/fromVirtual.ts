@@ -2,9 +2,10 @@ import { Content, Resource, InputPlugin } from '@mark-magic/core'
 import pathe from 'pathe'
 
 export function fromVirtual(
-  list: (Pick<Content, 'id' | 'content' | 'extra'> & {
+  list: (Pick<Content, 'id' | 'content'> & {
     path: string
     resources?: Pick<Resource, 'id' | 'name' | 'raw'>[]
+    extra?: any
   })[],
 ): InputPlugin {
   return {

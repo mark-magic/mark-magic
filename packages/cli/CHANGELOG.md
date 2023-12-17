@@ -1,5 +1,18 @@
 # @mark-magic/cli
 
+## 0.7.0
+
+### Minor Changes
+
+- feat: 更新配置的格式，将 mark-magic.config.ts 与 yaml 文件尽量保持一致。
+- test: 添加更好的单元测试
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/plugin-docs@0.6.0
+  - @mark-magic/plugin-epub@0.5.0
+
 ## 0.6.0
 
 ### Minor Changes

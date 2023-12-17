@@ -361,3 +361,21 @@ describe.skip('rss', () => {
       .include('Copyright © 2023 Hieronym, Inc. Built with feed.')
   })
 })
+
+it('base path', async () => {
+  await convert({
+    input: fromVirtual(list),
+    output: output({
+      path: path.resolve(tempPath, 'dist'),
+      name: 'test name',
+      base: '/test-basepath/',
+      description: 'test description',
+      nav: [
+        {
+          text: 'GitHub',
+          link: 'https://github.com',
+        },
+      ],
+    }),
+  })
+})

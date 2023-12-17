@@ -25,30 +25,28 @@ export interface EpubOutputConfig {
    * 输出文件的路径
    */
   path: string
-  metadata: {
-    /**
-     * 书籍唯一标识
-     */
-    id: string
-    /**
-     * 书籍标题
-     */
-    title: string
-    /**
-     * 作者
-     */
-    creator: string
-    /**
-     * 发布者
-     */
-    publisher: string
-    /**
-     * 语言
-     */
-    language: string
-    /**
-     * 封面图片
-     */
-    cover?: string
-  }
+  /**
+   * 书籍唯一标识
+   */
+  id: string
+  /**
+   * 书籍标题
+   */
+  title: string
+  /**
+   * 作者
+   */
+  creator: string
+  /**
+   * 发布者
+   */
+  publisher?: string
+  /**
+   * 语言
+   */
+  language?: string
+  /**
+   * 封面图片
+   */
+  cover?: string
 }

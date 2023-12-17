@@ -33,9 +33,10 @@ function generateSidebar(sidebars: Sidebar[]): DefaultTheme.SidebarItem[] {
 export interface OutputOptions {
   path: string
   name: string
+  base?: string
   description?: string
   public?: string
-  lang?: 'en-US' | 'zh-CN' | string
+  lang?: string
   nav?: DefaultTheme.NavItem[]
   logo?:
     | string
@@ -84,7 +85,7 @@ export interface RenderRssOptions extends NonNullable<OutputOptions['rss']> {
 
 export function output(options: OutputOptions): OutputPlugin {
   const config: UserConfig<DefaultTheme.Config> = {
-    ...pick(options, 'lang', 'description'),
+    ...pick(options, 'lang', 'description', 'base'),
     title: options.name,
     themeConfig: {
       nav: options.nav,

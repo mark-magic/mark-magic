@@ -3,7 +3,7 @@ import { ConfigSchema } from './config.schema'
 import pathe from 'pathe'
 import yaml from 'yaml'
 import { AsyncArray } from '@liuli-util/async'
-import { pathExists } from '@liuli-util/fs'
+import { pathExists } from 'fs-extra/esm'
 import { bundleRequire } from 'bundle-require'
 import { InputPlugin, OutputPlugin } from '@mark-magic/core'
 import { ResolvedConfig } from './defineConfig'
@@ -19,37 +19,49 @@ export async function loadConfig(rootPath: string): Promise<string> {
   throw new Error(`无法找到配置文件: ${rootPath}`)
 }
 
-export async function parseYamlConfig(configPath: string): Promise<ResolvedConfig[]> {
+export async function parseYamlConfig(configPath: string): Promise<ResolvedConfig> {
   const config = yaml.parse(await readFile(configPath, 'utf-8')) as ConfigSchema
-  return await AsyncArray.map(config.tasks, async (it) => {
-    try {
+  return {
+    tasks: await AsyncArray.map(config.tasks, async (it) => {
+      let input: InputPlugin, output: OutputPlugin
+      try {
+        input = (await import(it.input.name)).input(it.input.config) as InputPlugin
+      } catch {
+        throw new Error(`无法找到插件: ${it.input.name}`)
+      }
+      try {
+        output = (await import(it.output.name)).output(it.output.config) as OutputPlugin
+      } catch {
+        throw new Error(`无法找到插件: ${it.output.name}`)
+      }
       return {
         name: it.name,
-        input: (await import(it.input.name)).input(it.input.config) as InputPlugin,
-        output: (await import(it.output.name)).output(it.output.config) as OutputPlugin,
-      } as ResolvedConfig
-    } catch {
-      throw new Error(`无法找到插件: ${it.name}`)
-    }
-  })
+        input,
+        output,
+      }
+    }),
+  }
 }
 
-export async function parseJsConfig(configPath: string): Promise<ResolvedConfig[]> {
+export async function parseJsConfig(configPath: string): Promise<ResolvedConfig> {
   const { mod } = await bundleRequire({
     filepath: configPath,
   })
+  let res: ResolvedConfig = mod.default
   if (typeof mod.default === 'function') {
-    return await mod.default()
+    res = await mod.default()
   }
-  if (Array.isArray(mod.default)) {
-    return mod.default as ResolvedConfig[]
+  if (typeof mod.default !== 'object') {
+    throw new Error('配置文件必须导出一个函数或者数组')
   }
-  throw new Error('配置文件必须导出一个函数或者数组')
+  return mod.default as ResolvedConfig
 }
 
-export async function parseConfig(configPath: string): Promise<ResolvedConfig[]> {
+export async function parseConfig(configPath: string): Promise<ResolvedConfig> {
   if (!configPath) {
-    return []
+    return {
+      tasks: [],
+    }
   }
   if (pathe.extname(configPath) === '.yaml') {
     return await parseYamlConfig(configPath)

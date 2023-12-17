@@ -1,5 +1,18 @@
 # @mark-magic/plugin-docs
 
+## 0.8.0
+
+### Minor Changes
+
+- chore: 统一版本
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/core@0.8.0
+  - @mark-magic/plugin-local@0.8.0
+  - @mark-magic/utils@0.8.0
+
 ## 0.6.0
 
 ### Minor Changes

@@ -1,5 +1,17 @@
 # @mark-magic/plugin-ao3
 
+## 0.8.0
+
+### Minor Changes
+
+- chore: 统一版本
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/core@0.8.0
+  - @mark-magic/utils@0.8.0
+
 ## 0.7.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @mark-magic/core
 
+## 0.8.0
+
+### Minor Changes
+
+- chore: 统一版本
+
 ## 0.3.0
 
 ### Minor Changes

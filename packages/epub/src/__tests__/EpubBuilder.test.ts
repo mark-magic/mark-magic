@@ -4,7 +4,7 @@ import { v4 } from 'uuid'
 import { initTempPath } from '@liuli-util/test'
 import { EpubBuilder, renderNavXML } from '../EpubBuilder'
 import { readFile, writeFile } from 'fs/promises'
-import { extractZipToFolder } from '@mark-magic/utils'
+import extract from 'extract-zip'
 
 const tempPath = initTempPath(__filename)
 let builder: EpubBuilder
@@ -66,8 +66,9 @@ it('basic', async () => {
     ],
   })
 
-  await extractZipToFolder(zip, path.resolve(tempPath, 'dist'))
-  await writeFile(path.resolve(tempPath, 'test.zip'), await zip.generateAsync({ type: 'nodebuffer' }))
+  const zipPath = path.resolve(tempPath, 'test.zip')
+  await writeFile(zipPath, await zip.generateAsync({ type: 'nodebuffer' }))
+  await extract(zipPath, { dir: path.resolve(tempPath, 'dist') })
 })
 
 it('multi-level toc', async () => {
@@ -152,8 +153,9 @@ it('multi-level toc', async () => {
       },
     ],
   })
-  await extractZipToFolder(zip, path.resolve(tempPath, 'dist'))
-  await writeFile(path.resolve(tempPath, 'test.epub'), await zip.generateAsync({ type: 'nodebuffer' }))
+  const zipPath = path.resolve(tempPath, 'test.epub')
+  await writeFile(zipPath, await zip.generateAsync({ type: 'nodebuffer' }))
+  await extract(zipPath, { dir: path.resolve(tempPath, 'dist') })
 })
 
 it('tree sidebar renderer', () => {
@@ -219,6 +221,7 @@ it('no cover', async () => {
       },
     ],
   })
-  await extractZipToFolder(zip, path.resolve(tempPath, 'dist'))
-  await writeFile(path.resolve(tempPath, 'test.epub'), await zip.generateAsync({ type: 'nodebuffer' }))
+  const zipPath = path.resolve(tempPath, 'test.epub')
+  await writeFile(zipPath, await zip.generateAsync({ type: 'nodebuffer' }))
+  await extract(zipPath, { dir: path.resolve(tempPath, 'dist') })
 })

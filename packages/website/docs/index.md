@@ -30,4 +30,7 @@
 
 ## 开始使用
 
-更多信息请阅读 [文档](https://mark-magic.rxliuli.com)
+接下来给出两个示例
+
+1. [为小说生成网站和 epub 电子档](./book.md)
+2. [从笔记中生成博客](./blog.md)

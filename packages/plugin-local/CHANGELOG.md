@@ -1,5 +1,12 @@
 # @mark-magic/plugin-local
 
+## 0.9.0
+
+### Patch Changes
+
+- @mark-magic/core@0.9.0
+- @mark-magic/utils@0.9.0
+
 ## 0.8.0
 
 ### Minor Changes

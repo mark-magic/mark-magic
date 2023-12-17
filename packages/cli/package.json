@@ -1,6 +1,6 @@
 {
   "name": "@mark-magic/cli",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "type": "module",
   "bin": {
     "mark-magic": "./bin.js"

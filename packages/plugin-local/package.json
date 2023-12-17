@@ -1,6 +1,6 @@
 {
   "name": "@mark-magic/plugin-local",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -36,7 +36,7 @@
     "typescript": "^4.8.4",
     "utility-types": "^3.10.0",
     "vite": "^4.3.9",
-    "vitest": "^0.32.2"
+    "vitest": "^1.0.4"
   },
   "publishConfig": {
     "access": "public",

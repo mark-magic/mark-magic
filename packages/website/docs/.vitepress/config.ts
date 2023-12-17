@@ -46,5 +46,11 @@ export default defineConfig({
       //   link: '/api',
       // },
     ],
+    nav: [
+      {
+        text: 'Github',
+        link: 'https://github.com/mark-magic/mark-magic',
+      },
+    ],
   },
 })

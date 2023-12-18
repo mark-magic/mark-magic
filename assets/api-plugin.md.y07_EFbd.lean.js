@@ -1,1 +1,0 @@
-import{_ as s,o as i,c as a,R as n}from"./chunks/framework.UjU5Kp2a.js";const c=JSON.parse('{"title":"插件 API","description":"","frontmatter":{},"headers":[],"relativePath":"api-plugin.md","filePath":"api-plugin.md"}'),p={name:"api-plugin.md"},h=n("",19),l=[h];function t(k,e,r,d,g,E){return i(),a("div",null,l)}const F=s(p,[["render",t]]);export{c as __pageData,F as default};

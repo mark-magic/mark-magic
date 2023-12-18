@@ -1,1 +1,0 @@
-import{_ as e,o as t,c as o,R as a}from"./chunks/framework.UjU5Kp2a.js";const m=JSON.parse('{"title":"mark-magic","description":"","frontmatter":{},"headers":[],"relativePath":"en/index.md","filePath":"en/index.md"}'),i={name:"en/index.md"},n=a("",14),l=[n];function r(s,h,g,u,c,d){return t(),o("div",null,l)}const p=e(i,[["render",r]]);export{m as __pageData,p as default};

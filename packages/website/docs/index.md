@@ -34,3 +34,7 @@
 
 1. [为小说生成网站和 epub 电子档](./book.md)
 2. [从笔记中生成博客](./blog.md)
+
+感谢 chatgpt，现在 mark-magic 有了看板娘。
+
+![cover](/mark-magic.jpg)

@@ -52,6 +52,7 @@ export default defineConfig({
             link: 'https://github.com/mark-magic/mark-magic',
           },
         ],
+        logo: '/logo.png',
       },
     },
     en: {
@@ -104,6 +105,7 @@ export default defineConfig({
             link: 'https://github.com/mark-magic/mark-magic',
           },
         ],
+        logo: '/logo.png',
       },
     },
   },

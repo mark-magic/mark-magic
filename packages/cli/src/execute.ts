@@ -40,6 +40,9 @@ export async function execute(options: CliOptions) {
       .on('generate', (it) => {
         logger.debug('生成内容: %O', it.content.name)
       })
+      .on('transform', (it) => {
+        logger.debug('转换内容: %O', it.content.name)
+      })
       .on('handle', (it) => {
         logger.debug('处理内容: %O', it.content.name)
       })

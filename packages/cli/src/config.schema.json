@@ -22,8 +22,19 @@
         "input": {
           "$ref": "#/definitions/InputPluginConfig"
         },
+        "transforms": {
+          "type": "array",
+          "description": "转换插件",
+          "items": {
+            "$ref": "#/definitions/TransformPluginConfig"
+          }
+        },
         "output": {
           "$ref": "#/definitions/OutputPluginConfig"
+        },
+        "debug": {
+          "type": "boolean",
+          "description": "是否开启调试模式"
         }
       },
       "required": ["name", "input", "output"],
@@ -32,8 +43,14 @@
     "InputPluginConfig": {
       "anyOf": [{ "$ref": "#/definitions/LocalPluginConfig" }]
     },
+    "TransformPluginConfig": {
+      "anyOf": [{ "$ref": "#/definitions/DoctranPluginConfig" }]
+    },
     "OutputPluginConfig": {
       "anyOf": [{ "$ref": "#/definitions/EpubPluginConfig" }, { "$ref": "#/definitions/DocsPluginConfig" }]
+    },
+    "DoctranPluginConfig": {
+      "$ref": "../node_modules/@mark-magic/plugin-doctran/src/config.schema.json#/properties/transform"
     },
     "LocalPluginConfig": {
       "$ref": "../node_modules/@mark-magic/plugin-local/src/config.schema.json#/properties/input"

@@ -36,6 +36,16 @@ export interface InputPlugin {
   /** 异步迭代器，生成内容文件流 */
   generate(): AsyncGenerator<Content>
 }
+
+/** 转换插件，不输入或输出，仅对流中的 Content 做一些转换 */
+export interface TransformPlugin {
+  name: string
+  start?(): Promise<void>
+  /** 转换函数 */
+  transform(content: Content): Promise<Content>
+  end?(): Promise<void>
+}
+
 /** 输出插件 */
 export interface OutputPlugin {
   /** 名字 */
@@ -52,6 +62,8 @@ export interface OutputPlugin {
 export interface ConvertConfig {
   /** 输入插件 */
   input: InputPlugin
+  /** 转换插件 */
+  transforms?: TransformPlugin[]
   /** 输出插件 */
   output: OutputPlugin
   /** 是否启用 debug */
@@ -61,6 +73,7 @@ export interface ConvertConfig {
 export interface Events {
   generate?(options: { input: InputPlugin; content: Content }): void
   handle?(options: { input: InputPlugin; output: OutputPlugin; content: Content; time: number }): void
+  transform?(options: { transform: TransformPlugin; content: Content; time: number }): void
   error?(context: { content: Content; plugin: InputPlugin | OutputPlugin; error: unknown }): void
 }
 
@@ -71,11 +84,18 @@ export function convert(options: ConvertConfig) {
     await output.start?.()
     const generator = input.generate()
 
-    for await (const content of generator) {
+    for (const transform of options.transforms ?? []) {
+      await transform.start?.()
+    }
+    for await (let content of generator) {
       events.generate?.({ input, content })
-      const start = Date.now()
-
+      let start = Date.now()
       try {
+        for (const transform of options.transforms ?? []) {
+          content = await transform.transform(content)
+          events.transform?.({ transform, content, time: Date.now() - start })
+          start = Date.now()
+        }
         await output.handle(content)
         events.handle?.({ input, output, content, time: Date.now() - start })
       } catch (e) {
@@ -85,6 +105,9 @@ export function convert(options: ConvertConfig) {
           error: e,
         })
       }
+    }
+    for (const transform of options.transforms ?? []) {
+      await transform.end?.()
     }
     await output.end?.()
 

@@ -5,7 +5,7 @@ import yaml from 'yaml'
 import { AsyncArray } from '@liuli-util/async'
 import { pathExists } from 'fs-extra/esm'
 import { bundleRequire } from 'bundle-require'
-import { InputPlugin, OutputPlugin } from '@mark-magic/core'
+import { InputPlugin, OutputPlugin, TransformPlugin } from '@mark-magic/core'
 import { ResolvedConfig } from './defineConfig'
 
 export async function loadConfig(rootPath: string): Promise<string> {
@@ -23,12 +23,19 @@ export async function parseYamlConfig(configPath: string): Promise<ResolvedConfi
   const config = yaml.parse(await readFile(configPath, 'utf-8')) as ConfigSchema
   return {
     tasks: await AsyncArray.map(config.tasks, async (it) => {
-      let input: InputPlugin, output: OutputPlugin
+      let input: InputPlugin, output: OutputPlugin, transforms: TransformPlugin[]
       try {
         input = (await import(it.input.name)).input(it.input.config) as InputPlugin
       } catch {
         throw new Error(`无法找到插件: ${it.input.name}`)
       }
+      transforms = await AsyncArray.map(it.transforms ?? [], async (transform) => {
+        try {
+          return (await import(transform.name)).transform(transform.config) as TransformPlugin
+        } catch {
+          throw new Error(`无法找到插件: ${transform.name}`)
+        }
+      })
       try {
         output = (await import(it.output.name)).output(it.output.config) as OutputPlugin
       } catch {
@@ -37,6 +44,7 @@ export async function parseYamlConfig(configPath: string): Promise<ResolvedConfi
       return {
         name: it.name,
         input,
+        transforms,
         output,
       }
     }),

@@ -6,6 +6,7 @@
  */
 
 export type InputPluginConfig = LocalPluginConfig
+export type TransformPluginConfig = DoctranPluginConfig
 export type OutputPluginConfig = EpubPluginConfig | DocsPluginConfig
 
 export interface ConfigSchema {
@@ -17,7 +18,15 @@ export interface TaskConfig {
    */
   name: string
   input: InputPluginConfig
+  /**
+   * 转换插件
+   */
+  transforms?: TransformPluginConfig[]
   output: OutputPluginConfig
+  /**
+   * 是否开启调试模式
+   */
+  debug?: boolean
 }
 /**
  * 从本地目录读取或输出到本地目录
@@ -35,7 +44,33 @@ export interface LocalPluginConfig {
      * 本地目录的路径
      */
     path: string
+    /**
+     * 忽略的文件，支持 glob 语法
+     */
+    ignore?: string[]
   }
+}
+/**
+ * 翻译文档
+ */
+export interface DoctranPluginConfig {
+  /**
+   * 插件名字
+   */
+  name: '@mark-magic/plugin-doctran'
+  /**
+   * 插件配置
+   */
+  config:
+    | {
+        engine: 'google'
+        to: 'zh-CN' | 'en'
+      }
+    | {
+        engine: 'openai'
+        apiKey: string
+        to: 'zh-CN' | 'en'
+      }
 }
 /**
  * 输出为 epub

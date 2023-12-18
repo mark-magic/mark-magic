@@ -17,7 +17,7 @@
     "bin.js"
   ],
   "scripts": {
-    "setup": "pnpm dts && pnpm build && pnpm build-schema",
+    "setup": "pnpm build-schema && pnpm dts && pnpm build",
     "build": "vite build",
     "build-schema": "vite-node src/generate.ts",
     "dev": "pnpm build --watch",
@@ -33,6 +33,11 @@
     "@apidevtools/json-schema-ref-parser": "^10.1.0",
     "@liuli-util/test": "^3.7.0",
     "@liuli-util/vite-plugin-node": "^0.3.0",
+    "@mark-magic/plugin-docs": "workspace:^",
+    "@mark-magic/plugin-doctran": "workspace:^",
+    "@mark-magic/plugin-epub": "workspace:^",
+    "@mark-magic/plugin-local": "workspace:^",
+    "@mark-magic/utils": "workspace:^",
     "@types/fs-extra": "^11.0.1",
     "@types/lodash-es": "^4.17.7",
     "@types/node": "^20.1.4",
@@ -45,9 +50,6 @@
   "dependencies": {
     "@liuli-util/async": "^3.6.0",
     "@mark-magic/core": "workspace:^",
-    "@mark-magic/plugin-docs": "workspace:^",
-    "@mark-magic/plugin-epub": "workspace:^",
-    "@mark-magic/plugin-local": "workspace:^",
     "bundle-require": "^4.0.1",
     "commander": "^11.0.0",
     "esbuild": "^0.18.7",

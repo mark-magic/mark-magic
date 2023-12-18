@@ -12,8 +12,10 @@
   "devDependencies": {
     "@mark-magic/cli": "workspace:^",
     "@mark-magic/plugin-docs": "workspace:^",
+    "@mark-magic/plugin-doctran": "workspace:^",
     "@mark-magic/plugin-epub": "workspace:^",
     "@mark-magic/plugin-local": "workspace:^",
+    "dotenv": "^16.3.1",
     "gh-pages": "^5.0.0",
     "live-server": "^1.2.2",
     "vitepress": "1.0.0-rc.31"

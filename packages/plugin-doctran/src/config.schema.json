@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "transform": {
+      "type": "object",
+      "description": "翻译文档",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "插件名字",
+          "enum": ["@mark-magic/plugin-doctran"]
+        },
+        "config": {
+          "$ref": "#/definitions/DoctranTransformConfig"
+        }
+      },
+      "required": ["name", "config"],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "DoctranPluginName": {
+      "type": "string",
+      "description": "插件名字",
+      "enum": ["@mark-magic/plugin-doctran"]
+    },
+    "DoctranGoogleOptions": {
+      "type": "object",
+      "description": "Google 翻译",
+      "properties": {
+        "engine": {
+          "type": "string",
+          "enum": ["google"]
+        },
+        "to": {
+          "type": "string",
+          "enum": ["zh-CN", "en"]
+        }
+      },
+      "required": ["engine", "to"],
+      "additionalProperties": false
+    },
+    "DoctranOpenAIOptions": {
+      "type": "object",
+      "description": "openai",
+      "properties": {
+        "engine": {
+          "type": "string",
+          "enum": ["openai"]
+        },
+        "apiKey": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string",
+          "enum": ["zh-CN", "en"]
+        }
+      },
+      "required": ["engine", "apiKey", "to"],
+      "additionalProperties": false
+    },
+    "DoctranTransformConfig": {
+      "type": "object",
+      "description": "插件配置",
+      "anyOf": [
+        {
+          "$ref": "#/definitions/DoctranGoogleOptions"
+        },
+        {
+          "$ref": "#/definitions/DoctranOpenAIOptions"
+        }
+      ],
+      "additionalProperties": false
+    }
+  }
+}

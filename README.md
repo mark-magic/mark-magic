@@ -30,4 +30,4 @@ What really makes us feel painful is that when using docusaurus, each novel requ
 
 ## Getting Started
 
-For more information, please read the [documentation](https://mark-magic.rxliuli.com)
+For more information, please read the [documentation](https://mark-magic.rxliuli.com/en/)

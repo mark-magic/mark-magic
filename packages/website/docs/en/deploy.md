@@ -99,7 +99,7 @@ tasks:
             uses: actions/deploy-pages@v2
     ```
 
-    > Make sure the `base` configuration of `plugin-docs` is correct, refer to [Set Public Base Path](../..)
+    > Make sure the `base` configuration of `plugin-docs` is correct, refer to [Set Public Base Path](#set-public-base-path)
 
 2.  In the **Pages** menu item under the repository settings, select **Build and deployment > Source** and choose **GitHub Actions**.
 

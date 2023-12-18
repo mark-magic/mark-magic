@@ -109,7 +109,7 @@ tasks:
            uses: actions/deploy-pages@v2
    ```
 
-   > 确保 plugin-docs 的 `base` 配置正确，请参阅 [设置公共基本路径](./deploy.md#设置公共基本路径)
+   > 确保 plugin-docs 的 `base` 配置正确，请参阅 [设置公共基本路径](#设置公共基本路径)
 
 2. 在存储库设置中的 **Pages** 菜单项下，选择 **Build and deployment > Source** 中的 **GitHub Actions**。
 3. 将修改推送到 GitHub 等待 GitHub Actions 工作流程完成。应该可以看到站点被部署在 `https://<username>.github.io/[repository]/` 或 `https://<custom-domain>/`，具体取决于设置，你的网站将在每次推送时自动部署 main 分支。

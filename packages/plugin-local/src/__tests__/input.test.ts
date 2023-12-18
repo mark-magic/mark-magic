@@ -131,8 +131,8 @@ tags:
     await writeFile(fsPath, item.content)
   })
 
-  const r1 = await scan(path.resolve(tempPath))
-  const r2 = await scan(path.resolve(tempPath))
+  const r1 = await scan({ path: path.resolve(tempPath) })
+  const r2 = await scan({ path: path.resolve(tempPath) })
   expect(r1).deep.eq(r2)
 })
 
@@ -175,4 +175,26 @@ it('重复的资源应该能保持相同的 id', async () => {
   expect(resources[0]).deep.eq(resources[1])
   expect(resources[0].raw.toString()).eq('01')
   expect(resources[2].raw.toString()).eq('02')
+})
+
+it('测试 input 的 ignore 参数', async () => {
+  const list = [
+    { path: 'readme.md', content: '' },
+    { path: '01/readme.md', content: '' },
+    { path: '02/readme.md', content: '' },
+  ]
+  await Promise.all(
+    list.map(async (it) => {
+      const fsPath = path.resolve(tempPath, 'src', it.path)
+      await mkdir(path.dirname(fsPath), { recursive: true })
+      await writeFile(fsPath, it.content)
+    }),
+  )
+  const contents = await fromAsync(
+    input({
+      path: path.resolve(tempPath, 'src'),
+      ignore: ['02/**'],
+    }).generate(),
+  )
+  expect(contents.map((it) => it.path)).deep.eq([['readme.md'], ['01', 'readme.md']])
 })

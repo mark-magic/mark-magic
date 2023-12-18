@@ -30,12 +30,12 @@ interface ScanContent {
   relPath: string
 }
 
-export async function scan(root: string): Promise<ScanContent[]> {
+export async function scan(options: LocalInputConfig): Promise<ScanContent[]> {
   return (
     await FastGlob('**/*.md', {
-      cwd: root,
+      cwd: options.path,
       onlyFiles: true,
-      ignore: ['.obsidian'],
+      ignore: options.ignore ?? [],
     })
   ).map((item) => ({
     id: hashString(item).toString(),
@@ -97,7 +97,7 @@ export function input(options: LocalInputConfig): InputPlugin {
   return {
     name: 'local',
     async *generate() {
-      const list = await scan(options.path)
+      const list = await scan(options)
       const resourceMap = new BiMultiMap<string, string>()
       // const tagMap = new Map<string, Tag>()
       for (const it of list) {

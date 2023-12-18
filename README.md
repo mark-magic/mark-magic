@@ -1,33 +1,33 @@
 # mark-magic
 
-## 简介
+## Introduction
 
-一个基于 markdown 的数据连接与转换工具，解决不同工具之间数据转换以及部分常用工具之间的协调。
+A markdown-based data connection and conversion tool to solve data conversion between different tools and coordination between some common tools.
 
-一些用例
+Some use cases
 
-1. 发布一些笔记到网络上，例如从 joplin 笔记工具生成 hexo 博客需要的内容以发布到网络 <https://blog.rxliuli.com/>
-2. 发布一部小说到网络上，例如从本地 markdown 文件生成一个小说网站发布，<https://tts.liuli.moe/>
-3. 打包小说为 epub 文件，例如将飞向星空打包为 epub，便于下载后离线阅读，<https://github.com/liuli-moe/to-the-stars/releases>
+1. Publish some notes online, for example, generate content required by hexo blog from joplin note tool and publish it online
+2. Publish a novel online, for example, generate a novel website from local markdown files and publish it
+3. Package a novel into an epub file, for example, package "Flying to the Stars" into an epub file for offline reading after downloading
 
-一些之前社区的用例
+Some use cases from the community
 
-1. joplin => hugo 生成 blog
-2. joplin => jeykll 生成 blog
-3. 可能还有其他的...
+1. joplin => hugo generating a blog
+2. joplin => jekyll generating a blog
+3. There may be others...
 
-## 为什么不使用现有的工具
+## Why not use existing tools
 
-吾辈现在已经使用了许多工具用来处理不同的任务，但它们都是基于 markdown 的，例如
+We have now used many tools to handle different tasks, but they are all based on markdown, such as
 
-- 使用 joplin 记录笔记
-- 使用 hexo 写作 blog
-- 使用 vitepress 生成文档网站
-- 使用 docusaurus 生成 seo 更友好的小说网站
-- 使用 pandoc 生成 epub
+- Use joplin to record notes
+- Use hexo to write a blog
+- Use vitepress to generate documentation websites
+- Use docusaurus to generate SEO-friendly novel websites
+- Use pandoc to generate epub
 
-真正让吾辈感到痛苦的是使用 docusaurus 时，每个小说都需要配置一堆东西，这非常烦人，所以希望有更好的可以开箱即用的工具。
+What really makes us feel painful is that when using docusaurus, each novel requires a lot of configuration, which is very annoying. So we hope to have better tools that can be used out of the box.
 
-## 开始使用
+## Getting Started
 
-更多信息请阅读 [文档](https://mark-magic.rxliuli.com)
+For more information, please read the [documentation](https://mark-magic.rxliuli.com)

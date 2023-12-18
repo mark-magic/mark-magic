@@ -25,4 +25,8 @@ export interface LocalInputConfig {
    * 本地目录的路径
    */
   path: string
+  /**
+   * 忽略的文件，支持 glob 语法
+   */
+  ignore?: string[]
 }

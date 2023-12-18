@@ -1,5 +1,14 @@
 # @mark-magic/cli
 
+## 0.9.2
+
+### Patch Changes
+
+- feat: 支持 transform 配置
+- chore: 默认不再将插件包含在运行时依赖中
+- Updated dependencies
+  - @mark-magic/core@0.9.2
+
 ## 0.9.1
 
 ### Patch Changes

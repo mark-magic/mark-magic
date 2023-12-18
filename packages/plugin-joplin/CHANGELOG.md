@@ -1,5 +1,12 @@
 # @mami/plugin-joplin
 
+## 0.9.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/core@0.9.2
+
 ## 0.9.1
 
 ## 0.9.0

@@ -1,5 +1,14 @@
 # @mark-magic/plugin-local
 
+## 0.9.2
+
+### Patch Changes
+
+- feat: 支持在扫描时忽略部分内容
+- Updated dependencies
+  - @mark-magic/core@0.9.2
+  - @mark-magic/utils@0.9.2
+
 ## 0.9.1
 
 ### Patch Changes

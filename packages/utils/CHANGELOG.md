@@ -1,5 +1,12 @@
 # @mark-magic/utils
 
+## 0.9.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/core@0.9.2
+
 ## 0.9.1
 
 ### Patch Changes

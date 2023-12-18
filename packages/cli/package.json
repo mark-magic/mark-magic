@@ -17,9 +17,9 @@
     "bin.js"
   ],
   "scripts": {
-    "setup": "pnpm build-schema && pnpm dts && pnpm build",
+    "setup": "pnpm build && pnpm build-schema",
     "build": "vite build",
-    "build-schema": "vite-node src/generate.ts",
+    "build-schema": "vite-node src/generate.ts && pnpm dts",
     "dev": "pnpm build --watch",
     "start": "vite-node src/bin.ts",
     "test": "vitest run",

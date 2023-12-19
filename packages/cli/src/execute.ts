@@ -1,6 +1,8 @@
 import { convert } from '@mark-magic/core'
 import { pino } from 'pino'
 import { loadConfig, parseConfig } from './configParser'
+import { compareVersions } from 'compare-versions'
+import { ResolvedConfig } from './defineConfig'
 
 export interface CliOptions {
   root?: string
@@ -16,6 +18,10 @@ const logger = pino({
 })
 
 export async function execute(options: CliOptions) {
+  if (compareVersions(process.version, '20.0.0') === -1) {
+    console.error('node version must >= 20')
+    return
+  }
   const rootPath = options.root ?? process.cwd()
   if (options.task) {
     options.task = options.task

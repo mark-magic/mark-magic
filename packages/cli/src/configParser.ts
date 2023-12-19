@@ -16,7 +16,7 @@ export async function loadConfig(rootPath: string): Promise<string> {
       return configPath
     }
   }
-  throw new Error(`无法找到配置文件: ${rootPath}`)
+  throw new Error(`Unable to find the configuration file: ${rootPath}`)
 }
 
 export async function parseYamlConfig(configPath: string): Promise<ResolvedConfig> {
@@ -27,19 +27,19 @@ export async function parseYamlConfig(configPath: string): Promise<ResolvedConfi
       try {
         input = (await import(it.input.name)).input(it.input.config) as InputPlugin
       } catch {
-        throw new Error(`无法找到插件: ${it.input.name}`)
+        throw new Error(`Plugin not found: ${it.input.name}`)
       }
       transforms = await AsyncArray.map(it.transforms ?? [], async (transform) => {
         try {
           return (await import(transform.name)).transform(transform.config) as TransformPlugin
         } catch {
-          throw new Error(`无法找到插件: ${transform.name}`)
+          throw new Error(`Plugin not found: ${transform.name}`)
         }
       })
       try {
         output = (await import(it.output.name)).output(it.output.config) as OutputPlugin
       } catch {
-        throw new Error(`无法找到插件: ${it.output.name}`)
+        throw new Error(`Plugin not found: ${it.output.name}`)
       }
       return {
         name: it.name,
@@ -60,7 +60,7 @@ export async function parseJsConfig(configPath: string): Promise<ResolvedConfig>
     res = await mod.default()
   }
   if (typeof mod.default !== 'object') {
-    throw new Error('配置文件必须导出一个函数或者数组')
+    throw new Error('The configuration file must export a function or an array.')
   }
   return mod.default as ResolvedConfig
 }
@@ -77,5 +77,5 @@ export async function parseConfig(configPath: string): Promise<ResolvedConfig> {
   if (['.ts', '.js'].includes(pathe.extname(configPath))) {
     return await parseJsConfig(configPath)
   }
-  throw new Error('不支持的配置文件类型 ' + configPath)
+  throw new Error('Unsupported configuration file type: ' + configPath)
 }

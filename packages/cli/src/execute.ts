@@ -25,26 +25,32 @@ export async function execute(options: CliOptions) {
   }
   if (options.debug) {
     logger.level = 'debug'
-    logger.debug('options: %O', options)
   }
+  logger.debug('options: %O', options)
   // 解析插件和配置
   const configPath = options.config ?? (await loadConfig(rootPath))
   const resolvedConfig = await parseConfig(configPath)
+  logger.debug('resolvedConfig: %O', resolvedConfig)
   // 执行转换
   for (const it of resolvedConfig.tasks) {
     if (options.task && !options.task.includes(it.name)) {
       continue
     }
-    console.log(`任务开始: ${it.name}`)
-    await convert(it)
-      .on('generate', (it) => {
-        logger.debug('生成内容: %O', it.content.name)
-      })
-      .on('transform', (it) => {
-        logger.debug('转换内容: %O', it.content.name)
-      })
-      .on('handle', (it) => {
-        logger.debug('处理内容: %O', it.content.name)
-      })
+    console.log(`task start: ${it.name}`)
+    try {
+      await convert(it)
+        .on('generate', (it) => {
+          logger.debug('generate: %O', it.content.name)
+        })
+        .on('transform', (it) => {
+          logger.debug('transform: %O', it.content.name)
+        })
+        .on('handle', (it) => {
+          logger.debug('handle: %O', it.content.name)
+        })
+    } catch (err) {
+      logger.error(`task error: ${it.name}`)
+      logger.error(err)
+    }
   }
 }

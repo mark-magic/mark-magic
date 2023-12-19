@@ -11,6 +11,9 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "engines": {
+    "node": ">=20"
+  },
   "types": "./dist/index.d.ts",
   "files": [
     "dist",

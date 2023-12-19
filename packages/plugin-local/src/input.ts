@@ -9,7 +9,7 @@ import {
   selectAll,
   setYamlMeta,
 } from '@liuli-util/markdown-util'
-import { InputPlugin, Content, wrapContentLink, wrapResourceLink } from '@mark-magic/core'
+import { InputPlugin, Content, wrapContentLink, wrapResourceLink, Resource } from '@mark-magic/core'
 import { BiMultiMap } from '@mark-magic/utils'
 import FastGlob from 'fast-glob'
 import { readFile, stat } from 'fs/promises'
@@ -98,8 +98,8 @@ export function input(options: LocalInputConfig): InputPlugin {
     name: 'local',
     async *generate() {
       const list = await scan(options)
-      const resourceMap = new BiMultiMap<string, string>()
-      // const tagMap = new Map<string, Tag>()
+      const resourcePathMap = new BiMultiMap<string, string>()
+      const resourceMap = new Map<string, Resource>()
       for (const it of list) {
         const fsPath = pathe.resolve(options.path, it.relPath)
         const root = fromMarkdown(convertYamlTab(await readFile(fsPath, 'utf-8')))
@@ -109,7 +109,7 @@ export function input(options: LocalInputConfig): InputPlugin {
           rootPath: options.path,
           contentPath: fsPath,
           list,
-          resourceMap,
+          resourceMap: resourcePathMap,
         })
         setYamlMeta(root, null)
         const s = await stat(fsPath)
@@ -123,13 +123,18 @@ export function input(options: LocalInputConfig): InputPlugin {
           resources: await new AsyncArray(resources)
             .filter((item) => pathExists(item.fsPath))
             .map(async (item) => {
-              return {
+              if (resourceMap.has(item.id)) {
+                return resourceMap.get(item.id)!
+              }
+              const r = {
                 id: item.id,
                 name: pathe.basename(item.fsPath),
                 raw: await readFile(item.fsPath),
                 created: Math.floor(s.birthtimeMs),
                 updated: Math.floor(s.mtimeMs),
               }
+              resourceMap.set(item.id, r)
+              return r
             }),
           path: it.relPath.split('/').filter((s) => s.length !== 0),
         }

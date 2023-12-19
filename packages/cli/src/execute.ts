@@ -44,8 +44,10 @@ export async function execute(options: CliOptions) {
     }
     console.log(`task start: ${it.name}`)
     try {
+      let i = 0
       await convert(it)
         .on('generate', (it) => {
+          i++
           logger.debug('generate: %O', it.content.name)
         })
         .on('transform', (it) => {
@@ -54,6 +56,11 @@ export async function execute(options: CliOptions) {
         .on('handle', (it) => {
           logger.debug('handle: %O', it.content.name)
         })
+      if (i > 0) {
+        console.log(`task end: ${it.name}`)
+      } else {
+        console.log(`task end: ${it.name} (no file generated)`)
+      }
     } catch (err) {
       logger.error(`task error: ${it.name}`)
       logger.error(err)

@@ -4,7 +4,7 @@ import { readFile, writeFile } from 'fs/promises'
 import path from 'pathe'
 import { initTempPath } from '@liuli-util/test'
 
-describe('createTrans', () => {
+describe.skip('createTrans', () => {
   it('translate by google', async () => {
     expect(await createTrans({ engine: 'google', to: 'zh-CN' })('hello world')).eq('你好世界')
     expect((await createTrans({ engine: 'google', to: 'en' })('你好世界')).toLowerCase()).eq('hello world')

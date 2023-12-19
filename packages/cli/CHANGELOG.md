@@ -1,5 +1,12 @@
 # @mark-magic/cli
 
+## 0.9.3
+
+### Patch Changes
+
+- feat(cli): 优化 cli 的体验
+  - @mark-magic/core@0.9.3
+
 ## 0.9.2
 
 ### Patch Changes

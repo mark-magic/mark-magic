@@ -1,5 +1,13 @@
 # @mark-magic/plugin-local
 
+## 0.9.3
+
+### Patch Changes
+
+- fix(plugin-local): 修复重复资源没有正确缓存的错误
+- @mark-magic/core@0.9.3
+- @mark-magic/utils@0.9.3
+
 ## 0.9.2
 
 ### Patch Changes

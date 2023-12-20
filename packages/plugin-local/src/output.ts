@@ -16,9 +16,9 @@ import { Required } from 'utility-types'
 import { BiMultiMap } from '@mark-magic/utils'
 import { parse } from 'node-html-parser'
 import { formatRelative } from './utils'
-import path from 'pathe'
 import { mkdirp, remove } from 'fs-extra/esm'
 import { readFile, writeFile } from 'fs/promises'
+import { LocalOutputConfig } from './config.schema'
 
 export function defaultOptions(
   options: Required<Partial<OutputOptions>, 'rootContentPath' | 'rootResourcePath'>,
@@ -146,9 +146,7 @@ export function calcMeta(content: Content): LocalContentMeta {
   }
 }
 
-export interface OutputOptions {
-  rootContentPath: string
-  rootResourcePath: string
+export interface OutputOptions extends LocalOutputConfig {
   meta(content: Content): any
   contentPath(content: Content): string
   resourcePath(content: Resource): string

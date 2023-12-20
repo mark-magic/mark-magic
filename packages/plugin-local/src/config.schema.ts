@@ -7,7 +7,7 @@
 
 export interface ConfigSchema {
   /**
-   * 从本地目录读取或输出到本地目录
+   * 从本地目录读取
    */
   input?: {
     /**
@@ -15,6 +15,16 @@ export interface ConfigSchema {
      */
     name: '@mark-magic/plugin-local'
     config: LocalInputConfig
+  }
+  /**
+   * 输出到本地目录
+   */
+  output?: {
+    /**
+     * 插件名字
+     */
+    name: '@mark-magic/plugin-local'
+    config: LocalOutputConfig
   }
 }
 /**
@@ -29,4 +39,17 @@ export interface LocalInputConfig {
    * 忽略的文件，支持 glob 语法
    */
   ignore?: string[]
+}
+/**
+ * 插件配置
+ */
+export interface LocalOutputConfig {
+  /**
+   * 内容的根目录路径
+   */
+  rootContentPath: string
+  /**
+   * 资源的根目录路径
+   */
+  rootResourcePath: string
 }

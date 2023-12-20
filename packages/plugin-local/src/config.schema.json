@@ -4,7 +4,7 @@
   "properties": {
     "input": {
       "type": "object",
-      "description": "从本地目录读取或输出到本地目录",
+      "description": "从本地目录读取",
       "properties": {
         "name": {
           "type": "string",
@@ -13,6 +13,22 @@
         },
         "config": {
           "$ref": "#/definitions/LocalInputConfig"
+        }
+      },
+      "required": ["name", "config"],
+      "additionalProperties": false
+    },
+    "output": {
+      "type": "object",
+      "description": "输出到本地目录",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "插件名字",
+          "enum": ["@mark-magic/plugin-local"]
+        },
+        "config": {
+          "$ref": "#/definitions/LocalOutputConfig"
         }
       },
       "required": ["name", "config"],
@@ -43,6 +59,22 @@
         }
       },
       "required": ["path"],
+      "additionalProperties": false
+    },
+    "LocalOutputConfig": {
+      "type": "object",
+      "description": "插件配置",
+      "properties": {
+        "rootContentPath": {
+          "type": "string",
+          "description": "内容的根目录路径"
+        },
+        "rootResourcePath": {
+          "type": "string",
+          "description": "资源的根目录路径"
+        }
+      },
+      "required": ["rootContentPath", "rootResourcePath"],
       "additionalProperties": false
     }
   }

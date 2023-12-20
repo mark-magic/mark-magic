@@ -6,21 +6,31 @@
 
 > 下面使用 [joplin](https://joplinapp.org/) 作为笔记工具，[hexo](https://hexo.io/) 作为博客进行说明，假设读者已经知道了两者。
 
-1. 首先，确保 joplin 已经开启了 [web clipper service](https://joplinapp.org/help/apps/clipper/)。
-2. 其次，需要一个 hexo 项目，如果已有，则直接在该目录操作，否则重新创建一个
+1. 首先，确保 joplin 已经开启了 webclipper service。
+   ![joplin-webclipper](./plugin/assets/joplin-webclipper.png)
+2. 其次，需要一个 hexo 项目，如果已有，请参考 [连接 joplin 到现有的 hexo 博客](#连接-joplin-到现有的-hexo-博客)，否则继续下一步。
 
-## 新建 hexo 项目
+## 从零开始创建 hexo 博客
 
-按照 [官方教程](https://hexo.io/zh-cn/docs/setup) 初始化一个简单的项目。
+如果你还没有 hexo blog，那么可以直接使用模版创建来减少配置。
 
-```sh
-npm i -g hexo-cli
-hexo init <folder>
-cd <folder>
-npm install
-```
+1. 在 github 上使用模版项目 [joplin-hexo-demo](https://github.com/mark-magic/joplin-hexo-demo) 创建一个新的项目，操作路径 **Use this template > Create a new repository**。如果还没有 github 账户，请 [注册](https://github.com/signup) 一个。
+2. 使用 git 在命令行克隆你的项目到本地 `git clone https://github.com/<username>/<repo>.git`
+3. 修改 mark-magic.config.yaml 配置文件中的 `baseUrl` 和 `token` 为 joplin 设置中的值
+4. 在 joplin 中为你希望发布的笔记添加 `blog` 标签
+5. 运行命令 `npx mark-magic && npx hexo server`，打开 <http://localhost:4000/joplin-hexo-demo/> 可以看到你的笔记了
+   ![joplin-blog-demo](./assets/joplin-blog-demo.png)
+6. 现在修改 \_config.yml 配置文件中 `root` 的值为你克隆的 github `<repo>` 的名字
+7. 在 github 的存储库设置中的 **Pages** 菜单项下，选择 **Build and deployment > Source** 中的 **GitHub Actions**。
+8. 最后运行 `npm run commit` 推送所有要发布的笔记内容。
 
-## 连接 joplin
+等待 GitHub Actions 完成，可以在 `https://github.com/<username>/<repo>/actions` 查看进度。
+
+一切完成后，应该可以看到站点被部署在 `https://<username>.github.io/<repo>/` 或 `https://<custom-domain>/`，具体取决于设置。
+
+> 示例项目可以在 <https://github.com/mark-magic/joplin-hexo-demo> 看到。
+
+## 连接 joplin 到现有的 hexo 博客
 
 1. 安装依赖 `npm i -D @mark-magic/cli @mark-magic/plugin-joplin @mark-magic/plugin-hexo`
 2. 添加配置 `mark-magic.config.yaml`
@@ -48,40 +58,10 @@ npm install
    permalink: :abbrlink/
    ```
 
-4. 修改 .gitignore，忽略自动生成的 `source/_posts` 和 `source/resources` 目录
-
-   ```txt
-   source/_posts
-   source/resources
-   ```
-
-5. 从 joplin 读取笔记生成 hexo blog 所需要的文件
+4. 从 joplin 读取笔记生成 hexo blog 所需要的文件
 
    ```sh
-   npx mark-magic
+   npx mark-magic # 这会清空 source/_posts 和 source/resources 目录，如果有什么文件请备份
    ```
 
 完成后你可以在 `source/_posts` 和 `source/resources` 目录看到生成的文件，现在可以继续使用 hexo 构建和发布了。
-
-## 构建与发布 hexo 博客
-
-先在本地查看一下预览。
-
-```sh
-npm run server
-
-```
-
-然后可以构建并发布到 GitHub Pages 了。
-
-```sh
-npm i -D gh-pages # 安装依赖
-npm run build # 构建静态文件
-npx gh-pages -d public --dotfiles # 发布到 GitHub Pages
-```
-
-等待 GitHub Actions 完成，可以在 `https://github.com/<username>/[repo]/actions` 查看进度。
-
-一切完成后，应该可以看到站点被部署在 `https://<username>.github.io/<repo>/` 或 `https://<custom-domain>/`，具体取决于设置。
-
-> 示例项目可以在 <https://github.com/mark-magic/joplin-hexo-demo> 看到。

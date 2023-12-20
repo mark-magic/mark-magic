@@ -3,8 +3,9 @@
 ## 必要条件
 
 1. 已经安装了 [nodejs](https://nodejs.org) 最新的 lts 版本
-2. 用以通过命令行界面访问 mark-magic 的终端
-3. 支持 markdown 和 yaml 的文本编辑器，推荐 [vscode](https://code.visualstudio.com/)
+2. 已经安装了 [git](https://git-scm.com/) 最新的版本
+3. 用以通过命令行界面访问 mark-magic 的终端
+4. 支持 markdown 和 yaml 的文本编辑器，推荐 [vscode](https://code.visualstudio.com/)
 
 ## 初始化小说项目
 

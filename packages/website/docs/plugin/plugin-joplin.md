@@ -18,14 +18,14 @@ tasks:
 
 ### baseUrl
 
-joplin web clipper service 的地址，一般是 `http://localhost:41184`。
+joplin webclipper service 的地址，一般是 `http://localhost:41184`，具体在 **设置 => 网页剪藏器** 中看到。
 
-> 参考 [web clipper service](https://joplinapp.org/help/apps/clipper/)
+![joplin-webclipper](./assets/joplin-webclipper.png)
 
 ### token
 
-joplin web clipper service 的 token，从 joplin 中复制。
+joplin webclipper service 的 token，从 joplin 中复制。
 
 ### tag
 
-根据标签过滤笔记。例如发布博客时，可以配置为 `blog`，只发布标签为 `blog` 的笔记。如果指定为 `''`，则不过滤标签，会将所有笔记都作为数据源。
+根据标签过滤笔记。例如发布博客时，可以配置为 `blog`，只发布标签为 `blog` 的笔记。如果指定为 `''`，则不做过滤，会将所有笔记都作为数据源。

@@ -2,7 +2,7 @@ import { pathExists } from 'fs-extra/esm'
 import path from 'path'
 import { beforeAll, expect, it } from 'vitest'
 import { convert, Resource } from '@mark-magic/core'
-import { Tag, output } from '../output'
+import { output } from '../output'
 import { initTempPath } from '@liuli-util/test'
 import { readFile } from 'fs/promises'
 import { fromVirtual } from '@mark-magic/utils'
@@ -18,7 +18,7 @@ beforeAll(async () => {
       path: 'a/b/test1.md',
       content: '# test1\n\n[test2](:/content/test2)',
       extra: {
-        tags: [{ id: 'test', name: 'test' }] as Tag[],
+        tags: ['test'],
       },
     },
     {
@@ -26,7 +26,7 @@ beforeAll(async () => {
       path: 'c/test2.md',
       content: '# test2\n\n[test1](:/content/test1)\n[localDirOutput.test.ts](:/resource/test)',
       extra: {
-        tags: [{ id: 'test', name: 'test' }] as Tag[],
+        tags: ['test'],
       },
       resources: [
         {

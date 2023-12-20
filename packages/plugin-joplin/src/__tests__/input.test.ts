@@ -1,19 +1,18 @@
 import { expect, it } from 'vitest'
 import { calcTitle, convertContentLink, input } from '../input'
 import { fromAsync } from '@mark-magic/utils'
-import { last } from 'lodash-es'
-import { wrapResourceLink } from '@mark-magic/core'
+import { flatMap, last, map } from 'lodash-es'
 
-it.skip('joplinInput', async () => {
+it.only('joplinInput', async () => {
   const list = await fromAsync(
     input({
       baseUrl: import.meta.env.VITE_JOPLIN_BASE_URL,
       token: import.meta.env.VITE_JOPLIN_TOKEN,
-      tag: '',
+      tag: 'blog',
     }).generate(),
   )
-  console.log(last(list)?.extra)
   expect(list).not.empty
+  expect(flatMap(list, 'extra.tags')).not.include('blog')
 })
 
 it('calcTitle', () => {

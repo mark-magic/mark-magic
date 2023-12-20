@@ -3,11 +3,6 @@ import path from 'pathe'
 import * as local from '@mark-magic/plugin-local'
 import { Heading, flatMap, fromMarkdown, select, toMarkdown } from '@liuli-util/markdown-util'
 
-export interface Tag {
-  id: string
-  name: string
-}
-
 export function output(options?: { path?: string; base?: string; removeH1?: boolean }): OutputPlugin {
   const root = options?.path ?? path.resolve()
   const postsPath = path.resolve(root, 'source/_posts')
@@ -19,7 +14,7 @@ export function output(options?: { path?: string; base?: string; removeH1?: bool
       layout: 'post',
       title: it.name,
       abbrlink: it.id,
-      tags: it.extra?.tags.map((it: { title: string }) => it.title),
+      tags: it.extra?.tags,
       categories: it.path,
       date: it.created,
       updated: it.updated,

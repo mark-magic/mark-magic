@@ -45,7 +45,7 @@ var config_default = mergeConfig(
       },
     },
     buildEnd: async (config) => {
-      if (typeof rss === 'object') {
+      if (typeof rss === 'object' && rss.hostname && rss.copyright) {
         const hostname = rss.hostname
         const feed = new Feed({
           id: hostname,
@@ -62,15 +62,19 @@ var config_default = mergeConfig(
           },
         }).load()
         for (const it of sortBy(posts, (it2) => it2.url).slice(posts.length - 10)) {
-          feed.addItem({
+          const item = {
             title: it.frontmatter.title,
             id: `${hostname}${it.url}`,
             link: `${hostname}${it.url}`,
             description: it.excerpt,
-            content: it.html,
+            content: it.html?.replaceAll(
+              /[\u0000-\u001F\u007F-\u009F\u061C\u200E\u200F\u202A-\u202E\u2066-\u2069]/,
+              '',
+            ),
             author: rss.author,
             date: it.frontmatter.date,
-          })
+          }
+          feed.addItem(item)
         }
         await writeFile(path.join(config.outDir, 'rss.xml'), feed.rss2())
       }

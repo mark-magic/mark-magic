@@ -56,7 +56,7 @@ export default mergeConfig(
       },
     },
     buildEnd: async (config: SiteConfig) => {
-      if (typeof rss === 'object') {
+      if (typeof rss === 'object' && rss.hostname && rss.copyright) {
         const hostname = rss.hostname
         const feed = new Feed({
           id: hostname,
@@ -77,15 +77,20 @@ export default mergeConfig(
         }).load()
 
         for (const it of sortBy(posts, (it) => it.url).slice(posts.length - 10)) {
-          feed.addItem({
+          const item = {
             title: it.frontmatter.title,
             id: `${hostname}${it.url}`,
             link: `${hostname}${it.url}`,
             description: it.excerpt,
-            content: it.html,
+            // fix vitepress issue: https://github.com/vuejs/vitepress/issues/3364
+            content: it.html?.replaceAll(
+              /[\u0000-\u001F\u007F-\u009F\u061C\u200E\u200F\u202A-\u202E\u2066-\u2069]/,
+              '',
+            ),
             author: rss.author,
             date: it.frontmatter.date,
-          })
+          }
+          feed.addItem(item)
         }
 
         // console.log(feed.items.map((it) => it.link))

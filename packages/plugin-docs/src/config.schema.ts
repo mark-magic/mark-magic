@@ -31,6 +31,10 @@ export interface DocsOutputConfig {
    */
   description?: string
   /**
+   * 基础路径
+   */
+  base?: string
+  /**
    * 静态资源目录
    */
   public?: string
@@ -69,6 +73,12 @@ export interface DocsOutputConfig {
   rss?: {
     hostname: string
     copyright: string
+    author?: {
+      name?: string
+      email?: string
+      link?: string
+      [k: string]: unknown
+    }[]
     ignore?: string[]
   }
   giscus?: {
@@ -78,6 +88,7 @@ export interface DocsOutputConfig {
     categoryId: string
     mapping: string
     reactionsEnabled: string
+    emitMetadata?: string
     inputPosition: string
     theme: string
     lang: string

@@ -8,8 +8,9 @@ import { pathExists } from 'fs-extra/esm'
 import * as local from '@mark-magic/plugin-local'
 import { parse } from 'node-html-parser'
 import { mkdir, readFile, writeFile } from 'fs/promises'
+import { Feed } from 'feed'
 
-const tempPath = initTempPath(__filename)
+let tempPath = initTempPath(__filename)
 
 const list: (Pick<Content, 'id' | 'content'> & {
   path: string
@@ -57,7 +58,7 @@ it('basic', async () => {
   expect(s).include('test name').include('test description').include('GitHub').include('https://github.com')
 })
 
-it.skip('should support duplicate name resource', async () => {
+it('should support duplicate name resource', async () => {
   const list = [
     {
       path: 'readme.md',
@@ -73,11 +74,11 @@ it.skip('should support duplicate name resource', async () => {
     },
     {
       path: '01/assets/cover.png',
-      content: await readFile(path.resolve(__dirname, './assets/to-the-stars/books/01/assets/cover.png')),
+      content: '01',
     },
     {
       path: '02/assets/cover.png',
-      content: await readFile(path.resolve(__dirname, './assets/to-the-stars/books/02/assets/cover.png')),
+      content: '02',
     },
   ]
   await Promise.all(
@@ -115,13 +116,12 @@ it.skip('should support duplicate name resource', async () => {
 })
 
 it.skip('should support real site', async () => {
-  const i = local.input({
-    path: path.resolve(__dirname, './assets/to-the-stars/books/'),
-  })
   // const list = await fromAsync(i.generate())
   // console.log(list.length)
   await convert({
-    input: i,
+    input: local.input({
+      path: path.resolve(__dirname, './assets/books/'),
+    }),
     output: output({
       path: path.resolve(tempPath, 'dist'),
       name: '魔法少女小圆 飞向星空',
@@ -158,7 +158,7 @@ it.skip('should support real site', async () => {
       sitemap: {
         hostname: 'https://tts.liuli.moe',
       },
-      public: path.resolve(__dirname, './assets/to-the-stars/public'),
+      public: path.resolve(__dirname, './assets/books/public'),
       giscus: {
         repo: 'liuli-moe/to-the-stars',
         repoId: 'R_kgDOG4H10w',
@@ -175,6 +175,7 @@ it.skip('should support real site', async () => {
       rss: {
         hostname: 'https://tts.liuli.moe',
         copyright: 'Copyright © 2023 Hieronym, Inc. Built with feed.',
+        ignore: ['**/99/**'],
       },
       debug: {
         // test: true,
@@ -186,7 +187,7 @@ it.skip('should support real site', async () => {
   // expect(await pathExists(path.resolve(tempPath, 'dist/b.html'))).true
 }, 10_000)
 
-it.skip('should inferred prev and next page', async () => {
+it('should inferred prev and next page', async () => {
   await convert({
     input: fromVirtual([
       {
@@ -221,7 +222,7 @@ it.skip('should inferred prev and next page', async () => {
   expect(dom.querySelector('.pager-link.next .title')!.textContent).eq('如果我能给妈妈写封信的话……')
 })
 
-it.skip('should clear strong and em space', async () => {
+it('should clear strong and em space', async () => {
   await convert({
     input: fromVirtual([
       {
@@ -245,7 +246,7 @@ it.skip('should clear strong and em space', async () => {
   expect(dom.querySelector('main')!.textContent).eq('真，她。')
 })
 
-describe.skip('rss', () => {
+describe('rss', () => {
   it('should support rss on basic', async () => {
     await convert({
       input: fromVirtual([
@@ -359,6 +360,38 @@ describe.skip('rss', () => {
       .include('<![CDATA[test]]>')
       .include('https://tts.liuli.moe')
       .include('Copyright © 2023 Hieronym, Inc. Built with feed.')
+  })
+  it('should not generate rss when rss not configuration', async () => {
+    await convert({
+      input: fromVirtual(list),
+      output: output({
+        path: path.resolve(tempPath, 'dist'),
+        name: 'test name',
+        description: 'test description',
+      }),
+    })
+    expect(await pathExists(path.resolve(tempPath, 'dist/rss.xml'))).false
+  })
+  it('should not generate zero width space', async () => {
+    await convert({
+      input: fromVirtual([
+        {
+          id: 'readme',
+          path: '/readme.md',
+          content: '# 第四卷-爱因斯坦-罗森桥',
+        },
+      ]),
+      output: output({
+        path: path.resolve(tempPath, 'dist'),
+        name: 'test',
+        lang: 'zh-CN',
+        rss: {
+          hostname: 'https://tts.liuli.moe',
+          copyright: 'Copyright © 2023 Hieronym, Inc. Built with feed.',
+          ignore: ['**/02/**'],
+        },
+      }),
+    })
   })
 })
 

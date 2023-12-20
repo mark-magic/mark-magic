@@ -85,7 +85,8 @@ export function output(options: OutputOptions): OutputPlugin {
         options.debug?.root ??
         (await findParent(__dirname, async (it) => await pathExists(path.resolve(it, 'package.json')))) ??
         path.resolve()
-      tempPath = path.resolve(root, '.temp')
+      // fix vitepress issue: https://github.com/vuejs/vitepress/issues/3363
+      tempPath = path.resolve(root, '.temp', Date.now().toString())
       p = local.output({
         rootContentPath: tempPath,
         rootResourcePath: path.resolve(tempPath, 'resources'),
@@ -126,7 +127,7 @@ export function output(options: OutputOptions): OutputPlugin {
           } as RenderRssOptions),
         ),
       )
-      if (options.public) {
+      if (options.public && (await pathExists(options.public))) {
         await copy(path.resolve(options.public), path.resolve(tempPath, 'public'))
       }
       if (options.giscus) {

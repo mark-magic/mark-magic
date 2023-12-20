@@ -3,6 +3,7 @@ import { pino } from 'pino'
 import { loadConfig, parseConfig } from './configParser'
 import { compareVersions } from 'compare-versions'
 import { ResolvedConfig } from './defineConfig'
+import ora from 'ora'
 
 export interface CliOptions {
   root?: string
@@ -42,12 +43,13 @@ export async function execute(options: CliOptions) {
     if (options.task && !options.task.includes(it.name)) {
       continue
     }
-    console.log(`task start: ${it.name}`)
+    const spinner = ora({ text: `Starting: ${it.name}`, color: 'blue' }).start()
     try {
       let i = 0
       await convert(it)
         .on('generate', (it) => {
           i++
+          spinner.text = `Processing content ${i}: ${it.content.name}`
           logger.debug('generate: %O', it.content.name)
         })
         .on('transform', (it) => {
@@ -57,13 +59,15 @@ export async function execute(options: CliOptions) {
           logger.debug('handle: %O', it.content.name)
         })
       if (i > 0) {
-        console.log(`task end: ${it.name}`)
+        spinner.stopAndPersist({ text: `Completed: ${it.name} - ${i} content processed` })
       } else {
-        console.log(`task end: ${it.name} (no file generated)`)
+        spinner.stopAndPersist({ text: `Completed: ${it.name} - No content processed` })
       }
     } catch (err) {
-      logger.error(`task error: ${it.name}`)
+      spinner.color = 'red'
+      spinner.stopAndPersist({ text: `Error in task: ${it.name}` })
       logger.error(err)
+      return
     }
   }
 }

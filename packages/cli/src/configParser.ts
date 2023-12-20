@@ -7,6 +7,7 @@ import { pathExists } from 'fs-extra/esm'
 import { bundleRequire } from 'bundle-require'
 import { InputPlugin, OutputPlugin, TransformPlugin } from '@mark-magic/core'
 import { ResolvedConfig } from './defineConfig'
+import { createRequire } from 'module'
 
 export async function loadConfig(rootPath: string): Promise<string> {
   const c = ['mark-magic.config.yaml', 'mark-magic.config.ts']

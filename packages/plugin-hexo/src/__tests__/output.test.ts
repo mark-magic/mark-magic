@@ -18,7 +18,7 @@ beforeAll(async () => {
       path: 'a/b/test1.md',
       content: '# test1\n\n[test2](:/content/test2)',
       extra: {
-        tags: [{ id: 'test', title: 'test' }] as Tag[],
+        tags: [{ id: 'test', name: 'test' }] as Tag[],
       },
     },
     {
@@ -26,7 +26,7 @@ beforeAll(async () => {
       path: 'c/test2.md',
       content: '# test2\n\n[test1](:/content/test1)\n[localDirOutput.test.ts](:/resource/test)',
       extra: {
-        tags: [{ id: 'test', title: 'test' }] as Tag[],
+        tags: [{ id: 'test', name: 'test' }] as Tag[],
       },
       resources: [
         {
@@ -71,4 +71,18 @@ it('base config', async () => {
   expect(await readFile(test1Path, 'utf-8')).includes('[test2](/demo/joplin2hexo/p/test2)')
   expect(await readFile(test2Path, 'utf-8')).includes('[test1](/demo/joplin2hexo/p/test1)')
   expect(await readFile(test2Path, 'utf-8')).includes('[localDirOutput.test.ts](/resources/test.ts)')
+})
+
+it('should content not include h1 title', async () => {
+  const i = fromVirtual([
+    {
+      id: 'test1',
+      path: 'a/b/test1.md',
+      content: '# test1',
+    },
+  ])
+  await convert({ input: i, output: output({ path: tempPath }) })
+  expect(await readFile(path.resolve(tempPath, 'source/_posts/test1.md'), 'utf-8')).includes('# test1')
+  await convert({ input: i, output: output({ path: tempPath, removeH1: true }) })
+  expect(await readFile(path.resolve(tempPath, 'source/_posts/test1.md'), 'utf-8')).not.includes('# test1')
 })

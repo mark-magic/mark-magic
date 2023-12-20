@@ -1,1 +1,0 @@
-import{_ as s,o as i,c as a,R as e}from"./chunks/framework.TR9yfmzU.js";const E=JSON.parse('{"title":"笔记 => 博客","description":"","frontmatter":{},"headers":[],"relativePath":"blog.md","filePath":"blog.md"}'),n={name:"blog.md"},l=e("",19),h=[l];function p(t,k,o,r,d,c){return i(),a("div",null,h)}const y=s(n,[["render",p]]);export{E as __pageData,y as default};

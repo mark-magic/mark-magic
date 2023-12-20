@@ -34,17 +34,34 @@ function _clearStrongAfterSpace(ends) {
   }
 }
 const rss = '{{rss}}'
-var config_default = mergeConfig(
-  defineConfig({
-    markdown: {
-      config: (md) => {
-        md.use(_clearStrongAfterSpace(['\uFF0C', '\u3002', '\uFF1F', '\uFF01']))
-      },
-      attrs: {
-        disable: true,
-      },
+function getFeed() {
+  if (!(typeof rss === 'object' && rss.hostname && rss.copyright)) {
+    return {}
+  }
+  async function cleanHtml(html, baseUrl) {
+    const { parse } = await import('node-html-parser')
+    const dom = parse(html).querySelector('main > .vp-doc > div')
+    dom?.querySelectorAll('img').forEach((it) => {
+      it.setAttribute('src', new URL(it.getAttribute('src'), baseUrl).toString())
+    })
+    return dom?.innerHTML
+  }
+  function getAbsPath(outDir, p) {
+    if (p.endsWith('.html')) {
+      return path.join(outDir, p)
+    }
+    if (p.endsWith('/')) {
+      return path.join(outDir, p, 'index.html')
+    }
+    return p
+  }
+  return defineConfig({
+    transformHtml(code, id, ctx) {
+      if (!/[\\/]404\.html$/.test(id)) {
+        map[id] = code
+      }
     },
-    buildEnd: async (config) => {
+    buildEnd: async (siteConfig) => {
       if (typeof rss === 'object' && rss.hostname && rss.copyright) {
         const hostname = rss.hostname
         const feed = new Feed({
@@ -62,25 +79,43 @@ var config_default = mergeConfig(
           },
         }).load()
         for (const it of sortBy(posts, (it2) => it2.url).slice(posts.length - 10)) {
-          const item = {
+          let html = it.html?.replaceAll('&ZeroWidthSpace;', '')
+          if (it.html?.includes('<img')) {
+            const htmlUrl = getAbsPath(siteConfig.outDir, it.url)
+            if (map[htmlUrl]) {
+              const baseUrl = path.join(rss.hostname, siteConfig.site.base)
+              html = await cleanHtml(map[htmlUrl], baseUrl)
+              it.html = html
+            }
+          }
+          feed.addItem({
             title: it.frontmatter.title,
             id: `${hostname}${it.url}`,
             link: `${hostname}${it.url}`,
             description: it.excerpt,
-            content: it.html?.replaceAll(
-              /[\u0000-\u001F\u007F-\u009F\u061C\u200E\u200F\u202A-\u202E\u2066-\u2069]/,
-              '',
-            ),
+            content: html,
             author: rss.author,
             date: it.frontmatter.date,
-          }
-          feed.addItem(item)
+          })
         }
-        await writeFile(path.join(config.outDir, 'rss.xml'), feed.rss2())
+        await writeFile(path.join(siteConfig.outDir, 'rss.xml'), feed.rss2())
       }
     },
+  })
+}
+const map = {}
+var config_default = [
+  defineConfig({
+    markdown: {
+      config: (md) => {
+        md.use(_clearStrongAfterSpace(['\uFF0C', '\u3002', '\uFF1F', '\uFF01']))
+      },
+      attrs: {
+        disable: true,
+      },
+    },
   }),
-  // @ts-expect-error 从外部替换
+  getFeed(),
   '{{config}}',
-)
+].reduce((a, b) => mergeConfig(a, b))
 export { config_default as default }

@@ -392,6 +392,39 @@ describe('rss', () => {
         },
       }),
     })
+    expect(await readFile(path.resolve(tempPath, 'dist/rss.xml'), 'utf-8')).not.include('&ZeroWidthSpace;')
+  })
+  // wait for https://github.com/vuejs/vitepress/issues/3364#issuecomment-1864096230
+  it('should support include image on rss', async () => {
+    await convert({
+      input: fromVirtual([
+        {
+          id: 'index',
+          path: '/index.md',
+          content: '![cover](:/resource/cover)',
+          resources: [
+            {
+              id: 'cover',
+              name: 'cover.jpg',
+              raw: await readFile(path.resolve(__dirname, './assets/books/01/assets/cover.png')),
+            },
+          ],
+        },
+      ]),
+      output: output({
+        path: path.resolve(tempPath, 'dist'),
+        name: 'test',
+        lang: 'zh-CN',
+        rss: {
+          hostname: 'https://tts.liuli.moe',
+          copyright: 'Copyright © 2023 Hieronym, Inc. Built with feed.',
+          ignore: ['**/02/**'],
+        },
+      }),
+    })
+    const s = await readFile(path.resolve(tempPath, 'dist/rss.xml'), 'utf-8')
+    expect(s).not.include('./resources/cover.jpg')
+    expect(parse(s).querySelector('img')!.getAttribute('src')!.startsWith('https://tts.liuli.moe/')).true
   })
 })
 

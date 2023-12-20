@@ -136,6 +136,10 @@ export interface DocsPluginConfig {
      */
     description?: string
     /**
+     * 基础路径
+     */
+    base?: string
+    /**
      * 静态资源目录
      */
     public?: string
@@ -174,6 +178,12 @@ export interface DocsPluginConfig {
     rss?: {
       hostname: string
       copyright: string
+      author?: {
+        name?: string
+        email?: string
+        link?: string
+        [k: string]: unknown
+      }[]
       ignore?: string[]
     }
     giscus?: {

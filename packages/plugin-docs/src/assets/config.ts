@@ -1,4 +1,4 @@
-import { SiteConfig, createContentLoader, defineConfig, mergeConfig } from 'vitepress'
+import { SiteConfig, UserConfig, createContentLoader, defineConfig, mergeConfig } from 'vitepress'
 import MarkdownIt from 'markdown-it'
 import Token from 'markdown-it/lib/token'
 import { writeFile } from 'fs/promises'
@@ -44,18 +44,36 @@ function _clearStrongAfterSpace(ends: string[]): MarkdownIt.PluginSimple {
 // @ts-expect-error 从外部替换
 const rss: RenderRssOptions = '{{rss}}'
 
-// refer https://vitepress.dev/reference/site-config for details
-export default mergeConfig(
-  defineConfig({
-    markdown: {
-      config: (md) => {
-        md.use(_clearStrongAfterSpace(['，', '。', '？', '！']))
-      },
-      attrs: {
-        disable: true,
-      },
+function getFeed(): UserConfig {
+  if (!(typeof rss === 'object' && rss.hostname && rss.copyright)) {
+    return {}
+  }
+
+  async function cleanHtml(html: string, baseUrl: string): Promise<string | undefined> {
+    const { parse } = await import('node-html-parser')
+    const dom = parse(html).querySelector('main > .vp-doc > div')
+    dom?.querySelectorAll('img').forEach((it) => {
+      it.setAttribute('src', new URL(it.getAttribute('src')!, baseUrl).toString())
+    })
+    return dom?.innerHTML
+  }
+
+  function getAbsPath(outDir: string, p: string): string {
+    if (p.endsWith('.html')) {
+      return path.join(outDir, p)
+    }
+    if (p.endsWith('/')) {
+      return path.join(outDir, p, 'index.html')
+    }
+    return p
+  }
+  return defineConfig({
+    transformHtml(code, id, ctx) {
+      if (!/[\\/]404\.html$/.test(id)) {
+        map[id] = code
+      }
     },
-    buildEnd: async (config: SiteConfig) => {
+    buildEnd: async (siteConfig: SiteConfig) => {
       if (typeof rss === 'object' && rss.hostname && rss.copyright) {
         const hostname = rss.hostname
         const feed = new Feed({
@@ -77,27 +95,47 @@ export default mergeConfig(
         }).load()
 
         for (const it of sortBy(posts, (it) => it.url).slice(posts.length - 10)) {
-          const item = {
+          let html = it.html?.replaceAll('&ZeroWidthSpace;', '')
+          if (it.html?.includes('<img')) {
+            const htmlUrl = getAbsPath(siteConfig.outDir, it.url)
+            if (map[htmlUrl]) {
+              const baseUrl = path.join(rss.hostname, siteConfig.site.base)
+              html = await cleanHtml(map[htmlUrl], baseUrl)
+              it.html = html
+            }
+          }
+          feed.addItem({
             title: it.frontmatter.title,
             id: `${hostname}${it.url}`,
             link: `${hostname}${it.url}`,
             description: it.excerpt,
-            // fix vitepress issue: https://github.com/vuejs/vitepress/issues/3364
-            content: it.html?.replaceAll(
-              /[\u0000-\u001F\u007F-\u009F\u061C\u200E\u200F\u202A-\u202E\u2066-\u2069]/,
-              '',
-            ),
+            content: html,
             author: rss.author,
             date: it.frontmatter.date,
-          }
-          feed.addItem(item)
+          })
         }
 
         // console.log(feed.items.map((it) => it.link))
-        await writeFile(path.join(config.outDir, 'rss.xml'), feed.rss2())
+        await writeFile(path.join(siteConfig.outDir, 'rss.xml'), feed.rss2())
       }
     },
+  })
+}
+
+const map: Record<string, string> = {}
+
+// refer https://vitepress.dev/reference/site-config for details
+export default [
+  defineConfig({
+    markdown: {
+      config: (md) => {
+        md.use(_clearStrongAfterSpace(['，', '。', '？', '！']))
+      },
+      attrs: {
+        disable: true,
+      },
+    },
   }),
-  // @ts-expect-error 从外部替换
-  '{{config}}',
-)
+  getFeed(),
+  '{{config}}' as UserConfig,
+].reduce((a, b) => mergeConfig(a, b))

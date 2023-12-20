@@ -1,5 +1,12 @@
 # @mark-magic/cli
 
+## 0.9.4
+
+### Patch Changes
+
+- style: 改善 cli 的使用体验
+  - @mark-magic/core@0.9.4
+
 ## 0.9.3
 
 ### Patch Changes

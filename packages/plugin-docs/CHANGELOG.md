@@ -1,5 +1,15 @@
 # @mark-magic/plugin-docs
 
+## 0.9.4
+
+### Patch Changes
+
+- fix(plugin-docs): 修复生成的 rss 中的图片链接不是绝对路径的错误
+- fix: 修复生成的 rss 会有灵宽度字符 &ZeroWidthSpace; 的问题
+- @mark-magic/core@0.9.4
+- @mark-magic/utils@0.9.4
+- @mark-magic/plugin-local@0.9.4
+
 ## 0.9.3
 
 ### Patch Changes

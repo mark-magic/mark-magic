@@ -1,5 +1,7 @@
 # @mark-magic/create-plugin
 
+## 0.9.4
+
 ## 0.9.3
 
 ## 0.1.1

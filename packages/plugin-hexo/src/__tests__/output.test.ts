@@ -72,3 +72,17 @@ it('base config', async () => {
   expect(await readFile(test2Path, 'utf-8')).includes('[test1](/demo/joplin2hexo/p/test1)')
   expect(await readFile(test2Path, 'utf-8')).includes('[localDirOutput.test.ts](/resources/test.ts)')
 })
+
+it('should content not include h1 title', async () => {
+  await convert({
+    input: fromVirtual([
+      {
+        id: 'test1',
+        path: 'a/b/test1.md',
+        content: '# test1',
+      },
+    ]),
+    output: output({ path: tempPath }),
+  })
+  expect(await readFile(path.resolve(tempPath, 'source/_posts/test1.md'), 'utf-8')).not.includes('# test1')
+})

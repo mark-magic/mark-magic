@@ -549,6 +549,9 @@ importers:
 
   packages/plugin-hexo:
     dependencies:
+      '@liuli-util/markdown-util':
+        specifier: ^0.8.0
+        version: 0.8.0
       '@mark-magic/core':
         specifier: workspace:^
         version: link:../core
@@ -3009,7 +3012,7 @@ packages:
   /@types/hast@2.3.4:
     resolution: {integrity: sha512-wLEm0QvaoawEDoTRwzTXp4b4jpwiJDvR5KMnFnVodm3scufTlBOWRD6N1OBf9TZMhjlNsSfcO5V+7AF4+Vy+9g==}
     dependencies:
-      '@types/unist': 2.0.6
+      '@types/unist': 3.0.2
     dev: false
 
   /@types/hast@3.0.3:

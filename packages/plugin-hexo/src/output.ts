@@ -1,6 +1,7 @@
 import { OutputPlugin } from '@mark-magic/core'
 import path from 'pathe'
 import * as local from '@mark-magic/plugin-local'
+import { Heading, flatMap, fromMarkdown, selectAll, toMarkdown } from '@liuli-util/markdown-util'
 
 export interface Tag {
   id: string
@@ -28,6 +29,20 @@ export function output(options?: { path?: string; base?: string }): OutputPlugin
     contentPath: (it) => path.resolve(postsPath, it.id + '.md'),
     resourcePath: (it) => path.resolve(resourcePath, it.id + path.extname(it.name)),
   })
-  p.name = 'hexo'
-  return p
+  return {
+    ...p,
+    name: 'hexo',
+    async handle(content) {
+      const root = fromMarkdown(content.content)
+      content.content = toMarkdown(
+        flatMap(root, (it) => {
+          if (it.type === 'heading' && (it as Heading).depth === 1) {
+            return []
+          }
+          return [it]
+        }),
+      )
+      await p.handle(content)
+    },
+  }
 }

@@ -1,7 +1,7 @@
 import { OutputPlugin } from '@mark-magic/core'
 import path from 'pathe'
 import * as local from '@mark-magic/plugin-local'
-import { Heading, flatMap, fromMarkdown, select, toMarkdown } from '@liuli-util/markdown-util'
+import { Heading, flatMap, fromMarkdown, toMarkdown } from '@liuli-util/markdown-util'
 
 export function output(options?: { path?: string; base?: string; removeH1?: boolean }): OutputPlugin {
   const root = options?.path ?? path.resolve()

@@ -56,7 +56,7 @@ Once everything is done, your site should be deployed at `https://<username>.git
 3.  Modify the hexo configuration in `_config.yml`, if it contains
 
     ```yaml
-    permalink: :abbrlink/
+    permalink: /p/:abbrlink/
     ```
 
 4.  Read the notes from Joplin and generate the files required by Hexo Blog.

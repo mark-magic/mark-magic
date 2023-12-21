@@ -8,17 +8,16 @@ export interface CreateOptions {
 }
 
 export async function create(options: CreateOptions) {
-  console.log('args: ', options)
   const srcPath = path.resolve(__dirname, '../packages', options.template)
   if (!(await pathExists(srcPath))) {
     throw new Error(`不存在模版 ${options.template}`)
   }
   const distPath = path.resolve(options.root, options.name)
-  if (await pathExists(distPath)) {
-    throw new Error(`目录已经存在 ${options.name}`)
-  }
-  await copy(srcPath, distPath)
+  await copy(srcPath, distPath, {
+    overwrite: true,
+    filter: (src) => !(src.includes('node_modules') || src.includes('dist')),
+  })
   const json = await readJson(path.resolve(distPath, 'package.json'))
-  json.name = options.name
+  json.name = path.basename(options.name)
   await writeJson(path.resolve(distPath, 'package.json'), json, { spaces: 2 })
 }

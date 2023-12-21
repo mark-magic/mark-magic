@@ -55,7 +55,7 @@
 3. 修改 hexo 的配置 `_config.yml`，如果包含
 
    ```yaml
-   permalink: :abbrlink/
+   permalink: /p/:abbrlink/
    ```
 
 4. 从 joplin 读取笔记生成 hexo blog 所需要的文件

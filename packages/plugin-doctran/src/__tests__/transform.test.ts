@@ -38,7 +38,7 @@ it.skip('transform by openai', async () => {
   })
 }, 100_000)
 
-it.skip('transform for cache', async () => {
+it('transform for cache', async () => {
   await convert({
     input: local.input({ path: path.resolve(__dirname, './assets/docs') }),
     transforms: [transform({ engine: 'google', to: 'en' })],

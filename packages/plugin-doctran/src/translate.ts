@@ -23,7 +23,7 @@ export function createTrans(options: DoctranTransformConfig) {
   return async (text: string) => {
     const r = await chat.invoke([
       new SystemMessage(
-        `You are a professional translation engine with the capability to understand and preserve Markdown formatting. Please translate the following Markdown text into ${options.to} while carefully maintaining all Markdown elements such as headers, lists, code blocks, and links.`,
+        `You are a professional translation engine expert in maintaining Markdown formatting. Please translate the following Markdown text into ${options.to}. Pay special attention to preserving the structure and syntax of Markdown, especially the links and their paths. Keep the links exactly as they are, only translating the link text if needed.`,
       ),
       new HumanMessage(text),
     ])

@@ -73,3 +73,38 @@ it('transform', async () => {
   expect(start.mock.calls).length(1)
   expect(end.mock.calls).length(1)
 })
+
+it('convert on error', async () => {
+  const content = {
+    id: 'test',
+    name: 'test',
+    content: '',
+    created: Date.now(),
+    updated: Date.now(),
+    resources: [],
+    path: [],
+  } as Content
+  const f = vi.fn()
+  await expect(
+    convert({
+      input: {
+        name: 'test',
+        async *generate(): AsyncGenerator<Content> {
+          yield content
+        },
+      },
+      transforms: [
+        {
+          name: 'test',
+          transform() {
+            throw new Error('test error')
+          },
+        },
+      ],
+      output: {
+        name: 'test',
+        handle: f,
+      },
+    }),
+  ).rejects.toThrowError()
+})

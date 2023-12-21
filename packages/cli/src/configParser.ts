@@ -7,7 +7,7 @@ import { pathExists } from 'fs-extra/esm'
 import { bundleRequire } from 'bundle-require'
 import { InputPlugin, OutputPlugin, TransformPlugin } from '@mark-magic/core'
 import { ResolvedConfig } from './defineConfig'
-import { createRequire } from 'module'
+import { logger } from './logger'
 
 export async function loadConfig(rootPath: string): Promise<string> {
   const c = ['mark-magic.config.yaml', 'mark-magic.config.ts']
@@ -22,6 +22,7 @@ export async function loadConfig(rootPath: string): Promise<string> {
 
 export async function parseYamlConfig(configPath: string): Promise<ResolvedConfig> {
   const config = yaml.parse(await readFile(configPath, 'utf-8')) as ConfigSchema
+  logger.debug('yaml config: %O', config)
   return {
     tasks: await AsyncArray.map(config.tasks, async (it) => {
       let input: InputPlugin, output: OutputPlugin, transforms: TransformPlugin[]

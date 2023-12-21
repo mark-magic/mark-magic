@@ -1,9 +1,8 @@
 import { convert } from '@mark-magic/core'
-import { pino } from 'pino'
 import { loadConfig, parseConfig } from './configParser'
 import { compareVersions } from 'compare-versions'
-import { ResolvedConfig } from './defineConfig'
 import ora from 'ora'
+import { logger } from './logger'
 
 export interface CliOptions {
   root?: string
@@ -11,12 +10,6 @@ export interface CliOptions {
   task?: string[]
   debug?: boolean
 }
-const logger = pino({
-  level: 'info',
-  transport: {
-    target: 'pino-pretty',
-  },
-})
 
 export async function execute(options: CliOptions) {
   if (compareVersions(process.version, '20.0.0') === -1) {

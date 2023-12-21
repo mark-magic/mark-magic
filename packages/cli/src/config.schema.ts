@@ -29,7 +29,7 @@ export interface TaskConfig {
   debug?: boolean
 }
 /**
- * 从本地目录读取或输出到本地目录
+ * 从本地目录读取
  */
 export interface LocalPluginConfig {
   /**

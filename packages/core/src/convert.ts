@@ -74,7 +74,6 @@ export interface Events {
   generate?(options: { input: InputPlugin; content: Content }): void
   handle?(options: { input: InputPlugin; output: OutputPlugin; content: Content; time: number }): void
   transform?(options: { transform: TransformPlugin; content: Content; time: number }): void
-  error?(context: { content: Content; plugin: InputPlugin | OutputPlugin; error: unknown }): void
 }
 
 export function convert(options: ConvertConfig) {
@@ -99,11 +98,7 @@ export function convert(options: ConvertConfig) {
         await output.handle(content)
         events.handle?.({ input, output, content, time: Date.now() - start })
       } catch (e) {
-        events.error?.({
-          content,
-          plugin: output,
-          error: e,
-        })
+        throw e
       }
     }
     for (const transform of options.transforms ?? []) {

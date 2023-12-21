@@ -4,7 +4,7 @@
 
 ## Requirements
 
-> In the following instructions, we will be using [joplin](https://joplinapp.org/) as the note-taking tool and [hexo](https://hexo.io/) as the blogging platform. However, both of these can be replaced. For example, you can use Obsidian as the source for your notes and Hugo as the platform for your blog. You can also replace the plugins used for input and output.
+> In the following instructions, we will be using [joplin](https://joplinapp.org/) as the note-taking tool and [hexo](https://hexo.io/) as the blogging platform. However, both of these can be replaced. For example, you can use Obsidian as the source for your notes and Hugo as the platform for your blog.
 
 1.  First, make sure that the web clipper is enabled in Joplin.
     ![joplin-webclipper](./resources/joplin-webclipper.png)

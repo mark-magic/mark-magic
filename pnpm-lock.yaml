@@ -593,6 +593,43 @@ importers:
         specifier: ^1.0.4
         version: 1.0.4(@types/node@20.5.1)
 
+  packages/plugin-hugo:
+    dependencies:
+      '@mark-magic/core':
+        specifier: workspace:^
+        version: link:../core
+      '@mark-magic/plugin-local':
+        specifier: workspace:^
+        version: link:../plugin-local
+      '@mark-magic/utils':
+        specifier: workspace:^
+        version: link:../utils
+      pathe:
+        specifier: ^1.1.1
+        version: 1.1.1
+    devDependencies:
+      '@liuli-util/test':
+        specifier: ^3.7.1
+        version: 3.7.1(@types/node@20.5.1)
+      '@liuli-util/vite-plugin-node':
+        specifier: ^0.5.0
+        version: 0.5.0(@types/node@20.5.1)(rollup@3.29.4)(vite@5.0.10)
+      '@types/fs-extra':
+        specifier: ^11.0.1
+        version: 11.0.4
+      fs-extra:
+        specifier: ^11.1.1
+        version: 11.2.0
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+      vite:
+        specifier: ^5.0.10
+        version: 5.0.10(@types/node@20.5.1)
+      vitest:
+        specifier: ^1.0.4
+        version: 1.0.4(@types/node@20.5.1)
+
   packages/plugin-joplin:
     dependencies:
       '@liuli-util/async':

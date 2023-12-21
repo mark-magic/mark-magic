@@ -724,6 +724,55 @@ importers:
         specifier: ^1.0.4
         version: 1.0.4(@types/node@18.11.9)
 
+  packages/plugin-obsidian:
+    dependencies:
+      '@liuli-util/async':
+        specifier: ^3.6.0
+        version: 3.6.0
+      '@liuli-util/markdown-util':
+        specifier: ^0.8.0
+        version: 0.8.0
+      '@mark-magic/core':
+        specifier: workspace:^
+        version: link:../core
+      '@mark-magic/plugin-local':
+        specifier: workspace:^
+        version: link:../plugin-local
+      '@mark-magic/utils':
+        specifier: workspace:^
+        version: link:../utils
+      fast-glob:
+        specifier: ^3.2.12
+        version: 3.2.12
+      fs-extra:
+        specifier: ^11.1.1
+        version: 11.2.0
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
+    devDependencies:
+      '@liuli-util/test':
+        specifier: ^3.7.1
+        version: 3.7.1(@types/node@20.5.1)
+      '@liuli-util/vite-plugin-node':
+        specifier: ^0.5.0
+        version: 0.5.0(@types/node@20.5.1)(rollup@3.29.4)(vite@5.0.10)
+      '@types/fs-extra':
+        specifier: ^11.0.1
+        version: 11.0.4
+      '@types/lodash-es':
+        specifier: ^4.17.12
+        version: 4.17.12
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+      vite:
+        specifier: ^5.0.10
+        version: 5.0.10(@types/node@20.5.1)
+      vitest:
+        specifier: ^1.0.4
+        version: 1.0.4(@types/node@20.5.1)
+
   packages/utils:
     dependencies:
       '@liuli-util/fs':
@@ -2451,6 +2500,26 @@ packages:
 
   /@liuli-util/test@3.7.0(@types/node@20.5.1):
     resolution: {integrity: sha512-35jTcH078L4fugvdlkQ6VhF6YND3HOj/ooqQQLG9Vxpahy4UZlTfJsBI5lLMwMNXQIfnhUkSLbshQeJzlqri4w==}
+    optionalDependencies:
+      vitest: 1.0.4(@types/node@20.5.1)
+    transitivePeerDependencies:
+      - '@edge-runtime/vm'
+      - '@types/node'
+      - '@vitest/browser'
+      - '@vitest/ui'
+      - happy-dom
+      - jsdom
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+    dev: true
+
+  /@liuli-util/test@3.7.1(@types/node@20.5.1):
+    resolution: {integrity: sha512-xE+zzT5Br8bn/SBXoL2j/ErRPrRbCESERtb/nv+Oww8dGXyrLy417I9QxUWnLfy3ydg5l3JQi1e60znirh/dsQ==}
     optionalDependencies:
       vitest: 1.0.4(@types/node@20.5.1)
     transitivePeerDependencies:

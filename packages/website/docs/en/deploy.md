@@ -1,35 +1,35 @@
 # Deployment
 
-The following guide mainly provides instructions on how to publish the `dist/docs` directory after building it with `plugin-docs`.
+The following guide mainly explains how to publish the `dist/docs` directory after building it with plugin-docs.
 
-## Local Build and Testing
+## Build and Test Locally
 
-After completing the local build, you can preview it locally.
+After the local build is completed, you can preview it locally.
 
 ```sh
 npx mark-magic
 npx live-server dist/docs
 ```
 
-## Set Public Base Path
+## Set the Base Path
 
-By default, we assume that the site will be deployed on the root path of the domain `/`. If the site will be served on a subpath like <https://mywebsite.com/blog/>, you need to set the `base` option of the `plugin-docs` plugin in the _mark-magic.config.yaml_ file to `'/blog/'`.
+By default, we assume that the site will be deployed at the root path (`/`) of the domain. If the site is going to be served on a subpath, such as <https://mywebsite.com/blog/>, you need to set the `base` option of the `plugin-docs` plugin in the _mark-magic.config.yaml_ file to `'/blog/'`.
 
-Example: If you are using GitHub Pages and deploying to `user.github.io/repo/`, then set `base` to `/repo/`.
+Example: If you use GitHub Pages and deploy to `user.github.io/repo/`, then set `base` to `/repo/`.
 
 ```yaml
 # mark-magic.config.yaml
 tasks:
   - name: docs
     input:
-      name: '@mark-magic/plugin-local' # Same as above
+      name: '@mark-magic/plugin-local'
       config:
         path: ./books/
     output:
-      name: '@mark-magic/plugin-docs' # Same as above
+      name: '@mark-magic/plugin-docs'
       config:
-        path: ./dist/docs/ # Output directory
-        name: 'My First Book' # Name of the book
+        path: ./dist/docs/
+        name: 'My First Book'
         base: /repo/
 ```
 
@@ -37,7 +37,7 @@ tasks:
 
 ### GitHub Pages
 
-1.  Create a `deploy.yml` in the `.github/workflows` directory of your project with the following contents.
+1.  Create a `deploy.yml` file in the `.github/workflows` directory of your project with the following content.
 
     ```yml
     name: Deploy site to Pages
@@ -66,10 +66,7 @@ tasks:
             with:
               fetch-depth: 0
           - uses: pnpm/action-setup@v2
-            with:
-              version: 8
-          - name: Setup Node
-            uses: actions/setup-node@v3
+          - uses: actions/setup-node@v3
             with:
               node-version: 20
               cache: pnpm
@@ -99,8 +96,8 @@ tasks:
             uses: actions/deploy-pages@v2
     ```
 
-    > Make sure the `base` configuration of `plugin-docs` is correct, refer to [Set Public Base Path](#set-public-base-path)
+    > Make sure the `base` configuration of the plugin-docs is correct, see [Set the Base Path](#set-the-base-path) for reference.
 
-2.  In the **Pages** menu item under the repository settings, select **Build and deployment > Source** and choose **GitHub Actions**.
+2.  In the **Pages** section of your repository's settings, select **Build and deployment > Source > GitHub Actions**.
 
-3.  Push the changes to GitHub and wait for the GitHub Actions workflow to complete. You should be able to see the site deployed at `https://<username>.github.io/[repository]/` or `https://<custom-domain>/`, depending on your setup. Your site will be automatically deployed on the main branch on every push.
+3.  Push the changes to GitHub and wait for the GitHub Actions workflow to complete. You should be able to see the site deployed at `https://<username>.github.io/[repository]/` or `https://<custom-domain>/` depending on your setup. Your website will be automatically deployed on the main branch every time you push changes.

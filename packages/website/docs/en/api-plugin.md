@@ -1,38 +1,40 @@
 # Plugin API
 
-If there isn't a suitable plugin available at the moment, you can create a plugin following the steps below. A plugin is just a regular npm package that exports functions that conform to a specific specification.
+If there is currently no suitable plugin, you can create one by following these steps. Plugins are just regular npm packages that export functions that comply with specific specifications.
 
 ## Concepts
 
-An input plugin reads external data and transforms it into a unified Content stream, while an output plugin transforms the Content stream into a specific output. Content is the key to data flow between plugins and abstracts the data format between them.
+Input plugins read external data and convert it into a unified Content stream, while output plugins convert the Content stream into a specific output. Content is crucial in the flow of data between plugins; it abstracts the data format between plugins.
 
-Content may also contain a series of Resources, which are part of the Content but not mandatory. For example, Content could be an article, while Resources are the images referenced in the article. Here is the complete type definition:
+![plugin-hooks](./resources/plugin-hooks.drawio.svg)
+
+Content may also include a series of Resources, which are part of the Content but not mandatory. For example, the Content may be an article and the Resources may be images referenced in the article. Here is the complete type definition:
 
 ```ts
 interface Data {
-  /** The unique identifier of the data */
+  /** Unique identifier of the data */
   id: string
-  /** The name of the data */
+  /** Name of the data */
   name: string
-  /** Created time */
+  /** Creation time */
   created: number
-  /** Updated time */
+  /** Update time */
   updated: number
   /** Possible additional data */
   extra?: any
 }
 
-/** Anything apart from Content is considered a resource */
+/** Anything other than content is considered a resource */
 export interface Resource extends Data {
-  /** The binary representation of the resource */
+  /** Binary representation of the resource */
   raw: Buffer
 }
 
 /** Content file */
 export interface Content extends Data {
-  /** The textual content, the format is not important */
+  /** Text content, the format itself is not important */
   content: string
-  /** The path of the file, used to plan the directory, including the file name itself, e.g. books/01/001.md */
+  /** File path used for directory planning, including the filename itself, e.g. books/01/001.md */
   path: string[]
   /** Referenced resources, duplicate resources can point to the same one */
   resources: Resource[]
@@ -41,16 +43,18 @@ export interface Content extends Data {
 
 ## Writing Plugins
 
-A basic plugin is a function, and one of its parameters is the `config` from the configuration file. The return value of this function is the plugin object instance, which will then be called and connected by mark-magic.
+A basic plugin is an npm package that exports multiple functions, with each function corresponding to one of the `input/transform/output` operations. The functions receive the configuration from the `mark-magic.config.yaml` file using the `config` parameter and are invoked with the appropriate configuration during runtime. You can quickly create a plugin using `pnpm create @mark-magic/plugin <plugin-name>`. You can find more real-life plugin examples in the [mark-magic project](https://github.com/mark-magic/mark-magic/tree/main/packages).
 
-The `generate` function of an input plugin is an asynchronous iterator that returns a Content object on each iteration. The type definition is as follows:
+### Input Plugins
+
+The `generate` function of an input plugin is an asynchronous iterator that returns a Content object with each iteration. Here is the type definition:
 
 ```ts
 /** Input plugin */
 export interface InputPlugin {
   /** Name */
   name: string
-  /** Asynchronous iterator that generates a content file stream */
+  /** Asynchronous iterator that generates the content file stream */
   generate(): AsyncGenerator<Content>
 }
 ```
@@ -71,7 +75,46 @@ export function input(options: {}): InputPlugin {
 }
 ```
 
-The main function of an output plugin is `handle`, which takes a Content object and processes it. There are also two hook functions, `start` and `end`, which are called at the beginning and end of the task, respectively.
+### Transform Plugins
+
+The main function of a transform plugin is the `transform` function. It takes a Content object as input and must return a Content object. You can make any modifications to the Content object within the function and return the modified object. There are also two hook functions, `start` and `end`, which are called at the beginning and end of the operation, respectively.
+
+```ts
+/** Transform plugin, performs transformations on Content in the stream without input or output */
+export interface TransformPlugin {
+  name: string
+  start?(): Promise<void>
+  /** Transformation function */
+  transform(content: Content): Promise<Content>
+  end?(): Promise<void>
+}
+```
+
+Basic example:
+
+```ts
+// src/index.ts
+import { OutputPlugin } from '@mark-magic/core'
+
+export function transform(options: {}): OutputPlugin {
+  return {
+    name: 'xxx',
+    async start() {
+      // TODO
+    },
+    async handle(content) {
+      // TODO
+    },
+    async end() {
+      // TODO
+    },
+  }
+}
+```
+
+### Output Plugins
+
+The main function of an output plugin is the `handle` function. It takes a Content object as input and processes it accordingly. There are also two hook functions, `start` and `end`, which are called at the beginning and end of the operation, respectively.
 
 ```ts
 /** Output plugin */
@@ -80,7 +123,7 @@ export interface OutputPlugin {
   name: string
   /** Start hook function */
   start?(): Promise<void>
-  /** Process each content and its dependent resources */
+  /** Handles each piece of content and its dependent resources */
   handle(content: Content): Promise<void>
   /** End hook function */
   end?(): Promise<void>
@@ -109,8 +152,6 @@ export function output(options: {}): OutputPlugin {
 }
 ```
 
-You can find more real-world plugin examples in the [mark-magic project](https://github.com/mark-magic/mark-magic/tree/main/packages).
-
 ## Publishing Plugins
 
-After writing the plugin, publish it as an npm package. There are no specific requirements for the name, but it is recommended to use the format `mark-magic-plugin-xxx`, such as `mark-magic-plugin-joplin`, for easier searching in the future.
+Once you have finished writing a plugin, you can publish it as an npm package. There are no specific naming requirements, but it is recommended to use the format mark-magic-plugin-xxx. For example, `mark-magic-plugin-joplin` would be a good name, making it easier to find in the future.

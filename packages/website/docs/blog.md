@@ -4,9 +4,9 @@
 
 ## 前提
 
-> 下面使用 [joplin](https://joplinapp.org/) 作为笔记工具，[hexo](https://hexo.io/) 作为博客进行说明，假设读者已经知道了两者。
+> 下面使用 [joplin](https://joplinapp.org/) 作为笔记工具，[hexo](https://hexo.io/) 作为博客进行说明。但这两者都可以替换，例如笔记的来源可以替换为 obsidian，输出的博客则可以替换为 hugo，输入和输出都可以替换插件来完成。
 
-1. 首先，确保 joplin 已经开启了 webclipper service。
+1. 首先，确保 joplin 已经开启了 web clipper。
    ![joplin-webclipper](./plugin/assets/joplin-webclipper.png)
 2. 其次，需要一个 hexo 项目，如果已有，请参考 [连接 joplin 到现有的 hexo 博客](#连接-joplin-到现有的-hexo-博客)，否则继续下一步。
 

@@ -3,7 +3,7 @@ import { calcTitle, convertContentLink, input } from '../input'
 import { fromAsync } from '@mark-magic/utils'
 import { flatMap, last, map } from 'lodash-es'
 
-it.only('joplinInput', async () => {
+it.skip('joplinInput', async () => {
   const list = await fromAsync(
     input({
       baseUrl: import.meta.env.VITE_JOPLIN_BASE_URL,

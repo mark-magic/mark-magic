@@ -15,7 +15,7 @@ tasks:
 
 ### path
 
-Recursively scans all markdown files and their referenced resource files under this path.
+Recursively scans all markdown files and their referenced resource files in this path.
 
 ```sh
 .
@@ -26,7 +26,7 @@ Recursively scans all markdown files and their referenced resource files under t
 └─ package.json
 ```
 
-For example, the above directory will be scanned and the following files will be obtained, regardless of the level of nesting.
+For example, the above directory will be scanned, regardless of the depth.
 
 ```sh
 books/01.md
@@ -36,7 +36,7 @@ books/readme.md
 
 ## output
 
-Useful for scenarios that require output to local markdown files. For example, when outputting to hexo/hugo/vitepress/jekyll, it is simpler to configure based on the output of the local plugin instead of writing a plugin from scratch. The [@mark-magic/plugin-hexo](./plugin-hexo.md) plugin is implemented in this way and uses only about 30 lines of code.
+It is useful for scenarios where output is required as a local markdown file. For example, when outputting hexo/hugo/vitepress/jekyll, it is simpler to configure based on the output of the local plugin than to write a plugin from scratch. The plugin [@mark-magic/plugin-hexo](./plugin-hexo.md) is implemented in this way, using only about 30 lines of code.
 
 ```ts
 import { OutputPlugin } from '@mark-magic/core'
@@ -74,7 +74,7 @@ export function output(options?: { path?: string; base?: string }): OutputPlugin
 }
 ```
 
-Complete type definition:
+Complete type definitions
 
 ```ts
 export interface OutputOptions {
@@ -93,21 +93,21 @@ export interface OutputOptions {
 }
 ```
 
-You can control all aspects of the output when creating an output plugin instance with `local.output`.
+You can control all aspects of the output when creating an output plugin instance using `local.output`.
 
 ### rootContentPath
 
-The root directory for outputting markdown files. This is a required field.
+The root directory for outputting markdown files, required.
 
 ### rootResourcePath
 
-The root directory for outputting resources referenced in markdown files. This is a required field.
+The root directory for referencing resources in markdown files, required.
 
 ### meta
 
 Controls the YAML metadata at the top of the markdown.
 
-By default, the name, creation time, and modification time are output.
+By default, it outputs the name, creation time, and modification time.
 
 ```md
 ---
@@ -121,7 +121,7 @@ updated: 1702805863284
 ## Overview
 ```
 
-Return null to preserve no metadata.
+Return null to discard any metadata.
 
 ```md
 # Getting Started
@@ -131,9 +131,9 @@ Return null to preserve no metadata.
 
 ### contentPath
 
-Controls the actual path of the content output. By default, it is calculated based on `rootContentPath` and the content's own `path`.
+Controls the path where content is actually output. By default, it is calculated based on `rootContentPath` and the content's own `path`.
 
-For example, if `rootContentPath` is _\~/code/blog/posts/_, and a content data is as follows:
+For example, if `rootContentPath` is _\~/code/blog/posts/_ and a content data is as follows
 
 ```json
 {
@@ -143,13 +143,13 @@ For example, if `rootContentPath` is _\~/code/blog/posts/_, and a content data i
 }
 ```
 
-The default output path would be _\~/code/blog/posts/dev/web/test.md_.
+Then the default output path is _\~/code/blog/posts/dev/web/test.md_.
 
 ### resourcePath
 
-Controls the actual path of the resource output. By default, it is calculated based on `rootResourcePath` and the resource's own `name`.
+Controls the path where resources are actually output. By default, it is calculated based on `rootResourcePath` and the resource's own `name`.
 
-For example, if `rootResourcePath` is _\~/code/blog/resources/_, and a resource data is as follows:
+For example, if `rootResourcePath` is _\~/code/blog/resources/_ and a resource data is as follows
 
 ```json
 {
@@ -158,13 +158,13 @@ For example, if `rootResourcePath` is _\~/code/blog/resources/_, and a resource 
 }
 ```
 
-The default output path would be _\~/code/blog/resources/test.png_.
+Then the default output path is _\~/code/blog/resources/test.png_.
 
 ### contentLink
 
-If there are referencing relationships between the contents, this controls how they are referenced in the markdown file after output. By default, it outputs the relative path of the markdown file.
+Controls how to reference other contents in the markdown file after output. By default, it outputs the relative path of the markdown file.
 
-For example, if the content _/dev/web/vscode-plugin_ references the content _/dev/tool/vscode_:
+For example, if the content _/dev/web/vscode-plugin_ references the content _/dev/tool/vscode_
 
 ```md
 [vscode](../tool/vscode.md)
@@ -172,9 +172,9 @@ For example, if the content _/dev/web/vscode-plugin_ references the content _/de
 
 ### resourceLink
 
-If a content references a resource, this controls how the resource is referenced in the markdown file after output. By default, it outputs the relative path of the resource file.
+Controls how to reference resources in the markdown file after output. By default, it outputs the relative path of the resource file.
 
-For example, if the markdown file output is _/posts/dev/web/vscode-plugin.md_ and references the resource _/resources/vscode.png_:
+For example, if the markdown file output from the content is _/posts/dev/web/vscode-plugin.md_ and the resource _/resources/vscode.png_ is referenced
 
 ```md
 ![vscode](../../../resources/vscode.png)

@@ -18,14 +18,14 @@ tasks:
 
 ### baseUrl
 
-The address of the Joplin web clipper service, usually `http://localhost:41184`.
+The address of the Joplin Web Clipper service, which is usually `http://localhost:41184`. You can find it in **Settings => Web Clipper**.
 
-> Reference: [web clipper service](https://joplinapp.org/help/apps/clipper/)
+![joplin-webclipper](../resources/joplin-webclipper.png)
 
 ### token
 
-The token for the Joplin web clipper service, copied from Joplin.
+The token for the Joplin Web Clipper service, copied from Joplin.
 
 ### tag
 
-Filter notes based on tags. For example, when publishing a blog, you can configure it to `'blog'` to only publish notes with the tag `'blog'`. If specified as `''`, no tag filtering is applied and all notes are used as data source.
+Filters notes based on a tag. For example, when publishing a blog, you can configure it as `blog` to only publish notes with the `blog` tag. If specified as `''`, no filtering will be done and all notes will be used as the data source.

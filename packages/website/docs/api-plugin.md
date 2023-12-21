@@ -6,6 +6,8 @@
 
 输入插件是读取外部数据并转换为统一的 Content 流，输出插件是将 Content 流转换为特定的输出。内容是数据流转的关键，它抽象了插件之间的数据格式。
 
+![plugin-hooks](./assets/plugin-hooks.drawio.svg)
+
 Content 可能还包含一系列的 Resource，它们是 Content 的一部分，但不是必须的。例如，Content 可能是一篇文章，而 Resource 是文章中引用的图片。下面是完整的类型定义：
 
 ```ts
@@ -41,7 +43,10 @@ export interface Content extends Data {
 
 ## 编写插件
 
-一个基本的插件是一个函数，而其中函数的参数就是配置文件中的 `config`，传入参数返回插件对象实例，然后由 mark-magic 调用与连接。
+一个基本的插件是一个 npm 包，其中导出了多个特定的函数，三种插件分别对应着 `input/transform/output` 三个函数名。而其中函数的参数是使用插件 `mark-magic.config.yaml` 配置文件中的 `config`，在实际运行时会调用函数并传入相应的配置。
+通过 `pnpm create @mark-magic/plugin <plugin-name>` 来快速创建一个插件，可以在 [mark-magic 项目](https://github.com/mark-magic/mark-magic/tree/main/packages) 中看到更多真实的插件示例。。
+
+### 输入插件
 
 输入插件的 generate 函数是一个异步迭代器，每次迭代返回一个 Content 对象。类型定义是：
 
@@ -70,6 +75,45 @@ export function input(options: {}): InputPlugin {
   }
 }
 ```
+
+### 转换插件
+
+转换插件的主要函数是 `transform`，它接受一个 Content 对象，并且必须返回一个 Content 对象，可以在函数内任意修改 Content 并最终返回它。还有两个钩子函数，`start` 和 `end`，分别在任务开始和结束时调用。
+
+```ts
+/** 转换插件，不输入或输出，仅对流中的 Content 做一些转换 */
+export interface TransformPlugin {
+  name: string
+  start?(): Promise<void>
+  /** 转换函数 */
+  transform(content: Content): Promise<Content>
+  end?(): Promise<void>
+}
+```
+
+基本示例：
+
+```ts
+// src/index.ts
+import { OutputPlugin } from '@mark-magic/core'
+
+export function transform(options: {}): OutputPlugin {
+  return {
+    name: 'xxx',
+    async start() {
+      // TODO
+    },
+    async handle(content) {
+      // TODO
+    },
+    async end() {
+      // TODO
+    },
+  }
+}
+```
+
+### 输出插件
 
 输出插件的主要函数是 `handle`，它接受一个 Content 对象并自行处理它。还有两个钩子函数，`start` 和 `end`，分别在任务开始和结束时调用。
 
@@ -108,8 +152,6 @@ export function output(options: {}): OutputPlugin {
   }
 }
 ```
-
-可以在 [mark-magic 项目](https://github.com/mark-magic/mark-magic/tree/main/packages) 中看到更多真实的插件示例。
 
 ## 发布插件
 

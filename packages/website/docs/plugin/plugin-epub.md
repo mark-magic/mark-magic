@@ -16,30 +16,30 @@ tasks:
         creator: Mark Magic
 ```
 
-## path
+### path
 
 输出文件的路径，必须是 `.epub` 后缀。
 
-## id
+### id
 
 小说的唯一标识，用于生成 epub 文件的唯一标识符，必须是字母、数字、下划线组成。
 
-## title
+### title
 
 小说的标题。
 
-## creator
+### creator
 
 作者。
 
-## publisher
+### publisher
 
 发布者，默认为 `mark-magic`。
 
-## language
+### language
 
 语言，默认为 `en-US`。
 
-## cover
+### cover
 
 封面图片，可以是本地路径，默认不存在。

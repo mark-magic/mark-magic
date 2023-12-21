@@ -2,9 +2,9 @@ import { mkdir, readFile, writeFile } from 'fs/promises'
 import pathe from 'pathe'
 import { expect, it, describe } from 'vitest'
 import { convert, InputPlugin, Content, Resource } from '@mark-magic/core'
-import { calcMeta, convertLinks, output } from '../output'
+import { convertLinks, output } from '../output'
 import { filenamifyPath } from 'filenamify'
-import { Image, Link, fromMarkdown, select, toMarkdown } from '@liuli-util/markdown-util'
+import { Image, Link, fromMarkdown, getYamlMeta, select, toMarkdown } from '@liuli-util/markdown-util'
 import { BiMultiMap, fromVirtual } from '@mark-magic/utils'
 import { formatRelative } from '../utils'
 import { initTempPath } from '@liuli-util/test'
@@ -52,56 +52,42 @@ describe('utils', () => {
     expect(r.includes('../../_resources/flower.webm')).true
     expect(r.includes(encodeURI('../c/Welcome to Joplin.md'))).true
   })
-  it('addMetas', () => {
-    const content = {
-      id: 'test',
-      name: 'test-name',
-      created: Date.now(),
-      updated: Date.now(),
-      // tags: [] as Tag[],
-    } as Content
-    const r = calcMeta(content)
-    expect(r.name).eq(content.name)
-    expect(r.created).eq(content.created)
-    expect(r.updated).eq(content.updated)
-  })
 })
 
 it('basic', async () => {
-  const list: Parameters<typeof fromVirtual>[0] = [
-    {
-      id: 'test1',
-      content: `
-# test1
-
-[test2](:/content/test2)
-        `.trim(),
-      resources: [] as Resource[],
-      // tags: [{ id: 'test', name: 'test' }] as Tag[],
-      path: 'a/b/test1.md',
-    },
-    {
-      id: 'test2',
-      content: `
-# test2
-
-[test1](:/content/test1)
-[localDirOutput.test.ts](:/resource/test)
-                `.trim(),
-      resources: [
-        {
-          id: 'test',
-          name: pathe.basename(__filename),
-          raw: await readFile(__filename),
-        },
-      ] as Resource[],
-      // tags: [{ id: 'test', name: 'test' }] as Tag[],
-      path: 'c/test2.md',
-    },
-  ]
   // console.log(await fromAsync(fromVirtual(list).generate()))
   await convert({
-    input: fromVirtual(list),
+    input: fromVirtual([
+      {
+        id: 'test1',
+        content: `
+  # test1
+  
+  [test2](:/content/test2)
+          `.trim(),
+        resources: [] as Resource[],
+        // tags: [{ id: 'test', name: 'test' }] as Tag[],
+        path: 'a/b/test1.md',
+      },
+      {
+        id: 'test2',
+        content: `
+  # test2
+  
+  [test1](:/content/test1)
+  [localDirOutput.test.ts](:/resource/test)
+                  `.trim(),
+        resources: [
+          {
+            id: 'test',
+            name: pathe.basename(__filename),
+            raw: await readFile(__filename),
+          },
+        ] as Resource[],
+        // tags: [{ id: 'test', name: 'test' }] as Tag[],
+        path: 'c/test2.md',
+      },
+    ]),
     output: output({
       rootContentPath: tempPath,
       rootResourcePath: pathe.resolve(tempPath, '_resources'),
@@ -289,7 +275,6 @@ it('output', async () => {
   expect(await pathExists(pathe.resolve(rootPath, 'p/b.md'))).true
   expect(await pathExists(pathe.resolve(rootPath, 'resources/c.jpg'))).true
   const t = await readFile(pathe.resolve(rootPath, 'p/a.md'), 'utf-8')
-  console.log(t)
   const root = fromMarkdown(t)
   expect((select('link', root) as Link).url).eq('/p/b')
   expect((select('image', root) as Image).url).eq('../resources/c.jpg')
@@ -352,4 +337,57 @@ it('should support duplicate resource name', async () => {
   expect(await getContent('01/readme.md')).eq('01')
   expect(await getContent('02/readme.md')).eq('02')
   expect(await getContent('03/readme.md')).eq('03')
+})
+
+describe('meta', () => {
+  const getMeta = async (fsPath: string) => getYamlMeta(fromMarkdown(await readFile(fsPath, 'utf-8')))
+
+  it('should default not change content yaml meta', async () => {
+    await convert({
+      input: fromVirtual([
+        {
+          id: 'test1',
+          content: `---\nname: test 1\n---\n# test 1`,
+          path: 'test1.md',
+        },
+        {
+          id: 'test2',
+          content: `# test 1`,
+          path: 'test2.md',
+        },
+      ]),
+      output: output({
+        rootContentPath: tempPath,
+        rootResourcePath: pathe.resolve(tempPath, '_resources'),
+      }),
+    })
+    expect(await getMeta(pathe.resolve(tempPath, 'test1.md'))).deep.eq({
+      name: 'test 1',
+    })
+    expect(await getMeta(pathe.resolve(tempPath, 'test2.md'))).null
+  })
+
+  it('should can overwrite content yaml meta', async () => {
+    await convert({
+      input: fromVirtual([
+        {
+          id: 'test1',
+          content: `---\nname: test 1\n---\n# test 1`,
+          path: 'test1.md',
+        },
+        {
+          id: 'test2',
+          content: `# test 1`,
+          path: 'test2.md',
+        },
+      ]),
+      output: output({
+        rootContentPath: tempPath,
+        rootResourcePath: pathe.resolve(tempPath, '_resources'),
+        meta: () => null,
+      }),
+    })
+    expect(await getMeta(pathe.resolve(tempPath, 'test1.md'))).null
+    expect(await getMeta(pathe.resolve(tempPath, 'test2.md'))).null
+  })
 })

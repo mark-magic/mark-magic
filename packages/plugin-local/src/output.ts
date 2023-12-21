@@ -9,7 +9,17 @@ import {
   type OutputPlugin,
   type Resource,
 } from '@mark-magic/core'
-import { fromMarkdown, Link, Root, setYamlMeta, toMarkdown, Image, selectAll, HTML } from '@liuli-util/markdown-util'
+import {
+  fromMarkdown,
+  Link,
+  Root,
+  setYamlMeta,
+  toMarkdown,
+  Image,
+  selectAll,
+  HTML,
+  getYamlMeta,
+} from '@liuli-util/markdown-util'
 import filenamify from 'filenamify'
 import { dropRight, keyBy } from 'lodash-es'
 import { Required } from 'utility-types'
@@ -24,7 +34,6 @@ export function defaultOptions(
   options: Required<Partial<OutputOptions>, 'rootContentPath' | 'rootResourcePath'>,
 ): OutputOptions {
   return {
-    meta: calcMeta,
     contentPath: (content) =>
       pathe.resolve(options.rootContentPath, dropRight(content.path, 1).join('/'), filenamify(content.name) + '.md'),
     resourcePath: (resource) => pathe.resolve(options.rootResourcePath, filenamify(resource.name)),
@@ -137,17 +146,8 @@ export interface LocalContentMeta extends Pick<Content, 'name' | 'created' | 'up
   // tags: string[]
 }
 
-export function calcMeta(content: Content): LocalContentMeta {
-  return {
-    name: content.name,
-    // tags: content.tags.map((item) => item.title),
-    created: content.created,
-    updated: content.updated,
-  }
-}
-
 export interface OutputOptions extends LocalOutputConfig {
-  meta(content: Content): any
+  meta?(content: Content): any
   contentPath(content: Content): string
   resourcePath(content: Resource): string
   contentLink(o: {
@@ -200,7 +200,9 @@ export function output(
       }
       contentMap.set(content.id, fsPath)
       const root = fromMarkdown(content.content)
-      setYamlMeta(root, _options.meta(content))
+      if (_options.meta) {
+        setYamlMeta(root, _options.meta(content))
+      }
       const isAfter = convertLinks({ root, content, fsPath, contentMap: contentMap, resourceMap, ..._options })
       if (isAfter) {
         afterList.push({ fsPath, content: content })

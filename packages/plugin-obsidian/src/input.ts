@@ -11,7 +11,7 @@ import { sha1 } from './utils/sha1'
 import { lowcaseObjectKeys } from './utils/lowcase'
 
 export interface LocalNoteMeta {
-  Tags: string[]
+  tags: string[]
 }
 
 interface ScanNote {
@@ -84,7 +84,7 @@ export function convertLinks({
     if (findNote) {
       return [
         u('link', {
-          url: `:/${findNote.id}`,
+          url: `:/content/${findNote.id}`,
           children: [u('text', path.basename(fileName))],
         }),
       ]
@@ -97,10 +97,10 @@ export function convertLinks({
       wiki.embed
         ? u('image', {
             alt: path.basename(fileName),
-            url: `:/${resourceMap.get(fsPath)}`,
+            url: `:/resource/${resourceMap.get(fsPath)}`,
           })
         : u('link', {
-            url: `:/${resourceMap.get(fsPath)}`,
+            url: `:/resource/${resourceMap.get(fsPath)}`,
             children: [u('text', path.basename(fileName))],
           }),
     ]
@@ -126,13 +126,13 @@ export function input(options: { path: string; tag?: string }): InputPlugin {
           mdastExtensions: [wikiLinkFromMarkdown()],
         })
         const meta = lowcaseObjectKeys(getYamlMeta(root) ?? {}) as Partial<LocalNoteMeta>
-        if (typeof meta.Tags === 'string') {
-          meta.Tags = (meta.Tags as string)
+        if (typeof meta.tags === 'string') {
+          meta.tags = (meta.tags as string)
             .split(',')
             .map((it) => it.trim())
             .filter((it) => it.length !== 0)
         }
-        if (options.tag && !meta.Tags?.includes(options.tag)) {
+        if (options.tag && !meta.tags?.includes(options.tag)) {
           continue
         }
         root.children = root.children.filter((it) => it.type !== 'yaml')
@@ -143,7 +143,7 @@ export function input(options: { path: string; tag?: string }): InputPlugin {
           resourceMap,
           notePath: fsPath,
         })
-        const tags = meta.Tags
+        const tags = meta.tags?.filter((it) => it !== options.tag)
         const note: Content = {
           id: it.id,
           name: it.name,

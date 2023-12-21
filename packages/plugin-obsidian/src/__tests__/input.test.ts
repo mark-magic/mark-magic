@@ -1,19 +1,19 @@
 import path from 'path'
-import { describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 import * as obsidian from '../input'
 import { mkdir, readFile } from 'fs/promises'
 import { convertLinks, convertYamlTab, scan } from '../input'
 import { fromMarkdown, toMarkdown } from '@liuli-util/markdown-util'
 import { wikiLinkFromMarkdown, wikiLinkToMarkdown } from '../utils/wiki'
 import { writeFile } from 'fs/promises'
-import { chain, sortBy } from 'lodash-es'
+import { chain, pick, sortBy } from 'lodash-es'
 import { BiMultiMap, fromAsync } from '@mark-magic/utils'
 import { initTempPath } from '@liuli-util/test'
 import { sha1 } from '../utils/sha1'
 import { pathExists } from 'fs-extra/esm'
 import { AsyncArray } from '@liuli-util/async'
 
-const list = [
+const list: [string, string][] = [
   [
     'hello/hello world 1.md',
     `
@@ -41,7 +41,8 @@ const list = [
   ['hello world 1.md', `同名的 hello world 1`],
   ['test.png', `test`],
 ]
-const tempPath = initTempPath(__filename, async () => {
+
+async function writeTestFiles(list: [string, string][]) {
   await AsyncArray.forEach(list, async ([relPath, content]): Promise<void> => {
     await mkdir(path.resolve(tempPath, path.dirname(relPath)), { recursive: true })
     await writeFile(
@@ -52,9 +53,13 @@ const tempPath = initTempPath(__filename, async () => {
         .join('\n'),
     )
   })
-})
+}
+
+const tempPath = initTempPath(__filename)
 
 describe('utils', () => {
+  beforeEach(() => writeTestFiles(list))
+
   it('scan', async () => {
     const r = await scan(tempPath)
     // console.log(r)
@@ -74,7 +79,7 @@ describe('utils', () => {
     expect(r).not.includes('\t')
   })
 
-  it('convertLinks on basic', async () => {
+  it('convertLinks', async () => {
     const rootPath = path.resolve(tempPath)
     const notePath = path.resolve(rootPath, 'hello/hello world 2.md')
     const root = fromMarkdown(await readFile(notePath, 'utf-8'), {
@@ -139,48 +144,27 @@ describe('utils', () => {
   })
 })
 
-it('obsidianInput', async () => {
-  const list = await fromAsync(obsidian.input({ path: tempPath }).generate())
-  // console.log(list)
-  expect(list).length(3)
+it('basic', async () => {
+  await writeTestFiles([
+    ['test1.md', `[[test2]]`],
+    ['test2.md', `[[test1]]\n[[test3.png]]`],
+    ['test3.png', `test`],
+  ])
+  const r = await fromAsync(obsidian.input({ path: tempPath }).generate())
+  expect(r).length(2)
+  expect(r[0].name).eq('test1')
+  expect(r[0].content.trim()).eq(`[test2](:/content/${r[1].id})`)
+  expect(r[1].name).eq('test2')
+  expect(r[1].content.trim()).eq(`[test1](:/content/${r[0].id})\n[test3.png](:/resource/${r[1].resources[0].id})`)
+  expect(r[1].resources[0].raw.toString()).eq('test')
 })
 
-it('input for repate tags', async () => {
-  await writeFile(
-    path.resolve(tempPath, 'test1.md'),
-    `
----
-tags:
-  - blog
-  - blog
----
-  `.trim(),
-  )
-  await writeFile(
-    path.resolve(tempPath, 'test2.md'),
-    `
----
-tags:
-  - blog
-  - blog
----
-  `.trim(),
-  )
-  const list = await fromAsync(obsidian.input({ path: tempPath }).generate())
-  const r = chain(list)
-    .flatMap((it) => it.extra.tags)
-    .uniq()
-    .value()
-  // console.log(list)
-  expect(r.length).eq(0)
-})
-
-it('input multiple for id', async () => {
-  const r1 = await fromAsync(obsidian.input({ path: path.resolve(tempPath, 'assets') }).generate())
-  const r2 = await fromAsync(obsidian.input({ path: path.resolve(tempPath, 'assets') }).generate())
-  expect(sortBy(r1.map((item) => item.id))).deep.eq(sortBy(r2.map((item) => item.id)))
-})
-
-it('test toMarkdown', async () => {
-  toMarkdown(fromMarkdown(`- test`))
+it('filter and parse tag', async () => {
+  await writeTestFiles([
+    ['test1.md', `---\ntags:\n  - blog\n  - test\n---\n[[test2]]`],
+    ['test2.md', `[[test1]]`],
+  ])
+  const r = await fromAsync(obsidian.input({ path: tempPath, tag: 'blog' }).generate())
+  expect(r).length(1)
+  expect(r[0].extra.tags).deep.eq(['test'])
 })

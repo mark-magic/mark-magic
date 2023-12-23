@@ -1,5 +1,19 @@
 # @mark-magic/plugin-hexo
 
+## 0.10.0
+
+### Minor Changes
+
+- feat: 修改 tags 字段为字符串数组而不在额外包一层
+
+### Patch Changes
+
+- fix: 添加选项支持在导出 hexo 时清理掉 h1
+- fix: 修复导出的 hexo 内容中可能包含了重复的标题
+- Updated dependencies
+  - @mark-magic/plugin-local@0.10.0
+  - @mark-magic/core@0.10.0
+
 ## 0.9.4
 
 ### Patch Changes

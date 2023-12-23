@@ -1,5 +1,16 @@
 # @mark-magic/plugin-local
 
+## 0.10.0
+
+### Minor Changes
+
+- feat: 修改输出插件的默认行为，现在默认不再输出 yaml 元数据
+
+### Patch Changes
+
+- @mark-magic/core@0.10.0
+- @mark-magic/utils@0.10.0
+
 ## 0.9.4
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # @mark-magic/cli
 
+## 0.10.0
+
+### Patch Changes
+
+- fix(core): 修复在插件抛出 error 时没有终止的错误
+- @mark-magic/core@0.10.0
+
 ## 0.9.4
 
 ### Patch Changes

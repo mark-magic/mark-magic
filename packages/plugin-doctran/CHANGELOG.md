@@ -1,5 +1,18 @@
 # @mark-magic/plugin-doctran
 
+## 0.10.0
+
+### Minor Changes
+
+- feat: 改善翻译的 prompt，尽可能保持 markdown 链接的完整性
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/plugin-local@0.10.0
+  - @mark-magic/core@0.10.0
+  - @mark-magic/utils@0.10.0
+
 ## 0.9.4
 
 ### Patch Changes

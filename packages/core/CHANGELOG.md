@@ -1,5 +1,11 @@
 # @mark-magic/core
 
+## 0.10.0
+
+### Patch Changes
+
+- fix: 修复在插件抛出 error 时没有终止的错误
+
 ## 0.9.4
 
 ## 0.9.3

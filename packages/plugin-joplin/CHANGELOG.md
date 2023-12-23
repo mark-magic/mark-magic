@@ -1,5 +1,11 @@
 # @mami/plugin-joplin
 
+## 0.10.0
+
+### Minor Changes
+
+- feat: 修改 tags 字段为字符串数组而不在额外包一层
+
 ## 0.9.4
 
 ## 0.9.3

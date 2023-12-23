@@ -1,5 +1,12 @@
 # @mark-magic/plugin-epub
 
+## 0.10.0
+
+### Patch Changes
+
+- @mark-magic/core@0.10.0
+- @mark-magic/utils@0.10.0
+
 ## 0.9.4
 
 ### Patch Changes

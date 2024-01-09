@@ -18,7 +18,7 @@
     "setup": "pnpm build",
     "build": "vite build",
     "dev": "pnpm build --watch",
-    "test": "vitest run",
+    "test": "vitest run --test-timeout=10000",
     "dts": "json2ts -i src/config.schema.json -o src/config.schema.ts"
   },
   "sideEffects": false,

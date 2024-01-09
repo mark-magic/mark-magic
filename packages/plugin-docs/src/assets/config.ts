@@ -41,8 +41,7 @@ function _clearStrongAfterSpace(ends: string[]): MarkdownIt.PluginSimple {
   }
 }
 
-// @ts-expect-error 从外部替换
-const rss: RenderRssOptions = '{{rss}}'
+const rss: RenderRssOptions = JSON.parse(`INJECT_RSS_CONFIG`)
 
 function getFeed(): UserConfig {
   if (!(typeof rss === 'object' && rss.hostname && rss.copyright)) {
@@ -137,5 +136,5 @@ export default [
     },
   }),
   getFeed(),
-  '{{config}}' as UserConfig,
+  JSON.parse(`INJECT_VITEPRESS_CONFIG`) as UserConfig,
 ].reduce((a, b) => mergeConfig(a, b))

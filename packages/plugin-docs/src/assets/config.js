@@ -33,7 +33,7 @@ function _clearStrongAfterSpace(ends) {
     }
   }
 }
-const rss = '{{rss}}'
+const rss = JSON.parse(`INJECT_RSS_CONFIG`)
 function getFeed() {
   if (!(typeof rss === 'object' && rss.hostname && rss.copyright)) {
     return {}
@@ -116,6 +116,6 @@ var config_default = [
     },
   }),
   getFeed(),
-  '{{config}}',
+  JSON.parse(`INJECT_VITEPRESS_CONFIG`),
 ].reduce((a, b) => mergeConfig(a, b))
 export { config_default as default }

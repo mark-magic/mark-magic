@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { Content, Resource, convert } from '@mark-magic/core'
-import { fromAsync, fromVirtual } from '@mark-magic/utils'
+import { fromVirtual } from '@mark-magic/utils'
 import { output } from '../output'
 import path from 'pathe'
 import { initTempPath } from '@liuli-util/test'
@@ -8,7 +8,7 @@ import { pathExists } from 'fs-extra/esm'
 import * as local from '@mark-magic/plugin-local'
 import { parse } from 'node-html-parser'
 import { mkdir, readFile, writeFile } from 'fs/promises'
-import { Feed } from 'feed'
+import { build } from 'vitepress'
 
 let tempPath = initTempPath(__filename)
 
@@ -406,7 +406,8 @@ describe('rss', () => {
             {
               id: 'cover',
               name: 'cover.jpg',
-              raw: await readFile(path.resolve(__dirname, './assets/books/01/assets/cover.png')),
+              // 保证图片足够大不会被转换为 base64
+              raw: Buffer.from('t'.repeat(1024 * 1024 * 2), 'utf-8'),
             },
           ],
         },

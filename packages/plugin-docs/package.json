@@ -23,7 +23,6 @@
   },
   "sideEffects": false,
   "devDependencies": {
-    "json-schema-to-typescript": "^13.0.2",
     "@liuli-util/test": "^3.7.0",
     "@liuli-util/vite-plugin-node": "^0.5.0",
     "@types/fs-extra": "^11.0.1",
@@ -32,13 +31,13 @@
     "@types/mustache": "^4.2.2",
     "@types/node": "^20.10.4",
     "esbuild": "^0.18.7",
+    "json-schema-to-typescript": "^13.0.2",
     "markdown-it": "^14.0.0",
     "typescript": "^5.0.4",
     "vite": "^4.3.9",
     "vitest": "^1.0.4"
   },
   "dependencies": {
-    "node-html-parser": "^6.1.5",
     "@liuli-util/fs": "^0.1.0",
     "@liuli-util/markdown-util": "^0.8.0",
     "@liuli-util/tree": "^3.8.1",
@@ -49,9 +48,11 @@
     "fs-extra": "^11.1.1",
     "lodash-es": "^4.17.21",
     "mustache": "^4.2.0",
+    "node-html-parser": "^6.1.5",
     "pathe": "^1.1.1",
     "vitepress": "1.0.0-rc.31",
-    "vitepress-plugin-comment-with-giscus": "^1.1.11"
+    "vitepress-plugin-comment-with-giscus": "^1.1.11",
+    "vue": "^3.4.7"
   },
   "publishConfig": {
     "access": "public",

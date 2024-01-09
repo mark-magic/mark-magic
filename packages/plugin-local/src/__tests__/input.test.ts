@@ -3,7 +3,7 @@ import { expect, it } from 'vitest'
 import { input, scan } from '../input'
 import { fromAsync } from '@mark-magic/utils'
 import { AsyncArray } from '@liuli-util/async'
-import { chain, keyBy, omit, pick, uniq, uniqBy } from 'lodash-es'
+import { chain, keyBy, omit, pick, sortBy, uniq, uniqBy } from 'lodash-es'
 import { Content } from '@mark-magic/core'
 import { initTempPath } from '@liuli-util/test'
 import { mkdir, readFile, writeFile } from 'fs/promises'
@@ -171,7 +171,10 @@ it('重复的资源应该能保持相同的 id', async () => {
       path: path.resolve(tempPath, 'src'),
     }).generate(),
   )
-  const resources = contents.flatMap((it) => it.resources)
+  const resources = sortBy(
+    contents.flatMap((it) => it.resources),
+    (it) => it.raw.toString(),
+  )
   expect(resources).length(3)
   expect(uniq(resources)).length(2)
   expect(resources[0]).deep.eq(resources[1])

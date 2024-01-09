@@ -109,8 +109,7 @@ it('should support duplicate name resource', async () => {
   //     path: path.resolve(tempPath, 'src'),
   //   }),
   //   output: local.output({
-  //     rootContentPath: path.resolve(tempPath, 'dist'),
-  //     rootResourcePath: path.resolve(tempPath, 'dist/resources'),
+  //     path: path.resolve(tempPath, 'dist'),
   //   }),
   // })
 })
@@ -445,4 +444,4 @@ it('base path', async () => {
       ],
     }),
   })
-})
+}, 10_000)

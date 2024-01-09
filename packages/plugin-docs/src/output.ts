@@ -88,8 +88,7 @@ export function output(options: OutputOptions): OutputPlugin {
       // fix vitepress issue: https://github.com/vuejs/vitepress/issues/3363
       tempPath = path.resolve(root, '.temp', Date.now().toString())
       p = local.output({
-        rootContentPath: tempPath,
-        rootResourcePath: path.resolve(tempPath, 'resources'),
+        path: tempPath,
         meta: (o) => ({
           title: findTitle(o.content) ?? o.name,
         }),

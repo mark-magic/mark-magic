@@ -8,8 +8,7 @@ export function output(options?: { path?: string; base?: string; removeH1?: bool
   const postsPath = path.resolve(root, 'source/_posts')
   const resourcePath = path.resolve(root, 'source/resources')
   const p = local.output({
-    rootContentPath: postsPath,
-    rootResourcePath: resourcePath,
+    path: postsPath,
     meta: (it) => ({
       layout: 'post',
       title: it.name,

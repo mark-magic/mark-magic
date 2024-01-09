@@ -15,8 +15,7 @@ it.skip('transform by google', async () => {
     input: local.input({ path: path.resolve(__dirname, './assets/docs') }),
     transforms: [transform({ engine: 'google', to: 'en' })],
     output: local.output({
-      rootContentPath: path.resolve(tempPath, 'en'),
-      rootResourcePath: path.resolve(tempPath, 'en/resources'),
+      path: path.resolve(tempPath, 'en'),
       meta: () => null,
     }),
   })
@@ -29,8 +28,7 @@ it.skip('transform by openai', async () => {
     input: local.input({ path: path.resolve(__dirname, './assets/docs') }),
     transforms: [transform({ engine: 'openai', to: 'en', apiKey: import.meta.env.OPENAI_API_KEY })],
     output: local.output({
-      rootContentPath: path.resolve(tempPath, 'en'),
-      rootResourcePath: path.resolve(tempPath, 'en/resources'),
+      path: path.resolve(tempPath, 'en'),
       meta: () => null,
     }),
   }).on('transform', ({ content }) => {
@@ -43,8 +41,7 @@ it('transform for cache', async () => {
     input: local.input({ path: path.resolve(__dirname, './assets/docs') }),
     transforms: [transform({ engine: 'google', to: 'en' })],
     output: local.output({
-      rootContentPath: path.resolve(tempPath, 'en-01'),
-      rootResourcePath: path.resolve(tempPath, 'en-01/resources'),
+      path: path.resolve(tempPath, 'en-01'),
       meta: () => null,
     }),
   })
@@ -52,8 +49,7 @@ it('transform for cache', async () => {
     input: local.input({ path: path.resolve(__dirname, './assets/docs') }),
     transforms: [transform({ engine: 'google', to: 'en' })],
     output: local.output({
-      rootContentPath: path.resolve(tempPath, 'en-02'),
-      rootResourcePath: path.resolve(tempPath, 'en-02/resources'),
+      path: path.resolve(tempPath, 'en-02'),
       meta: () => null,
     }),
   })

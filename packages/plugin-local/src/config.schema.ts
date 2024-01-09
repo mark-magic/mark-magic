@@ -45,11 +45,7 @@ export interface LocalInputConfig {
  */
 export interface LocalOutputConfig {
   /**
-   * 内容的根目录路径
+   * 输出本地目录的路径
    */
-  rootContentPath: string
-  /**
-   * 资源的根目录路径
-   */
-  rootResourcePath: string
+  path: string
 }

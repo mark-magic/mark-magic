@@ -17,8 +17,7 @@ it.skip('output to local', async () => {
   await convert({
     input: ao3.input('https://archiveofourown.org/works/29943597/'),
     output: local.output({
-      rootContentPath: tempPath,
-      rootResourcePath: path.resolve(tempPath, 'resources'),
+      path: tempPath,
     }),
   })
 })

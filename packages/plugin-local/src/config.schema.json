@@ -65,16 +65,12 @@
       "type": "object",
       "description": "插件配置",
       "properties": {
-        "rootContentPath": {
+        "path": {
           "type": "string",
-          "description": "内容的根目录路径"
-        },
-        "rootResourcePath": {
-          "type": "string",
-          "description": "资源的根目录路径"
+          "description": "输出本地目录的路径"
         }
       },
-      "required": ["rootContentPath", "rootResourcePath"],
+      "required": ["path"],
       "additionalProperties": false
     }
   }

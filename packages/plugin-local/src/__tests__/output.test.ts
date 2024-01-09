@@ -3,7 +3,7 @@ import pathe from 'pathe'
 import { expect, it, describe } from 'vitest'
 import { convert, InputPlugin, Content, Resource } from '@mark-magic/core'
 import { convertLinks, output } from '../output'
-import { filenamifyPath } from 'filenamify'
+import filenamify, { filenamifyPath } from 'filenamify'
 import { Image, Link, fromMarkdown, getYamlMeta, select, toMarkdown } from '@liuli-util/markdown-util'
 import { BiMultiMap, fromVirtual } from '@mark-magic/utils'
 import { formatRelative } from '../utils'
@@ -89,8 +89,8 @@ it('basic', async () => {
       },
     ]),
     output: output({
-      rootContentPath: tempPath,
-      rootResourcePath: pathe.resolve(tempPath, '_resources'),
+      path: tempPath,
+      resourcePath: (it) => path.resolve(tempPath, '_resources', filenamify(it.name)),
     }),
   })
 
@@ -135,8 +135,8 @@ it('filename', async () => {
   await convert({
     input: generateVirtual,
     output: output({
-      rootContentPath: tempPath,
-      rootResourcePath: pathe.resolve(tempPath, '_resources'),
+      path: tempPath,
+      resourcePath: (it) => path.resolve(tempPath, '_resources', it.id + path.extname(it.name)),
     }),
   })
 
@@ -178,8 +178,8 @@ it('duplicate resource filename', async () => {
   await convert({
     input: generateVirtual,
     output: output({
-      rootContentPath: pathe.resolve(tempPath, 'source/_posts'),
-      rootResourcePath: pathe.resolve(tempPath, 'source/resources'),
+      path: pathe.resolve(tempPath, 'source/_posts'),
+      resourcePath: (it) => path.resolve(tempPath, 'source/resources', filenamify(it.name)),
     }),
   })
   expect(await pathExists(pathe.resolve(tempPath, 'source/resources/', pathe.basename(__filename)))).true
@@ -262,8 +262,7 @@ it('output', async () => {
   await convert({
     input: fromVirtual(list),
     output: output({
-      rootContentPath: postsPath,
-      rootResourcePath: resourcePath,
+      path: postsPath,
       meta: () => null,
       contentLink: ({ linkContentId: linkcontentId }) => `/p/${linkcontentId}`,
       resourceLink: ({ resource }) => `../resources/${resource.id}${pathe.extname(resource.name)}`,
@@ -323,8 +322,8 @@ it('should support duplicate resource name', async () => {
       path: path.resolve(tempPath, 'src'),
     }),
     output: output({
-      rootContentPath: path.resolve(tempPath, 'dist'),
-      rootResourcePath: path.resolve(tempPath, 'dist/resources'),
+      path: path.resolve(tempPath, 'dist'),
+      resourcePath: (resource) => pathe.resolve(tempPath, 'dist/resources', resource.id + pathe.extname(resource.name)),
     }),
   })
   async function getContent(p: string): Promise<string> {
@@ -357,8 +356,8 @@ describe('meta', () => {
         },
       ]),
       output: output({
-        rootContentPath: tempPath,
-        rootResourcePath: pathe.resolve(tempPath, '_resources'),
+        path: tempPath,
+        resourcePath: (resource) => pathe.resolve(tempPath, '_resources', resource.id + pathe.extname(resource.name)),
       }),
     })
     expect(await getMeta(pathe.resolve(tempPath, 'test1.md'))).deep.eq({
@@ -382,8 +381,8 @@ describe('meta', () => {
         },
       ]),
       output: output({
-        rootContentPath: tempPath,
-        rootResourcePath: pathe.resolve(tempPath, '_resources'),
+        path: tempPath,
+        resourcePath: (resource) => pathe.resolve(tempPath, '_resources', resource.id + pathe.extname(resource.name)),
         meta: () => null,
       }),
     })

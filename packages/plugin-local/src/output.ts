@@ -29,14 +29,15 @@ import { formatRelative } from './utils'
 import { mkdirp, remove } from 'fs-extra/esm'
 import { readFile, writeFile } from 'fs/promises'
 import { LocalOutputConfig } from './config.schema'
+import path from 'pathe'
 
-export function defaultOptions(
-  options: Required<Partial<OutputOptions>, 'rootContentPath' | 'rootResourcePath'>,
-): OutputOptions {
+const ResourceDirName = 'resources'
+
+export function defaultOptions(options: Required<Partial<OutputOptions>, 'path'>): OutputOptions {
   return {
     contentPath: (content) =>
-      pathe.resolve(options.rootContentPath, dropRight(content.path, 1).join('/'), filenamify(content.name) + '.md'),
-    resourcePath: (resource) => pathe.resolve(options.rootResourcePath, filenamify(resource.name)),
+      pathe.resolve(options.path, dropRight(content.path, 1).join('/'), filenamify(content.name) + '.md'),
+    resourcePath: (resource) => pathe.resolve(options.path, ResourceDirName, filenamify(resource.name)),
     contentLink: ({ contentPath: contentPath, linkContentPath: linkContentPath }) =>
       formatRelative(pathe.relative(pathe.dirname(contentPath), linkContentPath)),
     resourceLink: ({ contentPath: contentPath, resourcePath }) =>
@@ -149,7 +150,7 @@ export interface LocalContentMeta extends Pick<Content, 'name' | 'created' | 'up
 export interface OutputOptions extends LocalOutputConfig {
   meta?(content: Content): any
   contentPath(content: Content): string
-  resourcePath(content: Resource): string
+  resourcePath(resource: Resource): string
   contentLink(o: {
     content: Content
     contentPath: string
@@ -159,9 +160,7 @@ export interface OutputOptions extends LocalOutputConfig {
   resourceLink(o: { resource: Resource; contentPath: string; resourcePath: string }): string | undefined
 }
 
-export function output(
-  options: Required<Partial<OutputOptions>, 'rootContentPath' | 'rootResourcePath'>,
-): OutputPlugin {
+export function output(options: Required<Partial<OutputOptions>, 'path'>): OutputPlugin {
   const _options = defaultOptions(options)
   const resourceMap = new BiMultiMap<string, string>(),
     contentMap = new BiMultiMap<string, string>(),
@@ -169,9 +168,9 @@ export function output(
   return {
     name: 'local',
     async start() {
-      await Promise.all([remove(_options.rootContentPath), remove(_options.rootResourcePath)])
-      await mkdirp(_options.rootContentPath)
-      await mkdirp(_options.rootResourcePath)
+      const rootResourcePath = path.resolve(_options.path, ResourceDirName)
+      await Promise.all([remove(_options.path), remove(rootResourcePath)])
+      await Promise.all([mkdirp(_options.path), mkdirp(rootResourcePath)])
     },
     async handle(content) {
       await AsyncArray.forEach(content.resources, async (it) => {
@@ -179,21 +178,21 @@ export function output(
         if (resourceMap.has(it.id)) {
           return
         }
-        // let fsPath = path.resolve(options.rootResourcePath, filenamify(item.title))
         let fsPath = _options.resourcePath(it)
         if (resourceMap.has(fsPath)) {
           const ext = pathe.extname(it.name)
           fsPath = pathe.resolve(pathe.dirname(fsPath), pathe.basename(filenamify(it.name), ext) + '_' + it.id + ext)
         }
         resourceMap.set(it.id, fsPath)
+        await mkdirp(pathe.dirname(fsPath))
         await writeFile(fsPath, it.raw)
       })
 
-      // let fsPath = path.resolve(options.rootcontentPath, content.path.join('/'), filenamify(content.name) + '.md')
+      // let fsPath = path.resolve(options.path, content.path.join('/'), filenamify(content.name) + '.md')
       let fsPath = _options.contentPath(content)
       if (contentMap.has(fsPath)) {
         fsPath = pathe.resolve(
-          _options.rootContentPath,
+          _options.path,
           content.path.join('/'),
           filenamify(content.name) + '_' + content.id + '.md',
         )

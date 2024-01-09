@@ -15,8 +15,7 @@ export function output(options?: { root?: string; base?: string }): OutputPlugin
   const resourcePath = path.resolve(root, 'content/resources')
   const baseUrl = options?.base ?? '/'
   const p = local.output({
-    rootContentPath: postsPath,
-    rootResourcePath: resourcePath,
+    path: postsPath,
     meta: (note) =>
       ({
         title: note.name,

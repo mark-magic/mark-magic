@@ -21,8 +21,7 @@ export default defineConfig({
         }),
       ],
       output: local.output({
-        rootContentPath: './docs/en',
-        rootResourcePath: './docs/en/resources',
+        path: './docs/en',
         meta: () => null,
       }),
     },

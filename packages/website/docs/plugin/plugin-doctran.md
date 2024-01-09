@@ -22,8 +22,7 @@ tasks:
     output:
       name: '@mark-magic/plugin-local'
       config:
-        rootContentPath: './docs/en'
-        rootResourcePath: './docs/en/resources'
+        path: './docs/en'
 ```
 
 ## engine

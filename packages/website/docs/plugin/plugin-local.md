@@ -13,7 +13,7 @@ tasks:
         path: './book/'
 ```
 
-### path
+### path(input)
 
 递归扫描这个路径下所有的 markdown 文件及其引用的资源文件。
 
@@ -53,8 +53,7 @@ export function output(options?: { path?: string; base?: string }): OutputPlugin
   const postsPath = path.resolve(root, 'source/_posts')
   const resourcePath = path.resolve(root, 'source/resources')
   const p = local.output({
-    rootContentPath: postsPath,
-    rootResourcePath: resourcePath,
+    path: postsPath,
     meta: (it) => ({
       layout: 'post',
       title: it.name,
@@ -78,8 +77,7 @@ export function output(options?: { path?: string; base?: string }): OutputPlugin
 
 ```ts
 export interface OutputOptions {
-  rootContentPath: string
-  rootResourcePath: string
+  path: string
   meta(content: Content): any
   contentPath(content: Content): string
   resourcePath(content: Resource): string
@@ -95,13 +93,9 @@ export interface OutputOptions {
 
 你可以在使用 `local.output` 创建输出插件实例时控制输出的方方面面。
 
-### rootContentPath
+### path
 
 输出 markdown 文件的根目录，必填项。
-
-### rootResourcePath
-
-输出 markdown 文件引用资源的根目录，必填项。
 
 ### meta
 
@@ -131,9 +125,9 @@ updated: 1702805863284
 
 ### contentPath
 
-控制内容实际输出的路径，默认会根据 `rootContentPath` 及内容自身的 `path` 进行计算。
+控制内容实际输出的路径，默认会根据 `path` 及内容自身的 `path` 进行计算。
 
-例如 `rootContentPath` 是 _~/code/blog/posts/_ 一个内容数据如下
+例如 `path` 是 _~/code/blog/posts/_ 一个内容数据如下
 
 ```json
 {
@@ -147,9 +141,9 @@ updated: 1702805863284
 
 ### resourcePath
 
-控制资源实际输出的路径，默认会根据 `rootResourcePath` 及资源自身的 `name` 进行计算。
+控制资源实际输出的路径，默认会根据 `path` 及资源自身的 `name` 进行计算。
 
-例如 `rootResourcePath` 是 _~/code/blog/resources/_ 一个资源数据如下
+例如 `path` 是 _~/code/blog/_ 一个资源数据如下
 
 ```json
 {

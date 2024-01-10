@@ -3,7 +3,7 @@ import { OutputPlugin } from '@mark-magic/core'
 import path from 'pathe'
 import * as local from '@mark-magic/plugin-local'
 import { mkdir, writeFile } from 'fs/promises'
-import { copy, pathExists } from 'fs-extra/esm'
+import { copy, pathExists, remove } from 'fs-extra/esm'
 import { pick } from 'lodash-es'
 import { ISidebar, treeSidebarByPath } from '@mark-magic/utils'
 import { treeMap } from '@liuli-util/tree'
@@ -141,6 +141,7 @@ export function output(options: OutputOptions): OutputPlugin {
         await build(tempPath, {
           outDir: options.path,
         })
+        await remove(tempPath)
       }
     },
   }

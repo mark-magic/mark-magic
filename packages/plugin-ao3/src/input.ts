@@ -70,12 +70,12 @@ export function input(url: string): InputPlugin {
     async *generate() {
       const id = extractId(url)
       const list = await getBook(id)
-      const len = list.length.toString()
+      const len = Math.min(list.length, 2)
       for (let i = 0; i < list.length; i++) {
         const it = list[i]
         yield {
           id: it.id,
-          name: (i + 1).toString().padStart(len.length, '0'),
+          name: (i + 1).toString().padStart(len, '0'),
           content: '# ' + it.title + '\n\n' + it.content,
           path: [],
           resources: [],

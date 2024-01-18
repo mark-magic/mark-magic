@@ -12,7 +12,7 @@ it.skip('input get chapters', async () => {
   expect(list).length(7)
 })
 
-it.skip('output to local', async () => {
+it('output to local', async () => {
   await convert({
     input: ao3.input('https://archiveofourown.org/works/29943597/'),
     output: local.output({

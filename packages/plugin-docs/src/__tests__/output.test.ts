@@ -445,3 +445,14 @@ it('base path', async () => {
     }),
   })
 }, 10_000)
+
+it('should support break line', async () => {
+  await convert({
+    input: fromVirtual([{ id: 'index', path: '/index.md', content: '# test\n\n- before\n  after' }]),
+    output: output({
+      path: path.resolve(tempPath, 'dist'),
+      name: 'test name',
+    }),
+  })
+  expect(await readFile(path.resolve(tempPath, 'dist/index.html'), 'utf-8')).include('before<br> after')
+})

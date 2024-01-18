@@ -134,6 +134,7 @@ export default [
       attrs: {
         disable: true,
       },
+      breaks: true,
     },
   }),
   getFeed(),

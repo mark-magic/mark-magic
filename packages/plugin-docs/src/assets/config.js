@@ -113,6 +113,7 @@ var config_default = [
       attrs: {
         disable: true,
       },
+      breaks: true,
     },
   }),
   getFeed(),

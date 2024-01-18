@@ -13,12 +13,3 @@ it.skip('input get chapters', async () => {
   )
   console.log(list)
 })
-
-it.skip('output to local', async () => {
-  await convert({
-    input: ao3.input({ site: 'ao3', url: 'https://archiveofourown.org/works/29943597/' }),
-    output: local.output({
-      path: tempPath,
-    }),
-  })
-})

@@ -21,6 +21,8 @@ export interface Resource extends Data {
 
 /** 内容文件 */
 export interface Content extends Data {
+  /** 内容的标题，不包含后缀名，例如 .md */
+  name: string
   /** 文本内容，实质上并不真的关心格式 */
   content: string
   /** 文件的路径，用于规划目录，包括文件名本身，例如 books/01/001.md */

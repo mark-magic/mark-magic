@@ -1,88 +1,11 @@
-import { Content, InputPlugin } from '@mark-magic/core'
-import { parse } from 'node-html-parser'
-import { fromHtml } from 'hast-util-from-html'
-import { Root, toMarkdown } from '@liuli-util/markdown-util'
-import { toMdast } from 'hast-util-to-mdast'
+import { InputPlugin } from '@mark-magic/core'
+import { InputConfig } from './options'
+import { ao3 } from './ao3'
 
-// https://archiveofourown.org/works/29943597/
-export function extractId(url: string): string {
-  const match = url.match(/\/works\/(\d+)/)
-  if (match == null) {
-    throw new Error(`无法从 ${url} 中提取 id`)
-  }
-  return match[1]
+const map: Record<InputConfig['site'], (options: InputConfig) => InputPlugin> = {
+  ao3: ao3,
 }
 
-interface ChapterMeta {
-  bookId: string
-  id: string
-  title: string
-  content: string
-}
-
-function extractChapterContent(html: string): string {
-  const hast = fromHtml(html, { fragment: true })
-  const mdast = toMdast(hast as any)
-  return toMarkdown(mdast as Root)
-}
-
-export async function getBook(id: string): Promise<ChapterMeta[]> {
-  const res = await fetch(`https://archiveofourown.org/works/${id}?view_full_work=true`).then((r) => r.text())
-  return extractFromHTML(res).map((it) => ({ ...it, bookId: id }))
-}
-
-export function extractFromHTML(html: string): Pick<ChapterMeta, 'id' | 'title' | 'content'>[] {
-  const list = Array.from(parse(html).querySelectorAll('#chapters > .chapter'))
-  return list.map(($it) => {
-    const $title = $it.querySelector('.title')
-    if (!$title) {
-      throw new Error('无法提取章节标题')
-    }
-    const $a = $title.querySelector('a')
-    if (!$a) {
-      throw new Error('无法提取章节链接')
-    }
-    const chapterId = $a.getAttribute('href')?.match(/\/works\/\d+\/chapters\/(\d+)/)?.[1]
-    if (!chapterId) {
-      throw new Error('无法提取章节 id')
-    }
-    $title.querySelector('a')?.remove()
-    const title = $title.textContent?.trim().match('^: (.*)$')?.[1]
-    if (!title) {
-      throw new Error('无法提取章节标题')
-    }
-    const $content = $it.querySelector('.userstuff.module')
-    if (!$content) {
-      throw new Error('无法提取章节内容')
-    }
-    $content.querySelector('.landmark.heading')?.remove()
-    return {
-      id: chapterId,
-      title: title,
-      content: extractChapterContent($content.innerHTML) as string,
-    } as Pick<ChapterMeta, 'id' | 'title' | 'content'>
-  })
-}
-
-export function input(url: string): InputPlugin {
-  return {
-    name: 'ao3',
-    async *generate() {
-      const id = extractId(url)
-      const list = await getBook(id)
-      const len = Math.min(list.length, 2)
-      for (let i = 0; i < list.length; i++) {
-        const it = list[i]
-        yield {
-          id: it.id,
-          name: (i + 1).toString().padStart(len, '0'),
-          content: '# ' + it.title + '\n\n' + it.content,
-          path: [],
-          resources: [],
-          created: Date.now(),
-          updated: Date.now(),
-        } as Content
-      }
-    },
-  }
+export function input(options: InputConfig): InputPlugin {
+  return map[options.site](options)
 }

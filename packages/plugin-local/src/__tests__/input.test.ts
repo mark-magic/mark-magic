@@ -136,6 +136,15 @@ tags:
   expect(r1).deep.eq(r2)
 })
 
+it('测试 scan 得到的结果应该是有序的', async () => {
+  const list = sortBy(
+    Array.from({ length: 9 }, (_, i) => `0${i + 1}.md`),
+    () => Math.random(),
+  )
+  await AsyncArray.forEach(list, (it) => writeFile(path.resolve(tempPath, it), it))
+  console.log(await scan({ path: tempPath }))
+})
+
 it('重复的资源应该能保持相同的 id', async () => {
   const list = [
     {

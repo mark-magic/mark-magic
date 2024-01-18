@@ -41,7 +41,8 @@ function _clearStrongAfterSpace(ends: string[]): MarkdownIt.PluginSimple {
   }
 }
 
-const rss: RenderRssOptions = JSON.parse(`INJECT_RSS_CONFIG`)
+// @ts-expect-error
+const rss: RenderRssOptions = `INJECT_RSS_CONFIG`
 
 function getFeed(): UserConfig {
   if (!(typeof rss === 'object' && rss.hostname && rss.copyright)) {
@@ -136,5 +137,5 @@ export default [
     },
   }),
   getFeed(),
-  JSON.parse(`INJECT_VITEPRESS_CONFIG`) as UserConfig,
+  `INJECT_VITEPRESS_CONFIG` as UserConfig,
 ].reduce((a, b) => mergeConfig(a, b))

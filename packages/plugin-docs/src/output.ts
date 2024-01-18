@@ -116,8 +116,8 @@ export function output(options: OutputOptions): OutputPlugin {
       await mkdir(path.resolve(tempPath, '.vitepress'), { recursive: true })
       await writeFile(
         path.resolve(tempPath, '.vitepress/config.mjs'),
-        configRaw.replace('INJECT_VITEPRESS_CONFIG', JSON.stringify(config)).replace(
-          'INJECT_RSS_CONFIG',
+        configRaw.replace('`INJECT_VITEPRESS_CONFIG`', JSON.stringify(config)).replace(
+          '`INJECT_RSS_CONFIG`',
           JSON.stringify({
             ...options.rss,
             title: options.name,

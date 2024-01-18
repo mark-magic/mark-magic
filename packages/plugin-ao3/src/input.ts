@@ -16,46 +16,52 @@ export function extractId(url: string): string {
 interface ChapterMeta {
   bookId: string
   id: string
-  name: string
+  title: string
+  content: string
 }
 
-function getChaptersFromHTML(html: string): Omit<ChapterMeta, 'bookId'>[] {
-  const dom = parse(html)
-  return [...dom.querySelectorAll('#selected_id option')].map(
-    (el) =>
-      ({
-        id: el.getAttribute('value')!,
-        name: el.text.trim(),
-      } as ChapterMeta),
-  )
-}
-
-export async function getChapters(id: string): Promise<ChapterMeta[]> {
-  const res = await fetch(`https://archiveofourown.org/works/${id}`)
-  const html = await res.text()
-  return getChaptersFromHTML(html).map((it) => ({ ...it, bookId: id }))
-}
-
-async function fetchChapterHTML(chapter: ChapterMeta) {
-  const res = await fetch(`https://archiveofourown.org/works/${chapter.bookId}/chapters/${chapter.id}`)
-  const html = await res.text()
-  const dom = parse(html)
-  const el = dom.querySelector('#chapters .userstuff.module')
-  if (el == null) {
-    throw new Error(`无法从 ${chapter.id} 中提取内容`)
-  }
-  el.querySelector('.landmark.heading')?.remove()
-  const content = el.innerHTML
-  return content
-}
-async function extractChapterContent(html: string) {
+function extractChapterContent(html: string): string {
   const hast = fromHtml(html, { fragment: true })
   const mdast = toMdast(hast as any)
   return toMarkdown(mdast as Root)
 }
 
-export async function fetchChapterContent(chapter: ChapterMeta) {
-  return extractChapterContent(await fetchChapterHTML(chapter))
+export async function getBook(id: string): Promise<ChapterMeta[]> {
+  const res = await fetch(`https://archiveofourown.org/works/${id}?view_full_work=true`).then((r) => r.text())
+  return extractFromHTML(res).map((it) => ({ ...it, bookId: id }))
+}
+
+export function extractFromHTML(html: string): Pick<ChapterMeta, 'id' | 'title' | 'content'>[] {
+  const list = Array.from(parse(html).querySelectorAll('#chapters > .chapter'))
+  return list.map(($it) => {
+    const $title = $it.querySelector('.title')
+    if (!$title) {
+      throw new Error('无法提取章节标题')
+    }
+    const $a = $title.querySelector('a')
+    if (!$a) {
+      throw new Error('无法提取章节链接')
+    }
+    const chapterId = $a.getAttribute('href')?.match(/\/works\/\d+\/chapters\/(\d+)/)?.[1]
+    if (!chapterId) {
+      throw new Error('无法提取章节 id')
+    }
+    $title.querySelector('a')?.remove()
+    const title = $title.textContent?.trim().match('^: (.*)$')?.[1]
+    if (!title) {
+      throw new Error('无法提取章节标题')
+    }
+    const $content = $it.querySelector('.userstuff.module')
+    if (!$content) {
+      throw new Error('无法提取章节内容')
+    }
+    $content.querySelector('.landmark.heading')?.remove()
+    return {
+      id: chapterId,
+      title: title,
+      content: extractChapterContent($content.innerHTML) as string,
+    } as Pick<ChapterMeta, 'id' | 'title' | 'content'>
+  })
 }
 
 export function input(url: string): InputPlugin {
@@ -63,13 +69,14 @@ export function input(url: string): InputPlugin {
     name: 'ao3',
     async *generate() {
       const id = extractId(url)
-      const list = await getChapters(id)
-      for (const chapter of list) {
-        const content = await fetchChapterContent(chapter)
+      const list = await getBook(id)
+      const len = list.length.toString()
+      for (let i = 0; i < list.length; i++) {
+        const it = list[i]
         yield {
-          id: chapter.id,
-          name: chapter.name,
-          content,
+          id: it.id,
+          name: (i + 1).toString().padStart(len.length, '0'),
+          content: '# ' + it.title + '\n\n' + it.content,
           path: [],
           resources: [],
           created: Date.now(),

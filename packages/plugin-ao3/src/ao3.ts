@@ -1,6 +1,9 @@
 import { Content, InputPlugin } from '@mark-magic/core'
 import { parse } from 'node-html-parser'
-import { html2md } from './utils'
+import { InputConfig } from './utils'
+import { toMarkdown, Root } from '@liuli-util/markdown-util'
+import { fromHtml } from 'hast-util-from-html'
+import { toMdast } from 'hast-util-to-mdast'
 
 // https://archiveofourown.org/works/29943597/
 export function extractId(url: string): string {
@@ -21,6 +24,12 @@ interface ChapterMeta {
 export async function getBook(id: string): Promise<ChapterMeta[]> {
   const res = await fetch(`https://archiveofourown.org/works/${id}?view_full_work=true`).then((r) => r.text())
   return extractFromHTML(res).map((it) => ({ ...it, bookId: id }))
+}
+
+function html2md(html: string): string {
+  const hast = fromHtml(html, { fragment: true })
+  const mdast = toMdast(hast as any)
+  return toMarkdown(mdast as Root)
 }
 
 export function extractFromHTML(html: string): Pick<ChapterMeta, 'id' | 'title' | 'content'>[] {
@@ -56,11 +65,11 @@ export function extractFromHTML(html: string): Pick<ChapterMeta, 'id' | 'title' 
   })
 }
 
-export function ao3(url: string): InputPlugin {
+export function ao3(options: Pick<InputConfig, 'url'>): InputPlugin {
   return {
     name: 'ao3',
     async *generate() {
-      const id = extractId(url)
+      const id = extractId(options.url)
       const list = await getBook(id)
       const len = list.length
       for (let i = 0; i < list.length; i++) {

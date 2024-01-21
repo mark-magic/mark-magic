@@ -1,5 +1,20 @@
 # @mark-magic/plugin-ao3
 
+## 0.11.0
+
+### Minor Changes
+
+- feat: 为 sv 增加缓存功能
+- feat: 基本支持从 sufficientvelocity 下载小说
+- refactor: 重构为支持其他同人小说网站做准备
+- feat: 改进 ao3 插件，使用 仅请求一次避免速率限制
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/core@0.11.0
+  - @mark-magic/utils@0.11.0
+
 ## 0.10.0
 
 ### Patch Changes

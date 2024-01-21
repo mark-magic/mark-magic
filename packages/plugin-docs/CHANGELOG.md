@@ -1,5 +1,22 @@
 # @mark-magic/plugin-docs
 
+## 0.11.0
+
+### Minor Changes
+
+- fix: 使用 vitepress 渲染时需要配置 markdown: { breaks: true } 避免 commonmark 奇葩的软换行
+- fix: 修复替换配置为字符串时可能包含无法使用 JSON.parse 的字符
+- feat: 构建之后删除临时文件
+- test: 修改测试默认超时时间
+- feat(core): 支持错误时抛出错误到上层并且允许手动中断
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/core@0.11.0
+  - @mark-magic/plugin-local@0.11.0
+  - @mark-magic/utils@0.11.0
+
 ## 0.10.0
 
 ### Patch Changes
@@ -13,7 +30,7 @@
 
 ### Patch Changes
 
-- fix(plugin-docs): 修复生成的 rss 中的图片链接不是绝对路径的错误
+- fix: 修复生成的 rss 中的图片链接不是绝对路径的错误
 - fix: 修复生成的 rss 会有灵宽度字符 &ZeroWidthSpace; 的问题
 - @mark-magic/core@0.9.4
 - @mark-magic/utils@0.9.4

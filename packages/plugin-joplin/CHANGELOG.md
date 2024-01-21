@@ -1,5 +1,11 @@
 # @mami/plugin-joplin
 
+## 0.11.0
+
+### Minor Changes
+
+- feat(core): 支持错误时抛出错误到上层并且允许手动中断
+
 ## 0.10.0
 
 ### Minor Changes

@@ -1,5 +1,18 @@
 # @mark-magic/plugin-doctran
 
+## 0.11.0
+
+### Minor Changes
+
+- feat(plugin-local): 将 rootContentPath/rootResourcePath 缩减为一个 path 配置与输入匹配
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/core@0.11.0
+  - @mark-magic/plugin-local@0.11.0
+  - @mark-magic/utils@0.11.0
+
 ## 0.10.0
 
 ### Minor Changes

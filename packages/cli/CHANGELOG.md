@@ -1,5 +1,17 @@
 # @mark-magic/cli
 
+## 0.11.0
+
+### Minor Changes
+
+- feat(core): 支持错误时抛出错误到上层并且允许手动中断
+- fix: 修复单元测试错误并添加 ci 以便后续及早发现
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/core@0.11.0
+
 ## 0.10.0
 
 ### Patch Changes

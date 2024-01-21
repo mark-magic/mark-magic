@@ -1,5 +1,11 @@
 # @mark-magic/plugin-ao3
 
+## 0.11.1
+
+### Patch Changes
+
+- fix: 修复输出的文件名按照章节数量计算
+
 ## 0.11.0
 
 ### Minor Changes

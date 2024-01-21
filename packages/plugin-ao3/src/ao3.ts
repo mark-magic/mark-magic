@@ -71,7 +71,7 @@ export function ao3(options: Pick<InputConfig, 'url'>): InputPlugin {
     async *generate() {
       const id = extractId(options.url)
       const list = await getBook(id)
-      const len = list.length
+      const len = list.length.toString().length
       for (let i = 0; i < list.length; i++) {
         const it = list[i]
         const name = (i + 1).toString().padStart(len, '0')

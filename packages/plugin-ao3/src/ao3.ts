@@ -1,5 +1,5 @@
 import { Content, InputPlugin } from '@mark-magic/core'
-import { parse } from 'node-html-parser'
+import { parse, HTMLElement } from 'node-html-parser'
 import { InputConfig } from './utils'
 import { toMarkdown, Root } from '@liuli-util/markdown-util'
 import { fromHtml } from 'hast-util-from-html'
@@ -33,7 +33,24 @@ function html2md(html: string): string {
 }
 
 export function extractFromHTML(html: string): Pick<ChapterMeta, 'id' | 'title' | 'content'>[] {
-  const list = Array.from(parse(html).querySelectorAll('#chapters > .chapter'))
+  const $dom = parse(html)
+  const list = Array.from($dom.querySelectorAll('#chapters > .chapter'))
+  // 单章节模式
+  if (list.length === 0) {
+    const id = $dom.querySelector('#kudo_commentable_id')?.getAttribute('value')
+    if (!id) {
+      throw new Error('无法提取章节 id')
+    }
+    const title = $dom.querySelector('#workskin .title.heading')?.textContent.trim()
+    if (!title) {
+      throw new Error('无法提取章节标题')
+    }
+    const html = $dom.querySelector('#chapters > .userstuff')?.innerHTML
+    if (!html) {
+      throw new Error('无法提取章节内容')
+    }
+    return [{ id, title, content: html2md(html) }]
+  }
   return list.map(($it) => {
     const $title = $it.querySelector('.title')
     if (!$title) {

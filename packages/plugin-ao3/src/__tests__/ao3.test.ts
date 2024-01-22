@@ -38,6 +38,15 @@ it.skip('output to local of 44255836', async () => {
   })
 })
 
+it('只有一章的情况', async () => {
+  await convert({
+    input: ao3({ url: 'https://archiveofourown.org/works/50740075' }),
+    output: local.output({
+      path: tempPath,
+    }),
+  })
+})
+
 it.skip('输出的文件名是按照章节数量计算的', async () => {
   await convert({
     input: ao3({ url: 'https://archiveofourown.org/works/777002' }),

@@ -3,6 +3,7 @@ import { initTempPath } from '@liuli-util/test'
 import { ao3, extractId } from '../ao3'
 import { convert } from '@mark-magic/core'
 import * as local from '@mark-magic/plugin-local'
+import * as epub from '@mark-magic/plugin-epub'
 import { fromAsync } from '@mark-magic/utils'
 import { readdir } from 'fs/promises'
 import { pathExists } from 'fs-extra/esm'
@@ -58,3 +59,17 @@ it.skip('输出的文件名是按照章节数量计算的', async () => {
   })
   ;(await readdir(tempPath)).filter((it) => it.endsWith('.md')).forEach((it) => expect(it).match(/^\d{2}\.md$/))
 }, 20_000)
+
+it.skip('should output epub format', async () => {
+  await convert({
+    input: ao3({ url: 'https://archiveofourown.org/works/29943597/' }),
+    output: epub.output({
+      path: path.resolve(tempPath, 'test.epub'),
+      id: '29943597',
+      title: 'test',
+      creator: 'mark-magic',
+      publisher: 'mark-magic',
+    }),
+  })
+  expect((await readdir(tempPath)).filter((it) => it.endsWith('.epub'))).length(1)
+})

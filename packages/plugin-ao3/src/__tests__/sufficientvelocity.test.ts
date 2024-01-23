@@ -69,3 +69,14 @@ it.skip('output to local for cache', async () => {
   await f()
   expect(spy).toBeCalledTimes(len)
 })
+
+it.skip('output to local for 122821', async () => {
+  await convert({
+    input: sufficientvelocity({
+      url: 'https://forums.sufficientvelocity.com/threads/incubator-quest-pmmm-quest.122821/',
+    }),
+    output: local.output({
+      path: tempPath,
+    }),
+  })
+})

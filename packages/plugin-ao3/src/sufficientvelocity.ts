@@ -1,5 +1,5 @@
-import { Content, InputPlugin } from '@mark-magic/core'
-import { InputConfig } from './utils'
+import { Content } from '@mark-magic/core'
+import { InputConfig, NovelInputPlugin, NovelMeta, renderReadme } from './utils'
 import { parse, HTMLElement } from 'node-html-parser'
 import { fromHtml } from 'hast-util-from-html'
 import { toMdast } from 'hast-util-to-mdast'
@@ -28,7 +28,7 @@ export function extractId(url: string): string {
 
 interface ChapterData {
   id: string
-  title: string
+  name: string
   content: string
   created: number
   updated: number
@@ -66,7 +66,7 @@ function extractChapterFromHTML($it: HTMLElement): ChapterData {
   })
   return {
     id,
-    title,
+    name: title,
     content: toMarkdown(mdast as any),
     created,
     updated,
@@ -107,7 +107,9 @@ export function getCachePath() {
   return path.resolve(dir, 'sufficientvelocity.json')
 }
 
-function extractReadmeFromHTML(html: string): Pick<ChapterData, 'title' | 'content' | 'created' | 'updated'> {
+function extractReadmeFromHTML(
+  html: string,
+): Pick<ChapterData, 'content' | 'created' | 'updated'> & Omit<NovelMeta, 'id'> {
   const $dom = parse(html)
   const title = $dom.querySelector('.p-title-value')?.textContent.trim()
   if (!title) {
@@ -127,9 +129,19 @@ function extractReadmeFromHTML(html: string): Pick<ChapterData, 'title' | 'conte
   if (!updatedStr) {
     updatedStr = createdStr
   }
+  const $creator = $dom.querySelector('.p-description .username')
+  if (!$creator) {
+    throw new Error('无法提取作者')
+  }
+  const creatorName = $creator.textContent?.trim()
+  if (!creatorName) {
+    throw new Error('无法提取作者')
+  }
+  const creatorLink = 'https://forums.sufficientvelocity.com/' + $creator.getAttribute('href')
   return {
-    title,
+    name: title,
     content,
+    creator: { name: creatorName, url: creatorLink },
     created: new Date(createdStr).getTime(),
     updated: new Date(updatedStr).getTime(),
   }
@@ -139,7 +151,7 @@ export function sufficientvelocity(
   options: Pick<InputConfig, 'url'> & {
     cached?: boolean
   },
-): InputPlugin {
+): NovelInputPlugin {
   return {
     name: 'sufficientvelocity',
     async *generate() {
@@ -164,13 +176,13 @@ export function sufficientvelocity(
         // 提取 id
         const id = extractId(options.url)
         // 根据 id 提取第一页的数据，并获取总页数
-        const html = await fetchPageOfCache(id, 1)
-        const pages = extractPagesFromHTML(html)
-        const readme = extractReadmeFromHTML(html)
+        const firstHtml = await fetchPageOfCache(id, 1)
+        const pages = extractPagesFromHTML(firstHtml)
+        const readme = extractReadmeFromHTML(firstHtml)
         yield {
           id: `${id}_readme`,
           name: 'readme',
-          content: '# ' + readme.title + '\n\n' + readme.content,
+          content: renderReadme({ ...readme, url: options.url }),
           path: ['readme.md'],
           created: readme.created,
           updated: readme.updated,
@@ -196,7 +208,7 @@ export function sufficientvelocity(
             yield {
               id: it.id,
               name,
-              content: '# ' + it.title + '\n\n' + it.content,
+              content: '# ' + it.name + '\n\n' + it.content,
               path: [name + '.md'],
               created: it.created,
               updated: it.updated,
@@ -212,6 +224,15 @@ export function sufficientvelocity(
           await writeJson(cachePath, map)
         }
       }
+    },
+    match() {
+      return options.url.startsWith('https://forums.sufficientvelocity.com/threads/')
+    },
+    async getMeta() {
+      const id = extractId(options.url)
+      const firstHtml = await fetchPage(id, 1)
+      const readme = extractReadmeFromHTML(firstHtml)
+      return { ...readme, id }
     },
   }
 }

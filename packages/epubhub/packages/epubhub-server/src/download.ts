@@ -8,24 +8,20 @@ import { readFile } from 'fs/promises'
 
 export async function generate(url: string): Promise<string> {
   const id = nanoid()
-  const u = new URL(url)
-  const site =
-    u.hostname === 'archiveofourown.org'
-      ? ('ao3' as const)
-      : u.hostname === 'forums.sufficientvelocity.com'
-      ? ('sufficientvelocity' as const)
-      : null
-  if (site === null) {
+  const fsPath = path.resolve(__dirname, `../.temp/${id}.epub`)
+  const input = ao3.input({ url })
+  if (!input.match()) {
     throw new Error('Invalid url')
   }
-  const fsPath = path.resolve(__dirname, `../.temp/${id}.epub`)
+  const meta = await input.getMeta?.()
   await convert({
-    input: ao3.input({ url, site }),
+    input,
     output: epub.output({
       path: fsPath,
-      creator: 'mark-magic',
-      id: 'mark-magic',
-      title: 'test',
+      id: meta?.id ?? id,
+      title: meta?.name ?? id,
+      creator: meta?.creator.name ?? 'mark-magic',
+      publisher: 'mark-magic',
     }),
   }).on('generate', (it) => {
     console.log('generate', it.content.name)

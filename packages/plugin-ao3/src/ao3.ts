@@ -1,6 +1,6 @@
-import { Content, InputPlugin } from '@mark-magic/core'
+import { Content } from '@mark-magic/core'
 import { parse, HTMLElement } from 'node-html-parser'
-import { InputConfig } from './utils'
+import { InputConfig, NovelInputPlugin, NovelMeta, renderReadme } from './utils'
 import { toMarkdown, Root } from '@liuli-util/markdown-util'
 import { fromHtml } from 'hast-util-from-html'
 import { toMdast } from 'hast-util-to-mdast'
@@ -15,15 +15,9 @@ export function extractId(url: string): string {
 }
 
 interface ChapterMeta {
-  bookId: string
   id: string
-  title: string
+  name: string
   content: string
-}
-
-async function getBook(id: string): Promise<ExtractData> {
-  const res = await fetch(`https://archiveofourown.org/works/${id}?view_full_work=true`).then((r) => r.text())
-  return extractFromHTML(res, id)
 }
 
 function html2md(html: string): string {
@@ -32,7 +26,7 @@ function html2md(html: string): string {
   return toMarkdown(mdast as Root)
 }
 
-function extractReadmeFromHTML($dom: HTMLElement): Pick<ChapterMeta, 'title' | 'content'> {
+function extractReadmeFromHTML($dom: HTMLElement): Pick<ChapterMeta, 'name' | 'content'> & Omit<NovelMeta, 'id'> {
   const html = $dom.querySelector('.summary.module .userstuff')?.innerHTML.trim()
   if (!html) {
     throw new Error('无法提取简介')
@@ -41,9 +35,16 @@ function extractReadmeFromHTML($dom: HTMLElement): Pick<ChapterMeta, 'title' | '
   if (!title) {
     throw new Error('无法提取标题')
   }
+  const $creator = $dom.querySelector('.byline.heading [rel="author"]')
+  if (!$creator) {
+    throw new Error('无法提取作者')
+  }
+  const creatorName = $creator.textContent.trim()
+  const creatorLink = 'https://archiveofourown.org/' + $creator.getAttribute('href')
   return {
-    title,
+    name: title,
     content: html2md(html),
+    creator: { name: creatorName, url: creatorLink },
   }
 }
 
@@ -52,17 +53,11 @@ interface ExtractData {
   chapters: ChapterMeta[]
 }
 
-export function extractFromHTML(html: string, bookId: string): ExtractData {
-  const $dom = parse(html)
+function extractChaptersFromHTML($dom: HTMLElement): ChapterMeta[] {
   const list = Array.from($dom.querySelectorAll('#chapters > .chapter'))
   const id = $dom.querySelector('#kudo_commentable_id')?.getAttribute('value')
   if (!id) {
     throw new Error('无法提取书籍 id')
-  }
-  const readme: ChapterMeta = {
-    ...extractReadmeFromHTML($dom),
-    id: `${id}_readme`,
-    bookId,
   }
   // 单章节模式
   if (list.length === 0) {
@@ -74,54 +69,56 @@ export function extractFromHTML(html: string, bookId: string): ExtractData {
     if (!html) {
       throw new Error('无法提取章节内容')
     }
-    return { readme, chapters: [{ id, title, content: html2md(html), bookId }] }
+    return [{ id, name: title, content: html2md(html) }]
   }
-  return {
-    readme,
-    chapters: list.map(($it) => {
-      const $title = $it.querySelector('.title')
-      if (!$title) {
-        throw new Error('无法提取章节标题')
-      }
-      const $a = $title.querySelector('a')
-      if (!$a) {
-        throw new Error('无法提取章节链接')
-      }
-      const chapterId = $a.getAttribute('href')?.match(/\/works\/\d+\/chapters\/(\d+)/)?.[1]
-      if (!chapterId) {
-        throw new Error('无法提取章节 id')
-      }
-      $title.querySelector('a')?.remove()
-      const title = $title.textContent?.trim().match('^: (.*)$')?.[1]
-      if (!title) {
-        throw new Error('无法提取章节标题')
-      }
-      const $content = $it.querySelector('.userstuff.module')
-      if (!$content) {
-        throw new Error('无法提取章节内容')
-      }
-      $content.querySelector('.landmark.heading')?.remove()
-      return {
-        id: chapterId,
-        title: title,
-        content: html2md($content.innerHTML) as string,
-        bookId,
-      } as ChapterMeta
-    }),
-  }
+  return list.map(($it) => {
+    const $title = $it.querySelector('.title')
+    if (!$title) {
+      throw new Error('无法提取章节标题')
+    }
+    const $a = $title.querySelector('a')
+    if (!$a) {
+      throw new Error('无法提取章节链接')
+    }
+    const chapterId = $a.getAttribute('href')?.match(/\/works\/\d+\/chapters\/(\d+)/)?.[1]
+    if (!chapterId) {
+      throw new Error('无法提取章节 id')
+    }
+    $title.querySelector('a')?.remove()
+    const title = $title.textContent?.trim().match('^: (.*)$')?.[1]
+    if (!title) {
+      throw new Error('无法提取章节标题')
+    }
+    const $content = $it.querySelector('.userstuff.module')
+    if (!$content) {
+      throw new Error('无法提取章节内容')
+    }
+    $content.querySelector('.landmark.heading')?.remove()
+    return {
+      id: chapterId,
+      name: title,
+      content: html2md($content.innerHTML) as string,
+    } as ChapterMeta
+  })
 }
 
-export function ao3(options: Pick<InputConfig, 'url'>): InputPlugin {
+export function ao3(options: Pick<InputConfig, 'url'>): NovelInputPlugin {
   return {
     name: 'ao3',
     async *generate() {
       const id = extractId(options.url)
-      const { chapters, readme } = await getBook(id)
+      const html = await fetch(`https://archiveofourown.org/works/${id}?view_full_work=true`).then((r) => r.text())
+      const $dom = parse(html)
+      const chapters = extractChaptersFromHTML($dom)
+      const readme = extractReadmeFromHTML($dom)
       const len = chapters.length.toString().length
       yield {
-        id: readme.id,
+        id: `${id}_readme`,
         name: 'readme',
-        content: '# ' + readme.title + '\n\n' + readme.content,
+        content: renderReadme({
+          ...readme,
+          url: options.url,
+        }),
         path: ['readme.md'],
         resources: [],
         created: Date.now(),
@@ -133,12 +130,25 @@ export function ao3(options: Pick<InputConfig, 'url'>): InputPlugin {
         yield {
           id: it.id,
           name,
-          content: '# ' + it.title + '\n\n' + it.content,
+          content: '# ' + it.name + '\n\n' + it.content,
           path: [name + '.md'],
           resources: [],
           created: Date.now(),
           updated: Date.now(),
         } as Content
+      }
+    },
+    match(): boolean {
+      return options.url.startsWith('https://archiveofourown.org/works/')
+    },
+    async getMeta() {
+      const id = extractId(options.url)
+      const html = await fetch(`https://archiveofourown.org/works/${id}`).then((r) => r.text())
+      const $dom = parse(html)
+      const readme = extractReadmeFromHTML($dom)
+      return {
+        ...readme,
+        id,
       }
     },
   }

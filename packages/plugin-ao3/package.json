@@ -24,6 +24,7 @@
   "devDependencies": {
     "@liuli-util/test": "^3.6.0",
     "@liuli-util/vite-plugin-node": "^0.3.0",
+    "@mark-magic/epub": "workspace:^",
     "@mark-magic/plugin-epub": "workspace:^",
     "@mark-magic/plugin-local": "workspace:^",
     "@types/fs-extra": "^11.0.1",

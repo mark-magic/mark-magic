@@ -27,6 +27,7 @@ function useAsyncFn<T extends (...args: any[]) => Promise<any>>(fn: T): AsyncSta
         return value.value
       } catch (e) {
         error.value = e
+        value.value = null
       } finally {
         loading.value = false
       }
@@ -63,9 +64,26 @@ function Loading() {
   )
 }
 
+const supports = [
+  {
+    name: 'Archive of Our Own',
+    url: 'https://archiveofourown.org',
+  },
+  {
+    name: 'Sufficient Velocity',
+    url: 'https://forums.sufficientvelocity.com/',
+  },
+  {
+    name: 'Bilibili readlist',
+    url: 'https://www.bilibili.com/read/home',
+  },
+]
 export function App() {
   const url = useSignal('')
   const { state, execute: onGen } = useAsyncFn(async () => {
+    if (url.value.trim() === '') {
+      return
+    }
     const resp = await fetch('/api/generate', {
       method: 'POST',
       body: JSON.stringify({ url: url.value }),
@@ -97,6 +115,11 @@ export function App() {
             value={url}
             onInput={(ev) => (url.value = (ev.target as HTMLInputElement).value)}
             required={true}
+            onKeyPress={async (ev) => {
+              if (ev.key === 'Enter') {
+                await onGen()
+              }
+            }}
           />
         </div>
         <div className="mb-4">
@@ -124,20 +147,11 @@ export function App() {
       </div>
       <hr className="my-8" />
       <div>
-        Supports:
+        <h2 className="text-xl font-bold mb-4">Supports</h2>
         <ul className="list-disc list-inside">
-          {[
-            {
-              name: 'Archive of Our Own',
-              url: 'https://archiveofourown.org',
-            },
-            {
-              name: 'Sufficient Velocity',
-              url: 'https://forums.sufficientvelocity.com/',
-            },
-          ].map((it) => (
-            <li>
-              <a href={it.url} class={'text-blue-500'} target={'_blank'}>
+          {supports.map((it) => (
+            <li key={it.name}>
+              <a href={it.url} className="text-blue-500" target="_blank" rel="noopener noreferrer">
                 {it.name}
               </a>
             </li>
@@ -146,7 +160,7 @@ export function App() {
       </div>
       <footer className="mt-8 text-center">
         <a href="https://github.com/mark-magic/mark-magic" className="text-blue-500" target={'_blank'}>
-          @mark-magic
+          mark-magic @ 2024
         </a>
       </footer>
     </div>

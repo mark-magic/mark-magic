@@ -438,6 +438,9 @@ importers:
       '@liuli-util/vite-plugin-node':
         specifier: ^0.3.0
         version: 0.3.0(@types/node@18.11.9)(rollup@3.29.4)(vite@4.5.1)
+      '@mark-magic/epub':
+        specifier: workspace:^
+        version: link:../epub
       '@mark-magic/plugin-epub':
         specifier: workspace:^
         version: link:../plugin-epub

@@ -4,9 +4,9 @@ import { ao3, extractId } from '../ao3'
 import { convert } from '@mark-magic/core'
 import * as local from '@mark-magic/plugin-local'
 import { fromAsync } from '@mark-magic/utils'
-import { pathExists } from 'fs-extra'
-import path from 'pathe'
 import { readdir } from 'fs/promises'
+import { pathExists } from 'fs-extra/esm'
+import path from 'pathe'
 
 const tempPath = initTempPath(__filename)
 
@@ -17,7 +17,7 @@ it('extract ao3 id', () => {
 
 it.skip('input get chapters', async () => {
   const list = await fromAsync(ao3({ url: 'https://archiveofourown.org/works/29943597/' }).generate())
-  expect(list).length(7)
+  expect(list).length(8)
 })
 
 it.skip('output to local', async () => {
@@ -27,6 +27,8 @@ it.skip('output to local', async () => {
       path: tempPath,
     }),
   })
+  expect(await pathExists(path.resolve(tempPath, 'readme.md'))).true
+  expect((await readdir(tempPath)).filter((it) => it.endsWith('.md'))).length(8)
 })
 
 it.skip('output to local of 44255836', async () => {
@@ -38,7 +40,7 @@ it.skip('output to local of 44255836', async () => {
   })
 })
 
-it('只有一章的情况', async () => {
+it.skip('只有一章的情况', async () => {
   await convert({
     input: ao3({ url: 'https://archiveofourown.org/works/50740075' }),
     output: local.output({

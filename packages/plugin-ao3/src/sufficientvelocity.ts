@@ -107,6 +107,34 @@ export function getCachePath() {
   return path.resolve(dir, 'sufficientvelocity.json')
 }
 
+function extractReadmeFromHTML(html: string): Pick<ChapterData, 'title' | 'content' | 'created' | 'updated'> {
+  const $dom = parse(html)
+  const title = $dom.querySelector('.p-title-value')?.textContent.trim()
+  if (!title) {
+    throw new Error('无法提取标题')
+  }
+  const content = $dom.querySelector('.threadmarkListingHeader-content .bbWrapper')?.textContent.trim()
+  if (!content) {
+    throw new Error('无法提取简介')
+  }
+  const createdStr = $dom.querySelector('.threadmarkListingHeader-content .u-dt')?.getAttribute('data-time')
+  if (!createdStr) {
+    throw new Error('无法提取创建时间')
+  }
+  let updatedStr = $dom
+    .querySelector('.threadmarkListingHeader-content .u-dt[itemprop="dateModified"]')
+    ?.getAttribute('data-time')
+  if (!updatedStr) {
+    updatedStr = createdStr
+  }
+  return {
+    title,
+    content,
+    created: new Date(createdStr).getTime(),
+    updated: new Date(updatedStr).getTime(),
+  }
+}
+
 export function sufficientvelocity(
   options: Pick<InputConfig, 'url'> & {
     cached?: boolean
@@ -138,6 +166,16 @@ export function sufficientvelocity(
         // 根据 id 提取第一页的数据，并获取总页数
         const html = await fetchPageOfCache(id, 1)
         const pages = extractPagesFromHTML(html)
+        const readme = extractReadmeFromHTML(html)
+        yield {
+          id: `${id}_readme`,
+          name: 'readme',
+          content: '# ' + readme.title + '\n\n' + readme.content,
+          path: ['readme.md'],
+          created: readme.created,
+          updated: readme.updated,
+          resources: [],
+        }
         const len = ((pages - 1) * 10).toString().length
         for (let i = 1, k = 1; i <= pages; i++) {
           const html = await fetchPageOfCache(id, i)

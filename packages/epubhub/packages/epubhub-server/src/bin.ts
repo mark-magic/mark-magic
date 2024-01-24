@@ -46,6 +46,7 @@ app.post(
     if (typeof url !== 'string') {
       throw new Error('Invalid url')
     }
+    console.log('generate', url)
     const r = await generate(url)
     res.json({ url: r })
   }),

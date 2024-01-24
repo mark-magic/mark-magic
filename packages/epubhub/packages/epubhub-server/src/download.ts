@@ -17,7 +17,7 @@ export async function generate(url: string): Promise<string> {
   const fsPath = path.resolve(__dirname, `../.temp/${id}.epub`)
   const input = ao3.input({ url })
   if (!input.match()) {
-    throw new Error('Invalid url')
+    throw new Error('Invalid url ')
   }
   const meta = await input.getMeta?.()
   await convert({

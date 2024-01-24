@@ -1,0 +1,5 @@
+FROM --platform=linux/amd64 node:lts-alpine
+COPY ./package.json ./
+COPY ./dist ./
+CMD ["node", "bin.js"]
+EXPOSE 8080

@@ -4,7 +4,13 @@ import * as epub from '@mark-magic/plugin-epub'
 import path from 'pathe'
 import { nanoid } from 'nanoid'
 import { pathExists, remove } from 'fs-extra/esm'
+import { LRUCache } from 'lru-cache'
 import { readFile } from 'fs/promises'
+
+const cache = new LRUCache<string, string>({
+  max: 100,
+  ttl: 1000 * 60 * 10,
+})
 
 export async function generate(url: string): Promise<string> {
   const id = nanoid()
@@ -26,6 +32,10 @@ export async function generate(url: string): Promise<string> {
   }).on('generate', (it) => {
     console.log('generate', it.content.name)
   })
+  if (meta) {
+    cache.set(id, meta?.name ?? id)
+  }
+  console.log('generated', url, meta.name)
   setTimeout(async () => {
     if (await pathExists(fsPath)) {
       await remove(fsPath)
@@ -39,5 +49,8 @@ export async function download(id: string) {
   if (!(await pathExists(fsPath))) {
     throw new Error('File not found')
   }
-  return await readFile(fsPath)
+  return {
+    name: encodeURIComponent(cache.get(id) ?? id),
+    data: await readFile(fsPath),
+  }
 }

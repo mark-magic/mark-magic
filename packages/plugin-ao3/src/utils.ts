@@ -17,7 +17,7 @@ export interface NovelInputPlugin extends InputPlugin {
   /** 是否匹配 url */
   match(): boolean
   /** 获取小说元数据 */
-  getMeta?(): Promise<NovelMeta>
+  getMeta(): Promise<NovelMeta>
 }
 
 export function renderReadme(readme: {

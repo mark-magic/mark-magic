@@ -1,6 +1,7 @@
 import express, { ErrorRequestHandler, RequestHandler } from 'express'
 import { createServer } from 'http'
 import { download, generate } from './download'
+import path from 'pathe'
 
 const app = express().use(express.json())
 
@@ -54,13 +55,16 @@ app.get(
   '/api/download/:id',
   handleError(async (req, res) => {
     const { id } = req.params
-    const data = await download(id)
+    const r = await download(id)
     res.setHeader('Content-Type', 'application/epub+zip')
-    res.setHeader('Content-Disposition', `attachment; filename="${id}.epub"`)
-    res.send(data)
+    res.setHeader('Content-Disposition', `attachment; filename="${r.name}.epub"`)
+    res.send(r.data)
   }),
 )
 
+if (!import.meta.env.DEV) {
+  app.use(express.static(path.resolve(__dirname, 'static')))
+}
 const server = createServer(app)
 server.listen(8080)
 console.log(`Server listening on http://localhost:8080`)

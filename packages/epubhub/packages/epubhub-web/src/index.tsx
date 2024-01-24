@@ -78,25 +78,37 @@ const supports = [
     url: 'https://www.bilibili.com/read/home',
   },
 ]
+
+// 下载一个 url 的 epub 文件，模拟 a 链接点击
+function download(url) {
+  var a = document.createElement('a')
+  a.href = url
+  a.download = ''
+  a.click()
+}
+
 export function App() {
   const url = useSignal('')
   const { state, execute: onGen } = useAsyncFn(async () => {
     if (url.value.trim() === '') {
       return
     }
-    const resp = await fetch('/api/generate', {
-      method: 'POST',
-      body: JSON.stringify({ url: url.value }),
-      headers: { 'Content-Type': 'application/json' },
-    })
-    const r = await resp.json()
-    if (r.error) {
-      throw new Error(r.error.message)
+    const resp = await (
+      await fetch('/api/generate', {
+        method: 'POST',
+        body: JSON.stringify({ url: url.value }),
+        headers: { 'Content-Type': 'application/json' },
+      })
+    ).json()
+    if (resp.error) {
+      throw new Error(resp.error.message)
     }
-    return location.origin + r.url
+    const r = location.origin + resp.url
+    download(r)
+    return r
   })
   return (
-    <div className="container md mx-auto px-4">
+    <div className="container md:max-w-xl mx-auto px-4">
       <h1 className="text-2xl font-bold mb-4 mt-8 text-center">EpubHub</h1>
       <form
         onSubmit={async (ev) => {
@@ -111,7 +123,7 @@ export function App() {
           <input
             id="url"
             className="w-full p-2 border border-gray-300 rounded"
-            placeholder="Enter a URL and click Export to generate an EPUB."
+            placeholder="Enter a URL and click Generate to generate an Epub."
             value={url}
             onInput={(ev) => (url.value = (ev.target as HTMLInputElement).value)}
             required={true}

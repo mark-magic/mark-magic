@@ -6,10 +6,10 @@ import tailwindcss from 'tailwindcss'
 export default defineConfig({
   plugins: [
     preact({
-      prerender: {
-        enabled: true,
-        renderTarget: '#app',
-      },
+      // prerender: {
+      //   enabled: true,
+      //   renderTarget: '#app',
+      // },
     }),
   ],
   css: {

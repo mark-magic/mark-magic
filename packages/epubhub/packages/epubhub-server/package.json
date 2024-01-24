@@ -5,11 +5,14 @@
   "type": "module",
   "scripts": {
     "init": "pnpm build",
-    "build": "vite build",
+    "build": "vite build && pnpm run -F=@mark-magic/epubhub-web build && cp -r ../epubhub-web/dist ./dist/static",
     "build-watch": "vite build",
     "dev": "vite-node --watch src/bin.ts",
     "start": "vite-node src/bin.ts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "d:build": "pnpm build && docker buildx build --platform=linux/amd64 -t epubhub .",
+    "d:run": "docker run -dp 8090:8080 --name epubhub epubhub",
+    "d:publish": "docker tag epubhub rxliuli/epubhub:latest && docker push rxliuli/epubhub:latest"
   },
   "publishConfig": {
     "access": "public",
@@ -25,15 +28,15 @@
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^20.10.4",
     "express": "^4.18.2",
+    "filenamify": "^5.1.1",
     "fs-extra": "^11.1.1",
+    "lodash-es": "^4.17.21",
+    "lru-cache": "^10.1.0",
     "nanoid": "^5.0.4",
     "pathe": "^1.1.1",
     "typescript": "^5.3.3",
     "vite": "^5.0.10",
     "vite-node": "^1.0.4",
     "vitest": "^1.0.4"
-  },
-  "dependencies": {
-    "lodash-es": "^4.17.21"
   }
 }

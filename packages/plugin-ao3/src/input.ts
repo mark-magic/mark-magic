@@ -18,5 +18,11 @@ export function input(options: InputConfig): NovelInputPlugin {
       }
       yield* plugin.generate()
     },
+    getMeta() {
+      if (!plugin) {
+        throw new Error('不支持的 url')
+      }
+      return plugin.getMeta()
+    },
   }
 }

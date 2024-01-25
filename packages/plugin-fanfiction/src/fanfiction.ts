@@ -87,7 +87,7 @@ function extractReadmeFromHtml(html: string): Omit<NovelMeta, 'id'> & {
 }
 
 function html2md(html: string): string {
-  return toMarkdown(toMdast(fromHtml(html, { fragment: true }) as any))
+  return toMarkdown(toMdast(fromHtml(html, { fragment: true }) as any) as any)
 }
 
 function extractChapterFromHtml(html: string): string {

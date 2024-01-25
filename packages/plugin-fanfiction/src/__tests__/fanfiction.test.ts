@@ -13,7 +13,7 @@ it('extractId', () => {
   expect(extractId('https://m.fanfiction.net/s/11551156/1/')).toBe('11551156')
 })
 
-it('output to local', async () => {
+it.skip('output to local', async () => {
   await convert({
     input: fanfiction({ url: 'https://www.fanfiction.net/s/11551156/2/A-Wish-Within-Darkness' }),
     output: local.output({

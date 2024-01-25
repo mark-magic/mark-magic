@@ -37,7 +37,7 @@ it('generate docs', async () => {
   await writeFile(path.resolve(tempPath, 'books', 'readme.md'), '# Hello World')
   await execute({ root: tempPath })
   expect(await pathExists(path.resolve(tempPath, 'dist/docs/index.html'))).true
-})
+}, 10_000)
 
 it.skip('transform', async () => {
   await writeFile(

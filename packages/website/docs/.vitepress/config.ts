@@ -23,8 +23,8 @@ export default defineConfig({
             link: '/blog',
           },
           {
-            text: '部署',
-            link: '/deploy',
+            text: 'AI 翻译',
+            link: '/trans',
           },
           {
             text: '配置',
@@ -39,6 +39,7 @@ export default defineConfig({
               { text: 'plugin-docs', link: '/plugin/plugin-docs' },
               { text: 'plugin-joplin', link: '/plugin/plugin-joplin' },
               { text: 'plugin-hexo', link: '/plugin/plugin-hexo' },
+              { text: 'plugin-doctran', link: '/plugin/plugin-doctran' },
             ],
           },
           {
@@ -76,8 +77,8 @@ export default defineConfig({
             link: '/en/blog',
           },
           {
-            text: 'Deployment',
-            link: '/en/deploy',
+            text: 'AI Translation',
+            link: '/en/trans',
           },
           {
             text: 'Configuration',
@@ -92,6 +93,7 @@ export default defineConfig({
               { text: 'plugin-docs', link: '/en/plugin/plugin-docs' },
               { text: 'plugin-joplin', link: '/en/plugin/plugin-joplin' },
               { text: 'plugin-hexo', link: '/en/plugin/plugin-hexo' },
+              { text: 'plugin-doctran', link: '/en/plugin/plugin-doctran' },
             ],
           },
           {

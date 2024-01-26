@@ -1,6 +1,6 @@
 # plugin-local
 
-A plugin that can be used as both input and output, but can only be used as an input plugin in the configuration file.
+A plugin that can be used as both an input and an output. For example, it can read markdown files locally and generate websites or EPUBs, or download content from websites to the local system.
 
 ## input
 
@@ -15,7 +15,7 @@ tasks:
 
 ### path(input)
 
-Recursively scans all Markdown files and their referenced resource files in this path.
+Recursively scans all the markdown files and their referenced resource files in this path.
 
 ```sh
 .
@@ -26,7 +26,7 @@ Recursively scans all Markdown files and their referenced resource files in this
 └─ package.json
 ```
 
-For example, the above directory will be scanned, regardless of its depth.
+For example, the above directory will be scanned, regardless of the depth of the hierarchy.
 
 ```sh
 books/01.md
@@ -34,13 +34,32 @@ books/02.md
 books/readme.md
 ```
 
+### ignore(input)
+
+Ignored files, supports glob syntax.
+
 ## output
 
-Useful for scenarios where outputting to local Markdown files is required. For example, when outputting hexo/hugo/vitepress/jekyll, it is simpler to configure based on the output of the local plugin than to start from scratch. The [@mark-magic/plugin-hexo](./plugin-hexo.md) plugin is implemented this way, using only about 30 lines of code.
+```yaml
+tasks:
+  - name: test
+    output:
+      name: '@mark-magic/plugin-local'
+      config:
+        path: './book/en-US/'
+```
+
+### path(output)
+
+The root directory to output markdown files, required.
+
+## Usage as a Library
+
+It is very useful for scenarios that require output to local markdown files. For example, when outputting to hexo/hugo/vitepress/jekyll, it is easier to configure based on the output of the local plugin rather than writing a plugin from scratch. The plugin [@mark-magic/plugin-hexo](./plugin-hexo.md) is implemented in this way, and it only uses about 30 lines of code.
 
 ```ts
 import { OutputPlugin } from '@mark-magic/core'
-import path from 'path'
+import path from 'pathe'
 import * as local from '@mark-magic/plugin-local'
 
 export interface Tag {
@@ -73,7 +92,7 @@ export function output(options?: { path?: string; base?: string }): OutputPlugin
 }
 ```
 
-Complete type definition
+Complete type definition:
 
 ```ts
 export interface OutputOptions {
@@ -91,15 +110,11 @@ export interface OutputOptions {
 }
 ```
 
-You can control various aspects of the output when creating an output plugin instance using `local.output`.
-
-### path
-
-The root directory for outputting Markdown files, a required field.
+You can control all aspects of the output when creating an output plugin instance using `local.output`.
 
 ### meta
 
-Controls the YAML metadata at the top of the Markdown file.
+Controls the YAML metadata at the top of the markdown.
 
 By default, it outputs the name, creation time, and modification time.
 
@@ -115,7 +130,7 @@ updated: 1702805863284
 ## Overview
 ```
 
-Return null to discard any metadata.
+Return null to remove all metadata.
 
 ```md
 # Getting Started
@@ -125,7 +140,7 @@ Return null to discard any metadata.
 
 ### contentPath
 
-Controls the actual output path of the content, which is calculated based on the `path` and the content's own `path` by default.
+Controls the actual output path of the content. By default, it is calculated based on the `path` and the content's own `path`.
 
 For example, if the `path` is _\~/code/blog/posts/_ and a content data is as follows:
 
@@ -137,11 +152,11 @@ For example, if the `path` is _\~/code/blog/posts/_ and a content data is as fol
 }
 ```
 
-Then the default output path is _\~/code/blog/posts/dev/web/test.md_.
+The default output path is _\~/code/blog/posts/dev/web/test.md_.
 
 ### resourcePath
 
-Controls the actual output path of the resource, which is calculated based on the `path` and the resource's `name` by default.
+Controls the actual output path of the resource. By default, it is calculated based on the `path` and the resource's `name`.
 
 For example, if the `path` is _\~/code/blog/_ and a resource data is as follows:
 
@@ -152,13 +167,13 @@ For example, if the `path` is _\~/code/blog/_ and a resource data is as follows:
 }
 ```
 
-Then the default output path is _\~/code/blog/resources/test.png_.
+The default output path is _\~/code/blog/resources/test.png_.
 
 ### contentLink
 
-Controls how the markdown file after output refers to other content. By default, it uses the relative path of the output markdown file.
+Controls how the markdown file after output references other content. By default, it outputs the relative path of the markdown file.
 
-For example, if the content _/dev/web/vscode-plugin_ references the content _/dev/tool/vscode_:
+For example, if a content _/dev/web/vscode-plugin_ references a content _/dev/tool/vscode_:
 
 ```md
 [vscode](../tool/vscode.md)
@@ -166,9 +181,9 @@ For example, if the content _/dev/web/vscode-plugin_ references the content _/de
 
 ### resourceLink
 
-Controls how the markdown file after output refers to resources. By default, it uses the relative path of the output resource file.
+Controls how the markdown file after output references resources. By default, it outputs the relative path of the resource file.
 
-For example, if the markdown file output is _/posts/dev/web/vscode-plugin.md_ and it references the resource _/resources/vscode.png_:
+For example, if the markdown file output is _/posts/dev/web/vscode-plugin.md_ and it references a resource _/resources/vscode.png_:
 
 ```md
 ![vscode](../../../resources/vscode.png)

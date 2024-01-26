@@ -7,7 +7,7 @@
     "dev": "vitepress dev docs",
     "build": "vitepress build docs",
     "preview": "live-server dist/docs/",
-    "translate": "mark-magic --debug",
+    "translate": "mark-magic",
     "deploy": "gh-pages -d docs/.vitepress/dist --dotfiles"
   },
   "devDependencies": {

@@ -2,14 +2,14 @@
 
 ## Introduction
 
-The foundation of mark-magic is built upon a plugin system, which allows you to extend the functionality of the tool by installing different plugins. Currently, there are several supported input plugins like local/joplin, and output plugins including docs/epub/hexo/local.
+mark-magic is built on top of a plugin system, allowing you to extend the functionality of the tool by installing different plugins. Currently, there are several supported input plugins, such as local/joplin, and output plugins including docs/epub/hexo/local.
 
-There are two categories of plugins available: input plugins and output plugins. Input plugins are used to retrieve data from a data source, while output plugins are used to output data to specific destinations.
+There are two types of plugins available: input plugins and output plugins. Input plugins are used to read data from the data source, while output plugins are used to output data to specific targets.
 
-- Input Plugins
+- Input plugins
   - [plugin-local](./plugin-local.md)
   - [plugin-joplin](./plugin-joplin.md)
-- Output Plugins
+- Output plugins
   - [plugin-docs](./plugin-docs.md)
   - [plugin-epub](./plugin-epub.md)
   - [plugin-hexo](./plugin-hexo.md)
@@ -17,7 +17,7 @@ There are two categories of plugins available: input plugins and output plugins.
 
 ## Installation and Configuration
 
-To use a plugin, you must first install the plugin and then configure it in the configuration file. For example, if you want to use local files as input to generate a novel website, you can follow these steps.
+To use a plugin, you need to install it and then configure it in the configuration file. For example, if you want to use local files as input to generate a novel website, you can follow these steps:
 
 ```sh
 npm i -D @mark-magic/plugin-local @mark-magic/plugin-docs
@@ -40,4 +40,4 @@ tasks:
 
 ## Creating Plugins
 
-If there isn't a plugin available yet, you can submit a request on the [GitHub issue](https://github.com/mark-magic/mark-magic/issues) page or follow the instructions in [Creating Plugins](../api-plugin.md) to develop a new plugin.
+If there are currently no available plugins, you can either submit an issue on [GitHub](https://github.com/mark-magic/mark-magic/issues) or follow the instructions in [Creating Plugins](../api-plugin.md) to develop a new plugin.

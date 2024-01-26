@@ -1,6 +1,6 @@
 # plugin-doctran
 
-转换插件，通过 google 或 openai 来翻译文档或小说，适合尝试翻译轻小说或同人小说时的首次翻译。
+转换插件，通过 google 或 openai 来翻译文档或小说，适合尝试翻译轻小说或同人小说时的初翻，后续加以校对以加快速度。
 
 ## transform
 
@@ -32,10 +32,16 @@ tasks:
 - google
 - openai
 
-## to
+### to(google)
 
-翻译目标语言。
+翻译目标语言，所有翻译引擎都需要指定。
 
-## apiKey
+## google
 
-当配置 engine 为 openai 时，需要配置 openai 的 apiKey，需要自行在 [openai platform](https://platform.openai.com/api-keys) 创建一个。
+只有配置项 `to`，不需要其他任何配置项。
+
+## openai
+
+### apiKey
+
+需要配置 openai 的 apiKey，需要自行在 [openai platform](https://platform.openai.com/api-keys) 创建。

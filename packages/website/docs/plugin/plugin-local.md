@@ -1,6 +1,6 @@
 # plugin-local
 
-同时能作为输入和输出的插件，但在配置文件中仅能作为输入插件使用。
+同时能作为输入和输出的插件。例如读取本地的 markdown 并生成网站或 epub，或者下载网站上的内容到本地。
 
 ## input
 
@@ -34,7 +34,26 @@ books/02.md
 books/readme.md
 ```
 
+### ignore(input)
+
+忽略的文件，支持 glob 语法。
+
 ## output
+
+```yaml
+tasks:
+  - name: test
+    output:
+      name: '@mark-magic/plugin-local'
+      config:
+        path: './book/en-US/'
+```
+
+### path(output)
+
+输出 markdown 文件的根目录，必填项。
+
+## 作为库使用
 
 对于需要输出为本地 markdown 文件的场景很有用，例如输出 hexo/hugo/vitepress/jekyll 时不需要从零开始编写插件，而是基于 local plugin 的输出进行简单配置会更简单。插件 [@mark-magic/plugin-hexo](./plugin-hexo.md) 就是这样实现的，甚至只用了 30 几行代码。
 
@@ -92,10 +111,6 @@ export interface OutputOptions {
 ```
 
 你可以在使用 `local.output` 创建输出插件实例时控制输出的方方面面。
-
-### path
-
-输出 markdown 文件的根目录，必填项。
 
 ### meta
 

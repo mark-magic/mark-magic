@@ -1,13 +1,13 @@
 # Configuration
 
-Use mark-magic.config.yaml as the configuration file. The following explains the basic fields.
+Use mark-magic.config.yaml as the configuration file. The following describes the basic fields:
 
 ```yaml
 tasks: # Define a series of tasks
   - name: blog # Task name
     input: # Input plugin
       name: '@mark-magic/plugin-joplin' # Input plugin name
-      config: # Input plugin configuration, detailed explanation for each plugin configuration is provided below
+      config: # Input plugin configuration, detailed explanations for each plugin configuration below
     output:
       name: '@mark-magic/plugin-hexo' # Output plugin name
       config: # Output plugin configuration
@@ -15,15 +15,15 @@ tasks: # Define a series of tasks
 
 ## input
 
-Input plugin used to read data from data sources, such as reading notes from Joplin, reading Markdown files from the local file system, etc.
+Input plugin used to read data from data sources, such as reading notes from Joplin or reading markdown files from local.
 
 ### input.name
 
-Name of the input plugin, such as `@mark-magic/plugin-joplin`.
+Name of the input plugin, for example `@mark-magic/plugin-joplin`.
 
 ### input.config
 
-Configuration of the input plugin, detailed explanation for each plugin configuration is provided below.
+Input plugin configuration, detailed explanations for each plugin configuration below.
 
 - [plugin-local](./plugin/plugin-local.md)
 - [plugin-epub](./plugin/plugin-epub.md)

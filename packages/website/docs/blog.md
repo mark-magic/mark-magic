@@ -1,7 +1,5 @@
 # 笔记 => 博客
 
-> [必要条件](./book.md#必要条件)
-
 ## 前提
 
 > 下面使用 [joplin](https://joplinapp.org/) 作为笔记工具，[hexo](https://hexo.io/) 作为博客进行说明。但这两者都可以替换，例如笔记的来源可以替换为 obsidian，输出的博客则可以替换为 hugo。

@@ -1,6 +1,6 @@
 # plugin-joplin
 
-Input plugin that uses Joplin notes as a data source.
+An input plugin that uses Joplin notes as a data source.
 
 ## input
 
@@ -18,14 +18,14 @@ tasks:
 
 ### baseUrl
 
-The address of the Joplin web clipper service, usually `http://localhost:41184`, which can be found in **Settings => Web Clipper**.
+The address of the Joplin Web Clipper service, usually `http://localhost:41184`. You can find it under **Settings => Web Clipper**.
 
 ![joplin-webclipper](../resources/joplin-webclipper.png)
 
 ### token
 
-The token of the Joplin web clipper service, which can be copied from Joplin.
+The token for the Joplin Web Clipper service, copied from Joplin.
 
 ### tag
 
-Filter notes by tag. For example, when publishing a blog, it can be configured as `blog` to only publish notes with the `blog` tag. If specified as `''`, no filtering will be applied, and all notes will be used as the data source.
+Filters notes based on tags. For example, when publishing a blog, you can configure it as `blog` to only publish notes with the `blog` tag. If set to `''`, no filtering is done and all notes are used as the data source.

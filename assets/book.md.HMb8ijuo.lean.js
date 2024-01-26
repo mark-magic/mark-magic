@@ -1,1 +1,0 @@
-import{_ as s,o as i,c as a,R as n}from"./chunks/framework.TR9yfmzU.js";const E=JSON.parse('{"title":"小说 => 网站 + EPUB","description":"","frontmatter":{},"headers":[],"relativePath":"book.md","filePath":"book.md"}'),h={name:"book.md"},l=n("",22),p=[l];function t(k,e,r,d,g,o){return i(),a("div",null,p)}const y=s(h,[["render",t]]);export{E as __pageData,y as default};

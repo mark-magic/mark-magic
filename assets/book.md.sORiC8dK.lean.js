@@ -1,0 +1,1 @@
+import{_ as s,c as i,o as a,R as n}from"./chunks/framework.ZUvglspe.js";const y=JSON.parse('{"title":"小说 => 网站 + EPUB","description":"","frontmatter":{},"headers":[],"relativePath":"book.md","filePath":"book.md"}'),h={name:"book.md"},l=n("",32),p=[l];function k(t,e,r,E,d,g){return a(),i("div",null,p)}const c=s(h,[["render",k]]);export{y as __pageData,c as default};

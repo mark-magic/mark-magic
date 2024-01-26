@@ -1,1 +1,0 @@
-import{_ as s,o as i,c as a,R as n}from"./chunks/framework.TR9yfmzU.js";const y=JSON.parse('{"title":"Deployment","description":"","frontmatter":{},"headers":[],"relativePath":"en/deploy.md","filePath":"en/deploy.md"}'),l={name:"en/deploy.md"},h=n("",12),t=[h];function p(e,k,E,d,r,o){return i(),a("div",null,t)}const c=s(l,[["render",p]]);export{y as __pageData,c as default};

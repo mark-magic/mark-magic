@@ -6,7 +6,7 @@ import { toMdast } from 'hast-util-to-mdast'
 import { toMarkdown, u } from '@liuli-util/markdown-util'
 import findCacheDirectory from 'find-cache-dir'
 import path from 'pathe'
-import { mkdirp, pathExists, readJson, writeJson } from 'fs-extra/esm'
+import { createLink, mkdirp, pathExists, readJson, writeJson } from 'fs-extra/esm'
 import { mkdir, writeFile } from 'fs/promises'
 
 /**
@@ -90,8 +90,8 @@ export function extractPagesFromHTML(html: string): number {
   return Number.parseInt(pagesStr)
 }
 
-async function fetchPage(threadId: string, page: number): Promise<string> {
-  const url = `https://forums.sufficientvelocity.com/threads/${threadId}/reader/page-${page}`
+async function fetchPage(origin: string, threadId: string, page: number): Promise<string> {
+  const url = `${origin}/threads/${threadId}/reader/page-${page}`
   const r = await fetch(url)
   if (!r.ok) {
     throw new Error(`无法获取 ${url} 的内容，状态码为 ${r.status}，${r.statusText}`)
@@ -137,11 +137,18 @@ function extractReadmeFromHTML(
   if (!creatorName) {
     throw new Error('无法提取作者')
   }
-  const creatorLink = 'https://forums.sufficientvelocity.com/' + $creator.getAttribute('href')
+  const creatorLink = $creator.getAttribute('href')
+  if (!creatorLink) {
+    throw new Error('无法提取作者链接')
+  }
+  const originUrl = $dom.querySelector('meta[property="og:url"]')?.getAttribute('content')
+  if (!originUrl) {
+    throw new Error('无法提取原始链接')
+  }
   return {
     name: title,
     content,
-    creator: { name: creatorName, url: creatorLink },
+    creator: { name: creatorName, url: path.join(new URL(originUrl).origin, creatorLink) },
     created: new Date(createdStr).getTime(),
     updated: new Date(updatedStr).getTime(),
   }
@@ -162,13 +169,14 @@ export function sufficientvelocity(
           Object.assign(map, await readJson(cachePath))
         }
       }
+      const u = new URL(options.url)
       async function fetchPageOfCache(id: string, page: number): Promise<string> {
         if (!options.cached) {
-          return await fetchPage(id, page)
+          return await fetchPage(u.origin, id, page)
         }
         const key = `thread-${id}-page-${page}`
         if (!map[key]) {
-          map[key] = await fetchPage(id, page)
+          map[key] = await fetchPage(u.origin, id, page)
         }
         return map[key]
       }
@@ -226,11 +234,13 @@ export function sufficientvelocity(
       }
     },
     match() {
-      return options.url.startsWith('https://forums.sufficientvelocity.com/threads/')
+      const list = ['https://forums.sufficientvelocity.com/threads', 'https://forums.spacebattles.com/threads']
+      return list.some((it) => options.url.startsWith(it))
     },
     async getMeta() {
       const id = extractId(options.url)
-      const firstHtml = await fetchPage(id, 1)
+      const u = new URL(options.url)
+      const firstHtml = await fetchPage(u.origin, id, 1)
       const readme = extractReadmeFromHTML(firstHtml)
       return { ...readme, id }
     },

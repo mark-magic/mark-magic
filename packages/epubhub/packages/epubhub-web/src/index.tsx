@@ -71,7 +71,11 @@ const supports = [
   },
   {
     name: 'Sufficient Velocity',
-    url: 'https://forums.sufficientvelocity.com/',
+    url: 'https://forums.sufficientvelocity.com',
+  },
+  {
+    name: 'Sufficient Battles',
+    url: 'https://forums.spacebattles.com',
   },
   {
     name: 'Bilibili readlist',

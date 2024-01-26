@@ -136,6 +136,7 @@ export default [
       },
       breaks: true,
     },
+    ignoreDeadLinks: true,
   }),
   getFeed(),
   `INJECT_VITEPRESS_CONFIG` as UserConfig,

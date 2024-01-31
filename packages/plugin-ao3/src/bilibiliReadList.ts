@@ -19,8 +19,7 @@ function extractId(url: string): string {
 }
 
 function html2md(html: string): string {
-  // @ts-ignore
-  return toMarkdown(toMdast(fromHtml(html, { fragment: true }) as any))
+  return toMarkdown(toMdast(fromHtml(html, { fragment: true }) as any) as any)
 }
 
 function extractReadmeFromHTML(html: string): {
@@ -57,7 +56,7 @@ function extractReadmeFromHTML(html: string): {
 
 function extractChapterFromHTML(html: string): string {
   const $dom = parse(html)
-  const htmlContent = $dom.querySelector('#read-article-holder')?.innerHTML
+  const htmlContent = $dom.querySelector('#article-content')?.innerHTML
   if (!htmlContent) {
     throw new Error('无法提取简介')
   }
@@ -68,9 +67,194 @@ async function fetchChapters(id: string): Promise<{ id: number; title: string; p
   return (await (await fetch(`https://api.bilibili.com/x/article/list/web/articles?id=${id}&jsonp=jsonp`)).json()).data
     .articles
 }
+interface ArticleData {
+  opus_id: number
+  opus_source: number
+  title: string
+  content: Content
+  pub_info: PublicationInfo
+  article: ArticleInfo
+  version: VersionInfo
+  dyn_id_str: string
+  total_art_num: number
+}
+
+interface Content {
+  paragraphs: Paragraph[]
+}
+
+interface Paragraph {
+  para_type: number
+  text?: TextContent
+  pic?: PictureContent
+  format?: ParagraphFormat
+}
+
+interface TextContent {
+  nodes: TextNode[]
+}
+
+interface TextNode {
+  node_type: number
+  word?: Word
+  link?: Link
+}
+
+interface Word {
+  words: string
+  style?: TextStyle
+}
+
+interface Link {
+  show_text: string
+  link: string
+  link_type: number
+  style?: TextStyle
+}
+
+interface PictureContent {
+  pics: Picture[]
+  style: number
+}
+
+interface Picture {
+  url: string
+  width: number
+  height: number
+  size: number
+}
+
+interface TextStyle {
+  bold?: boolean
+  // 其他可能的样式属性可以在此添加
+}
+
+interface PublicationInfo {
+  uid: number
+  pub_time: number
+}
+
+interface ArticleInfo {
+  category_id: number
+  list_id: number
+  cover: Picture[]
+}
+
+interface VersionInfo {
+  cvid: number
+  version_id: number
+}
+
+// 新增 ParagraphFormat 接口
+interface ParagraphFormat {
+  list_format?: ListFormat
+}
+
+// 新增 ListFormat 接口
+interface ListFormat {
+  level: number
+  order?: number
+}
+
+// 新增 ParagraphFormat 接口
+interface ParagraphFormat {
+  list_format?: ListFormat
+}
+
+// 新增 ListFormat 接口
+interface ListFormat {
+  level: number
+  order?: number
+}
 
 /**
- * 读取
+ * 渲染 b 站专栏自定义数据格式为 md
+ * @param document
+ */
+export function renderBilibiliOpus(document: Paragraph[]): string {
+  let markdown = ''
+
+  for (let i = 0; i < document.length; i++) {
+    const paragraph = document[i]
+    let paraContent = ''
+    switch (paragraph.para_type) {
+      case 1: // 文本
+        if (paragraph.text) {
+          paraContent = renderText(paragraph.text)
+        }
+        break
+      case 2: // 图片
+        if (paragraph.pic) {
+          paraContent = renderPicture(paragraph.pic)
+        }
+        break
+      case 4: // 段落引用 >
+        if (paragraph.text) {
+          paraContent = '> ' + renderText(paragraph.text)
+        }
+        break
+      case 6: // 列表
+        if (paragraph.text) {
+          paraContent = renderListItem(paragraph.text, paragraph.format?.list_format)
+        }
+        break
+      // 更多段落类型的处理可以在此添加
+    }
+    if (paraContent) {
+      markdown += paraContent
+      // 检查下一项是否为列表，如果不是或者已经是最后一项，则添加两个换行符
+      if (paragraph.para_type === 6 && i + 1 < document.length && document[i + 1].para_type === 6) {
+        markdown += '\n'
+      } else {
+        markdown += '\n\n'
+      }
+    }
+  }
+
+  return markdown
+}
+
+function renderListItem(textContent: TextContent, listFormat?: ListFormat): string {
+  const listItem = renderText(textContent)
+
+  if (listFormat) {
+    const indent = '  '.repeat(listFormat.level - 1)
+    // const prefix = listFormat.order ? `${listFormat.order}. ` : '- '
+    const prefix = '- '
+    return `${indent}${prefix}${listItem}`
+  }
+
+  return `- ${listItem}`
+}
+
+function renderText(textContent: TextContent): string {
+  return textContent.nodes
+    .map((node) => {
+      switch (node.node_type) {
+        case 1: // 文本节点
+          if (!node.word) return ''
+          let wordStyle = node.word.style
+          let word = node.word.words
+          if (wordStyle?.bold) {
+            word = `**${word}**`
+          }
+          return word
+        case 4: // 链接节点
+          return node.link ? `[${node.link.show_text}](${node.link.link})` : ''
+        // 更多节点类型的处理可以在此添加
+        default:
+          return ''
+      }
+    })
+    .join('')
+}
+
+function renderPicture(pictureContent: PictureContent): string {
+  return pictureContent.pics.map((pic) => `![image](${pic.url})`).join('\n')
+}
+
+/**
+ * 读取 b 站专栏
  * @returns
  */
 export function bilibiliReadList(options: InputConfig): NovelInputPlugin {
@@ -97,12 +281,19 @@ export function bilibiliReadList(options: InputConfig): NovelInputPlugin {
       for (let i = 0; i < chapters.length; i++) {
         const it = chapters[i]
         const name = (i + 1).toString().padStart(len, '0')
-        const chapterHtml = await fetch(`https://www.bilibili.com/read/cv${it.id}`).then((r) => r.text())
-        const content = '# ' + it.title + '\n\n' + extractChapterFromHTML(chapterHtml)
+        const json = await fetch(`https://api.bilibili.com/x/article/view?id=${it.id}`, {
+          headers: {
+            'User-Agent':
+              'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+          },
+        }).then((r) => r.json())
+        const content = json.data.opus
+          ? renderBilibiliOpus((json.data.opus as ArticleData).content.paragraphs)
+          : html2md(json.data.content)
         yield {
           id: it.id.toString(),
           name,
-          content,
+          content: '# ' + it.title + '\n\n' + content,
           path: [name + '.md'],
           resources: [],
           created: Date.now(),

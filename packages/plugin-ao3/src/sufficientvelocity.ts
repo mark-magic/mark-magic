@@ -205,7 +205,7 @@ export function sufficientvelocity(
             const key = `thread-${id}-page-${i}`
             delete map[key]
             if (html.includes('Rating limit Exceeded')) {
-              throw new Error(`无法提取第 ${i} 页，因为超过了论坛的访问速率限制，请稍后再试`)
+              throw new Error(`无法提取第 ${i} 页，因为超过了论坛的访问速率限制，请稍后再试，所有已下载的内容已缓存`)
             }
             throw new Error('无法提取章节')
           }

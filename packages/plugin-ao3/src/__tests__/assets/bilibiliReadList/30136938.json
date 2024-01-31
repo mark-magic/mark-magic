@@ -1,0 +1,271 @@
+[
+  {
+    "para_type": 1,
+    "text": {
+      "nodes": [
+        {
+          "node_type": 1,
+          "word": {
+            "words": "你花了一些时间来决定你愿意用灵魂交换的愿望。控制魔女、召唤现实之外难以言喻的恐怖存在等种种念头在你脑海中闪过，最终你做出了选择。虽然你身体疲惫地靠在墙上，但你还是努力向前倾，凝视着丘比。“我希望控制悲伤！我的悲伤、别人的悲伤、魔女的悲伤，所有的悲伤！”",
+            "font_size": 17,
+            "style": {}
+          }
+        }
+      ]
+    }
+  },
+  {
+    "para_type": 1,
+    "text": {
+      "nodes": [
+        {
+          "node_type": 1,
+          "word": {
+            "words": "你身边的两个女孩同时倒抽一口气，她们正要困惑地问：“什么——”",
+            "font_size": 17,
+            "style": {}
+          }
+        }
+      ]
+    }
+  },
+  {
+    "para_type": 1,
+    "text": {
+      "nodes": [
+        {
+          "node_type": 1,
+          "word": {
+            "words": "“我明白了。”孵化者平淡地说道。它的眼睛开始闪烁，仿佛小型的新星，它的耳附肢伸向，甚至",
+            "font_size": 17,
+            "style": {}
+          }
+        },
+        { "node_type": 1, "word": { "words": "渗透入", "font_size": 17, "style": { "bold": true } } },
+        {
+          "node_type": 1,
+          "word": { "words": "你体内。你隐约听到小圆和沙耶加在震惊中窒息。", "font_size": 17, "style": {} }
+        }
+      ]
+    }
+  },
+  {
+    "para_type": 1,
+    "text": {
+      "nodes": [
+        {
+          "node_type": 1,
+          "word": { "words": "“契约成立。你的灵魂已成功降低了熵。”", "font_size": 17, "style": {} }
+        }
+      ]
+    }
+  },
+  {
+    "para_type": 1,
+    "text": {
+      "nodes": [
+        {
+          "node_type": 1,
+          "word": {
+            "words": "一股剧烈的痛楚从你的胸口迸发，迅速蔓延至你身体的每一个角落。你咬紧牙关，竭力忍住不让自己尖叫出声，就在这时，丘比缓缓地从你体内抽出了一颗闪耀着光芒的白色宝石，它在你的面前悬浮着。你几乎是下意识地伸出一只手抓住了它，紧紧地抓在怀里。",
+            "font_size": 17,
+            "style": {}
+          }
+        }
+      ]
+    }
+  },
+  {
+    "para_type": 1,
+    "text": { "nodes": [{ "node_type": 1, "word": { "words": "深吸一口气。", "font_size": 17, "style": {} } }] }
+  },
+  {
+    "para_type": 1,
+    "text": {
+      "nodes": [{ "node_type": 1, "word": { "words": "然后再来一次。", "font_size": 17, "style": {} } }]
+    }
+  },
+  {
+    "para_type": 1,
+    "text": {
+      "nodes": [
+        {
+          "node_type": 1,
+          "word": {
+            "words": "你的另一只手伸出去，轻轻地弯曲手指。那种自醒来以来一直伴随着你的",
+            "font_size": 17,
+            "style": {}
+          }
+        },
+        { "node_type": 1, "word": { "words": "痛苦", "font_size": 17, "style": { "bold": true } } },
+        {
+          "node_type": 1,
+          "word": {
+            "words": "竟然消失了，这感觉犹如一剂令人欣喜若狂的良药。一丝微笑不由自主地浮现在你的脸上，你从容地站起身来，感觉比记忆中任何时候都要好。当然，你的记忆并不是很久远。",
+            "font_size": 17,
+            "style": {}
+          }
+        }
+      ]
+    }
+  },
+  {
+    "para_type": 1,
+    "text": {
+      "nodes": [
+        {
+          "node_type": 1,
+          "word": {
+            "words": "两个女孩经过一番犹豫，也站了起来。小圆向你微笑，但她的笑容里带着一丝担忧和你所感受到的戒备。沙耶加则紧皱着眉头看着你，依旧充满了疑虑和警惕。丘比像模仿的猫一样在她们的脚边穿梭，尾巴剧烈地摆动着。",
+            "font_size": 17,
+            "style": {}
+          }
+        }
+      ]
+    }
+  },
+  {
+    "para_type": 6,
+    "format": { "list_format": { "level": 1, "order": 1 } },
+    "text": { "nodes": [{ "node_type": 1, "word": { "words": "[ ] 介绍自己", "font_size": 17, "style": {} } }] }
+  },
+  {
+    "para_type": 6,
+    "format": { "list_format": { "level": 2, "order": 1 } },
+    "text": {
+      "nodes": [{ "node_type": 1, "word": { "words": "[ ] 填入你的名字。", "font_size": 17, "style": {} } }]
+    }
+  },
+  {
+    "para_type": 6,
+    "format": { "list_format": { "level": 2, "order": 2 } },
+    "text": {
+      "nodes": [
+        {
+          "node_type": 1,
+          "word": { "words": "[ ] 选择你的语气（冷静、友好、开朗等）。", "font_size": 17, "style": {} }
+        }
+      ]
+    }
+  },
+  {
+    "para_type": 6,
+    "format": { "list_format": { "level": 2, "order": 3 } },
+    "text": {
+      "nodes": [
+        {
+          "node_type": 1,
+          "word": {
+            "words": "[ ] 决定你想透露多少信息（比如你是否知道她们的名字等）。",
+            "font_size": 17,
+            "style": {}
+          }
+        }
+      ]
+    }
+  },
+  {
+    "para_type": 6,
+    "format": { "list_format": { "level": 1, "order": 2 } },
+    "text": { "nodes": [{ "node_type": 1, "word": { "words": "离开", "font_size": 17, "style": {} } }] }
+  },
+  {
+    "para_type": 6,
+    "format": { "list_format": { "level": 2, "order": 1 } },
+    "text": {
+      "nodes": [{ "node_type": 1, "word": { "words": "[ ] 是否道别？", "font_size": 17, "style": {} } }]
+    }
+  },
+  {
+    "para_type": 6,
+    "format": { "list_format": { "level": 2, "order": 2 } },
+    "text": {
+      "nodes": [{ "node_type": 1, "word": { "words": "[ ] 填入你的名字。", "font_size": 17, "style": {} } }]
+    }
+  },
+  {
+    "para_type": 6,
+    "format": { "list_format": { "level": 2, "order": 3 } },
+    "text": {
+      "nodes": [
+        {
+          "node_type": 1,
+          "word": { "words": "[ ] 选择你的语气（冷静、友好、开朗等）。", "font_size": 17, "style": {} }
+        }
+      ]
+    }
+  },
+  {
+    "para_type": 6,
+    "format": { "list_format": { "level": 2, "order": 4 } },
+    "text": {
+      "nodes": [
+        {
+          "node_type": 1,
+          "word": {
+            "words": "[ ] 决定你想透露多少信息（比如你是否知道她们的名字等）。",
+            "font_size": 17,
+            "style": {}
+          }
+        }
+      ]
+    }
+  },
+  {
+    "para_type": 6,
+    "format": { "list_format": { "level": 1, "order": 3 } },
+    "text": {
+      "nodes": [{ "node_type": 1, "word": { "words": "[ ] 自定义行动", "font_size": 17, "style": {} } }]
+    }
+  },
+  {
+    "para_type": 6,
+    "format": { "list_format": { "level": 2, "order": 1 } },
+    "text": {
+      "nodes": [{ "node_type": 1, "word": { "words": "[ ] 填入你的名字。", "font_size": 17, "style": {} } }]
+    }
+  },
+  {
+    "para_type": 6,
+    "format": { "list_format": { "level": 2, "order": 2 } },
+    "text": {
+      "nodes": [
+        {
+          "node_type": 1,
+          "word": { "words": "[ ] 选择你的语气（冷静、友好、开朗等）。", "font_size": 17, "style": {} }
+        }
+      ]
+    }
+  },
+  {
+    "para_type": 6,
+    "format": { "list_format": { "level": 2, "order": 3 } },
+    "text": {
+      "nodes": [
+        {
+          "node_type": 1,
+          "word": {
+            "words": "[ ] 决定你想透露多少信息（比如你是否知道她们的名字等）。",
+            "font_size": 17,
+            "style": {}
+          }
+        }
+      ]
+    }
+  },
+  {
+    "para_type": 1,
+    "text": {
+      "nodes": [
+        {
+          "node_type": 1,
+          "word": {
+            "words": "你希望扮演一个神秘且博学的角色吗？还是想成为一个充满活力、处事从容的权威形象？抑或是一个桀骜不驯的女强人？又或者是完全不同的某种人物？这些选择都不会对你未来的角色产生限制，只是关于你现在想如何向这些女孩展现自己的问题。当然，这些仅仅是示例，并没有特别的含义。",
+            "font_size": 17,
+            "style": {}
+          }
+        }
+      ]
+    }
+  }
+]

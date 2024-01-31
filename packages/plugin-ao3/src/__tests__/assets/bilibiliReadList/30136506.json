@@ -1,0 +1,208 @@
+[
+  {
+    "para_type": 4,
+    "text": {
+      "nodes": [
+        {
+          "node_type": 1,
+          "word": {
+            "words": "原作 ",
+            "font_size": 17,
+            "style": {}
+          }
+        },
+        {
+          "node_type": 4,
+          "link": {
+            "show_text": "Puella Magi Adfligo Systema",
+            "link": "https://forums.sufficientvelocity.com/threads/2538/",
+            "link_type": 16,
+            "style": {}
+          }
+        },
+        {
+          "node_type": 1,
+          "word": {
+            "words": "，作者 ",
+            "font_size": 17,
+            "style": {}
+          }
+        },
+        {
+          "node_type": 4,
+          "link": {
+            "show_text": "Firnagzen",
+            "link": "https://forums.sufficientvelocity.com/members/firnagzen.386/",
+            "link_type": 16,
+            "style": {}
+          }
+        },
+        {
+          "node_type": 1,
+          "word": {
+            "words": " ",
+            "font_size": 17,
+            "style": {}
+          }
+        }
+      ]
+    }
+  },
+  {
+    "para_type": 4,
+    "text": {
+      "nodes": [
+        {
+          "node_type": 1,
+          "word": {
+            "words": "这是一个魔法少女小圆的同人小说，是继 ",
+            "font_size": 17,
+            "style": {}
+          }
+        },
+        {
+          "node_type": 4,
+          "link": {
+            "show_text": "魔法少女小圆 飞向星空",
+            "link": "https://tts.liuli.moe/",
+            "link_type": 16,
+            "style": {}
+          }
+        },
+        {
+          "node_type": 1,
+          "word": {
+            "words": " 之后吾辈最喜欢的魔法少女小圆同人，原作已经超过 800 章。讲述了一个女孩许下了控制",
+            "font_size": 17,
+            "style": {}
+          }
+        },
+        {
+          "node_type": 1,
+          "word": {
+            "words": "悲伤",
+            "font_size": 17,
+            "style": {
+              "bold": true
+            }
+          }
+        },
+        {
+          "node_type": 1,
+          "word": {
+            "words": "的愿望，她会如何开始改变魔法少女们悲惨的命运呢？ 这个翻译使用 GPT-4 初翻 + 人工校对，目前没能联系到原作者，任何翻译问题请到 ",
+            "font_size": 17,
+            "style": {}
+          }
+        },
+        {
+          "node_type": 4,
+          "link": {
+            "show_text": "https://github.com/liuli-moe/pmas/issues",
+            "link": "https://github.com/liuli-moe/pmas/issues",
+            "link_type": 16,
+            "style": {}
+          }
+        },
+        {
+          "node_type": 1,
+          "word": {
+            "words": " 反馈提直接提 pr。",
+            "font_size": 17,
+            "style": {}
+          }
+        }
+      ]
+    }
+  },
+  {
+    "para_type": 1,
+    "text": {
+      "nodes": [
+        {
+          "node_type": 1,
+          "word": {
+            "words": "拯救世界还是拯救一个女孩——这真的有差别吗？你或许拥有难以想象的力量，但总有一些事情依旧艰难。",
+            "font_size": 17,
+            "style": {}
+          }
+        }
+      ]
+    }
+  },
+  {
+    "para_type": 2,
+    "pic": {
+      "pics": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/eac5a4776cab018a92744801d75b5c747138889.png",
+          "width": 1450,
+          "height": 498,
+          "size": 198.7548828125
+        }
+      ],
+      "style": 1
+    }
+  },
+  {
+    "para_type": 1,
+    "text": {
+      "nodes": [
+        {
+          "node_type": 1,
+          "word": {
+            "words": "\n",
+            "font_size": 17,
+            "style": {}
+          }
+        }
+      ]
+    }
+  },
+  {
+    "para_type": 2,
+    "pic": {
+      "pics": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/625c0dff0d8ab0e55305ae30290d47567138889.jpg",
+          "width": 2480,
+          "height": 3507,
+          "size": 2283.001953125
+        }
+      ],
+      "style": 1
+    }
+  },
+  {
+    "para_type": 1,
+    "text": {
+      "nodes": [
+        {
+          "node_type": 1,
+          "word": {
+            "words": "Logo 由 ",
+            "font_size": 17,
+            "style": {}
+          }
+        },
+        {
+          "node_type": 4,
+          "link": {
+            "show_text": "defenestrator",
+            "link": "https://forums.sufficientvelocity.com/members/defenestrator.889/",
+            "link_type": 16,
+            "style": {}
+          }
+        },
+        {
+          "node_type": 1,
+          "word": {
+            "words": " 设计。",
+            "font_size": 17,
+            "style": {}
+          }
+        }
+      ]
+    }
+  }
+]

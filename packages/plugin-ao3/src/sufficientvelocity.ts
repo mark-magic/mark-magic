@@ -6,7 +6,7 @@ import { toMdast } from 'hast-util-to-mdast'
 import { toMarkdown, u } from '@liuli-util/markdown-util'
 import findCacheDirectory from 'find-cache-dir'
 import path from 'pathe'
-import { createLink, mkdirp, pathExists, readJson, writeJson } from 'fs-extra/esm'
+import { mkdirp, pathExists, readJson, writeJson } from 'fs-extra/esm'
 import { mkdir, writeFile } from 'fs/promises'
 
 /**

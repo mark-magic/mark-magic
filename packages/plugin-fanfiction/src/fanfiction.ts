@@ -1,4 +1,4 @@
-import parse from 'node-html-parser'
+import { parse } from 'node-html-parser'
 import { InputConfig, NovelInputPlugin, NovelMeta, renderReadme } from './utils'
 import { Browser, Page } from 'puppeteer-core'
 import puppeteer from 'puppeteer-extra'

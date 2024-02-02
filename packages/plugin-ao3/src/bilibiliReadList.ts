@@ -1,5 +1,5 @@
 import { InputConfig, NovelInputPlugin, NovelMeta, renderReadme } from './utils'
-import parse from 'node-html-parser'
+import { parse } from 'node-html-parser'
 import { fromHtml } from 'hast-util-from-html'
 import { toMdast } from 'hast-util-to-mdast'
 import { toMarkdown } from '@liuli-util/markdown-util'

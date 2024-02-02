@@ -1,6 +1,6 @@
 import { Content } from '@mark-magic/core'
 import { parse, HTMLElement } from 'node-html-parser'
-import { InputConfig, NovelInputPlugin, NovelMeta, renderReadme } from './utils'
+import { InputConfig, NovelInputPlugin, NovelMeta, renderReadme } from '../utils'
 import { toMarkdown, Root } from '@liuli-util/markdown-util'
 import { fromHtml } from 'hast-util-from-html'
 import { toMdast } from 'hast-util-to-mdast'

@@ -1,6 +1,6 @@
 import { InputPlugin } from '@mark-magic/core'
 import { InputConfig, NovelInputPlugin } from './utils'
-import { ao3 } from './ao3'
+import { ao3 } from './ao3/input'
 import { sufficientvelocity } from './sufficientvelocity'
 import { bilibiliReadList } from './bilibiliReadList'
 

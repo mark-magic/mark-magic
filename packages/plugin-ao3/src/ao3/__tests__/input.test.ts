@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest'
 import { initTempPath } from '@liuli-util/test'
-import { ao3, extractId } from '../ao3'
+import { ao3, extractId } from '../input'
 import { convert } from '@mark-magic/core'
 import * as local from '@mark-magic/plugin-local'
 import * as epub from '@mark-magic/plugin-epub'

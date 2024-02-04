@@ -380,6 +380,15 @@ export function ao3(options: Ao3OuputConfig): OutputPlugin {
   return {
     name: 'ao3',
     async start() {
+      if (!options) {
+        throw new Error('必须提供配置项')
+      }
+      if (!options.id) {
+        throw new Error('必须提供 id')
+      }
+      if (!options.cookie) {
+        throw new Error('必须提供 cookie')
+      }
       const dir = findCacheDirectory({ name: '@mark-magic/plugin-ao3' })
       if (!dir) {
         throw new Error('无法找到缓存目录')

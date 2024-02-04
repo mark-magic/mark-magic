@@ -67,3 +67,11 @@ it('测试时机', async () => {
   promise.on('dynamicProcess', () => {})
   console.log(await promise)
 })
+
+it('Should throw error', async () => {
+  await expect(() =>
+    PromiseUtil.warpOnEvent(async () => {
+      throw new Error('error')
+    }),
+  ).rejects.toThrowError()
+})

@@ -15,6 +15,7 @@ import {
   updateAo3Readme,
 } from '../output'
 import findCacheDirectory from 'find-cache-dir'
+import { AsyncArray } from '@liuli-util/async'
 
 const tempPath = initTempPath(__filename)
 
@@ -175,4 +176,34 @@ describe.skip('convert', () => {
     await f()
     expect(spy.mock.calls.filter((it) => it[0] === 'cache hit')).length(2)
   }, 10_000)
+})
+
+it('config is empty', async () => {
+  const list = [
+    {},
+    {
+      id: '53445904',
+    },
+    {
+      cookie: 'test',
+    },
+    {
+      id: '53445904',
+      cookie: '',
+    },
+    {
+      id: '',
+      cookie: 'test',
+    },
+  ]
+  await AsyncArray.forEach(list, async (it) => {
+    await expect(() =>
+      convert({
+        input: local.input({
+          path: tempPath,
+        }),
+        output: ao3(it as any),
+      }),
+    ).rejects.toThrowError()
+  })
 })

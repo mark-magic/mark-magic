@@ -20,11 +20,7 @@ export class PromiseUtil {
     const events: Partial<Pick<E, K>> = {}
     const res = new Promise(async (resolve, reject) => {
       await wait(0)
-      try {
-        resolve(await executor(events))
-      } catch (e) {
-        reject(e)
-      }
+      await executor(events).then(resolve, reject)
     })
     Reflect.set(res, 'on', (type: K, callback: E[K]) => {
       events[type] = callback

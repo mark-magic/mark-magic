@@ -1,5 +1,21 @@
 # @mark-magic/plugin-ao3
 
+## 0.11.2
+
+### Patch Changes
+
+- feat: 支持同步小说到 ao3 网站上
+- feat: 支持新编辑器创建的没有 ssr 的文章
+- feat: 支持 spacebattles 网站
+- feat(epubhub): 支持了下载时有正确的文件名，并且在生成后自动下载
+- feat: 支持下载 bilibili 文集
+- feat(epubhub): 支持在线下载 ao3/sv 网站的小说
+- feat: 支持生成一个 readme.md，包含书籍的简介或概览之类的
+- fix: 修复 ao3 只有一章时无法解析的错误
+- Updated dependencies
+  - @mark-magic/core@0.11.2
+  - @mark-magic/utils@0.11.2
+
 ## 0.11.1
 
 ### Patch Changes

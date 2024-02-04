@@ -1,5 +1,9 @@
 # @mark-magic/core
 
+## 0.11.2
+
+### Patch Changes
+
 ## 0.11.0
 
 ### Minor Changes

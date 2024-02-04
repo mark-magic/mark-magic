@@ -1,5 +1,15 @@
 # @mark-magic/plugin-docs
 
+## 0.11.2
+
+### Patch Changes
+
+- fix(plugin-docs): 先取消 vitepress 的死链检查
+- Updated dependencies
+  - @mark-magic/core@0.11.2
+  - @mark-magic/plugin-local@0.11.2
+  - @mark-magic/utils@0.11.2
+
 ## 0.11.0
 
 ### Minor Changes

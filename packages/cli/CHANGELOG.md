@@ -1,5 +1,14 @@
 # @mark-magic/cli
 
+## 0.11.2
+
+### Patch Changes
+
+- feat(cli): 需要支持在配置中使用环境变量以隐藏机密信息
+- fix: 修复单元测试错误并添加 ci 以便后续及早发现
+- Updated dependencies
+  - @mark-magic/core@0.11.2
+
 ## 0.11.0
 
 ### Minor Changes

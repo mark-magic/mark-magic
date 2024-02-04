@@ -1,5 +1,7 @@
 # @mark-magic/create-plugin
 
+## 0.11.2
+
 ## 0.11.0
 
 ### Minor Changes

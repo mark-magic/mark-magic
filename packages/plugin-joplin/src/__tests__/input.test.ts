@@ -1,10 +1,11 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import { calcTitle, convertContentLink, input } from '../input'
 import { fromAsync } from '@mark-magic/utils'
 import { flatMap, last, map } from 'lodash-es'
 import { convert } from '@mark-magic/core'
-import * as local from '@mark-magic/plugin-local'
-import { initTempPath } from '@liuli-util/test'
+import { fromMarkdown, select } from '@liuli-util/markdown-util'
+import { config, noteApi, searchApi, tagApi } from 'joplin-api'
+import { wait } from '@liuli-util/async'
 
 it('calcTitle', () => {
   expect(calcTitle({ id: '1', title: 'test.png', file_extension: 'png', mime: 'image/png' })).eq('test.png')
@@ -20,8 +21,10 @@ it('internal link for note and resource', async () => {
 })
 
 describe('convert', () => {
-  const tempPath = initTempPath(__filename)
-
+  beforeAll(() => {
+    config.token = import.meta.env.VITE_JOPLIN_TOKEN
+    config.baseUrl = import.meta.env.VITE_JOPLIN_BASE_URL
+  })
   it('joplinInput', async () => {
     const list = await fromAsync(
       input({
@@ -43,5 +46,36 @@ describe('convert', () => {
       }).generate(),
     )
     list.forEach((it) => expect(last(it.path)!.endsWith('.md')).true)
+  })
+
+  describe('Should content include title set context', () => {
+    let createNoteId: string
+    beforeAll(async () => {
+      if ((await searchApi.search({ query: 'test title in plugin-joplin tag:blog' })).items.length > 0) {
+        return
+      }
+      createNoteId = (
+        await noteApi.create({
+          title: 'test title in plugin-joplin',
+          body: 'test body',
+        })
+      ).id
+      const blogTagId = (await tagApi.list()).items.find((it) => it.title === 'blog')!.id
+      await tagApi.addTagByNoteId(blogTagId, createNoteId)
+    })
+    it('Should content include title', async () => {
+      const list = await fromAsync(
+        input({
+          baseUrl: import.meta.env.VITE_JOPLIN_BASE_URL,
+          token: import.meta.env.VITE_JOPLIN_TOKEN,
+          tag: 'blog',
+        }).generate(),
+      )
+      console.log(
+        list.map((it) => [it.id, it.name]),
+        createNoteId,
+      )
+      list.forEach((it) => expect(!!select('heading[depth=1]', fromMarkdown(it.content))).true)
+    })
   })
 })

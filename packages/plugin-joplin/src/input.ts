@@ -97,9 +97,14 @@ export function input(options: Config & { tag: string }): InputPlugin {
           },
         )
 
+        const name = (note.title.startsWith('# ') ? note.title.slice(2) : note.title).trim()
+        // 找到标题，如果找不到，则添加一级标题
+        if (!/^(#+ )/.test(note.body)) {
+          note.body = '# ' + name + '\n\n' + note.body.trimStart()
+        }
         const inputNote: Content = {
           id: note.id,
-          name: (note.title.startsWith('# ') ? note.title.slice(2) : note.title).trim(),
+          name,
           content: convertContentLink(
             note.body,
             resources.map((item) => item.id),

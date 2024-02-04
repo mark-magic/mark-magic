@@ -2,10 +2,9 @@
   "$schema": "https://unpkg.com/@changesets/config@2.3.0/schema.json",
   "changelog": "@changesets/changelog-git",
   "commit": false,
-  "fixed": [
+  "linked": [
     ["@mark-magic/core", "@mark-magic/cli", "@mark-magic/utils", "@mark-magic/create-plugin", "@mark-magic/plugin-*"]
   ],
-  "linked": [],
   "access": "restricted",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",

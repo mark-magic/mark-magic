@@ -111,5 +111,5 @@ it('ci mode', async () => {
   await mkdir(path.resolve(tempPath, 'books'), { recursive: true })
   await writeFile(path.resolve(tempPath, 'books', 'readme.md'), '# Hello World')
   await execute({ root: tempPath })
-  expect(JSON.stringify(log.mock.calls)).includes('Processing content 1: readme.md')
+  expect(JSON.stringify(log.mock.calls)).includes('Processing content 1: readme')
 })

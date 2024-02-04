@@ -6,13 +6,17 @@ import { mkdirp, pathExists, readJson, writeJson } from 'fs-extra/esm'
 import { last } from 'lodash-es'
 import { parse } from 'node-html-parser'
 import path from 'pathe'
-import pThrottle from 'p-throttle'
+import Bottleneck from 'bottleneck'
 
-const globalFetch = pThrottle({
+const limiter = new Bottleneck({
   // rate limit, ref: https://github.com/otwcode/otwarchive/blob/501938da3b1f744d6e2d56c96c2475f8a3af1218/config/config.yml#L184-L185
-  limit: 280,
-  interval: 300 * 1000,
-})(fetch)
+  maxConcurrent: 1, // 同时最多1个活跃（执行中）的请求
+  minTime: 1500, // 每个请求之间最少间隔1000毫秒（1秒）
+  highWater: -1, // 不使用队列限制
+  strategy: Bottleneck.strategy.LEAK, // 当达到 highWater 限制时，新的作业会导致旧的作业被丢弃
+})
+
+const globalFetch = limiter.wrap(fetch) as typeof fetch
 
 interface Ao3OuputConfig {
   /**

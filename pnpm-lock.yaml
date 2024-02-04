@@ -418,6 +418,9 @@ importers:
       '@mark-magic/utils':
         specifier: workspace:^
         version: link:../utils
+      bottleneck:
+        specifier: ^2.19.5
+        version: 2.19.5
       dayjs:
         specifier: ^1.11.10
         version: 1.11.10
@@ -439,9 +442,6 @@ importers:
       node-html-parser:
         specifier: ^6.1.5
         version: 6.1.5
-      p-throttle:
-        specifier: ^6.1.0
-        version: 6.1.0
       pathe:
         specifier: ^1.1.1
         version: 1.1.1
@@ -4863,6 +4863,10 @@ packages:
 
   /boolbase@1.0.0:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
+
+  /bottleneck@2.19.5:
+    resolution: {integrity: sha512-VHiNCbI1lKdl44tGrhNfU3lup0Tj/ZBMJB5/2ZbNXRCPuRCO7ed2mgcK4r17y+KB2EfuYuRaVlwNbAeaWGSpbw==}
+    dev: false
 
   /brace-expansion@1.1.11:
     resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==}
@@ -9787,11 +9791,6 @@ packages:
     dependencies:
       '@types/retry': 0.12.0
       retry: 0.13.1
-    dev: false
-
-  /p-throttle@6.1.0:
-    resolution: {integrity: sha512-eQMdGTxk2+047La67wefUtt0tEHh7D+C8Jl7QXoFCuIiNYeQ9zWs2AZiJdIAs72rSXZ06t11me2bgalRNdy3SQ==}
-    engines: {node: '>=18'}
     dev: false
 
   /p-timeout@3.2.0:

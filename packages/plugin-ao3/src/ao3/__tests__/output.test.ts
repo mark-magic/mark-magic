@@ -16,6 +16,7 @@ import {
 } from '../output'
 import findCacheDirectory from 'find-cache-dir'
 import { AsyncArray } from '@liuli-util/async'
+import Bottleneck from 'bottleneck'
 
 const tempPath = initTempPath(__filename)
 
@@ -206,4 +207,26 @@ it('config is empty', async () => {
       }),
     ).rejects.toThrowError()
   })
+})
+
+it('rate limit', async () => {
+  const limiter = new Bottleneck({
+    // rate limit, ref: https://github.com/otwcode/otwarchive/blob/501938da3b1f744d6e2d56c96c2475f8a3af1218/config/config.yml#L184-L185
+    maxConcurrent: 1, // 同时最多1个活跃（执行中）的请求
+    minTime: 500, // 每个请求之间最少间隔1000毫秒（1秒）
+    highWater: -1, // 不使用队列限制
+    strategy: Bottleneck.strategy.LEAK, // 当达到 highWater 限制时，新的作业会导致旧的作业被丢弃
+  })
+  const f = vi.fn().mockImplementation(() => Date.now())
+  const wrapF = limiter.wrap(f)
+  await Promise.all([
+    Array(5)
+      .fill(0)
+      .map(() => wrapF()),
+  ])
+  const r = f.mock.results.map((it) => it.value)
+  expect(r.sort()).deep.eq(r)
+  for (let i = 1; i < r.length; i++) {
+    expect(r[i] - r[i - 1]).gte(500)
+  }
 })

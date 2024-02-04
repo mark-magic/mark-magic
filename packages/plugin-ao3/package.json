@@ -45,6 +45,7 @@
     "@liuli-util/markdown-util": "^0.8.0",
     "@mark-magic/core": "workspace:^",
     "@mark-magic/utils": "workspace:^",
+    "bottleneck": "^2.19.5",
     "dayjs": "^1.11.10",
     "find-cache-dir": "^5.0.0",
     "fs-extra": "^11.1.1",
@@ -52,7 +53,6 @@
     "hast-util-to-mdast": "^10.1.0",
     "lodash-es": "^4.17.21",
     "node-html-parser": "^6.1.5",
-    "p-throttle": "^6.1.0",
     "pathe": "^1.1.1",
     "uuid": "^9.0.0"
   }

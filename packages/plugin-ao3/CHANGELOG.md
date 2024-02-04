@@ -1,5 +1,11 @@
 # @mark-magic/plugin-ao3
 
+## 0.11.5
+
+### Patch Changes
+
+- fix: 使用另一种策略限制请求速率
+
 ## 0.11.4
 
 ### Patch Changes

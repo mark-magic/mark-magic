@@ -3,9 +3,10 @@ import { calcTitle, convertContentLink, input } from '../input'
 import { fromAsync } from '@mark-magic/utils'
 import { flatMap, last, map } from 'lodash-es'
 import { convert } from '@mark-magic/core'
-import { fromMarkdown, select } from '@liuli-util/markdown-util'
+import { fromMarkdown, select, selectAll } from '@liuli-util/markdown-util'
 import { config, noteApi, searchApi, tagApi } from 'joplin-api'
-import { wait } from '@liuli-util/async'
+import * as local from '@mark-magic/plugin-local'
+import { initTempPath } from '@liuli-util/test'
 
 it('calcTitle', () => {
   expect(calcTitle({ id: '1', title: 'test.png', file_extension: 'png', mime: 'image/png' })).eq('test.png')
@@ -16,16 +17,27 @@ it('calcTitle', () => {
 })
 
 it('internal link for note and resource', async () => {
-  const r = convertContentLink(`[test](:/test) ![image](:/image) [github](https://github.com)`, ['test', 'image'])
-  expect(r.trim()).eq('[test](:/resource/test) ![image](:/resource/image) [github](https://github.com)')
+  const r = convertContentLink(`[test](:/test) ![image](:/image) [github](https://github.com)`, ['image'])
+  expect(r.trim()).eq('[test](:/content/test) ![image](:/resource/image) [github](https://github.com)')
 })
 
-describe('convert', () => {
+describe('input', () => {
+  const tempPath = initTempPath(__filename)
   beforeAll(() => {
     config.token = import.meta.env.VITE_JOPLIN_TOKEN
     config.baseUrl = import.meta.env.VITE_JOPLIN_BASE_URL
   })
-  it('joplinInput', async () => {
+  it('convert to local', async () => {
+    await convert({
+      input: input({
+        baseUrl: import.meta.env.VITE_JOPLIN_BASE_URL,
+        token: import.meta.env.VITE_JOPLIN_TOKEN,
+        tag: 'blog',
+      }),
+      output: local.output({
+        path: tempPath,
+      }),
+    })
     const list = await fromAsync(
       input({
         baseUrl: import.meta.env.VITE_JOPLIN_BASE_URL,
@@ -49,12 +61,11 @@ describe('convert', () => {
   })
 
   describe('Should content include title set context', () => {
-    let createNoteId: string
     beforeAll(async () => {
       if ((await searchApi.search({ query: 'test title in plugin-joplin tag:blog' })).items.length > 0) {
         return
       }
-      createNoteId = (
+      const createNoteId = (
         await noteApi.create({
           title: 'test title in plugin-joplin',
           body: 'test body',
@@ -70,10 +81,6 @@ describe('convert', () => {
           token: import.meta.env.VITE_JOPLIN_TOKEN,
           tag: 'blog',
         }).generate(),
-      )
-      console.log(
-        list.map((it) => [it.id, it.name]),
-        createNoteId,
       )
       list.forEach((it) => expect(!!select('heading[depth=1]', fromMarkdown(it.content))).true)
     })

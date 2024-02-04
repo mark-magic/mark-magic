@@ -56,7 +56,7 @@ export function convertContentLink(body: string, resourceIds: string[]): string 
       it.url = wrapResourceLink(it.url.slice(2))
       return
     }
-    it.url = wrapContentLink(it.url)
+    it.url = wrapContentLink(it.url.slice(2))
   })
   return toMarkdown(root)
 }

@@ -52,6 +52,7 @@
     "hast-util-to-mdast": "^10.1.0",
     "lodash-es": "^4.17.21",
     "node-html-parser": "^6.1.5",
+    "p-throttle": "^6.1.0",
     "pathe": "^1.1.1",
     "uuid": "^9.0.0"
   }

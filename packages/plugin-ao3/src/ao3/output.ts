@@ -6,6 +6,13 @@ import { mkdirp, pathExists, readJson, writeJson } from 'fs-extra/esm'
 import { last } from 'lodash-es'
 import { parse } from 'node-html-parser'
 import path from 'pathe'
+import pThrottle from 'p-throttle'
+
+const globalFetch = pThrottle({
+  // rate limit, ref: https://github.com/otwcode/otwarchive/blob/501938da3b1f744d6e2d56c96c2475f8a3af1218/config/config.yml#L184-L185
+  limit: 280,
+  interval: 300 * 1000,
+})(fetch)
 
 interface Ao3OuputConfig {
   /**
@@ -83,7 +90,7 @@ export async function getUpdateAuthToken(
     chapterId?: string
   } & Pick<Ao3AuthOptions, 'cookie'>,
 ): Promise<string> {
-  const html = await fetch(
+  const html = await globalFetch(
     `https://archiveofourown.org/works/${options.bookId}${
       options.chapterId ? `/chapters/${options.chapterId}` : ''
     }/edit`,
@@ -115,7 +122,7 @@ export async function updateAo3Readme(
   options: Ao3AuthOptions,
 ) {
   const url = `https://archiveofourown.org/works/${chapter.bookId}`
-  const r = await fetch('https://archiveofourown.org/works/53445904', {
+  const r = await globalFetch('https://archiveofourown.org/works/53445904', {
     headers: {
       accept:
         'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
@@ -190,7 +197,7 @@ export async function updateAo3Readme(
 export async function updateAo3Chapter(chapter: Ao3Chapter, options: { cookie: string; authenticityToken: string }) {
   const url = `https://archiveofourown.org/works/${chapter.bookId}/chapters/${chapter.chapterId}`
   const created = dayjs(chapter.created)
-  const r = await fetch(url, {
+  const r = await globalFetch(url, {
     method: 'POST',
     headers: {
       authority: 'archiveofourown.org',
@@ -268,7 +275,7 @@ function splitTitleAndContent(root: Root): {
 }
 
 export async function deleteAo3Chapter(chapter: Pick<Ao3Chapter, 'bookId' | 'chapterId'>, options: Ao3AuthOptions) {
-  const r = await fetch(`https://archiveofourown.org/works/${chapter.bookId}/chapters/${chapter.chapterId}`, {
+  const r = await globalFetch(`https://archiveofourown.org/works/${chapter.bookId}/chapters/${chapter.chapterId}`, {
     headers: {
       accept:
         'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
@@ -301,7 +308,7 @@ export async function deleteAo3Chapter(chapter: Pick<Ao3Chapter, 'bookId' | 'cha
 }
 
 export async function getAddChapterToken(options: { cookie: string; bookId: string }) {
-  const html = await fetch(`https://archiveofourown.org/works/${options.bookId}/chapters/new`, {
+  const html = await globalFetch(`https://archiveofourown.org/works/${options.bookId}/chapters/new`, {
     headers: {
       cookie: options.cookie,
     },
@@ -318,7 +325,7 @@ export async function addAo3Chapter(
   options: { cookie: string; authenticityToken: string },
 ) {
   const created = dayjs(chapter.created)
-  const r = await fetch(`https://archiveofourown.org/works/${chapter.bookId}/chapters`, {
+  const r = await globalFetch(`https://archiveofourown.org/works/${chapter.bookId}/chapters`, {
     headers: {
       accept:
         'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
@@ -399,7 +406,7 @@ export function ao3(options: Ao3OuputConfig): OutputPlugin {
       options.id = options.id.toString()
       cachePath = path.resolve(dir!, options.id)
       await mkdirp(cachePath)
-      const first = await fetch(`https://archiveofourown.org/works/${options.id}`)
+      const first = await globalFetch(`https://archiveofourown.org/works/${options.id}`)
       if (!first.ok) {
         throw new Error('无法获取章节列表')
       }

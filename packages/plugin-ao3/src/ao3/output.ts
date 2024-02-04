@@ -13,7 +13,7 @@ interface Ao3OuputConfig {
    */
   id: string
   /**
-   * 在 ao3 网站后的 cookie，用于正确调用发布接口
+   * 在 ao3 网站后的 cookie，用于正确调用需要身份校验的接口
    */
   cookie: string
 }
@@ -456,7 +456,7 @@ export function ao3(options: Ao3OuputConfig): OutputPlugin {
         return
       }
       if (i === 0) {
-        throw new Error('必须有一章才能发布')
+        return
       }
       return
       // console.warn('删除多余章节', others)

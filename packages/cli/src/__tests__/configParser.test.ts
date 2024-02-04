@@ -1,12 +1,13 @@
-import { it, expect, describe } from 'vitest'
-import { loadConfig, parseConfig } from '../configParser'
+import { it, expect, describe, inject } from 'vitest'
+import { injectEnv, loadConfig, loadEnv, parseConfig } from '../configParser'
 import pathe from 'pathe'
-import { writeFile } from 'fs/promises'
+import { readFile, writeFile } from 'fs/promises'
 import { initTempPath } from '@liuli-util/test'
 import path from 'pathe'
 import { stringify } from 'yaml'
 import { ConfigSchema } from '../config.schema'
 import configRaw from './assets/config.ts?raw'
+import * as yaml from 'yaml'
 
 const tempPath = initTempPath(__filename)
 
@@ -117,4 +118,42 @@ it('parse yaml config with transform', async () => {
   console.log(r.tasks)
   expect(r.tasks[0].transforms).length(1)
   expect(r.tasks[0].transforms![0].name).eq('doctran')
+})
+
+it('parse yaml config with env', async () => {
+  await writeFile(
+    path.resolve(tempPath, 'mark-magic.config.yaml'),
+    stringify({
+      tasks: [
+        {
+          name: 'joplin',
+          input: {
+            name: '@mark-magic/plugin-joplin',
+            config: {
+              baseUrl: '${JOP_BASE_URL}',
+              token: '${JOP_TOKEN}',
+              tag: 'blog',
+            },
+          },
+          output: {
+            name: '@mark-magic/plugin-hexo',
+            config: {
+              path: './dist/my-book.epub',
+            },
+          },
+        },
+      ],
+    }),
+  )
+  await writeFile(path.resolve(tempPath, '.env.local'), `JOP_BASE_URL=http://localhost:41184\nJOP_TOKEN=token`)
+  await loadEnv(tempPath)
+  console.log(injectEnv(await readFile(path.resolve(tempPath, 'mark-magic.config.yaml'), 'utf-8')))
+  const options = yaml.parse(
+    injectEnv(await readFile(path.resolve(tempPath, 'mark-magic.config.yaml'), 'utf-8')),
+  ) as ConfigSchema
+  expect(options.tasks[0].input.config).deep.eq({
+    baseUrl: 'http://localhost:41184',
+    token: 'token',
+    tag: 'blog',
+  })
 })

@@ -1,4 +1,4 @@
-import { readFile } from 'fs/promises'
+import { readFile, readdir } from 'fs/promises'
 import { ConfigSchema } from './config.schema'
 import pathe from 'pathe'
 import yaml from 'yaml'
@@ -8,6 +8,17 @@ import { bundleRequire } from 'bundle-require'
 import { InputPlugin, OutputPlugin, TransformPlugin } from '@mark-magic/core'
 import { ResolvedConfig } from './defineConfig'
 import { logger } from './logger'
+import { config } from 'dotenv'
+import path from 'pathe'
+
+export async function loadEnv(rootPath: string) {
+  const list = await readdir(rootPath)
+  list.filter((it) => it.startsWith('.env')).forEach((it) => config({ path: path.resolve(rootPath, it) }))
+}
+
+export function injectEnv(options: string): string {
+  return options.replace(/\$\{([^}]+)\}/g, (_, key) => (process.env[key] ? JSON.stringify(process.env[key]) : ''))
+}
 
 export async function loadConfig(rootPath: string): Promise<string> {
   const c = ['mark-magic.config.yaml', 'mark-magic.config.ts']
@@ -21,7 +32,9 @@ export async function loadConfig(rootPath: string): Promise<string> {
 }
 
 export async function parseYamlConfig(configPath: string): Promise<ResolvedConfig> {
-  const config = yaml.parse(await readFile(configPath, 'utf-8')) as ConfigSchema
+  const configStr = await readFile(configPath, 'utf-8')
+  await loadEnv(pathe.dirname(configPath))
+  const config = yaml.parse(injectEnv(configStr)) as ConfigSchema
   logger.debug('yaml config: %O', config)
   return {
     tasks: await AsyncArray.map(config.tasks, async (it) => {

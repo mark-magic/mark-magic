@@ -8,7 +8,8 @@
   "scripts": {
     "build": "vite build",
     "dev": "pnpm build --watch",
-    "setup": "pnpm build"
+    "setup": "pnpm build",
+    "test": "vitest --run"
   },
   "sideEffects": false,
   "files": [

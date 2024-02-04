@@ -3,6 +3,7 @@ import { loadConfig, parseConfig } from './configParser'
 import { compareVersions } from 'compare-versions'
 import ora from 'ora'
 import { logger } from './logger'
+import { isCI } from 'ci-info'
 
 export interface CliOptions {
   root?: string
@@ -42,7 +43,11 @@ export async function execute(options: CliOptions) {
       await convert(it)
         .on('generate', (it) => {
           i++
-          spinner.text = `Processing content ${i}: ${it.content.name}`
+          if (isCI) {
+            console.log(`Processing content ${i}: ${it.content.name}`)
+          } else {
+            spinner.text = `Processing content ${i}: ${it.content.name}`
+          }
           logger.debug('generate: %O', it.content.name)
         })
         .on('transform', (it) => {

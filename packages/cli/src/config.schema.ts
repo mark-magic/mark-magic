@@ -7,7 +7,24 @@
 
 export type InputPluginConfig = LocalPluginConfig
 export type TransformPluginConfig = DoctranPluginConfig
-export type OutputPluginConfig = EpubPluginConfig | DocsPluginConfig
+export type OutputPluginConfig =
+  | {
+      /**
+       * 插件名字
+       */
+      name: '@mark-magic/plugin-local'
+      /**
+       * 插件配置
+       */
+      config: {
+        /**
+         * 输出本地目录的路径
+         */
+        path: string
+      }
+    }
+  | EpubPluginConfig
+  | DocsPluginConfig
 
 export interface ConfigSchema {
   tasks: TaskConfig[]

@@ -47,7 +47,11 @@
       "anyOf": [{ "$ref": "#/definitions/DoctranPluginConfig" }]
     },
     "OutputPluginConfig": {
-      "anyOf": [{ "$ref": "#/definitions/EpubPluginConfig" }, { "$ref": "#/definitions/DocsPluginConfig" }]
+      "anyOf": [
+        { "$ref": "../node_modules/@mark-magic/plugin-local/src/config.schema.json#/properties/output" },
+        { "$ref": "#/definitions/EpubPluginConfig" },
+        { "$ref": "#/definitions/DocsPluginConfig" }
+      ]
     },
     "DoctranPluginConfig": {
       "$ref": "../node_modules/@mark-magic/plugin-doctran/src/config.schema.json#/properties/transform"

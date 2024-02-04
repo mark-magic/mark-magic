@@ -54,6 +54,7 @@
     "@liuli-util/async": "^3.6.0",
     "@mark-magic/core": "workspace:^",
     "bundle-require": "^4.0.1",
+    "ci-info": "^4.0.0",
     "commander": "^11.0.0",
     "compare-versions": "^6.1.0",
     "dotenv": "^16.3.1",

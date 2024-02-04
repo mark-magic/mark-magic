@@ -1,5 +1,13 @@
 # @mami/plugin-joplin
 
+## 0.11.7
+
+### Patch Changes
+
+- fix: 修复生成的 path 缺少最后的文件名的错误
+- fix: 修复生成的 content 缺少一级标题的错误
+- fix: 修复生成的 content 引用链接错误
+
 ## 0.11.2
 
 ### Patch Changes

@@ -1,4 +1,4 @@
-# @mami/plugin-joplin
+# @mark-magic/plugin-joplin
 
 ## 0.11.7
 

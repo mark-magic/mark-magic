@@ -19,12 +19,15 @@
     "entryPoint": "./src/index.ts"
   },
   "devDependencies": {
+    "@liuli-util/test": "^3.7.1",
     "@liuli-util/vite-plugin-node": "^0.7.0",
     "@mark-magic/core": "workspace:^",
+    "@mark-magic/plugin-local": "workspace:^",
     "@mark-magic/utils": "workspace:^",
     "@types/lodash-es": "^4.17.6",
     "@types/mime-types": "^2.1.1",
     "@types/node": "^18.8.3",
+    "joplin": "^2.13.2",
     "typescript": "^4.8.4",
     "vite": "^4.3.9",
     "vitest": "^1.0.4"
@@ -38,6 +41,7 @@
     "@liuli-util/fs-extra": "^0.1.0",
     "@liuli-util/markdown-util": "^0.5.3",
     "@liuli-util/tree": "^3.6.0",
+    "filenamify": "^5.1.1",
     "joplin-api": "^0.5.1",
     "lodash-es": "^4.17.21",
     "mime-types": "^2.1.35",

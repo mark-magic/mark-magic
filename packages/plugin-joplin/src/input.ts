@@ -17,6 +17,7 @@ import { keyBy, pick } from 'lodash-es'
 import path from 'path'
 import { extension } from 'mime-types'
 import { Image, Link, fromMarkdown, selectAll, toMarkdown } from '@liuli-util/markdown-util'
+import filenamify from 'filenamify'
 
 async function getFolders(): Promise<Record<string, FolderListAllRes & Pick<Content, 'path'>>> {
   const list = await folderApi.listAll()
@@ -105,7 +106,7 @@ export function input(options: Config & { tag: string }): InputPlugin {
           ),
           created: note.user_created_time,
           updated: note.user_updated_time,
-          path: folder?.path ?? [],
+          path: [...(folder?.path ?? []), filenamify(note.title) + '.md'],
           resources,
           extra: {
             tags,

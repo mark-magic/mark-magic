@@ -1,5 +1,11 @@
 # @mark-magic/cli
 
+## 0.11.6
+
+### Patch Changes
+
+- feat: 修改打印进度的方式，支持检测 CI 使用 console.log
+
 ## 0.11.2
 
 ### Patch Changes

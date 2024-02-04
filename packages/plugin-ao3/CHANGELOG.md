@@ -1,10 +1,16 @@
 # @mark-magic/plugin-ao3
 
+## 0.11.4
+
+### Patch Changes
+
+- feat: 限制请求速率
+
 ## 0.11.3
 
 ### Patch Changes
 
-- feat(plugin-ao3): 校验配置，如果没有传递则抛出异常
+- feat: 校验配置，如果没有传递则抛出异常
 
 ## 0.11.2
 

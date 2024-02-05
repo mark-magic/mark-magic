@@ -244,6 +244,9 @@ export async function updateAo3Chapter(chapter: Ao3Chapter, options: { cookie: s
     }),
   })
   if (!r.ok) {
+    if (r.status === 429) {
+      throw new Error('请求过于频繁，稍后重试')
+    }
     throw new Error(`无法更新 ao3 章节 ${url}，状态码为 ${r.status}，${r.statusText}`)
   }
   const html = (await r.text()) as string

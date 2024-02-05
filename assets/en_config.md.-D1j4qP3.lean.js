@@ -1,1 +1,0 @@
-import{_ as i,c as a,o as n,R as s}from"./chunks/framework.ZUvglspe.js";const d=JSON.parse('{"title":"Configuration","description":"","frontmatter":{},"headers":[],"relativePath":"en/config.md","filePath":"en/config.md"}'),t={name:"en/config.md"},l=s("",12),e=[l];function p(h,o,r,u,k,g){return n(),a("div",null,e)}const f=i(t,[["render",p]]);export{d as __pageData,f as default};

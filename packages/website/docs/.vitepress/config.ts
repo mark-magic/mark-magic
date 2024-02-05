@@ -2,6 +2,7 @@ import { defineConfig } from 'vitepress'
 import {} from 'vitepress/theme'
 
 export default defineConfig({
+  head: [['link', { rel: 'icon', href: '/logo.png' }]],
   locales: {
     root: {
       label: '中文',
@@ -40,6 +41,7 @@ export default defineConfig({
               { text: 'plugin-joplin', link: '/plugin/plugin-joplin' },
               { text: 'plugin-hexo', link: '/plugin/plugin-hexo' },
               { text: 'plugin-doctran', link: '/plugin/plugin-doctran' },
+              { text: 'plugin-ao3', link: '/plugin/plugin-ao3' },
             ],
           },
           {
@@ -94,6 +96,7 @@ export default defineConfig({
               { text: 'plugin-joplin', link: '/en/plugin/plugin-joplin' },
               { text: 'plugin-hexo', link: '/en/plugin/plugin-hexo' },
               { text: 'plugin-doctran', link: '/en/plugin/plugin-doctran' },
+              { text: 'plugin-ao3', link: '/en/plugin/plugin-ao3' },
             ],
           },
           {

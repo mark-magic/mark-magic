@@ -1,18 +1,33 @@
-# @mark-magic/core
+# mark-magic
 
-## 使用
+## Introduction
 
-<!-- TODO -->
+A markdown-based data connection and conversion tool to solve data conversion between different tools and coordination between some common tools.
 
-## 目标
+Some use cases
 
-实现任意输入以标准数据格式作为中介输出任意格式，本质上并不在乎输入输出的格式，只要输入输出都能处理中间的数据格式即可。
+1. Publish some notes online, for example, generate content required by hexo blog from joplin note tool and publish it online
+2. Publish a novel online, for example, generate a novel website from local markdown files and publish it
+3. Package a novel into an epub file, for example, package "Flying to the Stars" into an epub file for offline reading after downloading
 
-## 标准内容定义
+Some use cases from the community
 
-1. 符合 commonmark 标准
-2. 资源引用使用 [](:/resource/<id>) 格式
-3. 内容的互相引用使用 [](:/content/<id>) 格式
-4. 支持 html 资源标签的引用检测，例如 image/video/audio 等
+1. joplin => hugo generating a blog
+2. joplin => jekyll generating a blog
+3. There may be others...
 
-> 计划支持 emoji、数学公式、流程图、时序图、甘特图、五线谱、代码高亮、自定义容器、表格、任务列表等。
+## Why not use existing tools
+
+We have now used many tools to handle different tasks, but they are all based on markdown, such as
+
+- Use joplin to record notes
+- Use hexo to write a blog
+- Use vitepress to generate documentation websites
+- Use docusaurus to generate SEO-friendly novel websites
+- Use pandoc to generate epub
+
+What really makes us feel painful is that when using docusaurus, each novel requires a lot of configuration, which is very annoying. So we hope to have better tools that can be used out of the box.
+
+## Getting Started
+
+For more information, please read the [documentation](https://mark-magic.rxliuli.com/en/)

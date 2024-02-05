@@ -28,7 +28,7 @@ Name of the input plugin, for example, `@mark-magic/plugin-joplin`.
 
 Configuration of the input plugin. Detailed explanation for each plugin's configuration.
 
-- [plugin-local](../..)
+- [plugin-local](../plugin/plugin-local.md#input)
 - [plugin-epub](./plugin/plugin-epub.md)
 - [plugin-docs](./plugin/plugin-docs.md)
 - [plugin-joplin](./plugin/plugin-joplin.md)
@@ -44,7 +44,7 @@ Transform plugins, can be zero or more. Currently, there is only one translation
 
 Output plugin, configuration is similar to input plugin.
 
-- [plugin-local](../..)
+- [plugin-local](../plugin/plugin-local.md#output)
 - [plugin-hexo](./plugin/plugin-hexo.md)
 
 ## Environment Variables

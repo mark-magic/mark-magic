@@ -114,17 +114,9 @@ export interface OutputOptions {
 
 ### meta
 
-控制 markdown 顶部的 yaml 元数据。
-
-默认情况下会输出 名字、创建时间和修改时间。
+控制 markdown 顶部的 yaml 元数据，默认情况下不会添加任何元数据。
 
 ```md
----
-name: Getting Started
-created: 1702805863284
-updated: 1702805863284
----
-
 # Getting Started
 
 ## Overview

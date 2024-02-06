@@ -612,6 +612,9 @@ importers:
       find-cache-dir:
         specifier: ^5.0.0
         version: 5.0.0
+      fs-extra:
+        specifier: ^11.1.1
+        version: 11.2.0
       google-translate-api-x:
         specifier: ^10.6.7
         version: 10.6.7
@@ -634,9 +637,6 @@ importers:
       dotenv:
         specifier: ^16.3.1
         version: 16.3.1
-      fs-extra:
-        specifier: ^11.1.1
-        version: 11.2.0
       json-schema-to-typescript:
         specifier: ^13.0.2
         version: 13.1.1

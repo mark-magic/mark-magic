@@ -1,5 +1,5 @@
 {
-  "name": "@mark-magic/plugin-image-download",
+  "name": "@mark-magic/plugin-image-fetcher",
   "version": "0.11.10",
   "license": "MIT",
   "type": "module",
@@ -17,10 +17,13 @@
     "test": "vitest run"
   },
   "sideEffects": false,
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "@liuli-util/test": "^3.8.0",
     "@liuli-util/vite-plugin-node": "^0.8.0",
-    "@types/lodash-es": "^4.17.12",
+    "@mark-magic/plugin-local": "workspace:^",
     "typescript": "^5.3.3",
     "vite": "^5.0.10",
     "vitest": "^1.0.4"
@@ -29,9 +32,7 @@
     "@liuli-util/async": "^3.6.0",
     "@liuli-util/markdown-util": "^0.9.0",
     "@mark-magic/core": "workspace:^",
-    "@mark-magic/plugin-local": "workspace:^",
     "@mark-magic/utils": "workspace:^",
-    "lodash-es": "^4.17.21",
     "mime": "^4.0.1",
     "pathe": "^1.1.1"
   },

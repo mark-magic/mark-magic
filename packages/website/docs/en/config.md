@@ -39,7 +39,7 @@ The configuration for the input plugin. Detailed explanation for each plugin's c
 The transform plugins, can be 0 or more.
 
 - [plugin-doctran](./plugin/plugin-doctran.md)
-- [plugin-image-download](./plugin/plugin-image-download.md)
+- [plugin-image-fetcher](./plugin/plugin-image-fetcher.md)
 
 ## output
 

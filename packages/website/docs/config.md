@@ -39,7 +39,7 @@ tasks: # 定义一系列任务
 转换插件，可以有 0 到多个。
 
 - [plugin-doctran](./plugin/plugin-doctran.md)
-- [plugin-image-download](./plugin/plugin-image-download.md)
+- [plugin-image-fetcher](./plugin/plugin-image-fetcher.md)
 
 ## output
 

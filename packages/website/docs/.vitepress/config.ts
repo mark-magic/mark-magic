@@ -42,7 +42,7 @@ export default defineConfig({
               { text: 'plugin-hexo', link: '/plugin/plugin-hexo' },
               { text: 'plugin-doctran', link: '/plugin/plugin-doctran' },
               { text: 'plugin-ao3', link: '/plugin/plugin-ao3' },
-              { text: 'plugin-image-download', link: '/plugin/plugin-image-download' },
+              { text: 'plugin-image-fetcher', link: '/plugin/plugin-image-fetcher' },
             ],
           },
           {
@@ -98,7 +98,7 @@ export default defineConfig({
               { text: 'plugin-hexo', link: '/en/plugin/plugin-hexo' },
               { text: 'plugin-doctran', link: '/en/plugin/plugin-doctran' },
               { text: 'plugin-ao3', link: '/en/plugin/plugin-ao3' },
-              { text: 'plugin-image-download', link: '/plugin/plugin-image-download' },
+              { text: 'plugin-image-fetcher', link: '/plugin/plugin-image-fetcher' },
             ],
           },
           {

@@ -1,6 +1,6 @@
 {
   "name": "@mark-magic/create-plugin",
-  "version": "0.11.10",
+  "version": "0.11.11",
   "type": "module",
   "bin": {
     "create-plugin": "./bin.js"

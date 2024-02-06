@@ -1,4 +1,4 @@
-# @mark-magic/plugin-image-download
+# @mark-magic/plugin-image-fetcher
 
 ## 0.11.10
 

@@ -1,0 +1,1 @@
+import{_ as s,c as i,o as a,R as n}from"./chunks/framework.ZUvglspe.js";const E=JSON.parse('{"title":"使用插件","description":"","frontmatter":{},"headers":[],"relativePath":"plugin/index.md","filePath":"plugin/index.md"}'),l={name:"plugin/index.md"},t=n("",10),h=[t];function p(e,k,r,d,c,o){return a(),i("div",null,h)}const m=s(l,[["render",p]]);export{E as __pageData,m as default};

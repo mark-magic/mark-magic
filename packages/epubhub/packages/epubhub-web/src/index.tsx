@@ -109,7 +109,10 @@ export function App() {
     }
     const r = location.origin + resp.url
     download(r)
-    return r
+    return {
+      epub: r,
+      markdown: r + '?format=markdown',
+    }
   })
   return (
     <div className="container md:max-w-xl mx-auto px-4">
@@ -154,10 +157,17 @@ export function App() {
         {state.error.value && <div className="text-red-500">Error: {state.error.value.message}</div>}
         {state.value.value && (
           <div>
-            Epub generated at{' '}
-            <a href={state.value.value} className="text-blue-500" download={true}>
-              {state.value.value}
-            </a>
+            Generated at{' '}
+            <ul>
+              {Object.entries(state.value.value).map(([k, v]) => (
+                <li key={k}>
+                  {k}:{' '}
+                  <a href={v} className="text-blue-500" download={true}>
+                    {v}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         )}
       </div>

@@ -1,4 +1,4 @@
-import { TransformPlugin } from '@mark-magic/core'
+import { TransformPlugin, wrapResourceLink } from '@mark-magic/core'
 import { Image, fromMarkdown, selectAll, toMarkdown } from '@liuli-util/markdown-util'
 import { AsyncArray } from '@liuli-util/async'
 import { createHash } from 'crypto'
@@ -32,7 +32,7 @@ export function transform(): TransformPlugin {
             created: now,
             updated: now,
           })
-          node.url = `:/resources/${id}`
+          node.url = wrapResourceLink(id)
         } catch (e) {
           console.error('Download image failed: ', src)
         }

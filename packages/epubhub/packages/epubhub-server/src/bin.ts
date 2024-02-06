@@ -1,6 +1,6 @@
 import express, { ErrorRequestHandler, RequestHandler } from 'express'
 import { createServer } from 'http'
-import { download, generate } from './download'
+import { download, downloadMarkdownZip, generate } from './download'
 import path from 'pathe'
 
 const app = express().use(express.json())
@@ -56,6 +56,14 @@ app.get(
   '/api/download/:id',
   handleError(async (req, res) => {
     const { id } = req.params
+    const isMarkdown = req.query.format === 'markdown'
+    if (isMarkdown) {
+      const r = await downloadMarkdownZip(id)
+      res.setHeader('Content-Type', 'application/zip')
+      res.setHeader('Content-Disposition', `attachment; filename="${r.name}.zip"`)
+      res.send(r.data)
+      return
+    }
     const r = await download(id)
     res.setHeader('Content-Type', 'application/epub+zip')
     res.setHeader('Content-Disposition', `attachment; filename="${r.name}.epub"`)

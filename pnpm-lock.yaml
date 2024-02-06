@@ -323,7 +323,7 @@ importers:
     devDependencies:
       '@liuli-util/vite-plugin-node':
         specifier: ^0.8.0
-        version: 0.8.0(@types/node@20.10.4)(rollup@3.29.4)(typescript@5.3.3)(vite@5.0.11)
+        version: link:../../../../../liuli-tools/packages/vite-plugin-node
       '@mark-magic/core':
         specifier: workspace:^
         version: link:../../../core
@@ -333,6 +333,12 @@ importers:
       '@mark-magic/plugin-epub':
         specifier: workspace:^
         version: link:../../../plugin-epub
+      '@mark-magic/plugin-image-fetcher':
+        specifier: workspace:^
+        version: link:../../../plugin-image-fetcher
+      '@mark-magic/plugin-local':
+        specifier: workspace:^
+        version: link:../../../plugin-local
       '@types/express':
         specifier: ^4.17.21
         version: 4.17.21
@@ -354,6 +360,9 @@ importers:
       fs-extra:
         specifier: ^11.1.1
         version: 11.2.0
+      jszip:
+        specifier: ^3.10.1
+        version: 3.10.1
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
@@ -4489,24 +4498,6 @@ packages:
       rollup-plugin-node-externals: 7.0.1(rollup@3.29.4)
       vite: 5.0.10(@types/node@20.10.4)
       vite-plugin-dts: 3.7.2(@types/node@20.10.4)(rollup@3.29.4)(typescript@5.3.3)(vite@5.0.10)
-    transitivePeerDependencies:
-      - '@types/node'
-      - rollup
-      - supports-color
-      - typescript
-    dev: true
-
-  /@liuli-util/vite-plugin-node@0.8.0(@types/node@20.10.4)(rollup@3.29.4)(typescript@5.3.3)(vite@5.0.11):
-    resolution: {integrity: sha512-5MvE1uwBBk5wvY6lKkvBVB/m77oOYNbBJzCA02Uw5bvG0KxSFT0yaUwDKT2Df0I6YfxvpyIjApBwe2iLbaHalA==}
-    peerDependencies:
-      vite: ^4
-    dependencies:
-      '@microsoft/api-extractor': 7.39.5(@types/node@20.10.4)
-      magic-string: 0.30.7
-      pathe: 1.1.2
-      rollup-plugin-node-externals: 7.0.1(rollup@3.29.4)
-      vite: 5.0.11(@types/node@20.10.4)
-      vite-plugin-dts: 3.7.2(@types/node@20.10.4)(rollup@3.29.4)(typescript@5.3.3)(vite@5.0.11)
     transitivePeerDependencies:
       - '@types/node'
       - rollup
@@ -10142,7 +10133,6 @@ packages:
 
   /immediate@3.0.6:
     resolution: {integrity: sha512-XXOFtyqDjNDAQxVfYxuF7g9Il/IbWmmlQg2MYKOH8ExIT1qg6xc4zyS3HaEEATgs1btfzxq15ciUiY7gjSXRGQ==}
-    dev: false
 
   /immer@7.0.15:
     resolution: {integrity: sha512-yM7jo9+hvYgvdCQdqvhCNRRio0SCXc8xDPzA25SvKWa7b1WVPjLwQs1VYU5JPXjcJPTqAa5NP5dqpORGYBQ2AA==}
@@ -10936,7 +10926,6 @@ packages:
       pako: 1.0.11
       readable-stream: 2.3.7
       setimmediate: 1.0.5
-    dev: false
 
   /katex@0.16.9:
     resolution: {integrity: sha512-fsSYjWS0EEOwvy81j3vRA8TEAhQhKiqO+FQaKWp0m39qwOzHVBgAUBIXWj1pB+O2W3fIpNa6Y9KSKCVbfPhyAQ==}
@@ -11259,7 +11248,6 @@ packages:
     resolution: {integrity: sha512-UaiMJzeWRlEujzAuw5LokY1L5ecNQYZKfmyZ9L7wDHb/p5etKaxXhohBcrw0EYby+G/NA52vRSN4N39dxHAIwQ==}
     dependencies:
       immediate: 3.0.6
-    dev: false
 
   /lilconfig@2.1.0:
     resolution: {integrity: sha512-utWOt/GHzuUxnLKxB6dk81RoOeoNeHgbrXiuGk4yyF5qlRz+iIVWu56E2fqGHFrXz0QNUhLB/8nKqvRH66JKGQ==}
@@ -13224,7 +13212,6 @@ packages:
 
   /pako@1.0.11:
     resolution: {integrity: sha512-4hLB8Py4zZce5s4yd9XzopqwVv/yGNhV1Bl8NTmCq1763HeK2+EwVTv+leGeL13Dnh2wfbqowVPXCIO0z4taYw==}
-    dev: false
 
   /param-case@2.1.1:
     resolution: {integrity: sha512-eQE845L6ot89sk2N8liD8HAuH4ca6Vvr7VWAWwt7+kvvG5aBcPmmphQ68JsEG2qa9n1TykS2DLeMt363AAH8/w==}
@@ -16418,30 +16405,6 @@ packages:
       kolorist: 1.8.0
       typescript: 5.3.3
       vite: 5.0.10(@types/node@20.10.4)
-      vue-tsc: 1.8.27(typescript@5.3.3)
-    transitivePeerDependencies:
-      - '@types/node'
-      - rollup
-      - supports-color
-    dev: true
-
-  /vite-plugin-dts@3.7.2(@types/node@20.10.4)(rollup@3.29.4)(typescript@5.3.3)(vite@5.0.11):
-    resolution: {integrity: sha512-kg//1nDA01b8rufJf4TsvYN8LMkdwv0oBYpiQi6nRwpHyue+wTlhrBiqgipdFpMnW1oOYv6ywmzE5B0vg6vSEA==}
-    engines: {node: ^14.18.0 || >=16.0.0}
-    peerDependencies:
-      typescript: '*'
-      vite: '*'
-    peerDependenciesMeta:
-      vite:
-        optional: true
-    dependencies:
-      '@microsoft/api-extractor': 7.39.0(@types/node@20.10.4)
-      '@rollup/pluginutils': 5.1.0(rollup@3.29.4)
-      '@vue/language-core': 1.8.27(typescript@5.3.3)
-      debug: 4.3.4
-      kolorist: 1.8.0
-      typescript: 5.3.3
-      vite: 5.0.11(@types/node@20.10.4)
       vue-tsc: 1.8.27(typescript@5.3.3)
     transitivePeerDependencies:
       - '@types/node'

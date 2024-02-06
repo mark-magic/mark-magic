@@ -1,6 +1,6 @@
 # plugin-docs
 
-Output plugin that publishes a novel as a website.
+An output plugin that publishes a novel as a website.
 
 ## output
 
@@ -20,7 +20,7 @@ tasks:
 
 ### path
 
-The root path for the output, usually set to dist/docs.
+The root path of the output, typically configured as dist/docs.
 
 ### name
 
@@ -32,19 +32,19 @@ The description of the website, which will be displayed in the website's meta ta
 
 ### base
 
-The root path for the output, which is `/` by default and generally doesn't need to be configured. If your website is not deployed at the root path, you can configure it as `/book/` or similar.
+The root path of the output, which is `/` by default and generally doesn't need to be configured. If your website is not deployed at the root path, you can configure it as `/book/` or similar.
 
 ### public
 
-The directory for static resources. If specified, all files in this directory will be copied to the output directory. This is usually used to store files like favicon.ico.
+The directory for static resources. If specified, all files in this directory will be copied to the output directory. Typically used to store favicon.ico and similar files.
 
 ### lang
 
-The language of the website, defaulting to `en-US`.
+The language of the website, set to `en-US` by default.
 
 ### nav
 
-The top navigation bar, which can be configured as an array with each element being an object containing `text` and `link` fields. This is usually used to include external links such as GitHub or author's Twitter.
+The top navigation bar, configured as an array where each element is an object with `text` and `link` fields. Typically used for external links such as GitHub or the author's Twitter.
 
 ```json
 [
@@ -57,7 +57,7 @@ The top navigation bar, which can be configured as an array with each element be
 
 ### logo
 
-The logo of the website, which can be configured as a string or an object with `light` and `dark` fields, representing the logo in light and dark mode respectively.
+The logo of the website, configured as a string or an object with `light` and `dark` fields representing the logo for light mode and dark mode, respectively.
 
 ```json
 {
@@ -78,7 +78,7 @@ The ID for Google Analytics. If configured, Google Analytics will be integrated 
 
 ### sitemap
 
-Configures the sitemap for the website. If configured, a sitemap.xml file will be generated for the website to improve search engine crawling.
+Configures the sitemap for the website. If configured, a sitemap.xml file will be generated for better search engine crawling.
 
 ```json
 {
@@ -88,7 +88,7 @@ Configures the sitemap for the website. If configured, a sitemap.xml file will b
 
 ### giscus
 
-Configures the commenting system for the website. If configured, Giscus comment system will be integrated into the website.
+Configures the comment system for the website. If configured, the Giscus comment system will be integrated into the website.
 
 ```json
 {
@@ -108,7 +108,7 @@ Configures the commenting system for the website. If configured, Giscus comment 
 
 ### rss
 
-Configures the RSS feed for the website. If configured, an RSS file will be generated for the website for subscription.
+Configures the RSS feed for the website. If configured, an RSS file will be generated for subscription.
 
 ```json
 {
@@ -125,7 +125,7 @@ Configures the RSS feed for the website. If configured, an RSS file will be gene
 
 #### ignore
 
-Configures the files to be ignored by RSS, allowing the use of glob syntax. For example, ignore markdown files in a specific directory.
+Configures the files to be ignored by the RSS feed. Allows the use of glob syntax, for example, to ignore markdown files in specific directories.
 
 ```json
 {

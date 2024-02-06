@@ -36,9 +36,10 @@ tasks: # 定义一系列任务
 
 ## transforms
 
-转换插件，可以有 0 到多个，目前仅有一个翻译转换插件。
+转换插件，可以有 0 到多个。
 
 - [plugin-doctran](./plugin/plugin-doctran.md)
+- [plugin-image-download](./plugin/plugin-image-download.md)
 
 ## output
 

@@ -1,9 +1,8 @@
 {
-  "name": "@mark-magic/plugin-template",
-  "version": "0.1.0",
+  "name": "@mark-magic/plugin-image-download",
+  "version": "0.11.10",
   "license": "MIT",
   "type": "module",
-  "private": true,
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -19,6 +18,7 @@
   },
   "sideEffects": false,
   "devDependencies": {
+    "@liuli-util/test": "^3.8.0",
     "@liuli-util/vite-plugin-node": "^0.8.0",
     "@types/lodash-es": "^4.17.12",
     "typescript": "^5.3.3",
@@ -26,10 +26,14 @@
     "vitest": "^1.0.4"
   },
   "dependencies": {
+    "@liuli-util/async": "^3.6.0",
+    "@liuli-util/markdown-util": "^0.9.0",
     "@mark-magic/core": "workspace:^",
     "@mark-magic/plugin-local": "workspace:^",
     "@mark-magic/utils": "workspace:^",
-    "lodash-es": "^4.17.21"
+    "lodash-es": "^4.17.21",
+    "mime": "^4.0.1",
+    "pathe": "^1.1.1"
   },
   "publishConfig": {
     "access": "public",

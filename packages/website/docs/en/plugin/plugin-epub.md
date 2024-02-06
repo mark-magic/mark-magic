@@ -1,6 +1,6 @@
 # plugin-epub
 
-An output plugin that generates EPUB ebook files while preserving the correct chapter structure and resource references.
+Output plugin that generates EPUB ebook files while maintaining correct chapter structure and resource references.
 
 ## output
 
@@ -18,28 +18,28 @@ tasks:
 
 ### path
 
-The path of the output file, must have the `.epub` extension.
+Path to the output file, must have a `.epub` extension.
 
 ### id
 
-The unique identifier of the novel, used to generate the unique identifier of the EPUB file. Must consist of letters, numbers, and underscores.
+Unique identifier for the novel, used to generate a unique identifier for the EPUB file. Must consist of letters, numbers, and underscores.
 
 ### title
 
-The title of the novel.
+Title of the novel.
 
 ### creator
 
-The author.
+Author.
 
 ### publisher
 
-The publisher. Default is `mark-magic`.
+Publisher, defaults to `mark-magic`.
 
 ### language
 
-The language. Default is `en-US`.
+Language, defaults to `en-US`.
 
 ### cover
 
-The cover image, can be a local path. Default is not provided.
+Cover image, can be a local path. Default is none.

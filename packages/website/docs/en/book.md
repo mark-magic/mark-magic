@@ -1,15 +1,15 @@
-# Fiction => Website + EPUB
+# Novel => Website + EPUB
 
 ## Prerequisites
 
-1.  [Node.js](https://nodejs.org) (latest LTS version) installed
-2.  [Git](https://git-scm.com/) (latest version) installed
-3.  Terminal for accessing mark-magic through the command line interface
+1.  [Node.js](https://nodejs.org) LTS version installed
+2.  [Git](https://git-scm.com/) latest version installed
+3.  Terminal to access mark-magic through command line interface
 4.  Text editor that supports markdown and YAML, recommended: [VSCode](https://code.visualstudio.com/)
 
-## Initialize Fiction Project
+## Initialize Novel Project
 
-1.  Create an empty directory and initialize package.json and the "books" directory for storing the fiction
+1.  Create an empty directory and initialize a package.json and a books directory to store the novel
 
     ```sh
     mkdir my-book && cd my-book
@@ -23,24 +23,24 @@
     npm i -D @mark-magic/cli @mark-magic/plugin-docs @mark-magic/plugin-epub live-server
     ```
 
-## Configure Fiction
+## Configure Novel
 
-Add a configuration file `mark-magic.config.yaml`. The input will be the local "books" directory, and the outputs will be configured as epub/docs.
+Add a configuration file `mark-magic.config.yaml` and set the input to the local `books` directory and the output to `epub/docs`.
 
 ```yaml
 # mark-magic.config.yaml
 tasks:
   - name: epub
     input:
-      name: '@mark-magic/plugin-local' # Input plugin, reads from local directory
+      name: '@mark-magic/plugin-local' # Input plugin to read from local directory
       config:
         path: ./books/ # Directory to read from
     output:
-      name: '@mark-magic/plugin-epub' # Output plugin, generates epub file
+      name: '@mark-magic/plugin-epub' # Output plugin to generate epub file
       config:
-        path: ./dist/my-book.epub # Path to generate file
-        id: my-book # Unique id for the fiction
-        title: My First Book # Name of the fiction
+        path: ./dist/my-book.epub # Path to generate the file
+        id: my-book # Unique id for the novel
+        title: My First Book # Name of the novel
         creator: Mark Magic # Creator
   - name: docs
     input:
@@ -51,18 +51,18 @@ tasks:
       name: '@mark-magic/plugin-docs' # Same as above
       config:
         path: ./dist/docs/ # Output directory
-        name: 'My First Book' # Name of the fiction
+        name: 'My First Book' # Name of the novel
 ```
 
 ## Start Writing
 
-Start with the homepage of the fiction and create a readme.md file in the "books" directory.
+Start with the homepage of the novel by creating a `readme.md` file in the `books` directory.
 
 ```md
 # Hello World
 ```
 
-You can continue writing more. To maintain order, it is recommended to use prefixes like 01, 02, 03... for file names.
+Continue writing more files, it is recommended to use prefixes like 01, 02, 03... for file names to maintain order.
 
 File structure
 
@@ -83,7 +83,7 @@ Now, you can start the build process.
 npx mark-magic
 ```
 
-After completion, you can see the generated epub file and the built HTML files in the dist folder. Use live-server to preview them.
+After completion, you can find the generated epub file and the built HTML files in the `dist` directory. Use live-server to preview it.
 
 ```sh
 npx live-server dist/docs
@@ -93,18 +93,18 @@ npx live-server dist/docs
 
 ## Local Build and Test
 
-After the local build is complete, you can preview it locally.
+After the local build is completed, you can preview it locally.
 
 ```sh
 npx mark-magic
 npx live-server dist/docs
 ```
 
-## Set Base Path for Deployment
+## Set Base Path
 
-By default, we assume that the site will be deployed at the root path of the domain `/`. If the site will be served on a subpath, e.g., <https://mywebsite.com/blog/>, then the `base` option of the `plugin-docs` plugin in _mark-magic.config.yaml_ needs to be set to `'/blog/'`.
+By default, we assume that the website will be deployed on the root path `/` of the domain. If the website will be served on a subpath like <https://mywebsite.com/blog/>, then you need to set the `base` option of the `plugin-docs` plugin in _mark-magic.config.yaml_ to `'/blog/'`.
 
-Example: If using Github Pages and deploying to `user.github.io/repo/`, then set `base` to `/repo/`.
+For example, if you are using Github Pages and deploying to `user.github.io/repo/`, then set `base` to `/repo/`.
 
 ```yaml
 # mark-magic.config.yaml
@@ -118,7 +118,7 @@ tasks:
       name: '@mark-magic/plugin-docs' # Same as above
       config:
         path: ./dist/docs/ # Output directory
-        name: 'My First Book' # Name of the fiction
+        name: 'My First Book' # Name of the novel
         base: /repo/
 ```
 
@@ -198,12 +198,12 @@ tasks:
             uses: actions/deploy-pages@v2
     ```
 
-    > Make sure the `base` configuration of the plugin-docs is set correctly, see [Setting a Common Base Path](#setting-a-common-base-path)
+    > Make sure the `base` configuration of plugin-docs is correct, see [Setting Up a Base Path](#setting-up-a-base-path) for more information.
 
-2.  In the **Pages** tab of your repository settings, select **Build and deployment > Source** and choose **GitHub Actions**.
+2.  In the repository settings, go to the **Pages** menu item and choose **GitHub Actions** under **Build and deployment > Source**.
 
-3.  Push your modifications to GitHub and wait for the GitHub Actions workflow to complete. Your site should be deployed at `https://<username>.github.io/[repository]/` or `https://<custom-domain>/`, depending on your settings. Your website will be automatically deployed on the main branch every time you push changes.
+3.  Push your changes to GitHub and wait for the GitHub Actions workflow to complete. Your site should be deployed at `https://<username>.github.io/[repository]/` or `https://<custom-domain>/` depending on your settings. Your site will be automatically deployed on each push to the main branch.
 
 ## Next Steps
 
-- For a better understanding of how it works, continue reading [the plugin](./plugin/index.md)
+- To learn more about how things work, continue reading the [Plugins](./plugin/index.md) section.

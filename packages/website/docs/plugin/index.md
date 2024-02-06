@@ -4,16 +4,7 @@
 
 mark-magic 的基础是建立在插件系统之上的，允许通过安装不同的插件来扩展工具的功能。目前已经支持的几个输入插件有 local/joplin，输出插件包括 docs/epub/hexo/local。
 
-目前提供了两类插件，输入插件和输出插件，输入插件用来从数据源中读取数据，输出插件用来将数据输出特定目标。
-
-- 输入插件
-  - [plugin-local](./plugin-local.md)
-  - [plugin-joplin](./plugin-joplin.md)
-- 输出插件
-  - [plugin-docs](./plugin-docs.md)
-  - [plugin-epub](./plugin-epub.md)
-  - [plugin-hexo](./plugin-hexo.md)
-  - [plugin-local](./plugin-local.md)
+目前提供了三类插件，输入插件、转换插件和输出插件，输入插件用来从数据源中读取数据，转换插件用于对内容或资源做一些处理，但并不关心输入和输出，输出插件用来将数据输出特定目标。
 
 ## 安装与配置
 

@@ -1,5 +1,11 @@
 # @mark-magic/create-plugin
 
+## 0.11.10
+
+### Patch Changes
+
+- fix: 修复模版插件的一些问题
+
 ## 0.11.9
 
 ### Patch Changes

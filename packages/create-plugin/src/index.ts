@@ -1,4 +1,5 @@
 import { copy, pathExists, readJson, writeJson } from 'fs-extra/esm'
+import { readFile, writeFile } from 'fs/promises'
 import path from 'pathe'
 
 export interface CreateOptions {
@@ -17,6 +18,13 @@ export async function create(options: CreateOptions) {
     overwrite: true,
     filter: (src) => !(src.endsWith('node_modules') || src.includes('dist')),
   })
+  await Promise.all(
+    ['package.json', 'CHANGELOG.md'].map(async (it) => {
+      const fsPath = path.resolve(distPath, it)
+      const s = await readFile(fsPath, 'utf-8')
+      await writeFile(fsPath, s.replace('plugin-template', options.name))
+    }),
+  )
   const json = await readJson(path.resolve(distPath, 'package.json'))
   json.name = path.basename(options.name)
   await writeJson(path.resolve(distPath, 'package.json'), json, { spaces: 2 })

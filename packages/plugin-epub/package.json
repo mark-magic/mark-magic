@@ -24,7 +24,7 @@
   "devDependencies": {
     "@mark-magic/plugin-local": "workspace:^",
     "@liuli-util/test": "^3.7.0",
-    "@liuli-util/vite-plugin-node": "^0.2.0",
+    "@liuli-util/vite-plugin-node": "^0.8.0",
     "@types/fs-extra": "^11.0.1",
     "@types/lodash-es": "^4.17.7",
     "@types/uuid": "^9.0.2",

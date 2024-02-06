@@ -14,7 +14,7 @@
   "sideEffects": false,
   "devDependencies": {
     "@liuli-util/async": "^3.6.0",
-    "@liuli-util/vite-plugin-node": "^0.3.0",
+    "@liuli-util/vite-plugin-node": "^0.8.0",
     "@types/mockjs": "^1.0.7",
     "@types/node": "^18.8.3",
     "mockjs": "^1.1.0",

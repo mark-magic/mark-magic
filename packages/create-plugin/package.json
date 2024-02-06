@@ -1,6 +1,6 @@
 {
   "name": "@mark-magic/create-plugin",
-  "version": "0.11.2",
+  "version": "0.11.9",
   "type": "module",
   "bin": {
     "create-plugin": "./bin.js"
@@ -16,9 +16,14 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
+  "files": [
+    "dist",
+    "bin.js",
+    "packages"
+  ],
   "devDependencies": {
     "@liuli-util/test": "^3.7.0",
-    "@liuli-util/vite-plugin-node": "^0.5.0",
+    "@liuli-util/vite-plugin-node": "^0.8.0",
     "@types/fs-extra": "^11.0.1",
     "@types/inquirer": "^9.0.7",
     "@types/lodash-es": "^4.17.12",

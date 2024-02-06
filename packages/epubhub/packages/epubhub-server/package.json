@@ -19,7 +19,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
-    "@liuli-util/vite-plugin-node": "^0.7.0",
+    "@liuli-util/vite-plugin-node": "^0.8.0",
     "@mark-magic/core": "workspace:^",
     "@mark-magic/plugin-ao3": "workspace:^",
     "@mark-magic/plugin-epub": "workspace:^",

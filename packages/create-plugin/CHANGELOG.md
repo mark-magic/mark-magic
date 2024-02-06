@@ -1,5 +1,17 @@
 # @mark-magic/create-plugin
 
+## 0.11.9
+
+### Patch Changes
+
+- fix: update copy template magic
+
+## 0.11.8
+
+### Patch Changes
+
+- fix(create-plugin): 修复 dist 在发布后没有 bundle 的错误
+
 ## 0.11.2
 
 ## 0.11.0

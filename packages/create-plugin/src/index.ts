@@ -15,7 +15,7 @@ export async function create(options: CreateOptions) {
   const distPath = path.resolve(options.root, options.name)
   await copy(srcPath, distPath, {
     overwrite: true,
-    filter: (src) => !(src.includes('node_modules') || src.includes('dist')),
+    filter: (src) => !(src.endsWith('node_modules') || src.includes('dist')),
   })
   const json = await readJson(path.resolve(distPath, 'package.json'))
   json.name = path.basename(options.name)

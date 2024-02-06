@@ -20,7 +20,7 @@
   "devDependencies": {
     "@liuli-util/fs": "^0.1.0",
     "@liuli-util/test": "^3.6.0",
-    "@liuli-util/vite-plugin-node": "^0.8.0",
+    "@liuli-util/vite-plugin-node": "^0.8.1",
     "@types/mime-types": "^2.1.1",
     "@types/mustache": "^4.2.2",
     "@types/node": "^20.3.1",

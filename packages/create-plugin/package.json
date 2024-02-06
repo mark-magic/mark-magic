@@ -23,7 +23,7 @@
   ],
   "devDependencies": {
     "@liuli-util/test": "^3.7.0",
-    "@liuli-util/vite-plugin-node": "^0.8.0",
+    "@liuli-util/vite-plugin-node": "^0.8.1",
     "@types/fs-extra": "^11.0.1",
     "@types/inquirer": "^9.0.7",
     "@types/lodash-es": "^4.17.12",

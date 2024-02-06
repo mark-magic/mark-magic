@@ -22,7 +22,7 @@
   ],
   "devDependencies": {
     "@liuli-util/test": "^3.8.0",
-    "@liuli-util/vite-plugin-node": "^0.8.0",
+    "@liuli-util/vite-plugin-node": "^0.8.1",
     "@mark-magic/plugin-local": "workspace:^",
     "typescript": "^5.3.3",
     "vite": "^5.0.10",

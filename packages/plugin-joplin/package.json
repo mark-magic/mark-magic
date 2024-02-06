@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@liuli-util/test": "^3.7.1",
-    "@liuli-util/vite-plugin-node": "^0.8.0",
+    "@liuli-util/vite-plugin-node": "^0.8.1",
     "@mark-magic/core": "workspace:^",
     "@mark-magic/plugin-local": "workspace:^",
     "@mark-magic/utils": "workspace:^",

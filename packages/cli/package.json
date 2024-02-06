@@ -35,7 +35,7 @@
   "devDependencies": {
     "@apidevtools/json-schema-ref-parser": "^10.1.0",
     "@liuli-util/test": "^3.7.0",
-    "@liuli-util/vite-plugin-node": "^0.8.0",
+    "@liuli-util/vite-plugin-node": "^0.8.1",
     "@mark-magic/plugin-docs": "workspace:^",
     "@mark-magic/plugin-doctran": "workspace:^",
     "@mark-magic/plugin-epub": "workspace:^",

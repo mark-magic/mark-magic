@@ -1,5 +1,5 @@
 import { it, expect, vi } from 'vitest'
-import { Content, convert } from '@mark-magic/core'
+import { Content, convert, wrapResourceLink } from '@mark-magic/core'
 import { fromVirtual } from '@mark-magic/utils'
 import { hashString, transform } from '../transform'
 import { writeFile } from 'fs/promises'
@@ -35,7 +35,7 @@ it('input', async () => {
   expect(fetchMock).toHaveBeenCalled()
   const content = outputMock.mock.calls[0][0] as Content
   const id = hashString('https://picsum.photos/200')
-  expect(content.content.trim()).eq(`![test](:/resources/${id})`)
+  expect(content.content.trim()).eq(`![test](${wrapResourceLink(id)})`)
   expect(content.resources).length(1)
   expect(content.resources[0].name).eq(id + '.jpeg')
   expect(content.resources[0].raw.toString()).eq('data')

@@ -1,0 +1,1 @@
+import{_ as e,c as t,o,R as a,a1 as i}from"./chunks/framework.ZUvglspe.js";const b=JSON.parse('{"title":"mark-magic","description":"","frontmatter":{},"headers":[],"relativePath":"en/index.md","filePath":"en/index.md"}'),n={name:"en/index.md"},r=a("",16),l=[r];function s(h,d,c,g,u,m){return o(),t("div",null,l)}const f=e(n,[["render",s]]);export{b as __pageData,f as default};

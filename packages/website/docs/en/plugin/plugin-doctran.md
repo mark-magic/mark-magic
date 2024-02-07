@@ -1,6 +1,6 @@
 # plugin-doctran
 
-A conversion plugin that uses Google or OpenAI to translate documents or novels. It is suitable for first translations when attempting to translate light novels or fan novels, and can be followed by proofreading to speed up the process.
+A transformation plugin, for translating documents or novels through google or openai, suitable for trial translations of light novels or fanfictions, and can be proofread afterwards to speed up the process.
 
 ## transform
 
@@ -27,21 +27,21 @@ tasks:
 
 ## engine
 
-Translation engines currently supported include Google and OpenAI. OpenAI is recommended as its translation results are more natural and fluent.
+Translation engines, currently supports google and openai, openai is recommended as its translation results are more natural and fluent.
 
 - google
 - openai
 
 ### to(google)
 
-The target language for translation, which needs to be specified for all translation engines.
+Target language for translation, which needs to be specified for all translation engines.
 
 ## google
 
-Only the `to` configuration option is required, no other configuration is needed.
+Only the configuration item `to` is needed, no other configurations are required.
 
 ## openai
 
 ### apiKey
 
-The OpenAI apiKey needs to be configured and can be created on the [openai platform](https://platform.openai.com/api-keys).
+You need to configure the apiKey for openai, you can create it yourself on the [openai platform](https://platform.openai.com/api-keys).

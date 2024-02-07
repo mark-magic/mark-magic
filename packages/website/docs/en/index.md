@@ -2,39 +2,39 @@
 
 ## Introduction
 
-A data connection and transformation tool based on Markdown, solving data conversion between different tools and coordinating between some commonly used tools.
+A data connection and transformation tool based on markdown, solving the data transformation between different tools and the coordination between some commonly used tools.
 
 Some use cases
 
-1.  Publishing notes online, for example, generating content required by Hexo blog from Joplin note tool for publishing on the web <https://blog.rxliuli.com/>
-2.  Publishing a novel online, for example, generating a novel website from local Markdown files for publication, <https://tts.liuli.moe/>
-3.  Packaging a novel into an EPUB file, for example, packaging "To the Stars" into an EPUB for easy offline reading, <https://github.com/liuli-moe/to-the-stars/releases>
+1. Publish some notes on the internet, for example, generate content needed by hexo blogs from the joplin note tool to publish on the internet <https://blog.rxliuli.com/>
+2. Publish a novel on the internet, for example, generate a novel website from local markdown files to publish, <https://tts.liuli.moe/>
+3. Package the novel into epub files, for example, package To the Stars into epub, for offline reading after download, <https://github.com/liuli-moe/to-the-stars/releases>
 
 Some previous community use cases
 
-1.  Joplin => Hugo to generate a blog
-2.  Joplin => Jeykll to generate a blog
-3.  There may be others...
+1. joplin => hugo generates a blog
+2. joplin => jeykll generates a blog
+3. There may be others...
 
 ## Why not use existing tools
 
-I have already used many tools to handle different tasks, but they are all based on Markdown, such as
+We have already used many tools to handle different tasks, but they are all based on markdown, for example
 
-- Taking notes with Joplin
-- Writing blogs with Hexo
-- Generating documentation websites with Vitepress
-- Generating SEO-friendly novel websites with Docusaurus
-- Generating EPUB with Pandoc
+- Use joplin to record notes
+- Use hexo to write blogs
+- Use vitepress to generate documentation sites
+- Use docusaurus to generate SEO friendly novel websites
+- Use pandoc to generate epub
 
-What really annoys me is when using Docusaurus, each novel requires a lot of configuration, which is very annoying. So I hope to have a better out-of-the-box tool.
+What really pains us is that when using docusaurus, each novel needs to configure a bunch of things, which is very annoying, so we hope there is a better out-of-the-box tool.
 
-## Getting started
+## Get Started
 
-Next, two examples are provided
+Next, two examples are given
 
-1.  [Generating a website and EPUB for a novel](./book.md)
-2.  [Generating a blog from notes](./blog.md)
+1. [Generate websites and epub electronic files for novels](./book.md)
+2. [Generate blogs from notes](./blog.md)
 
-Thanks to chatgpt, mark-magic now has a lovely mascot.
+Thanks to chatgpt, now mark-magic has a kanban girl.
 
 ![cover](/mark-magic.jpg)

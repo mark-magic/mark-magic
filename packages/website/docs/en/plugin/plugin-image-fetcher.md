@@ -1,10 +1,10 @@
 # plugin-image-fetcher
 
-Plugin for downloading and converting images referenced in a Markdown file to local files.
+Image download conversion plugin, download images referenced in markdown to local.
 
 ## transform
 
-For example, when downloading novels from AO3, this plugin can be used to download the images included in the novel to local files.
+For example, when downloading a novel from ao3, you can use this plugin to download the images in the novel to local.
 
 ```yaml
 tasks:

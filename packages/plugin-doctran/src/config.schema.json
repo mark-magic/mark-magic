@@ -50,12 +50,21 @@
           "type": "string",
           "enum": ["openai"]
         },
-        "apiKey": {
-          "type": "string"
-        },
         "to": {
           "type": "string",
           "enum": ["zh-CN", "en"]
+        },
+        "apiKey": {
+          "type": "string"
+        },
+        "baseUrl": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "prompt": {
+          "type": "string"
         }
       },
       "required": ["engine", "apiKey", "to"],

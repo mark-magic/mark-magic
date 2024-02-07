@@ -26,7 +26,7 @@ it.skip('transform by google', async () => {
 it.skip('transform by openai', async () => {
   await convert({
     input: local.input({ path: path.resolve(__dirname, './assets/docs') }),
-    transforms: [transform({ engine: 'openai', to: 'en', apiKey: import.meta.env.OPENAI_API_KEY })],
+    transforms: [transform({ engine: 'openai', to: 'en', apiKey: import.meta.env.VITE_OPENAI_API_KEY })],
     output: local.output({
       path: path.resolve(tempPath, 'en'),
       meta: () => null,

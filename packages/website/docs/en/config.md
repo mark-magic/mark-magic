@@ -1,32 +1,32 @@
 # Configuration
 
-Use `mark-magic.config.yaml` as the configuration file. The base fields are explained below.
+Use `mark-magic.config.yaml` as the configuration file, with the basic fields explained below
 
 ```yaml
-tasks: # Defines a series of tasks
-  - name: blog # Name of the task
+tasks: # Define a series of tasks
+  - name: blog # The name of the task
     input: # Input plugin
-      name: '@mark-magic/plugin-joplin' # Name of the input plugin
-      config: # Configuration for the input plugin. Detailed explanation for each plugin's configuration is below.
-    transforms: # Transform plugins, can be 0 or more
-      - name: '@mark-magic/plugin-doctran' # Name of the transform plugin
-        config: # Configuration for the plugin
+      name: '@mark-magic/plugin-joplin' # The name of the input plugin
+      config: # The configuration of the input plugin, explained in detail for each plugin below
+    transforms: # Transformation plugins
+      - name: '@mark-magic/plugin-doctran' # The name of the transformation plugin
+        config: # The configuration of the plugin
     output:
-      name: '@mark-magic/plugin-hexo' # Name of the output plugin
-      config: # Configuration for the output plugin
+      name: '@mark-magic/plugin-hexo' # The name of the output plugin
+      config: # The configuration of the output plugin
 ```
 
 ## input
 
-The input plugin is used to read data from a data source, such as retrieving notes from Joplin, reading markdown files from the local file system, etc.
+The input plugin is used to read data from the data source, such as reading notes from Joplin, reading markdown files from local files, etc.
 
 ### input.name
 
-The name of the input plugin, for example `@mark-magic/plugin-joplin`.
+The name of the input plugin, such as `@mark-magic/plugin-joplin`.
 
 ### input.config
 
-The configuration for the input plugin. Detailed explanation for each plugin's configuration is below.
+The configuration of the input plugin, explained in detail for each plugin below.
 
 - [plugin-local](./plugin/plugin-local.md#input)
 - [plugin-epub](./plugin/plugin-epub.md)
@@ -36,23 +36,23 @@ The configuration for the input plugin. Detailed explanation for each plugin's c
 
 ## transforms
 
-The transform plugins, can be 0 or more.
+Transformation plugins, there can be 0 to many.
 
 - [plugin-doctran](./plugin/plugin-doctran.md)
 - [plugin-image-fetcher](./plugin/plugin-image-fetcher.md)
 
 ## output
 
-The output plugin, with similar configuration as the input plugin.
+The output plugin, which has a similar configuration to the input plugin.
 
 - [plugin-local](./plugin/plugin-local.md#output)
 - [plugin-hexo](./plugin/plugin-hexo.md)
 
 ## Environment Variables
 
-If there is a need to use confidential configurations such as cookies or tokens, environment variables can be used in the `mark-magic.config.yaml` configuration file using the `${ENV_NAME}` syntax. Additionally, `@mark-magic/cli` is capable of automatically reading the `.env*` files in the same directory as the configuration file, allowing the definition of environment variables while ignoring them in `.gitignore`.
+If you need to use some secret configurations, such as cookies or tokens, you can use the `${ENV_NAME}` format in the `mark-magic.config.yaml` configuration file to use environment variables. The `@mark-magic/cli` also supports automatically reading `.env*` configurations in the same directory as the configuration file, where you can define environment variables and ignore them in .gitignore.
 
-For example, when using the `@mark-magic/plugin-joplin` plugin:
+For example, when using the `@mark-magic/plugin-joplin` plugin
 
 ```yaml
 tasks:
@@ -65,9 +65,10 @@ tasks:
         tag: blog
 ```
 
-## TypeScript Configuration File
+## TypeScript Configuration file
 
-In addition to using a YAML configuration, it is also possible to use `mark-magic.config.ts` as the configuration file. However, this configuration is mainly for TypeScript users who wish to experiment, as it provides a way to quickly support plugins that are not yet supported. For example, there is currently no VuePress plugin, but it can be quickly implemented and used in a TypeScript configuration file.
+In addition to yaml configuration, you can also use `mark-magic.config.ts` as a configuration file, but this configuration is only for TypeScript users to try, mainly to quickly support some unsupported plugins.
+For example, there is currently no vuepress plugin, but it can be quickly implemented and used in the TypeScript configuration file.
 
 ```ts
 import { defineConfig } from '@mark-magic/cli'

@@ -1,6 +1,6 @@
 # plugin-hexo
 
-Output plugin that generates Markdown files for hexo, while preserving proper cross-referencing between blog articles and resource references.
+An output plugin that exports to hexo's markdown files, while maintaining the correct links between blog posts and references to resources.
 
 ## output
 
@@ -16,10 +16,10 @@ tasks:
 
 ### path
 
-Root path for output. By default, it is the current command line path and generally does not need configuration.
+The root path of the output, by default it is the current command line path, usually no configuration is needed.
 
 ### base
 
-Root path for output. By default, it is `/` and generally does not need configuration. However, if your blog is not deployed at the root path, you can configure it as `/blog/` or something similar.
+The root path of the output, by default is `/`, usually no configuration is needed. If your blog is not deployed at the root path, it can be configured to `/blog/`, etc.
 
-For example, if your blog is deployed on GitHub Pages without a custom domain, the default path after publishing will be `https://<username>.github.io/<repo>/`, in which case you should configure it as `/repo/`.
+For example, if your blog is deployed on GitHub Pages, and it is not bound to a domain, the default path after publishing is `https://<username>.github.io/<repo>/`, so here it should be configured to `/repo/`.

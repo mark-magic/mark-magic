@@ -12,7 +12,9 @@ tasks:
         config:
           engine: 'openai'
           to: 'en'
-          key: ${ OPENAI_API_KEY }
+          baseUrl: 'http://127.0.0.1:8080/v1/'
+          apiKey: ${OPENAI_GITHUB_API_KEY}
+          model: 'gpt-4'
     output:
       name: '@mark-magic/plugin-local'
       config:

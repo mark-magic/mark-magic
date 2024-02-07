@@ -4,7 +4,7 @@ Download novels from [ao3](https://archiveofourown.org/), or publish novels to a
 
 ## input
 
-It can be used with other plugins to convert to other formats, such as epub.
+It can work with other plugins to convert it into other formats, such as epub.
 
 ```yaml
 tasks:
@@ -24,16 +24,16 @@ tasks:
         creator: Firnagzen
 ```
 
-Fortunately, based on this plugin, [epubhub](https://epubhub.rxliuli.com/) has been implemented, which can be used to download epub from fan fiction websites without using the lower-level mark-magic command line tool.
+Fortunately, [epubhub](https://epubhub.rxliuli.com/) has been implemented based on this plugin to download epubs from fan fiction websites. It eliminates the need for using the more fundamental mark-magic command line tool.
 
 ### url
 
-The URL to download the novel, and the book ID will be automatically recognized. For example, the following links will be correctly recognized:
+The address of the novel to be downloaded, which can automatically recognize the book id in it. For example, the following links will be correctly recognized
 
 - <https://archiveofourown.org/works/777002/chapters/1461984>
 - <https://archiveofourown.org/works/777002/>
 
-This plugin also supports the following websites as input:
+This plugin also supports the following websites as inputs.
 
 - <https://forums.sufficientvelocity.com>
 - <https://forums.spacebattles.com/>
@@ -41,9 +41,9 @@ This plugin also supports the following websites as input:
 
 ## output
 
-Publish markdown novels to other places or combine them with input to synchronize novels from sv/sb forums to ao3.
+Publish markdown novels to other places or combine input to synchronize novels on sv/sb forums to ao3.
 
-For example, the configuration for publishing the Chinese translation of pmas to ao3 is as follows, reference: <https://github.com/liuli-moe/pmas/blob/main/mark-magic.config.yaml#L54-L66>
+For example, the configuration of the Chinese translation of pmas published to ao3 is as follows, reference: <https://github.com/liuli-moe/pmas/blob/main/mark-magic.config.yaml#L54-L66>
 
 ```yaml
 tasks:
@@ -64,22 +64,22 @@ tasks:
 
 ### id
 
-The book ID to synchronize. For example, the book ID for <https://archiveofourown.org/works/777002/> is 777002.
+The id of the book to be synchronized. For example, the book id of <https://archiveofourown.org/works/777002/> is 777002.
 
 ### cookie
 
-Authentication information after logging into ao3 account, which can be copied from the browser's developer tools.
+Authentication information after logging into the ao3 account, you can copy the cookie from the browser's developer tool.
 
-> **⚠️ Note: Please do not send cookies to others or publish them to the internet. With them, it is equivalent to having an account password!** If you want to synchronize the configuration file, you should use [environment variables](../config.md#environment-variables) to reference confidential information.
+> **⚠️ Note: Do not send the cookie to others or post it on the network, having it is like having a password for the account!** If you need to synchronize the configuration file, you should use [environment variable](../config.md) to reference sensitive information.
 
-Specific steps:
+Specific steps
 
-1. Log in to the ao3 website.
-2. Open the developer console from the menu **More Tools > Developer Tools**, or use `Command+Option+I(Mac)/Ctrl+Shift+I(Windows)`.
-3. Switch to the **Network** tab.
-4. Refresh the webpage.
-5. Find the first request, right-click and select **Copy > Copy as cURL**.
-6. Find the cookie from the cURL command. The cookie in the simplified curl command below is `view_adult=true; user_credentials=1; ********67f`.
+1. Log in to the ao3 website
+2. Open the developer console from the menu **More Tool > Developer Tools**, or use `Command+Option+I(Mac)/Ctrl+Shift+I(Windows)`
+3. Switch to the **Network** tab
+4. Refresh the webpage
+5. Find the first request, right-click to choose **Copy > Copy as cURL**
+6. Find the cookie from cURL. The cookie below the simplified curl command is `view_adult=true; user_credentials=1; ********67f`
 
    ```sh
    curl 'https://archiveofourown.org/works/777002/chapters/1461984' \

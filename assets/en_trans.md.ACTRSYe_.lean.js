@@ -1,1 +1,0 @@
-import{_ as s,c as i,o as a,R as n}from"./chunks/framework.ZUvglspe.js";const E=JSON.parse('{"title":"AI Translation","description":"","frontmatter":{},"headers":[],"relativePath":"en/trans.md","filePath":"en/trans.md"}'),t={name:"en/trans.md"},l=n("",23),e=[l];function h(p,k,r,o,d,c){return a(),i("div",null,e)}const u=s(t,[["render",h]]);export{E as __pageData,u as default};

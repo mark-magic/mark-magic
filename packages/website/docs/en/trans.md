@@ -2,18 +2,18 @@
 
 ## Introduction
 
-With the rise of LLM, the quality of AI translation has gradually improved and in some cases, AI translation can replace basic human translation. Here is how to use AI translation in mark-magic.
+With the rise of LLM, the quality of AI translation is gradually improving. In some cases, AI translation can replace preliminary human translation. Here we will introduce how to use AI translation in mark-magic.
 
-Some known use-cases:
+Some known use cases:
 
-1. Translating documents into English, as is done with the [English documentation](https://mark-magic.rxliuli.com/en/) of this project.
-2. Translating English novels, for instance, [Magical Girl Sadness System](https://pmas.liuli.moe) used GPT-4 for initial translation followed by manual proofreading.
+1. Translate documents into English, like the [English document](https://mark-magic.rxliuli.com/en/) of this project.
+2. Translate English novels, for example, [The Sad System of Magical Girl](https://pmas.liuli.moe) uses GPT-4 for preliminary translation + human proofreading.
 
-The example below is about translating a documentation site into English.
+Next, we will use the translation of the document site into English as an example.
 
 ## Initialization
 
-Create an empty directory, then initialize a package.json and a books directory to store novels.
+Create an empty directory, then initialize a package.json and a “books” directory to store novels.
 
 ```sh
 mkdir my-docs && cd my-docs
@@ -29,26 +29,26 @@ npm i -D @mark-magic/cli @mark-magic/plugin-local @mark-magic/plugin-doctran
 
 ## Configuration
 
-The translation configuration uses the `@mark-magic/plugin-local` plugin as both input and output are local directories. The AI translation plugin is `@mark-magic/plugin-doctran`.
+Since the input and output of translation configuration are both local directories, the `@mark-magic/plugin-local` plugin is used. The AI translation plugin is `@mark-magic/plugin-doctran`.
 
 ```yaml
 # mark-magic.config.yaml
 tasks:
   - name: trans
     input:
-      name: '@mark-magic/plugin-local' # Input plugin, read from local directory
+      name: '@mark-magic/plugin-local' # Input plugin, read from the local directory
       config:
-        path: ./docs/ # Reading directory
-        ignore: # Files to ignore
+        path: ./docs/ # Read directory
+        ignore: # Ignore files
           - './docs/en/**'
           - './docs/.vitepress/**'
     transforms:
       - name: '@mark-magic/plugin-doctran' # Translation plugin
         config:
-          to: en # Translation target language
+          to: en # Target language for translation
           engine: google # Translation engine, currently supports google/openai
     output:
-      name: '@mark-magic/plugin-local' # Output plugin, also outputs to local directory here
+      name: '@mark-magic/plugin-local' # Output plugin, which outputs to the local directory
       config:
         path: ./docs/en/ # Output directory
 ```
@@ -58,10 +58,10 @@ tasks:
 Create file _docs/readme.md_
 
 ```sh
-echo '# 你好，世界' > docs/readme.md
+echo '# Hello, world' > docs/readme.md
 ```
 
-You can then continue creating more. Next, we'll use AI translation to translate the document into English.
+Then you can continue to create more, the AI translation will be used next to translate the document into English.
 
 ```ts
 npx mark-magic
@@ -73,6 +73,6 @@ You can see the translated document in the _docs/en/readme.md_ directory.
 # Hello World
 ```
 
-## Next Steps
+## Next Step
 
-Next, if you are not satisfied with the quality of the translation, you can improve the quality of the translation by using manual proofreading.
+Next, if you are not satisfied with the quality of the translation, you can use human proofreading to improve the quality of the translation.

@@ -85,8 +85,11 @@ export interface DoctranPluginConfig {
       }
     | {
         engine: 'openai'
-        apiKey: string
         to: 'zh-CN' | 'en'
+        apiKey: string
+        baseUrl?: string
+        model?: string
+        prompt?: string
       }
 }
 /**

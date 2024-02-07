@@ -22,9 +22,9 @@
   ],
   "sideEffects": false,
   "devDependencies": {
-    "@mark-magic/plugin-local": "workspace:^",
     "@liuli-util/test": "^3.7.0",
     "@liuli-util/vite-plugin-node": "^0.8.1",
+    "@mark-magic/plugin-local": "workspace:^",
     "@types/fs-extra": "^11.0.1",
     "@types/lodash-es": "^4.17.7",
     "@types/uuid": "^9.0.2",
@@ -38,11 +38,11 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "@mark-magic/utils": "workspace:^",
-    "@liuli-util/markdown-util": "^0.8.0",
+    "@liuli-util/markdown-util": "^0.9.1",
     "@liuli-util/tree": "^3.8.0",
     "@mark-magic/core": "workspace:^",
     "@mark-magic/epub": "workspace:^",
+    "@mark-magic/utils": "workspace:^",
     "fs-extra": "^11.1.1",
     "lodash-es": "^4.17.21",
     "pathe": "^1.1.1",

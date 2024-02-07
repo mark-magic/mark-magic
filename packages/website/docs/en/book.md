@@ -2,14 +2,14 @@
 
 ## Prerequisites
 
-1. Already installed the latest lts version of [nodejs](https://nodejs.org)
-2. Already installed the latest version of [git](https://git-scm.com/)
-3. A terminal to access mark-magic via the command line interface
-4. Text editor supporting markdown and yaml. Recommend [vscode](https://code.visualstudio.com/)
+1. The latest lts version of [nodejs](https://nodejs.org) is installed
+2. The latest version of [git](https://git-scm.com/) is installed
+3. Terminal to access mark-magic via command line interface
+4. Text editor supporting markdown and yaml, recommend [vscode](https://code.visualstudio.com/)
 
 ## Initialize Novel Project
 
-1. Create a blank directory, then initialize a package.json and a books directory to hold the novel.
+1. Create an empty directory, then initialize a package.json and books directory for storing novels
 
    ```sh
    mkdir my-book && cd my-book
@@ -23,9 +23,9 @@
    npm i -D @mark-magic/cli @mark-magic/plugin-docs @mark-magic/plugin-epub live-server
    ```
 
-## Configure Novel
+## Configure the Novel
 
-Add configuration file `mark-magic.config.yaml`, the input is the local books directory, and the output is configured respectively as epub/docs.
+Add configuration file `mark-magic.config.yaml`, inputs are all local books directory, output configured as epub/docs respectively.
 
 ```yaml
 # mark-magic.config.yaml
@@ -36,33 +36,33 @@ tasks:
       config:
         path: ./books/ # Reading directory
     output:
-      name: '@mark-magic/plugin-epub' # Output plugin, generate epub file
+      name: '@mark-magic/plugin-epub' # Output plugin, generate epub files
       config:
-        path: ./dist/my-book.epub # Generating path
-        id: my-book # Unique id of novel
-        title: My First Book # Novel title
+        path: ./dist/my-book.epub # Generate path
+        id: my-book # Unique ID of the novel
+        title: My First Book # Name of the novel
         creator: Mark Magic # Creator
   - name: docs
     input:
-      name: '@mark-magic/plugin-local' # The same as above
+      name: '@mark-magic/plugin-local' # Same as above
       config:
         path: ./books/
     output:
-      name: '@mark-magic/plugin-docs' # The same as above
+      name: '@mark-magic/plugin-docs' # Same as above
       config:
         path: ./dist/docs/ # Output directory
-        name: 'My First Book' # Novel title
+        name: 'My First Book' # Name of the novel
 ```
 
 ## Start Writing
 
-Start from the homepage of the novel, create readme.md as the homepage in the books directory.
+Start with the novel's homepage, create readme.md in the books directory as the homepage.
 
 ```md
 # Hello World
 ```
 
-Then you can continue to create more. To keep the order, it is recommended to use prefixes such as 01,02,03... for the file name.
+Then you can continue creating more, to keep the order, it is recommended to use prefixes such as 01,02,03... for file names.
 
 File structure
 
@@ -75,7 +75,7 @@ File structure
 └─ package.json
 ```
 
-## Run Build
+## Run the Build
 
 Now, you can start building.
 
@@ -83,13 +83,13 @@ Now, you can start building.
 npx mark-magic
 ```
 
-After that, you can see the epub file and the built html file in dist. Use live-server to preview it.
+After completion, you can see the epub file and built html file under dist. Use live-server to preview it.
 
 ```sh
 npx live-server dist/docs
 ```
 
-> Example project can be seen at <https://github.com/mark-magic/book-demo>.
+> Sample project can be seen at <https://github.com/mark-magic/book-demo>.
 
 ## Local Build and Test
 
@@ -102,23 +102,23 @@ npx live-server dist/docs
 
 ## Set Public Base Path
 
-By default, we assume the site will be deployed at the root path `/` of the domain. If the website will be served on a sub-path, such as <https://mywebsite.com/blog/>, then you need to set the `base` option of the `plugin-docs` plugin in _mark-magic.config.yaml_ to `'/blog/'`.
+By default, we assume the site will be deployed at the root path `/` of the domain. If the site will be served on a subpath, such as <https://mywebsite.com/blog/>, you need to set the `base` option of the `plugin-docs` plugin in _mark-magic.config.yaml_ to `'/blog/'`.
 
-Example: If you use Github Pages and deploy to `user.github.io/repo/`, then set `base` to `/repo/`.
+Example: If using Github Pages and deploying to `user.github.io/repo/`, then set `base` to `/repo/`.
 
 ```yaml
 # mark-magic.config.yaml
 tasks:
   - name: docs
     input:
-      name: '@mark-magic/plugin-local' # As above
+      name: '@mark-magic/plugin-local' # Same as above
       config:
         path: ./books/
     output:
-      name: '@mark-magic/plugin-docs' # As above
+      name: '@mark-magic/plugin-docs' # Same as above
       config:
         path: ./dist/docs/ # Output directory
-        name: 'My First Book' # Novel title
+        name: 'My First Book' # Name of the novel
         base: /repo/
 ```
 
@@ -126,7 +126,7 @@ tasks:
 
 ### GitHub Pages
 
-1. Create a `deploy.yml` in the `.github/workflows` directory of your project, containing the following content.
+1. Create a `deploy.yml` in the `.github/workflows` directory of your project, which contains the following content.
 
    ```yml
    name: Deploy site to Pages
@@ -198,12 +198,12 @@ tasks:
            uses: actions/deploy-pages@v2
    ```
 
-   > Make sure the `base` configuration of plugin-docs is correct, please refer to [Setting Public Base Path](#set-public-base-path)
+   > Make sure that the `base` configuration of plugin-docs is correct, please refer to [Setting the public base path](#set-public-base-path)
 
-2. Under the **Settings > Pages** of your repository, select **GitHub Actions** in **Build and deployment > Source**.
+2. Under the **Pages** menu item in repository settings, select **GitHub Actions** in **Build and deployment > Source**.
 
-3. Push changes to GitHub and wait for the GitHub Actions workflow to complete. You should see the site deployed at `https://<username>.github.io/[repository]/` or `https://<custom-domain>/` depending on the settings. Your site will be automatically deployed on each push to the main branch.
+3. Push the changes to GitHub and wait for the GitHub Actions workflow to be completed. You should be able to see the site deployed at `https://<username>.github.io/[repository]/` or `https://<custom-domain>/`, depending on your settings, your website will be automatically deployed to the main branch each time you push.
 
 ## Next Steps
 
-- To better understand how it actually works, please continue reading [Plugins](./plugin/index.md)
+- To better understand the actual operating mechanism, continue reading [Plugin](./plugin/index.md)

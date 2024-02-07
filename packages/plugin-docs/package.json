@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@liuli-util/fs": "^0.1.0",
-    "@liuli-util/markdown-util": "^0.8.0",
+    "@liuli-util/markdown-util": "^0.9.1",
     "@liuli-util/tree": "^3.8.1",
     "@mark-magic/core": "workspace:^",
     "@mark-magic/plugin-local": "workspace:^",

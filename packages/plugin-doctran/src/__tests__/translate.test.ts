@@ -45,7 +45,7 @@ describe.skip('trans', () => {
     const t = createTrans({ engine: 'openai', apiKey: import.meta.env.VITE_OPENAI_API_KEY, to: 'en' })
     await writeFile(path.resolve(tempPath, 'book-openai.md'), await t(book))
   }, 60_000)
-  it('translate and split by openai of local gpt-4', async () => {
+  it('translate and split by copilot gpt-4', async () => {
     const t = createTrans({
       engine: 'openai',
       apiKey: import.meta.env.VITE_GITHUB_COPILOT_API_KEY,

@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@liuli-util/async": "^3.6.0",
-    "@liuli-util/markdown-util": "^0.8.0",
+    "@liuli-util/markdown-util": "^0.9.1",
     "@mark-magic/core": "workspace:^",
     "@mark-magic/utils": "workspace:^",
     "bottleneck": "^2.19.5",

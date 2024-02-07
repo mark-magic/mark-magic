@@ -28,7 +28,7 @@ tasks: # 定义一系列任务
 
 输入插件的配置，下面对每个插件的配置详加说明。
 
-- [plugin-local](./plugin/plugin-local.md#input)
+- [plugin-local](./plugin/plugin-local.md)
 - [plugin-epub](./plugin/plugin-epub.md)
 - [plugin-docs](./plugin/plugin-docs.md)
 - [plugin-joplin](./plugin/plugin-joplin.md)
@@ -45,7 +45,7 @@ tasks: # 定义一系列任务
 
 输出插件，配置与输入插件类似。
 
-- [plugin-local](./plugin/plugin-local.md#output)
+- [plugin-local](./plugin/plugin-local.md)
 - [plugin-hexo](./plugin/plugin-hexo.md)
 
 ## 环境变量

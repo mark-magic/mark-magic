@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@liuli-util/async": "^3.6.0",
-    "@liuli-util/markdown-util": "^0.9.0",
+    "@liuli-util/markdown-util": "^0.9.1",
     "@mark-magic/core": "workspace:^",
     "@mark-magic/utils": "workspace:^",
     "mime": "^4.0.1",

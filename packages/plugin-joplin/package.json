@@ -40,7 +40,7 @@
   "dependencies": {
     "@liuli-util/async": "^3.6.0",
     "@liuli-util/fs-extra": "^0.1.0",
-    "@liuli-util/markdown-util": "^0.5.3",
+    "@liuli-util/markdown-util": "^0.9.1",
     "@liuli-util/tree": "^3.6.0",
     "filenamify": "^5.1.1",
     "joplin-api": "^0.5.1",

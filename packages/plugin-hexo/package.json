@@ -1,6 +1,6 @@
 {
   "name": "@mark-magic/plugin-hexo",
-  "version": "0.11.2",
+  "version": "0.11.12",
   "license": "MIT",
   "type": "module",
   "exports": {

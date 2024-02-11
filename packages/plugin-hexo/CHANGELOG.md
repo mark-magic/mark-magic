@@ -1,5 +1,11 @@
 # @mark-magic/plugin-hexo
 
+## 0.11.12
+
+### Patch Changes
+
+- fix: 默认删除 h1 标题，因为已经添加到 yaml meta 中了
+
 ## 0.11.2
 
 ### Patch Changes

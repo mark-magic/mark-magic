@@ -1,9 +1,25 @@
 import { OutputPlugin } from '@mark-magic/core'
 import path from 'pathe'
 import * as local from '@mark-magic/plugin-local'
-import { Heading, flatMap, fromMarkdown, toMarkdown } from '@liuli-util/markdown-util'
+import { flatMap, fromMarkdown, select, toMarkdown } from '@liuli-util/markdown-util'
 
-export function output(options?: { path?: string; base?: string; removeH1?: boolean }): OutputPlugin {
+export function removeFirstH1(content: string) {
+  const root = fromMarkdown(content)
+  const firstHeading = select('heading[depth=1]', root)
+  if (firstHeading) {
+    return toMarkdown(
+      flatMap(root, (it) => {
+        if (it === firstHeading) {
+          return []
+        }
+        return [it]
+      }),
+    )
+  }
+  return content
+}
+
+export function output(options?: { path?: string; base?: string }): OutputPlugin {
   const root = options?.path ?? path.resolve()
   const postsPath = path.resolve(root, 'source/_posts')
   const resourcePath = path.resolve(root, 'source/resources')
@@ -24,24 +40,10 @@ export function output(options?: { path?: string; base?: string; removeH1?: bool
     resourcePath: (it) => path.resolve(resourcePath, it.id + path.extname(it.name)),
   })
   p.name = 'hexo'
-  if (!options?.removeH1) {
-    return p
-  }
   return {
     ...p,
     async handle(content) {
-      const root = fromMarkdown(content.content)
-      let first = true
-      // 删除第一个 h1 标题
-      content.content = toMarkdown(
-        flatMap(root, (it) => {
-          if (first && it.type === 'heading' && (it as Heading).depth === 1) {
-            first = false
-            return []
-          }
-          return [it]
-        }),
-      )
+      content.content = removeFirstH1(content.content)
       await p.handle(content)
     },
   }

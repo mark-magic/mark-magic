@@ -2,7 +2,7 @@ import { pathExists } from 'fs-extra/esm'
 import path from 'path'
 import { beforeAll, expect, it } from 'vitest'
 import { convert, Resource } from '@mark-magic/core'
-import { output } from '../output'
+import { output, removeFirstH1 } from '../output'
 import { initTempPath } from '@liuli-util/test'
 import { readFile } from 'fs/promises'
 import { fromVirtual } from '@mark-magic/utils'
@@ -82,7 +82,12 @@ it('should content not include h1 title', async () => {
     },
   ])
   await convert({ input: i, output: output({ path: tempPath }) })
-  expect(await readFile(path.resolve(tempPath, 'source/_posts/test1.md'), 'utf-8')).includes('# test1')
-  await convert({ input: i, output: output({ path: tempPath, removeH1: true }) })
   expect(await readFile(path.resolve(tempPath, 'source/_posts/test1.md'), 'utf-8')).not.includes('# test1')
+})
+
+it('removeFirstH1', () => {
+  expect(removeFirstH1('# test1\n\n[test2](:/content/test2)').trim()).eq('[test2](:/content/test2)')
+  expect(removeFirstH1('---\ntitle: test 1\n---\n# test1\n\n[test2](:/content/test2)').trim()).eq(
+    '---\ntitle: test 1\n---\n\n[test2](:/content/test2)',
+  )
 })

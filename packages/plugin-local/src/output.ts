@@ -9,17 +9,7 @@ import {
   type OutputPlugin,
   type Resource,
 } from '@mark-magic/core'
-import {
-  fromMarkdown,
-  Link,
-  Root,
-  setYamlMeta,
-  toMarkdown,
-  Image,
-  selectAll,
-  HTML,
-  getYamlMeta,
-} from '@liuli-util/markdown-util'
+import { fromMarkdown, Link, Root, setYamlMeta, toMarkdown, Image, selectAll, HTML } from '@liuli-util/markdown-util'
 import filenamify from 'filenamify'
 import { dropRight, keyBy } from 'lodash-es'
 import { Required } from 'utility-types'

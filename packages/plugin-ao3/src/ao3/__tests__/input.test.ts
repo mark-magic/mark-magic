@@ -12,8 +12,8 @@ import path from 'pathe'
 const tempPath = initTempPath(__filename)
 
 it('extract ao3 id', () => {
-  expect(extractId('https://archiveofourown.org/works/29943597/')).toBe('29943597')
-  expect(extractId('https://archiveofourown.org/works/29943597/chapters/73705791')).toBe('29943597')
+  expect(extractId('https://archiveofourown.org/works/29943597/')).eq('29943597')
+  expect(extractId('https://archiveofourown.org/works/29943597/chapters/73705791')).eq('29943597')
 })
 
 it.skip('input get chapters', async () => {

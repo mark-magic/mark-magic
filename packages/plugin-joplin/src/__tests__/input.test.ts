@@ -1,9 +1,9 @@
-import { afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest'
+import { beforeAll, describe, expect, it } from 'vitest'
 import { calcTitle, convertContentLink, input } from '../input'
 import { fromAsync } from '@mark-magic/utils'
-import { flatMap, last, map } from 'lodash-es'
+import { flatMap, last } from 'lodash-es'
 import { convert } from '@mark-magic/core'
-import { fromMarkdown, select, selectAll } from '@liuli-util/markdown-util'
+import { fromMarkdown, select } from '@liuli-util/markdown-util'
 import { config, noteApi, searchApi, tagApi } from 'joplin-api'
 import * as local from '@mark-magic/plugin-local'
 import { initTempPath } from '@liuli-util/test'
@@ -38,6 +38,9 @@ describe.skip('input', () => {
         path: tempPath,
       }),
     })
+  }, 10000)
+
+  it('Should include extra tags', async () => {
     const list = await fromAsync(
       input({
         baseUrl: import.meta.env.VITE_JOPLIN_BASE_URL,
@@ -48,7 +51,6 @@ describe.skip('input', () => {
     expect(list).not.empty
     expect(flatMap(list, 'extra.tags')).not.include('blog')
   })
-
   it('Should path is include file name', async () => {
     const list = await fromAsync(
       input({

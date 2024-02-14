@@ -1,5 +1,11 @@
 # @mark-magic/plugin-doctran
 
+## 0.11.13
+
+### Patch Changes
+
+- fix: 支持配置 openai 的 url/key 以使用 github coiplot gpt-4
+
 ## 0.11.2
 
 ### Patch Changes

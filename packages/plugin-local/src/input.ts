@@ -19,6 +19,7 @@ import { LocalContentMeta } from './output'
 import crypto from 'crypto'
 import { LocalInputConfig } from './config.schema'
 import { pathExists } from 'fs-extra/esm'
+import path from 'pathe'
 
 function hashString(s: string) {
   return crypto.createHash('md5').update(s).digest('hex')
@@ -93,6 +94,24 @@ export function convertLinks({
   return uniqBy(resources, (item) => item.id)
 }
 
+export function handleBookCoverPath(root: Root, scanPath: string) {
+  const meta = getYamlMeta(root)
+  if (
+    typeof meta === 'object' &&
+    meta &&
+    'book' in meta &&
+    typeof meta.book === 'object' &&
+    meta.book &&
+    'cover' in meta.book &&
+    typeof meta.book.cover === 'string'
+  ) {
+    if (!path.isAbsolute(meta.book.cover)) {
+      meta.book.cover = path.resolve(scanPath, meta.book.cover)
+      setYamlMeta(root, meta)
+    }
+  }
+}
+
 export function input(options: LocalInputConfig): InputPlugin {
   return {
     name: 'local',
@@ -111,7 +130,11 @@ export function input(options: LocalInputConfig): InputPlugin {
           list,
           resourceMap: resourcePathMap,
         })
-        setYamlMeta(root, null)
+        if (it.relPath === 'readme.md') {
+          handleBookCoverPath(root, options.path)
+        } else {
+          setYamlMeta(root, null)
+        }
         const s = await stat(fsPath)
         const content: Content = {
           id: it.id,

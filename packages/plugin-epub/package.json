@@ -28,7 +28,10 @@
     "@types/fs-extra": "^11.0.1",
     "@types/lodash-es": "^4.17.7",
     "@types/uuid": "^9.0.2",
+    "extract-zip": "^2.0.1",
     "json-schema-to-typescript": "^13.0.2",
+    "jszip": "^3.10.1",
+    "node-html-parser": "^6.1.5",
     "typescript": "^5.0.4",
     "vite": "^4.3.9",
     "vitest": "^1.0.4"

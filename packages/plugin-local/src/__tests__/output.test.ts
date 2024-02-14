@@ -223,7 +223,7 @@ describe('html', () => {
         formatRelative(pathe.relative(pathe.dirname(contentPath), resourcePath)),
     })
     const r = toMarkdown(root)
-    console.log(r)
+    // console.log(r)
     expect(r.includes('../../_resources/test.mp3')).true
     expect(r.includes('../../_resources/flower.webm')).true
     // expect(r.includes(encodeURI('../c/Welcome to Joplin.md'))).true

@@ -433,6 +433,9 @@ importers:
       '@mark-magic/core':
         specifier: workspace:^
         version: link:../core
+      '@mark-magic/epub':
+        specifier: workspace:^
+        version: link:../epub
       '@mark-magic/utils':
         specifier: workspace:^
         version: link:../utils
@@ -466,6 +469,9 @@ importers:
       uuid:
         specifier: ^9.0.0
         version: 9.0.0
+      yaml:
+        specifier: ^2.3.4
+        version: 2.3.4
     devDependencies:
       '@liuli-util/test':
         specifier: ^3.6.0
@@ -701,9 +707,18 @@ importers:
       '@types/uuid':
         specifier: ^9.0.2
         version: 9.0.7
+      extract-zip:
+        specifier: ^2.0.1
+        version: 2.0.1
       json-schema-to-typescript:
         specifier: ^13.0.2
         version: 13.1.1
+      jszip:
+        specifier: ^3.10.1
+        version: 3.10.1
+      node-html-parser:
+        specifier: ^6.1.5
+        version: 6.1.12
       typescript:
         specifier: ^5.0.4
         version: 5.1.3

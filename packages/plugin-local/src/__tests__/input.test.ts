@@ -1,12 +1,13 @@
 import path from 'pathe'
-import { expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { input, scan } from '../input'
-import { fromAsync } from '@mark-magic/utils'
+import { fromAsync, trimMarkdown } from '@mark-magic/utils'
 import { AsyncArray } from '@liuli-util/async'
 import { chain, keyBy, omit, pick, sortBy, uniq, uniqBy } from 'lodash-es'
 import { Content } from '@mark-magic/core'
 import { initTempPath } from '@liuli-util/test'
 import { mkdir, readFile, writeFile } from 'fs/promises'
+import { fromMarkdown, getYamlMeta } from '@liuli-util/markdown-util'
 
 const tempPath = initTempPath(__filename)
 
@@ -142,7 +143,8 @@ it('测试 scan 得到的结果应该是有序的', async () => {
     () => Math.random(),
   )
   await AsyncArray.forEach(list, (it) => writeFile(path.resolve(tempPath, it), it))
-  console.log(await scan({ path: tempPath }))
+  const r = await scan({ path: tempPath })
+  expect(r).deep.eq(sortBy(r, (it) => it.name))
 })
 
 it('重复的资源应该能保持相同的 id', async () => {
@@ -211,4 +213,82 @@ it('测试 input 的 ignore 参数', async () => {
     }).generate(),
   )
   expect(contents.map((it) => it.path)).deep.eq([['readme.md'], ['01', 'readme.md']])
+})
+
+it('Should not remove readme yaml meta', async () => {
+  await writeFile(
+    path.resolve(tempPath, 'readme.md'),
+    trimMarkdown(`
+    ---
+    name: readme
+    ---
+    # readme
+  `),
+  )
+  await writeFile(
+    path.resolve(tempPath, '01.md'),
+    trimMarkdown(`
+    ---
+    name: test
+    ---
+    # test
+  `),
+  )
+  const list = await fromAsync(
+    input({
+      path: tempPath,
+    }).generate(),
+  )
+  const r = keyBy(list, 'name')
+  expect(getYamlMeta(fromMarkdown(r.test.content))).null
+  expect(getYamlMeta(fromMarkdown(r.readme.content))).deep.eq({ name: 'readme' })
+})
+
+describe('Should convert yaml meta book.cover of readme', () => {
+  it('relpath', async () => {
+    await writeFile(
+      path.resolve(tempPath, 'readme.md'),
+      trimMarkdown(`
+      ---
+      book:
+        cover: ./assets/cover.jpg
+      ---
+      # readme
+    `),
+    )
+    const list = await fromAsync(
+      input({
+        path: tempPath,
+      }).generate(),
+    )
+    const r = keyBy(list, 'name')
+    expect(getYamlMeta(fromMarkdown(r.readme.content))).deep.eq({
+      book: {
+        cover: path.resolve(tempPath, './assets/cover.jpg'),
+      },
+    })
+  })
+  it('abspath', async () => {
+    await writeFile(
+      path.resolve(tempPath, 'readme.md'),
+      trimMarkdown(`
+      ---
+      book:
+        cover: ${path.resolve(tempPath, './assets/cover.jpg')}
+      ---
+      # readme
+    `),
+    )
+    const list = await fromAsync(
+      input({
+        path: tempPath,
+      }).generate(),
+    )
+    const r = keyBy(list, 'name')
+    expect(getYamlMeta(fromMarkdown(r.readme.content))).deep.eq({
+      book: {
+        cover: path.resolve(tempPath, './assets/cover.jpg'),
+      },
+    })
+  })
 })

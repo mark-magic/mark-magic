@@ -39,18 +39,15 @@ function extractReadmeFromHTML($dom: HTMLElement): Pick<ChapterMeta, 'name' | 'c
   if (!$creator) {
     throw new Error('无法提取作者')
   }
+  const language = $dom.querySelector('.language[lang]')?.getAttribute('lang')
   const creatorName = $creator.textContent.trim()
   const creatorLink = 'https://archiveofourown.org/' + $creator.getAttribute('href')
   return {
     name: title,
     content: html2md(html),
     creator: { name: creatorName, url: creatorLink },
+    language,
   }
-}
-
-interface ExtractData {
-  readme: ChapterMeta
-  chapters: ChapterMeta[]
 }
 
 function extractChaptersFromHTML($dom: HTMLElement): ChapterMeta[] {
@@ -116,6 +113,7 @@ export function ao3(options: Pick<InputConfig, 'url'>): NovelInputPlugin {
         id: `${id}_readme`,
         name: 'readme',
         content: renderReadme({
+          id,
           ...readme,
           url: options.url,
         }),

@@ -56,7 +56,7 @@
           "description": "封面图片"
         }
       },
-      "required": ["path", "id", "title", "creator"],
+      "required": ["path"],
       "additionalProperties": false
     }
   }

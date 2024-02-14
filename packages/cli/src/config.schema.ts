@@ -111,15 +111,15 @@ export interface EpubPluginConfig {
     /**
      * 书籍唯一标识
      */
-    id: string
+    id?: string
     /**
      * 书籍标题
      */
-    title: string
+    title?: string
     /**
      * 作者
      */
-    creator: string
+    creator?: string
     /**
      * 发布者
      */

@@ -44,6 +44,7 @@
     "@liuli-util/async": "^3.6.0",
     "@liuli-util/markdown-util": "^0.9.1",
     "@mark-magic/core": "workspace:^",
+    "@mark-magic/epub": "workspace:^",
     "@mark-magic/utils": "workspace:^",
     "bottleneck": "^2.19.5",
     "dayjs": "^1.11.10",
@@ -54,7 +55,8 @@
     "lodash-es": "^4.17.21",
     "node-html-parser": "^6.1.5",
     "pathe": "^1.1.1",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "yaml": "^2.3.4"
   },
   "files": [
     "dist"

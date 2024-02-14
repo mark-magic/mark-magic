@@ -1,5 +1,5 @@
 import { OutputPlugin, extractResourceId, isContentLink, isResourceLink } from '@mark-magic/core'
-import { EpubBuilder, GenerateOptions, Toc, Chapter } from '@mark-magic/epub'
+import { EpubBuilder, GenerateOptions, Toc, Chapter, MetaData } from '@mark-magic/epub'
 import {
   Heading,
   Image,
@@ -9,12 +9,14 @@ import {
   toString,
   mdToHast,
   hastToHtml,
+  getYamlMeta,
+  breaksFromMarkdown,
 } from '@liuli-util/markdown-util'
 import { v4 } from 'uuid'
 import { readFile, writeFile } from 'fs/promises'
 import { mkdirp, pathExists } from 'fs-extra/esm'
 import pathe from 'pathe'
-import { keyBy } from 'lodash-es'
+import { keyBy, pick } from 'lodash-es'
 import path from 'path'
 import { EpubOutputConfig } from './config.schema'
 import { ISidebar, sortChapter, treeSidebarByPath } from '@mark-magic/utils'
@@ -39,7 +41,7 @@ export function output(
       language: 'en-US',
       publisher: 'mark-magic',
       ...options,
-    },
+    } as MetaData,
     media: [],
     text: [],
     toc: [],
@@ -48,41 +50,11 @@ export function output(
   const sidebars: Sidebar[] = []
   return {
     name: 'epub',
-    async start() {
-      if (!options.cover) {
-        return
-      }
-      if (!path.isAbsolute(options.cover)) {
-        options.cover = path.resolve(options.root || process.cwd(), options.cover)
-        if (!(await pathExists(options.cover))) {
-          throw new Error(`cover don't resolve ${options.cover}`)
-        }
-      }
-      const id = v4() + pathe.extname(options.cover)
-      _options.media.push({
-        id: id,
-        buffer: await readFile(options.cover),
-      })
-      _options.metadata.cover = id
-      _options.text.push({
-        id: 'cover',
-        title: 'cover',
-        path: 'cover',
-        content: `<svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="100%"
-          preserveAspectRatio="xMidYMid meet"
-          version="1.1"
-          viewBox="0 0 1352 2000"
-          width="100%"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-        >
-          <image width="1352" height="2000" xlink:href="../Media/${id}" />
-        </svg>`,
-      })
-    },
+    async start() {},
     async handle(content) {
-      const root = fromMarkdown(content.content)
+      const root = fromMarkdown(content.content, {
+        mdastExtensions: [breaksFromMarkdown()],
+      })
       const resourceMap = keyBy(content.resources, (it) => it.id)
       ;(selectAll('image', root) as Image[])
         .filter((it) => isResourceLink(it.url))
@@ -123,8 +95,49 @@ export function output(
           buffer: it.raw,
         })
       })
+      if (content.path.length === 1 && content.path[0].toLowerCase() === 'readme.md') {
+        const meta = getYamlMeta(root)
+        if (meta && typeof meta === 'object' && 'book' in meta && typeof meta.book === 'object') {
+          _options.metadata = {
+            ..._options.metadata,
+            ...pick(meta.book, ['id', 'title', 'creator', 'publisher', 'language', 'cover']),
+          }
+        }
+      }
     },
     async end() {
+      _options.metadata.id = _options.metadata.id ?? v4()
+      if (_options.metadata.cover) {
+        if (!path.isAbsolute(_options.metadata.cover)) {
+          _options.metadata.cover = path.resolve(options.root || process.cwd(), _options.metadata.cover)
+          if (!(await pathExists(_options.metadata.cover))) {
+            throw new Error(`cover don't resolve ${options.cover}`)
+          }
+        }
+        const id = v4() + pathe.extname(_options.metadata.cover)
+        _options.media.push({
+          id,
+          buffer: await readFile(_options.metadata.cover),
+        })
+        _options.metadata.cover = id
+        _options.text.unshift({
+          id: 'cover',
+          title: 'cover',
+          path: 'cover',
+          content: `<svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="100%"
+            preserveAspectRatio="xMidYMid meet"
+            version="1.1"
+            viewBox="0 0 1352 2000"
+            width="100%"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <image width="1352" height="2000" xlink:href="../Media/${id}" />
+          </svg>`,
+        })
+      }
+
       _options.toc = treeSidebarByPath(sidebars)
       _options.text = sortChapter(_options.text)
       const zip = new EpubBuilder().gen(_options)

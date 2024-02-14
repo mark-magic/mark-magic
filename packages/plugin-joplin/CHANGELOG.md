@@ -1,5 +1,11 @@
 # @mark-magic/plugin-joplin
 
+## 0.12.0
+
+### Minor Changes
+
+- chore: update npm publish files config
+
 ## 0.11.7
 
 ### Patch Changes

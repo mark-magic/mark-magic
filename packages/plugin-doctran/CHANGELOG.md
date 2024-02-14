@@ -1,5 +1,18 @@
 # @mark-magic/plugin-doctran
 
+## 0.12.0
+
+### Minor Changes
+
+- chore: update npm publish files config
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/core@0.12.0
+  - @mark-magic/plugin-local@0.12.0
+  - @mark-magic/utils@0.12.0
+
 ## 0.11.13
 
 ### Patch Changes

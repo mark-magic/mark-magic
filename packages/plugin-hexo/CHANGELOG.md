@@ -1,5 +1,17 @@
 # @mark-magic/plugin-hexo
 
+## 0.12.0
+
+### Minor Changes
+
+- chore: update npm publish files config
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/core@0.12.0
+  - @mark-magic/plugin-local@0.12.0
+
 ## 0.11.12
 
 ### Patch Changes

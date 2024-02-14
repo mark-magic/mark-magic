@@ -1,5 +1,11 @@
 # @mark-magic/core
 
+## 0.12.0
+
+### Minor Changes
+
+- chore: update npm publish files config
+
 ## 0.11.2
 
 ### Patch Changes

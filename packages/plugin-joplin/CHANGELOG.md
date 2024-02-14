@@ -1,5 +1,11 @@
 # @mark-magic/plugin-joplin
 
+## 0.12.1
+
+### Patch Changes
+
+- chore: remove src
+
 ## 0.12.0
 
 ### Minor Changes

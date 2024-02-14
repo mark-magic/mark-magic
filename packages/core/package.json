@@ -31,5 +31,8 @@
     "eventemitter3": "^5.0.1",
     "pathe": "^1.1.1",
     "type-fest": "^3.11.1"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }

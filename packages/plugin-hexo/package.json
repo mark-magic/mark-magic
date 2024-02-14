@@ -36,5 +36,8 @@
     "@mark-magic/core": "workspace:^",
     "@mark-magic/plugin-local": "workspace:^",
     "pathe": "^1.1.1"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }

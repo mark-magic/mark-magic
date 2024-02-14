@@ -36,5 +36,8 @@
     "jszip": "^3.10.1",
     "mime-types": "^2.1.35",
     "mustache": "^4.2.0"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }

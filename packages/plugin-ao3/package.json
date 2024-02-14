@@ -55,5 +55,8 @@
     "node-html-parser": "^6.1.5",
     "pathe": "^1.1.1",
     "uuid": "^9.0.0"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }

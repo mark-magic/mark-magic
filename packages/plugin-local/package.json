@@ -53,5 +53,8 @@
     "lodash-es": "^4.17.21",
     "node-html-parser": "^6.1.5",
     "pathe": "^1.1.1"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }

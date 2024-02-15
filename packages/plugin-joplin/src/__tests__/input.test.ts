@@ -84,7 +84,7 @@ describe.skip('input', () => {
           tag: 'blog',
         }).generate(),
       )
-      list.forEach((it) => expect(!!select('heading[depth=1]', fromMarkdown(it.content))).true)
+      list.forEach((it) => expect(!!select('heading[depth="1"]', fromMarkdown(it.content))).true)
     })
   })
 })

@@ -5,7 +5,7 @@ import { flatMap, fromMarkdown, select, toMarkdown } from '@liuli-util/markdown-
 
 export function removeFirstH1(content: string) {
   const root = fromMarkdown(content)
-  const firstHeading = select('heading[depth=1]', root)
+  const firstHeading = select('heading[depth="1"]', root)
   if (firstHeading) {
     return toMarkdown(
       flatMap(root, (it) => {

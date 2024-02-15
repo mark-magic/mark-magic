@@ -261,7 +261,7 @@ function splitTitleAndContent(root: Root): {
   title: string
   content: Root
 } {
-  const title = select('heading[depth=1]', root) as Heading | undefined
+  const title = select('heading[depth="1"]', root) as Heading | undefined
   if (!title) {
     throw new Error('无法找到标题')
   }

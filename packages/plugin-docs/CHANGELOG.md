@@ -1,5 +1,11 @@
 # @mark-magic/plugin-docs
 
+## 0.12.2
+
+### Patch Changes
+
+- fix: 自动根据 logo 配置 favicon
+
 ## 0.12.0
 
 ### Minor Changes

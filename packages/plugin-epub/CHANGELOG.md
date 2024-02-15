@@ -1,5 +1,11 @@
 # @mark-magic/plugin-epub
 
+## 0.12.2
+
+### Patch Changes
+
+- feat: 支持处理中文的符号
+
 ## 0.12.0
 
 ### Minor Changes

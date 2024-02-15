@@ -69,6 +69,12 @@ export function output(options: OutputOptions): OutputPlugin {
       ],
     ]
   }
+  if (options.logo) {
+    config.head = [
+      ...(config.head ?? []),
+      ['link', { rel: 'icon', href: typeof options.logo === 'string' ? options.logo : options.logo.light }],
+    ]
+  }
   const sidebars: Sidebar[] = []
   let tempPath: string, p: OutputPlugin
   function findTitle(content: string): string | undefined {

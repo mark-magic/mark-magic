@@ -8,7 +8,6 @@ import { pathExists } from 'fs-extra/esm'
 import * as local from '@mark-magic/plugin-local'
 import { parse } from 'node-html-parser'
 import { mkdir, readFile, writeFile } from 'fs/promises'
-import { build } from 'vitepress'
 
 let tempPath = initTempPath(__filename)
 
@@ -455,4 +454,40 @@ it('should support break line', async () => {
     }),
   })
   expect(await readFile(path.resolve(tempPath, 'dist/index.html'), 'utf-8')).include('before<br> after')
+})
+
+describe('should support favicon', () => {
+  it('should support favicon for string', async () => {
+    await convert({
+      input: fromVirtual([{ id: 'index', path: '/index.md', content: '# test\n\n- before\n  after' }]),
+      output: output({
+        path: path.resolve(tempPath, 'dist'),
+        name: 'test',
+        logo: '/logo.png',
+      }),
+    })
+    expect(
+      parse(await readFile(path.resolve(tempPath, 'dist/index.html'), 'utf-8'))
+        .querySelector('link[rel="icon"]')!
+        .getAttribute('href')!,
+    ).eq('/logo.png')
+  })
+  it('should support favicon for theme', async () => {
+    await convert({
+      input: fromVirtual([{ id: 'index', path: '/index.md', content: '# test\n\n- before\n  after' }]),
+      output: output({
+        path: path.resolve(tempPath, 'dist'),
+        name: 'test',
+        logo: {
+          light: '/logo.png',
+          dark: '/logoDark.png',
+        },
+      }),
+    })
+    expect(
+      parse(await readFile(path.resolve(tempPath, 'dist/index.html'), 'utf-8'))
+        .querySelector('link[rel="icon"]')!
+        .getAttribute('href')!,
+    ).eq('/logo.png')
+  })
 })

@@ -11,6 +11,7 @@ import {
   hastToHtml,
   getYamlMeta,
   breaksFromMarkdown,
+  cjk,
 } from '@liuli-util/markdown-util'
 import { v4 } from 'uuid'
 import { readFile, writeFile } from 'fs/promises'
@@ -53,7 +54,7 @@ export function output(
     async start() {},
     async handle(content) {
       const root = fromMarkdown(content.content, {
-        mdastExtensions: [breaksFromMarkdown()],
+        mdastExtensions: [breaksFromMarkdown(), cjk()],
       })
       const resourceMap = keyBy(content.resources, (it) => it.id)
       ;(selectAll('image', root) as Image[])

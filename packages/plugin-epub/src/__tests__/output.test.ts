@@ -196,3 +196,23 @@ it('Should support break line', async () => {
   const text = await readFile(path.resolve(tempPath, 'dist/Text/01.xhtml'), 'utf-8')
   expect(text.replaceAll('\n', '')).includes('第一行<br />第二行')
 })
+
+it('Should render cjk correctly', async () => {
+  const outputPath = path.resolve(tempPath, './01.epub')
+  await convert({
+    input: fromVirtual([
+      {
+        id: '01',
+        path: '01.md',
+        content: '# 第一章\n\n**真，**她**真**，她\n**真，** 她**真**，她',
+      },
+    ]),
+    output: output({
+      path: outputPath,
+      ...metadata,
+    }),
+  })
+  await extract(outputPath, { dir: path.resolve(tempPath, 'dist') })
+  const text = await readFile(path.resolve(tempPath, 'dist/Text/01.xhtml'), 'utf-8')
+  expect([...text.match(new RegExp('<strong>真，</strong>她<strong>真</strong>，她', 'g'))!]).length(2)
+})

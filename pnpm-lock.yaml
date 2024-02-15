@@ -663,7 +663,7 @@ importers:
     dependencies:
       '@liuli-util/markdown-util':
         specifier: ^0.9.1
-        version: 0.9.1
+        version: link:../../../liuli-tools/packages/markdown-util
       '@liuli-util/tree':
         specifier: ^3.8.0
         version: 3.8.1

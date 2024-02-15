@@ -1,5 +1,11 @@
 # @mark-magic/plugin-hexo
 
+## 0.12.3
+
+### Patch Changes
+
+- feat: 更新 markdown ast 的选择器为标准的 css 选择器
+
 ## 0.12.0
 
 ### Minor Changes

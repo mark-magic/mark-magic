@@ -250,6 +250,9 @@ export async function updateAo3Chapter(chapter: Ao3Chapter, options: { cookie: s
     throw new Error(`无法更新 ao3 章节 ${url}，状态码为 ${r.status}，${r.statusText}`)
   }
   const html = (await r.text()) as string
+  if (html.includes('id="login"')) {
+    throw new Error('Cookie 失效，请重新登录并更新 cookie')
+  }
   if (!html.includes(chapter.name)) {
     // await writeFile(path.resolve(__dirname, 'update-error.html'), html)
     throw new Error('更新失败 ' + chapter.name)

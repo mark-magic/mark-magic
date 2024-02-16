@@ -1,5 +1,11 @@
 # @mark-magic/plugin-hexo
 
+## 0.12.4
+
+### Patch Changes
+
+- fix: 修复 hexo 输出的分类有问题，需要处理 meta 部分，对 path 做一些转换
+
 ## 0.12.3
 
 ### Patch Changes

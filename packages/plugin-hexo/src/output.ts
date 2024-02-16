@@ -30,7 +30,7 @@ export function output(options?: { path?: string; base?: string }): OutputPlugin
       title: it.name,
       abbrlink: it.id,
       tags: it.extra?.tags,
-      categories: it.path,
+      categories: it.path.slice(0, it.path.length - 1),
       date: it.created,
       updated: it.updated,
     }),

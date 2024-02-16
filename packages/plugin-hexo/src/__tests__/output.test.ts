@@ -6,6 +6,7 @@ import { output, removeFirstH1 } from '../output'
 import { initTempPath } from '@liuli-util/test'
 import { readFile } from 'fs/promises'
 import { fromVirtual } from '@mark-magic/utils'
+import { fromMarkdown, getYamlMeta } from '@liuli-util/markdown-util'
 
 const tempPath = initTempPath(__filename)
 
@@ -90,4 +91,21 @@ it('removeFirstH1', () => {
   expect(removeFirstH1('---\ntitle: test 1\n---\n# test1\n\n[test2](:/content/test2)').trim()).eq(
     '---\ntitle: test 1\n---\n\n[test2](:/content/test2)',
   )
+})
+
+it('should write categories', async () => {
+  await convert({
+    input: fromVirtual([
+      {
+        id: 'test1',
+        path: 'a/b/test1.md',
+        content: '# test1',
+      },
+    ]),
+    output: output({ path: tempPath }),
+  })
+  const meta = getYamlMeta(
+    fromMarkdown(await readFile(path.resolve(tempPath, 'source/_posts/test1.md'), 'utf-8')),
+  ) as Record<string, any>
+  expect(meta.categories).deep.eq(['a', 'b'])
 })

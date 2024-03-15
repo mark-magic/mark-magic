@@ -62,6 +62,7 @@ export function createTrans(options: DoctranTransformConfig) {
 export async function split(text: string, chunkSize = 4000): Promise<string[]> {
   const splitter = RecursiveCharacterTextSplitter.fromLanguage('markdown', {
     chunkSize,
+    chunkOverlap: 0,
   })
   return await splitter.splitText(text)
 }

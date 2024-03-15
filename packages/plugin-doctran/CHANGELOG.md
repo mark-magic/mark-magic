@@ -1,5 +1,11 @@
 # @mark-magic/plugin-doctran
 
+## 0.12.5
+
+### Patch Changes
+
+- feat: 分割时不保留中间块避免重复翻译
+
 ## 0.12.0
 
 ### Minor Changes

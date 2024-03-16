@@ -1,5 +1,11 @@
 # @mark-magic/plugin-ao3
 
+## 0.12.6
+
+### Patch Changes
+
+- fix: 修复 ao3/sv 下载的错误，ao3 现在拉取也支持 cookie
+
 ## 0.12.3
 
 ### Patch Changes

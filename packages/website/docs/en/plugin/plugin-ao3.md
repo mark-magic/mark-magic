@@ -1,10 +1,10 @@
 # plugin-ao3
 
-Download novels from [ao3](https://archiveofourown.org/), or publish novels to ao3.
+Download novels from [ao3](https://archiveofourown.org/) or publish novels to ao3.
 
 ## input
 
-It can be used with other plugins to convert it into other formats, such as epub.
+Can be combined with other plugins to convert to other formats, such as epub.
 
 ```yaml
 tasks:
@@ -24,26 +24,30 @@ tasks:
         creator: Firnagzen
 ```
 
-Fortunately, [epubhub](https://epubhub.rxliuli.com/) has been implemented based on this plugin for downloading epub from fan fiction websites, there is no need to use the more underlying mark-magic command line tool.
+Fortunately, an [epubhub](https://epubhub.rxliuli.com/) plugin has been implemented based on this plugin, which can download epubs from fan fiction websites without using the lower-level mark-magic command-line tool.
 
 ### url
 
-The address to download the novel. It will automatically recognize the book's id. For instance, the following links will be correctly recognized:
+The URL for downloading the novel. The book ID will be automatically identified. For example, the following links will be correctly identified:
 
 - <https://archiveofourown.org/works/777002/chapters/1461984>
 - <https://archiveofourown.org/works/777002/>
 
-This plugin also supports the following websites as input:
+This plugin also supports the following websites as inputs.
 
 - <https://forums.sufficientvelocity.com>
 - <https://forums.spacebattles.com/>
 - <https://www.bilibili.com/read/home>
 
+### cookie (input)
+
+Optional cookie configuration. If you want to download novels that require login to read, you need to fill in this configuration. Please refer to the explanation of **output > cookie** below for details.
+
 ## output
 
-Publish markdown novels to other places, or combine input to sync novels on sv/sb forums with ao3.
+Publish markdown novels to other places or synchronize novels from sv/sb forums to ao3.
 
-For instance, the configuration of publishing the pmas Chinese translation to ao3 is as follows, see: <https://github.com/liuli-moe/pmas/blob/main/mark-magic.config.yaml#L54-L66>
+For example, the configuration for publishing the Chinese translation of pmas to ao3 is as follows, see: <https://github.com/liuli-moe/pmas/blob/main/mark-magic.config.yaml#L54-L66>
 
 ```yaml
 tasks:
@@ -64,22 +68,22 @@ tasks:
 
 ### id
 
-The id of the book that needs to be synced. For instance, the book's id for <https://archiveofourown.org/works/777002/> is 777002.
+The book ID to be synchronized. For example, the book ID of <https://archiveofourown.org/works/777002/> is 777002.
 
 ### cookie
 
-The authentication information after logging in to the ao3 account can be copied from the cookies in the browser's developer tool.
+Authentication information after logging in to ao3. You can copy the cookie from the browser's developer tools.
 
-> **⚠️ Warning: Do not send cookies to others or post them on the internet, having them is equivalent to having your account password!** If you need to sync configuration files, you should use [environment variables](../config.md) to quote confidential information.
+> **⚠️ Note: Please do not send cookies to others or publish them on the internet, as having them is equivalent to having account passwords!** If you want to synchronize configuration files, you should use [environment variables](../config.md) to reference confidential information.
 
-Specific Steps
+Specific steps
 
 1. Log in to the ao3 website.
-2. Open the developer console from **More Tool > Developer Tools** menu, or use `Command+Option+I(Mac)/Ctrl+Shift+I(Windows)`.
+2. Open the developer console from the menu **More Tool > Developer Tools**, or use `Command+Option+I(Mac)/Ctrl+Shift+I(Windows)`.
 3. Switch to the **Network** tab.
 4. Refresh the webpage.
-5. Find the first request, right-click to choose **Copy > Copy as cURL**.
-6. Find the cookie from cURL, the cookie in the simplified curl command below is `view_adult=true; user_credentials=1; ********67f`
+5. Find the first request and right-click to select **Copy > Copy as cURL**.
+6. Find the cookie from the cURL command. The cookie in the simplified curl command below is `view_adult=true; user_credentials=1; ********67f`.
 
    ```sh
    curl 'https://archiveofourown.org/works/777002/chapters/1461984' \

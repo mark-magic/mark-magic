@@ -39,6 +39,10 @@ tasks:
 - <https://forums.spacebattles.com/>
 - <https://www.bilibili.com/read/home>
 
+### cookie(input)
+
+可选的 cookie 配置，如果要下载某些需要登录才能阅读的小说，那么需要填写这个配置，具体参考下面 **output > cookie** 的说明。
+
 ## output
 
 将 markdown 小说发布到其他地方，或者结合输入同步 sv/sb 论坛上的小说到 ao3 上。

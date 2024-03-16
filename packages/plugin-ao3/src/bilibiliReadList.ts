@@ -270,6 +270,7 @@ export function bilibiliReadList(options: InputConfig): NovelInputPlugin {
         content: renderReadme({
           ...readme,
           url: options.url,
+          id,
         }),
         path: ['readme.md'],
         resources: [],

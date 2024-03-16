@@ -1,19 +1,27 @@
 import { describe, expect, it } from 'vitest'
 import { initTempPath } from '@liuli-util/test'
-import { ao3, extractId } from '../input'
+import { ao3, extractChaptersFromHTML, extractId } from '../input'
 import { convert } from '@mark-magic/core'
 import * as local from '@mark-magic/plugin-local'
 import * as epub from '@mark-magic/plugin-epub'
 import { fromAsync } from '@mark-magic/utils'
-import { readdir } from 'fs/promises'
+import { readFile, readdir } from 'fs/promises'
 import { pathExists } from 'fs-extra/esm'
 import path from 'pathe'
+import { parse } from 'node-html-parser'
 
 const tempPath = initTempPath(__filename)
 
 it('extract ao3 id', () => {
   expect(extractId('https://archiveofourown.org/works/29943597/')).eq('29943597')
   expect(extractId('https://archiveofourown.org/works/29943597/chapters/73705791')).eq('29943597')
+})
+
+it('extractChaptersFromHTML', async () => {
+  const html = await readFile(path.resolve(__dirname, './assets/32241079.html'), 'utf-8')
+  const $dom = parse(html)
+  const res = extractChaptersFromHTML($dom)
+  expect(res.length).eq(33)
 })
 
 describe.skip('input', () => {
@@ -80,6 +88,18 @@ describe.skip('input', () => {
       input: ao3({ url: 'https://archiveofourown.org/works/49095601/chapters/123864562' }),
       output: epub.output({
         path: path.resolve(tempPath, 'test.epub'),
+      }),
+    })
+  })
+
+  it('Input with cookie', async () => {
+    await convert({
+      input: ao3({
+        url: 'https://archiveofourown.org/works/32241079/chapters/80670517',
+        cookie: import.meta.env.VITE_AO3_COOKIE,
+      }),
+      output: local.output({
+        path: tempPath,
       }),
     })
   })

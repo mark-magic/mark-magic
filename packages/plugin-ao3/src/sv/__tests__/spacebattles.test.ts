@@ -1,6 +1,6 @@
 import { convert } from '@mark-magic/core'
 import { expect, it } from 'vitest'
-import { sufficientvelocity } from '../sufficientvelocity'
+import { sufficientvelocity } from '../input'
 import * as local from '@mark-magic/plugin-local'
 import { initTempPath } from '@liuli-util/test'
 import { pathExists } from 'fs-extra/esm'

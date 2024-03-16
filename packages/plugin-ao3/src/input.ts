@@ -1,7 +1,7 @@
 import { InputPlugin } from '@mark-magic/core'
 import { InputConfig, NovelInputPlugin } from './utils'
 import { ao3 } from './ao3/input'
-import { sufficientvelocity } from './sufficientvelocity'
+import { sufficientvelocity } from './sv/input'
 import { bilibiliReadList } from './bilibiliReadList'
 
 export function input(options: InputConfig): NovelInputPlugin {

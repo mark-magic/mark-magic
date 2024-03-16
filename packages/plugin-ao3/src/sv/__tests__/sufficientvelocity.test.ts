@@ -1,5 +1,5 @@
 import { expect, it, vi } from 'vitest'
-import { extractFromHTML, extractId, getCachePath, sufficientvelocity } from '../sufficientvelocity'
+import { extractFromHTML, extractId, getCachePath, sufficientvelocity } from '../input'
 import { convert } from '@mark-magic/core'
 import * as local from '@mark-magic/plugin-local'
 import { initTempPath } from '@liuli-util/test'
@@ -22,13 +22,13 @@ it('extractId', () => {
 
 it('extractFromHTML', async (context) => {
   await AsyncArray.forEach(['2538', '285723'], async (it) => {
-    const s = await readFile(path.resolve(__dirname, `./assets/sufficientvelocity/${it}.html`), 'utf-8')
+    const s = await readFile(path.resolve(__dirname, `./assets/${it}.html`), 'utf-8')
     const r = extractFromHTML(s)
     expect(r).length(10)
   })
 })
 
-it.skip('output to local', async () => {
+it.skip('output to local for 2538', async () => {
   await convert({
     input: sufficientvelocity({
       url: 'https://forums.sufficientvelocity.com/threads/puella-magi-adfligo-systema.2538/reader/',

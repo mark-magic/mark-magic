@@ -50,7 +50,7 @@ function extractReadmeFromHTML($dom: HTMLElement): Pick<ChapterMeta, 'name' | 'c
   }
 }
 
-function extractChaptersFromHTML($dom: HTMLElement): ChapterMeta[] {
+export function extractChaptersFromHTML($dom: HTMLElement): ChapterMeta[] {
   const list = Array.from($dom.querySelectorAll('#chapters > .chapter'))
   const id = $dom.querySelector('#kudo_commentable_id')?.getAttribute('value')
   if (!id) {
@@ -81,11 +81,11 @@ function extractChaptersFromHTML($dom: HTMLElement): ChapterMeta[] {
     if (!chapterId) {
       throw new Error('无法提取章节 id')
     }
-    $title.querySelector('a')?.remove()
-    const title = $title.textContent?.trim().match('^: (.*)$')?.[1]
+    const title = $title.textContent?.trim().match('^: (.*)$')?.[1] ?? $title.textContent.trim()
     if (!title) {
       throw new Error('无法提取章节标题')
     }
+    $title.querySelector('a')?.remove()
     const $content = $it.querySelector('.userstuff.module')
     if (!$content) {
       throw new Error('无法提取章节内容')
@@ -99,12 +99,24 @@ function extractChaptersFromHTML($dom: HTMLElement): ChapterMeta[] {
   })
 }
 
-export function ao3(options: Pick<InputConfig, 'url'>): NovelInputPlugin {
+export function ao3(
+  options: Pick<InputConfig, 'url'> & {
+    cookie?: string
+  },
+): NovelInputPlugin {
   return {
     name: 'ao3',
     async *generate() {
       const id = extractId(options.url)
-      const html = await fetch(`https://archiveofourown.org/works/${id}?view_full_work=true`).then((r) => r.text())
+      const resp = await fetch(`https://archiveofourown.org/works/${id}?view_full_work=true`, {
+        headers: {
+          cookie: options.cookie!,
+        },
+      })
+      if (!resp.ok) {
+        throw new Error(`请求失败: ${resp.status} ${resp.statusText}`)
+      }
+      const html = await resp.text()
       const $dom = parse(html)
       const chapters = extractChaptersFromHTML($dom)
       const readme = extractReadmeFromHTML($dom)

@@ -1,5 +1,5 @@
 import { Content } from '@mark-magic/core'
-import { InputConfig, NovelInputPlugin, NovelMeta, renderReadme } from './utils'
+import { InputConfig, NovelInputPlugin, NovelMeta, renderReadme } from '../utils'
 import { parse, HTMLElement } from 'node-html-parser'
 import { fromHtml } from 'hast-util-from-html'
 import { toMdast } from 'hast-util-to-mdast'
@@ -43,13 +43,13 @@ function extractChapterFromHTML($it: HTMLElement): ChapterData {
   if (!title) {
     throw new Error('无法提取标题 ' + id)
   }
-  const createdStr = $it.querySelector('time[itemprop="datePublished"]')?.getAttribute('datetime')
+  const createdStr = $it.querySelector('.u-concealed > a > time')?.getAttribute('datetime')
   if (!createdStr) {
     throw new Error('无法提取创建时间 ' + id)
   }
   const created = new Date(createdStr).getTime()
 
-  const updatedStr = $it.querySelector('time[itemprop="dateModified"]')?.getAttribute('datetime')
+  const updatedStr = $it.querySelector('.message-lastEdit > time')?.getAttribute('datetime')
   const updated = updatedStr ? new Date(updatedStr).getTime() : created
   const htmlContent = $it.querySelector('.message-body .bbWrapper')?.innerHTML
   if (!htmlContent) {
@@ -94,6 +94,10 @@ async function fetchPage(origin: string, threadId: string, page: number): Promis
   const url = `${origin}/threads/${threadId}/reader/page-${page}`
   const r = await fetch(url)
   if (!r.ok) {
+    if (r.status === 429) {
+      // Too Many Requests
+      throw new Error('访问速率限制，请稍后再试')
+    }
     throw new Error(`无法获取 ${url} 的内容，状态码为 ${r.status}，${r.statusText}`)
   }
   return r.text()
@@ -190,13 +194,14 @@ export function sufficientvelocity(
         yield {
           id: `${id}_readme`,
           name: 'readme',
-          content: renderReadme({ ...readme, url: options.url }),
+          content: renderReadme({ ...readme, url: options.url, id }),
           path: ['readme.md'],
           created: readme.created,
           updated: readme.updated,
           resources: [],
         }
         const len = ((pages - 1) * 10).toString().length
+        const dir = findCacheDirectory({ name: '@mark-magic/plugin-ao3/sufficientvelocity' })!
         for (let i = 1, k = 1; i <= pages; i++) {
           const html = await fetchPageOfCache(id, i)
           // 读取和提取一页的内容
@@ -209,8 +214,8 @@ export function sufficientvelocity(
             }
             throw new Error('无法提取章节')
           }
-          await mkdirp(path.resolve(__dirname, `.temp`))
-          await writeFile(path.resolve(__dirname, `.temp/${id}-${i}.html`), html)
+          await mkdirp(dir)
+          await writeFile(path.resolve(dir, `${id}-${i}.html`), html)
           for (const it of chapters) {
             const name = k.toString().padStart(len, '0')
             yield {

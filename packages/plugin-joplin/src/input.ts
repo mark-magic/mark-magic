@@ -9,6 +9,7 @@ import {
   searchApi,
   TypeEnum,
   ResourceProperties,
+  joplinApi,
 } from 'joplin-api'
 import { type InputPlugin, type Content, type Resource, wrapResourceLink, wrapContentLink } from '@mark-magic/core'
 import { AsyncArray } from '@liuli-util/async'
@@ -66,7 +67,15 @@ export function input(options: Config & { tag: string }): InputPlugin {
   return {
     name: 'joplin',
     async *generate() {
-      const folders = await getFolders()
+      await joplinApi.ping().catch(() => {
+        throw new Error(`Failed to connect to Joplin, please visit ${options.baseUrl}/ping`)
+      })
+      await noteApi.list({ limit: 1, fields: ['id'] }).catch(() => {
+        throw new Error('The token is invalid')
+      })
+      const folders = await getFolders().catch(() => {
+        throw new Error('Failed to retrieve folder list')
+      })
       const notes = await PageUtil.pageToAllList((pageParam) =>
         searchApi.search({
           ...(pageParam as any),
@@ -74,25 +83,38 @@ export function input(options: Config & { tag: string }): InputPlugin {
           type: TypeEnum.Note,
           query: `tag:${options.tag}`,
         }),
-      )
+      ).catch(() => {
+        throw new Error('Failed to retrieve note list')
+      })
       for (const n of notes) {
-        const note = await noteApi.get(n.id, [
-          'id',
-          'title',
-          'body',
-          'user_created_time',
-          'user_updated_time',
-          'parent_id',
-        ])
-        const tags = (await noteApi.tagsById(n.id)).filter((item) => item.title !== options.tag).map((it) => it.title)
+        const note = await noteApi
+          .get(n.id, ['id', 'title', 'body', 'user_created_time', 'user_updated_time', 'parent_id'])
+          .catch(() => {
+            throw new Error('Failed to retrieve note')
+          })
+        const tags = (
+          await noteApi.tagsById(n.id).catch(() => {
+            throw new Error('Failed to retrieve note tags')
+          })
+        )
+          .filter((item) => item.title !== options.tag)
+          .map((it) => it.title)
         const folder = folders[note.parent_id]
         const resources = await AsyncArray.map(
-          await noteApi.resourcesById(n.id, ['id', 'title', 'file_extension', 'mime']),
+          await noteApi.resourcesById(n.id, ['id', 'title', 'file_extension', 'mime']).catch(() => {
+            throw new Error('Failed to retrieve note resources')
+          }),
           async (item) => {
             return {
               id: item.id,
               name: calcTitle(item),
-              raw: Buffer.from(await (await resourceApi.fileById(item.id)).arrayBuffer()),
+              raw: Buffer.from(
+                await (
+                  await resourceApi.fileById(item.id).catch(() => {
+                    throw new Error('Failed to retrieve resource')
+                  })
+                ).arrayBuffer(),
+              ),
             } as Resource
           },
         )

@@ -87,4 +87,29 @@ describe.skip('input', () => {
       list.forEach((it) => expect(!!select('heading[depth="1"]', fromMarkdown(it.content))).true)
     })
   })
+
+  describe('Error handle', () => {
+    it('Should throw error when baseUrl is invalid', async () => {
+      await expect(
+        fromAsync(
+          input({
+            baseUrl: 'http://localhost:2000',
+            token: import.meta.env.VITE_JOPLIN_TOKEN,
+            tag: 'blog',
+          }).generate(),
+        ),
+      ).rejects.toThrowError('Failed to connect to Joplin')
+    })
+    it('Should throw error when token is invalid', async () => {
+      await expect(
+        fromAsync(
+          input({
+            baseUrl: import.meta.env.VITE_JOPLIN_BASE_URL,
+            token: 'invalid token',
+            tag: 'blog',
+          }).generate(),
+        ),
+      ).rejects.toThrowError('The token is invalid')
+    })
+  })
 })

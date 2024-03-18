@@ -1,5 +1,11 @@
 # @mark-magic/plugin-joplin
 
+## 0.12.7
+
+### Patch Changes
+
+- feat: 添加更明确的错误提示
+
 ## 0.12.1
 
 ### Patch Changes

@@ -1,5 +1,5 @@
 import { convert } from '@mark-magic/core'
-import { expect, it } from 'vitest'
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import * as local from '@mark-magic/plugin-local'
 import path from 'pathe'
 import { output } from '../output'
@@ -9,10 +9,13 @@ import { EpubOutputConfig } from '../config.schema'
 import { mkdir, readFile, readdir, writeFile } from 'fs/promises'
 import extract from 'extract-zip'
 import { parse } from 'node-html-parser'
+import { AsyncArray } from '@liuli-util/async'
+import simpleGit from 'simple-git'
+import { pathExists } from 'fs-extra'
 
 const tempPath = initTempPath(__filename)
 
-// TODO 需要改善，使用虚拟文件而不是不可重现的文件作为测试用例
+// TODO 需要改善—，使用虚拟文件而不是不可重现的文件作为测试用例
 it.skip('generate', async () => {
   await convert({
     input: local.input({
@@ -197,22 +200,60 @@ it('Should support break line', async () => {
   expect(text.replaceAll('\n', '')).includes('第一行<br />第二行')
 })
 
-it('Should render cjk correctly', async () => {
+describe.skip('Should render pmas', async () => {
   const outputPath = path.resolve(tempPath, './01.epub')
-  await convert({
-    input: fromVirtual([
-      {
-        id: '01',
-        path: '01.md',
-        content: '# 第一章\n\n**真，**她**真**，她\n**真，** 她**真**，她',
-      },
-    ]),
-    output: output({
-      path: outputPath,
-      ...metadata,
-    }),
+  let srcPath: string
+  beforeEach(async () => {
+    srcPath = path.resolve('/Users/rxliuli/code/web/pmas/books/zh-CN/')
+    await convert({
+      input: local.input({ path: srcPath }),
+      output: output({
+        path: outputPath,
+        ...metadata,
+      }),
+    })
+    await extract(outputPath, { dir: path.resolve(tempPath, 'dist') })
   })
-  await extract(outputPath, { dir: path.resolve(tempPath, 'dist') })
-  const text = await readFile(path.resolve(tempPath, 'dist/Text/01.xhtml'), 'utf-8')
-  expect([...text.match(new RegExp('<strong>真，</strong>她<strong>真</strong>，她', 'g'))!]).length(2)
+  it('渲染之后不会有 **', async () => {
+    const errorList = await AsyncArray.flatMap(await readdir(path.resolve(tempPath, 'dist/Text')), async (it) => {
+      const s = await readFile(path.resolve(tempPath, 'dist/Text', it), 'utf-8')
+      if (!s.includes('**')) {
+        return []
+      }
+      return /^.*\*\*.*$/m.exec(s) ?? []
+    })
+    expect(errorList).deep.eq([])
+  })
+  it('渲染之后粗体两侧不会有多余的空格', async () => {
+    const errorList = await AsyncArray.flatMap(await readdir(path.resolve(tempPath, 'dist/Text')), async (it) => {
+      const s = await readFile(path.resolve(tempPath, 'dist/Text', it), 'utf-8')
+      if (!s.includes(' <strong>') && !s.includes('</strong> ')) {
+        return []
+      }
+      return [...(/^(?!.*\/>) <strong>.*$/gm.exec(s) ?? []), ...(/^(?!.*\/>).*<\/strong> .*$/gm.exec(s) ?? [])]
+    })
+    expect(errorList).deep.eq([])
+  })
+  it('渲染之后不会有 _', async () => {
+    const errorList = await AsyncArray.flatMap(await readdir(path.resolve(tempPath, 'dist/Text')), async (it) => {
+      const $dom = parse(await readFile(path.resolve(tempPath, 'dist/Text', it), 'utf-8'))
+      $dom.querySelectorAll('a').forEach((it) => it.remove())
+      const s = $dom.innerText
+      if (!s.includes('_')) {
+        return []
+      }
+      return /^.*_.*$/m.exec(s) ?? []
+    })
+    expect(errorList).deep.eq([])
+  })
+  it('渲染之后斜体两侧不会有多余的空格', async () => {
+    const errorList = await AsyncArray.flatMap(await readdir(path.resolve(tempPath, 'dist/Text')), async (it) => {
+      const s = await readFile(path.resolve(tempPath, 'dist/Text', it), 'utf-8')
+      if (!s.includes(' <em>') && !s.includes('</em> ')) {
+        return []
+      }
+      return [...(/^.* <em>.*$/m.exec(s) ?? []), ...(/^.*<\/em> .*$/m.exec(s) ?? [])]
+    })
+    expect(errorList).deep.eq([])
+  })
 })

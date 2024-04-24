@@ -1,0 +1,39 @@
+{
+  "name": "@mark-magic/markdown-cjk-space-clean",
+  "version": "0.1.0",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "setup": "pnpm build",
+    "build": "vite build",
+    "dev": "pnpm build --watch",
+    "test": "vitest run"
+  },
+  "sideEffects": false,
+  "devDependencies": {
+    "@liuli-util/markdown-util": "^0.9.2",
+    "mdast-util-cjk-space-clean": "workspace:^",
+    "@liuli-util/vite-plugin-node": "^0.8.0",
+    "@types/markdown-it": "^13.0.7",
+    "markdown-it": "^14.0.0",
+    "typescript": "^5.3.3",
+    "vite": "^4.3.9",
+    "vitest": "^1.2.2"
+  },
+  "peerDependencies": {
+    "markdown-it": "^14.0.0"
+  },
+  "dependencies": {
+    "unist-util-select": "^5.1.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

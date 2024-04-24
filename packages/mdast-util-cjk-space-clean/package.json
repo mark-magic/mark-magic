@@ -1,0 +1,39 @@
+{
+  "name": "mdast-util-cjk-space-clean",
+  "version": "0.1.0",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./utils": {
+      "import": "./dist/utils.js",
+      "types": "./dist/utils.d.ts"
+    }
+  },
+  "scripts": {
+    "setup": "pnpm build",
+    "build": "vite build",
+    "dev": "pnpm build --watch",
+    "test": "vitest run"
+  },
+  "sideEffects": false,
+  "devDependencies": {
+    "@liuli-util/markdown-util": "^0.9.2",
+    "@liuli-util/vite-plugin-node": "^0.8.0",
+    "@types/mdast": "^4.0.3",
+    "typescript": "^5.3.3",
+    "vite": "^4.3.9",
+    "mdast-util-from-markdown": "^2.0.0",
+    "vitest": "^1.2.2"
+  },
+  "dependencies": {
+    "unist-util-select": "^5.1.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

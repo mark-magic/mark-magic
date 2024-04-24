@@ -11,7 +11,6 @@ import {
   hastToHtml,
   getYamlMeta,
   breaksFromMarkdown,
-  cjk,
 } from '@liuli-util/markdown-util'
 import { v4 } from 'uuid'
 import { readFile, writeFile } from 'fs/promises'
@@ -21,6 +20,7 @@ import { keyBy, pick } from 'lodash-es'
 import path from 'path'
 import { EpubOutputConfig } from './config.schema'
 import { ISidebar, sortChapter, treeSidebarByPath } from '@mark-magic/utils'
+import { cjk } from 'mdast-util-cjk-space-clean'
 
 export interface Sidebar extends Omit<Toc, 'children'>, ISidebar {
   /** 章节对应的内容路径，方便将其转换为 tree */

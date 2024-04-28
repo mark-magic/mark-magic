@@ -1,5 +1,16 @@
 # @mark-magic/plugin-docs
 
+## 0.13.0
+
+### Minor Changes
+
+- fix: 修复中文 markdown 渲染时粗体和斜体两侧多余空格未清理的错误
+
+### Patch Changes
+
+- Updated dependencies
+  - markdown-it-cjk-space-clean@0.2.0
+
 ## 0.12.2
 
 ### Patch Changes

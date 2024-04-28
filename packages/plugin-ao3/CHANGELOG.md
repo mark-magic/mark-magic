@@ -1,5 +1,12 @@
 # @mark-magic/plugin-ao3
 
+## 0.13.0
+
+### Patch Changes
+
+- Updated dependencies
+  - mdast-util-cjk-space-clean@0.2.0
+
 ## 0.12.6
 
 ### Patch Changes

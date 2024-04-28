@@ -1,4 +1,14 @@
-import { Heading, Root, Text, flatMap, fromMarkdown, hastToHtml, mdToHast, select } from '@liuli-util/markdown-util'
+import {
+  Heading,
+  MdastExtension,
+  Root,
+  Text,
+  flatMap,
+  fromMarkdown,
+  hastToHtml,
+  mdToHast,
+  select,
+} from '@liuli-util/markdown-util'
 import { OutputPlugin } from '@mark-magic/core'
 import dayjs from 'dayjs'
 import findCacheDirectory from 'find-cache-dir'
@@ -7,6 +17,7 @@ import { last } from 'lodash-es'
 import { parse } from 'node-html-parser'
 import path from 'pathe'
 import Bottleneck from 'bottleneck'
+import { cjk } from 'mdast-util-cjk-space-clean'
 
 const limiter = new Bottleneck({
   // rate limit, ref: https://github.com/otwcode/otwarchive/blob/501938da3b1f744d6e2d56c96c2475f8a3af1218/config/config.yml#L184-L185
@@ -442,7 +453,7 @@ export function ao3(options: Ao3OuputConfig): OutputPlugin {
           return
         }
       }
-      const { title, content } = splitTitleAndContent(fromMarkdown(note.content))
+      const { title, content } = splitTitleAndContent(fromMarkdown(note.content, { mdastExtensions: [cjk()] }))
       const chapter: Ao3Chapter = {
         bookId: options.id,
         chapterId,

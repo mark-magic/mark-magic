@@ -1,5 +1,5 @@
 {
-  "name": "@mark-magic/markdown-cjk-space-clean",
+  "name": "markdown-it-cjk-space-clean",
   "version": "0.1.0",
   "license": "MIT",
   "type": "module",

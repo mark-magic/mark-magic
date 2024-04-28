@@ -3,36 +3,7 @@ import { writeFile } from 'fs/promises'
 import path from 'pathe'
 import { Feed } from 'feed'
 import { sortBy } from 'lodash-es'
-function _clearStrongAfterSpace(ends) {
-  return (md) => {
-    const renderInline = md.renderer.renderInline.bind(md.renderer)
-    md.renderer.renderInline = (tokens, options, env) => {
-      const checkTokenIndexs = tokens
-        .map((token, i) => {
-          return {
-            p:
-              token.type === 'strong_close' &&
-              ends.some((end) => tokens[i - 1].content.endsWith(end)) &&
-              i + 1 < tokens.length &&
-              tokens[i + 1].type === 'text',
-            i: i + 1,
-          }
-        })
-        .filter((item) => item.p)
-        .map((item) => item.i)
-      const newTokens = tokens.map((token, i) => {
-        if (!checkTokenIndexs.includes(i)) {
-          return token
-        }
-        return {
-          ...token,
-          content: token.content.trimStart(),
-        }
-      })
-      return renderInline(newTokens, options, env)
-    }
-  }
-}
+import { cjk } from 'markdown-it-cjk-space-clean'
 const rss = `INJECT_RSS_CONFIG`
 function getFeed() {
   if (!(typeof rss === 'object' && rss.hostname && rss.copyright)) {
@@ -108,7 +79,7 @@ var config_default = [
   defineConfig({
     markdown: {
       config: (md) => {
-        md.use(_clearStrongAfterSpace(['\uFF0C', '\u3002', '\uFF1F', '\uFF01']))
+        md.use(cjk())
       },
       attrs: {
         disable: true,

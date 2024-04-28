@@ -519,6 +519,9 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
+      mdast-util-cjk-space-clean:
+        specifier: workspace:^
+        version: link:../mdast-util-cjk-space-clean
       node-html-parser:
         specifier: ^6.1.5
         version: 6.1.5
@@ -601,6 +604,9 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
+      markdown-it-cjk-space-clean:
+        specifier: workspace:^
+        version: link:../markdown-it-cjk-space-clean
       mustache:
         specifier: ^4.2.0
         version: 4.2.0

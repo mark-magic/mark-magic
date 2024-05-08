@@ -1,7 +1,4 @@
 export function isChineseOrSymbol(s: string): boolean {
-  if (/[\u4E00-\u9FFF]/.test(s)) {
-    return true
-  }
   return /[\u4E00-\u9FFF]/.test(s) || '，。、；：？！“”‘’（）【】《》—～…·〃-々'.split('').includes(s)
 }
 

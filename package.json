@@ -5,9 +5,9 @@
   "license": "MIT",
   "scripts": {
     "postinstall": "npx simple-git-hooks",
-    "setup-all": "pnpm -r run setup",
+    "setup-all": "turbo run setup",
     "format": "pnpm prettier --write 'packages/*/src/**/*.{js,ts}'",
-    "test-all": "pnpm -r run test",
+    "test-all": "turbo run test",
     "clean-all": "pnpx rimraf **/node_modules **/dist",
     "docs-build": "typedoc --options typedoc.json",
     "docs-deploy": "gh-pages -d dist -e /api --add"

@@ -47,11 +47,11 @@ jobs:
         run: |
           cd packages/website
           pnpm build
-          touch dist/docs/.nojekyll
+          touch dist/.nojekyll
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: dist
+          path: packages/website/dist
 
   # Deployment job
   deploy:

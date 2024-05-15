@@ -64,11 +64,11 @@ export interface LocalPluginConfig {
     /**
      * 包含的文件，支持 glob 语法
      */
-    includes?: string[]
+    source?: string[]
     /**
      * 排除的文件，支持 glob 语法
      */
-    excludes?: string[]
+    ignore?: string[]
   }
 }
 /**

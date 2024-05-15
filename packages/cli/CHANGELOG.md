@@ -1,5 +1,11 @@
 # @mark-magic/cli
 
+## 0.14.1
+
+### Patch Changes
+
+- feat: 更新 schema 配置
+
 ## 0.12.0
 
 ### Minor Changes

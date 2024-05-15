@@ -46,11 +46,11 @@ jobs:
       - name: Build
         run: |
           pnpm -F @mark-magic/website build
-          touch packages/website/dist/.nojekyll
+          touch packages/website/docs/.vitepress/dist/.nojekyll
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: packages/website/dist
+          path: packages/website/docs/.vitepress/dist
 
   # Deployment job
   deploy:

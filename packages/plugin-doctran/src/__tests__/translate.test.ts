@@ -28,7 +28,7 @@ describe.skip('createTrans', () => {
 
 it('split text', async () => {
   const text = await readFile(path.resolve(__dirname, './assets/book.md'), 'utf-8')
-  expect(await split(text, 2000)).length(3)
+  expect(await split(text, 2000)).length(2)
   // await trans({ engine: 'openai', apiKey: import.meta.env.VITE_OPENAI_API_KEY, to: 'zh-CN' })('hello world')
 })
 

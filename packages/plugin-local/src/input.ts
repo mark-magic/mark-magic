@@ -33,7 +33,7 @@ interface ScanContent {
 
 export async function scan(options: LocalInputConfig): Promise<ScanContent[]> {
   return (
-    await FastGlob('**/*.md', {
+    await FastGlob(options.source ?? '**/*.md', {
       cwd: options.path,
       onlyFiles: true,
       ignore: options.ignore ?? [],

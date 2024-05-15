@@ -62,9 +62,13 @@ export interface LocalPluginConfig {
      */
     path: string
     /**
-     * 忽略的文件，支持 glob 语法
+     * 包含的文件，支持 glob 语法
      */
-    ignore?: string[]
+    includes?: string[]
+    /**
+     * 排除的文件，支持 glob 语法
+     */
+    excludes?: string[]
   }
 }
 /**
@@ -90,6 +94,9 @@ export interface DoctranPluginConfig {
         baseUrl?: string
         model?: string
         prompt?: string
+        entities?: {
+          [k: string]: string
+        }
       }
 }
 /**

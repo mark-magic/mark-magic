@@ -692,6 +692,9 @@ importers:
       langchain:
         specifier: ^0.0.209
         version: 0.0.209
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
       pathe:
         specifier: ^1.1.1
         version: 1.1.1
@@ -705,6 +708,9 @@ importers:
       '@types/fs-extra':
         specifier: ^11.0.1
         version: 11.0.4
+      '@types/lodash-es':
+        specifier: ^4.17.12
+        version: 4.17.12
       dotenv:
         specifier: ^16.3.1
         version: 16.3.1

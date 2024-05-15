@@ -36,7 +36,11 @@ export interface LocalInputConfig {
    */
   path: string
   /**
-   * 忽略的文件，支持 glob 语法
+   * 包含的文件，支持 glob 语法
+   */
+  source?: string[]
+  /**
+   * 排除的文件，支持 glob 语法
    */
   ignore?: string[]
 }

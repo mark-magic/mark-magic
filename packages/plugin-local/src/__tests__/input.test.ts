@@ -1,5 +1,5 @@
 import path from 'pathe'
-import { describe, expect, it } from 'vitest'
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import { input, scan } from '../input'
 import { fromAsync, trimMarkdown } from '@mark-magic/utils'
 import { AsyncArray } from '@liuli-util/async'
@@ -193,26 +193,39 @@ it('重复的资源应该能保持相同的 id', async () => {
   expect(resources[2].raw.toString()).eq('02')
 })
 
-it('测试 input 的 ignore 参数', async () => {
-  const list = [
-    { path: 'readme.md', content: '' },
-    { path: '01/readme.md', content: '' },
-    { path: '02/readme.md', content: '' },
-  ]
-  await Promise.all(
-    list.map(async (it) => {
-      const fsPath = path.resolve(tempPath, 'src', it.path)
-      await mkdir(path.dirname(fsPath), { recursive: true })
-      await writeFile(fsPath, it.content)
-    }),
-  )
-  const contents = await fromAsync(
-    input({
-      path: path.resolve(tempPath, 'src'),
-      ignore: ['02/**'],
-    }).generate(),
-  )
-  expect(contents.map((it) => it.path)).deep.eq([['readme.md'], ['01', 'readme.md']])
+describe('source and ignore', () => {
+  beforeEach(async () => {
+    const list = [
+      { path: 'readme.md', content: '' },
+      { path: '01/readme.md', content: '' },
+      { path: '02/readme.md', content: '' },
+    ]
+    await Promise.all(
+      list.map(async (it) => {
+        const fsPath = path.resolve(tempPath, 'src', it.path)
+        await mkdir(path.dirname(fsPath), { recursive: true })
+        await writeFile(fsPath, it.content)
+      }),
+    )
+  })
+  it('测试 input 的 ignore 参数', async () => {
+    const contents = await fromAsync(
+      input({
+        path: path.resolve(tempPath, 'src'),
+        ignore: ['02/**'],
+      }).generate(),
+    )
+    expect(contents.map((it) => it.path)).deep.eq([['readme.md'], ['01', 'readme.md']])
+  })
+  it('测试 input 的 source 参数', async () => {
+    const contents = await fromAsync(
+      input({
+        path: path.resolve(tempPath, 'src'),
+        source: ['02/**'],
+      }).generate(),
+    )
+    expect(contents.map((it) => it.path)).deep.eq([['02', 'readme.md']])
+  })
 })
 
 it('Should not remove readme yaml meta', async () => {

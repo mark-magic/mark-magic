@@ -50,9 +50,16 @@
           "type": "string",
           "description": "本地目录的路径"
         },
+        "source": {
+          "type": "array",
+          "description": "包含的文件，支持 glob 语法",
+          "items": {
+            "type": "string"
+          }
+        },
         "ignore": {
           "type": "array",
-          "description": "忽略的文件，支持 glob 语法",
+          "description": "排除的文件，支持 glob 语法",
           "items": {
             "type": "string"
           }

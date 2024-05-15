@@ -39,4 +39,7 @@ export interface DoctranOpenAIOptions {
   baseUrl?: string
   model?: string
   prompt?: string
+  entities?: {
+    [k: string]: string
+  }
 }

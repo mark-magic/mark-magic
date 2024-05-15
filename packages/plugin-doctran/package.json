@@ -22,6 +22,7 @@
     "@liuli-util/test": "^3.7.0",
     "@liuli-util/vite-plugin-node": "^0.8.1",
     "@types/fs-extra": "^11.0.1",
+    "@types/lodash-es": "^4.17.12",
     "dotenv": "^16.3.1",
     "json-schema-to-typescript": "^13.0.2",
     "openai": "^4.26.1",
@@ -38,6 +39,7 @@
     "fs-extra": "^11.1.1",
     "google-translate-api-x": "^10.6.7",
     "langchain": "^0.0.209",
+    "lodash-es": "^4.17.21",
     "pathe": "^1.1.1"
   },
   "publishConfig": {

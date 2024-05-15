@@ -16,10 +16,9 @@
     "@mark-magic/plugin-doctran": "workspace:^",
     "@mark-magic/plugin-epub": "workspace:^",
     "@mark-magic/plugin-local": "workspace:^",
-    "dotenv": "^16.4.5",
-    "gh-pages": "^6.1.1",
+    "dotenv": "^16.3.1",
+    "gh-pages": "^5.0.0",
     "live-server": "^1.2.2",
-    "vitepress": "^1.1.4",
-    "vue": "^3.4.7"
+    "vitepress": "1.0.0-rc.31"
   }
 }

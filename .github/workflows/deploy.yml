@@ -45,13 +45,12 @@ jobs:
         run: pnpm i # or pnpm install / yarn install / bun install
       - name: Build
         run: |
-          cd packages/website
-          pnpm build
-          touch dist/docs/.nojekyll
+          pnpm -F @mark-magic/website build
+          touch packages/websitedist/.nojekyll
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: dist
+          path: packages/website/dist
 
   # Deployment job
   deploy:

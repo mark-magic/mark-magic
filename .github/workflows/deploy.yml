@@ -46,7 +46,7 @@ jobs:
       - name: Build
         run: |
           pnpm -F @mark-magic/website build
-          touch packages/websitedist/.nojekyll
+          touch packages/website/dist/.nojekyll
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:

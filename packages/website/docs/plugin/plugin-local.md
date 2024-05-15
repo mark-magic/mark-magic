@@ -34,13 +34,9 @@ books/02.md
 books/readme.md
 ```
 
-### source(input)
-
-包含的文件，支持 glob 语法，默认为 `['**/*.md']`。
-
 ### ignore(input)
 
-忽略的文件，支持 glob 语法，默认不忽略任何文件。
+忽略的文件，支持 glob 语法。
 
 ## output
 

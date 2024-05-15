@@ -1,5 +1,16 @@
 # @mark-magic/plugin-doctran
 
+## 0.14.0
+
+### Minor Changes
+
+- feat: 支持 entities 配置
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/plugin-local@0.14.0
+
 ## 0.12.5
 
 ### Patch Changes

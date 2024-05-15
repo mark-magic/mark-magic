@@ -1,5 +1,11 @@
 # @mark-magic/plugin-local
 
+## 0.14.0
+
+### Minor Changes
+
+- feat: 支持 source 配置，允许手动过滤出需要处理的 markdown 文件
+
 ## 0.12.0
 
 ### Minor Changes

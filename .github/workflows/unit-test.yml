@@ -34,14 +34,14 @@ jobs:
         with:
           node-version: 20
           cache: pnpm # or pnpm / yarn
-      - name: Cache node_modules based on Markdown files
+      - name: Cache turbo cache
         uses: actions/cache@v2
         with:
           path: |
             **/dist
             **/.turbo
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/*.ts') }}
-          restore-keys: ${{ runner.os }}
+          key: ${{ runner.os }}-turbo-${{ hashFiles('**/*.ts') }}
+          restore-keys: ${{ runner.os }}-turbo-
       - name: Install dependencies
         run: pnpm i # or pnpm install / yarn install / bun install
       - name: Setup

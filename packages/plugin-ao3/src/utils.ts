@@ -1,5 +1,4 @@
 import { InputPlugin } from '@mark-magic/core'
-import { trimMarkdown } from '@mark-magic/utils'
 import { MetaData } from '@mark-magic/epub'
 import yaml from 'yaml'
 

@@ -103,4 +103,15 @@ describe.skip('input', () => {
       }),
     })
   })
+
+  it('No summary', async () => {
+    await convert({
+      input: ao3({
+        url: 'https://archiveofourown.org/works/29224134/chapters/71757030',
+      }),
+      output: local.output({
+        path: tempPath,
+      }),
+    })
+  })
 })

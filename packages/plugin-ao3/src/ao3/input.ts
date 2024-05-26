@@ -28,9 +28,6 @@ function html2md(html: string): string {
 
 function extractReadmeFromHTML($dom: HTMLElement): Pick<ChapterMeta, 'name' | 'content'> & Omit<NovelMeta, 'id'> {
   const html = $dom.querySelector('.summary.module .userstuff')?.innerHTML.trim()
-  if (!html) {
-    throw new Error('无法提取简介')
-  }
   const title = $dom.querySelector('.title.heading')?.textContent.trim()
   if (!title) {
     throw new Error('无法提取标题')
@@ -44,7 +41,7 @@ function extractReadmeFromHTML($dom: HTMLElement): Pick<ChapterMeta, 'name' | 'c
   const creatorLink = 'https://archiveofourown.org/' + $creator.getAttribute('href')
   return {
     name: title,
-    content: html2md(html),
+    content: html ? html2md(html) : 'No summary',
     creator: { name: creatorName, url: creatorLink },
     language,
   }

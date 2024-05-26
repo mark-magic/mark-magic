@@ -2,11 +2,11 @@ import { expect, it } from 'vitest'
 import * as local from '@mark-magic/plugin-local'
 import { convert } from '@mark-magic/core'
 import path from 'pathe'
-import { transform } from '..'
 import { initTempPath } from '@liuli-util/test'
 import { readFile } from 'fs/promises'
 import { AsyncArray } from '@liuli-util/async'
 import { pathExists } from 'fs-extra/esm'
+import { transform } from '..'
 
 const tempPath = initTempPath(__filename)
 

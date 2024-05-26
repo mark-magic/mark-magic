@@ -1,10 +1,12 @@
 import { TransformPlugin } from '@mark-magic/core'
-import { createTrans, trans } from './translate'
+import { translate } from './translate'
 import findCacheDirectory from 'find-cache-dir'
 import { mkdir } from 'fs/promises'
 import path from 'pathe'
 import { pathExists, readJson, writeJson } from 'fs-extra/esm'
 import { DoctranTransformConfig } from './config.schema'
+import { google } from './model/google'
+import { openai } from './model/openai'
 
 export function transform(options: DoctranTransformConfig): TransformPlugin {
   const cacheDir = findCacheDirectory({ name: '@mark-magic/plugin-doctran' })!
@@ -33,7 +35,15 @@ export function transform(options: DoctranTransformConfig): TransformPlugin {
           return content
         }
       }
-      content.content = await trans(createTrans(options), origin)
+      const list = {
+        google,
+        openai,
+      }
+      const translator = Object.entries(list).find(([k]) => k === options.engine)?.[1](options as any)
+      if (!translator) {
+        throw new Error(`Cannot find corresponding translation engine: ${options.engine}`)
+      }
+      content.content = await translate(translator, origin)
       await writeJson(cachePath, {
         origin,
         transformed: content.content,

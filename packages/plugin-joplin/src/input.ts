@@ -1,27 +1,15 @@
-import {
-  Config,
-  config,
-  PageUtil,
-  folderApi,
-  noteApi,
-  FolderListAllRes,
-  resourceApi,
-  searchApi,
-  TypeEnum,
-  ResourceProperties,
-  joplinApi,
-} from 'joplin-api'
+import { PageUtil, FolderListAllRes, TypeEnum, ResourceProperties, joplinDataApi, ApiConfig, Api } from 'joplin-api'
 import { type InputPlugin, type Content, type Resource, wrapResourceLink, wrapContentLink } from '@mark-magic/core'
 import { AsyncArray } from '@liuli-util/async'
 import { listToTree, treeToList } from '@liuli-util/tree'
-import { keyBy, pick } from 'lodash-es'
+import { keyBy, omit } from 'lodash-es'
 import path from 'path'
 import { extension } from 'mime-types'
 import { Image, Link, fromMarkdown, selectAll, toMarkdown } from '@liuli-util/markdown-util'
 import filenamify from 'filenamify'
 
-async function getFolders(): Promise<Record<string, FolderListAllRes & Pick<Content, 'path'>>> {
-  const list = await folderApi.listAll()
+async function getFolders(api: Api): Promise<Record<string, FolderListAllRes & Pick<Content, 'path'>>> {
+  const list = await api.folder.listAll()
   const treeList = treeToList(listToTree(list, { id: 'id', children: 'children', parentId: 'parent_id' }), {
     id: 'id',
     children: 'children',
@@ -62,22 +50,29 @@ export function convertContentLink(body: string, resourceIds: string[]): string 
   return toMarkdown(root)
 }
 
-export function input(options: Config & { tag: string }): InputPlugin {
-  Object.assign(config, pick(options, 'baseUrl', 'token'))
+export function input(options: { baseUrl?: string; token: string; tag: string }): InputPlugin
+export function input(options: ApiConfig & { tag: string }): InputPlugin
+export function input(
+  options: { baseUrl?: string; token: string; tag: string } | (ApiConfig & { tag: string }),
+): InputPlugin {
   return {
     name: 'joplin',
     async *generate() {
-      await joplinApi.ping().catch(() => {
-        throw new Error(`Failed to connect to Joplin, please visit ${options.baseUrl}/ping`)
+      const api = joplinDataApi({
+        ...options,
+        type: 'type' in options ? options.type : 'rest',
+      } as ApiConfig)
+      await api.joplin.ping().catch(() => {
+        throw new Error(`Failed to connect to Joplin, please visit /ping`)
       })
-      await noteApi.list({ limit: 1, fields: ['id'] }).catch(() => {
+      await api.note.list({ limit: 1, fields: ['id'] }).catch(() => {
         throw new Error('The token is invalid')
       })
-      const folders = await getFolders().catch(() => {
+      const folders = await getFolders(api).catch(() => {
         throw new Error('Failed to retrieve folder list')
       })
       const notes = await PageUtil.pageToAllList((pageParam) =>
-        searchApi.search({
+        api.search.search({
           ...(pageParam as any),
           fields: ['id'],
           type: TypeEnum.Note,
@@ -87,13 +82,13 @@ export function input(options: Config & { tag: string }): InputPlugin {
         throw new Error('Failed to retrieve note list')
       })
       for (const n of notes) {
-        const note = await noteApi
+        const note = await api.note
           .get(n.id, ['id', 'title', 'body', 'user_created_time', 'user_updated_time', 'parent_id'])
           .catch(() => {
             throw new Error('Failed to retrieve note')
           })
         const tags = (
-          await noteApi.tagsById(n.id).catch(() => {
+          await api.note.tagsById(n.id).catch(() => {
             throw new Error('Failed to retrieve note tags')
           })
         )
@@ -101,7 +96,7 @@ export function input(options: Config & { tag: string }): InputPlugin {
           .map((it) => it.title)
         const folder = folders[note.parent_id]
         const resources = await AsyncArray.map(
-          await noteApi.resourcesById(n.id, ['id', 'title', 'file_extension', 'mime']).catch(() => {
+          await api.note.resourcesById(n.id, ['id', 'title', 'file_extension', 'mime']).catch(() => {
             throw new Error('Failed to retrieve note resources')
           }),
           async (item) => {
@@ -110,7 +105,7 @@ export function input(options: Config & { tag: string }): InputPlugin {
               name: calcTitle(item),
               raw: Buffer.from(
                 await (
-                  await resourceApi.fileById(item.id).catch(() => {
+                  await api.resource.fileById(item.id).catch(() => {
                     throw new Error('Failed to retrieve resource')
                   })
                 ).arrayBuffer(),

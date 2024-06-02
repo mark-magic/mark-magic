@@ -21,7 +21,7 @@ it('internal link for note and resource', async () => {
   expect(r.trim()).eq('[test](:/content/test) ![image](:/resource/image) [github](https://github.com)')
 })
 
-describe.skip('input', () => {
+describe('input', () => {
   const tempPath = initTempPath(__filename)
   beforeAll(() => {
     config.token = import.meta.env.VITE_JOPLIN_TOKEN

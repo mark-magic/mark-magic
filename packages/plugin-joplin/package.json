@@ -1,6 +1,6 @@
 {
   "name": "@mark-magic/plugin-joplin",
-  "version": "0.12.7",
+  "version": "0.14.2",
   "license": "MIT",
   "type": "module",
   "exports": "./dist/index.js",

@@ -1,5 +1,11 @@
 # @mark-magic/plugin-joplin
 
+## 0.14.2
+
+### Patch Changes
+
+- feat: 支持在 joplin plugin 中使用
+
 ## 0.12.7
 
 ### Patch Changes

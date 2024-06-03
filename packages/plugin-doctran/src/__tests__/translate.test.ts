@@ -1,19 +1,22 @@
 import { it, expect, describe, beforeAll } from 'vitest'
-import { split, createTrans } from '../translate'
+import { split } from '../translate'
 import { readFile, writeFile } from 'fs/promises'
 import path from 'pathe'
 import { initTempPath } from '@liuli-util/test'
-import { OpenAI } from 'openai'
 import entities from './assets/entities.json'
+import { google } from '../model/google'
+import { openai } from '../model/openai'
 
 describe.skip('createTrans', () => {
   it('translate by google', async () => {
-    expect(await createTrans({ engine: 'google', to: 'zh-CN' })('hello world')).eq('你好世界')
-    expect((await createTrans({ engine: 'google', to: 'en' })('你好世界')).toLowerCase()).eq('hello world')
+    expect(await google({ engine: 'google', to: 'zh-CN' }).translate('hello world')).eq('你好世界')
+    expect((await google({ engine: 'google', to: 'en' }).translate('你好世界')).toLowerCase()).eq('hello world')
   })
   it('translate by openai', async () => {
     console.log(
-      await createTrans({ engine: 'openai', apiKey: import.meta.env.VITE_OPENAI_API_KEY, to: 'zh-CN' })('hello world'),
+      await openai({ engine: 'openai', apiKey: import.meta.env.VITE_OPENAI_API_KEY, to: 'zh-CN' }).translate(
+        'hello world',
+      ),
     )
     // expect(await createTrans({ engine: 'openai', apiKey: import.meta.env.VITE_OPENAI_API_KEY, to: 'zh-CN' })('hello world'))
     //   .include('你好')
@@ -40,12 +43,12 @@ describe.skip('trans', () => {
     book = await readFile(path.resolve(__dirname, './assets/book.md'), 'utf-8')
   })
   it('translate and split by google', async () => {
-    const t = createTrans({ engine: 'google', to: 'en' })
-    await writeFile(path.resolve(tempPath, 'book-google.md'), await t(book))
+    const t = google({ engine: 'google', to: 'en' })
+    await writeFile(path.resolve(tempPath, 'book-google.md'), await t.translate(book))
   })
   it('translate and split by openai', async () => {
-    const t = createTrans({ engine: 'openai', apiKey: import.meta.env.VITE_OPENAI_API_KEY, to: 'en' })
-    await writeFile(path.resolve(tempPath, 'book-openai.md'), await t(book))
+    const t = openai({ engine: 'openai', apiKey: import.meta.env.VITE_OPENAI_API_KEY, to: 'en' })
+    await writeFile(path.resolve(tempPath, 'book-openai.md'), await t.translate(book))
   }, 60_000)
 })
 
@@ -123,7 +126,7 @@ You exhale slowly and lean back in the chair, closing your eyes and rubbing at y
 `.trim()
 
   it('translate novel by kimi', async () => {
-    const t = createTrans({
+    const t = openai({
       engine: 'openai',
       to: 'zh-CN',
       baseUrl: 'https://api.moonshot.cn/v1',
@@ -132,11 +135,11 @@ You exhale slowly and lean back in the chair, closing your eyes and rubbing at y
       prompt: PROMPT,
       entities,
     })
-    const r = await t(ORIGIN)
+    const r = await t.translate(ORIGIN)
     await writeFile(path.resolve(tempPath, 'novel-zh-CN.md'), r)
   }, 100_000)
   it('translate novel by gpt-4o', async () => {
-    const t = createTrans({
+    const t = openai({
       engine: 'openai',
       to: 'zh-CN',
       apiKey: import.meta.env.VITE_OPENAI_API_KEY,
@@ -144,7 +147,7 @@ You exhale slowly and lean back in the chair, closing your eyes and rubbing at y
       prompt: PROMPT,
       entities,
     })
-    const r = await t(ORIGIN)
+    const r = await t.translate(ORIGIN)
     await writeFile(path.resolve(tempPath, 'novel-zh-CN.md'), r)
   }, 100_000)
 })

@@ -31,6 +31,7 @@
     "vitest": "^1.0.4"
   },
   "dependencies": {
+    "@langchain/anthropic": "^0.2.0",
     "@langchain/core": "^0.2.1",
     "@langchain/google-vertexai": "^0.0.16",
     "@langchain/openai": "^0.0.33",

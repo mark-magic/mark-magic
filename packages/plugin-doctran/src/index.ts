@@ -7,6 +7,8 @@ import { pathExists, readJson, writeJson } from 'fs-extra/esm'
 import { DoctranTransformConfig } from './config.schema'
 import { google } from './model/google'
 import { openai } from './model/openai'
+import { gemini } from './model/gemini'
+import { claude } from './model/claude'
 
 export function transform(options: DoctranTransformConfig): TransformPlugin {
   const cacheDir = findCacheDirectory({ name: '@mark-magic/plugin-doctran' })!
@@ -35,10 +37,7 @@ export function transform(options: DoctranTransformConfig): TransformPlugin {
           return content
         }
       }
-      const list = {
-        google,
-        openai,
-      }
+      const list = { google, openai, gemini, claude }
       const translator = Object.entries(list).find(([k]) => k === options.engine)?.[1](options as any)
       if (!translator) {
         throw new Error(`Cannot find corresponding translation engine: ${options.engine}`)

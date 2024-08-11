@@ -1,5 +1,11 @@
 # @mark-magic/plugin-docs
 
+## 0.15.0
+
+### Minor Changes
+
+- Support generate twitter meta
+
 ## 0.14.0
 
 ### Patch Changes

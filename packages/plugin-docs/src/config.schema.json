@@ -232,6 +232,19 @@
               "additionalItems": false
             }
           ]
+        },
+        "twitter": {
+          "type": "object",
+          "properties": {
+            "site": {
+              "type": "string"
+            },
+            "image": {
+              "type": "string"
+            }
+          },
+          "required": ["site", "image"],
+          "additionalProperties": false
         }
       },
       "required": ["path", "name"],

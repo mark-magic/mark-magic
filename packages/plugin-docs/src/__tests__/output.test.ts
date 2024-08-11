@@ -427,6 +427,24 @@ describe('rss', () => {
   })
 })
 
+it('should support twitter card', async () => {
+  await convert({
+    input: fromVirtual(list),
+    output: output({
+      path: path.resolve(tempPath, 'dist'),
+      name: 'test name',
+      description: 'test description',
+      twitter: {
+        site: 'rxliuli',
+        image: 'https://tts.liuli.moe/logo.png',
+      },
+    }),
+  })
+  const dom = parse(await readFile(path.resolve(tempPath, 'dist/a.html'), 'utf-8'))
+  expect(dom.querySelector('meta[name="twitter:site"]')!.getAttribute('content')).eq('@rxliuli')
+  expect(dom.querySelector('meta[name="twitter:image"]')!.getAttribute('content')).eq('https://tts.liuli.moe/logo.png')
+})
+
 it('base path', async () => {
   await convert({
     input: fromVirtual(list),

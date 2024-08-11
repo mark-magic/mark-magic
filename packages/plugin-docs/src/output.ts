@@ -122,15 +122,19 @@ export function output(options: OutputOptions): OutputPlugin {
       await mkdir(path.resolve(tempPath, '.vitepress'), { recursive: true })
       await writeFile(
         path.resolve(tempPath, '.vitepress/config.mjs'),
-        configRaw.replace('`INJECT_VITEPRESS_CONFIG`', JSON.stringify(config)).replace(
-          '`INJECT_RSS_CONFIG`',
-          JSON.stringify({
-            ...options.rss,
-            title: options.name,
-            description: options.description,
-            lang: options.lang,
-          } as RenderRssOptions),
-        ),
+        configRaw
+          .replace('`INJECT_VITEPRESS_CONFIG`', JSON.stringify(config))
+          .replace(
+            '`INJECT_RSS_CONFIG`',
+            JSON.stringify({
+              ...options.rss,
+              title: options.name,
+              description: options.description,
+              lang: options.lang,
+            } as RenderRssOptions),
+          )
+          .replaceAll('`INJECT_TWITTER_SITE`', JSON.stringify(options.twitter?.site ?? undefined))
+          .replaceAll('`INJECT_TWITTER_IMAGE`', JSON.stringify(options.twitter?.image ?? undefined)),
       )
       if (options.public && (await pathExists(options.public))) {
         await copy(path.resolve(options.public), path.resolve(tempPath, 'public'))

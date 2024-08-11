@@ -4,6 +4,7 @@ import path from 'pathe'
 import { Feed } from 'feed'
 import { sortBy } from 'lodash-es'
 import { cjk } from 'markdown-it-cjk-space-clean'
+import { twitterMeta } from 'vitepress-plugin-twitter-card'
 const rss = `INJECT_RSS_CONFIG`
 function getFeed() {
   if (!(typeof rss === 'object' && rss.hostname && rss.copyright)) {
@@ -75,7 +76,7 @@ function getFeed() {
   })
 }
 const map = {}
-var config_default = [
+const configs = [
   defineConfig({
     markdown: {
       config: (md) => {
@@ -89,6 +90,14 @@ var config_default = [
     ignoreDeadLinks: true,
   }),
   getFeed(),
-  `INJECT_VITEPRESS_CONFIG`,
-].reduce((a, b) => mergeConfig(a, b))
+]
+const twitter = {
+  site: `INJECT_TWITTER_SITE`,
+  image: `INJECT_TWITTER_IMAGE`,
+}
+if (twitter.site && twitter.image) {
+  configs.push(twitterMeta(twitter))
+}
+configs.push(`INJECT_VITEPRESS_CONFIG`)
+var config_default = configs.reduce((a, b) => mergeConfig(a, b))
 export { config_default as default }

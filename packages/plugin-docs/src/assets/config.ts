@@ -1,10 +1,11 @@
 import { SiteConfig, UserConfig, createContentLoader, defineConfig, mergeConfig } from 'vitepress'
-import { writeFile } from 'fs/promises'
+import { readFile, writeFile } from 'fs/promises'
 import path from 'pathe'
 import { Feed } from 'feed'
 import type { RenderRssOptions } from '../output'
 import { sortBy } from 'lodash-es'
 import { cjk } from 'markdown-it-cjk-space-clean'
+import { twitterMeta } from 'vitepress-plugin-twitter-card'
 
 // @ts-expect-error
 const rss: RenderRssOptions = `INJECT_RSS_CONFIG`
@@ -89,12 +90,11 @@ function getFeed(): UserConfig {
 
 const map: Record<string, string> = {}
 
-// refer https://vitepress.dev/reference/site-config for details
-export default [
+const configs: UserConfig[] = [
   defineConfig({
     markdown: {
       config: (md) => {
-        md.use(cjk())
+        md.use(cjk() as any)
       },
       attrs: {
         disable: true,
@@ -104,5 +104,17 @@ export default [
     ignoreDeadLinks: true,
   }),
   getFeed(),
-  `INJECT_VITEPRESS_CONFIG` as UserConfig,
-].reduce((a, b) => mergeConfig(a, b))
+]
+
+const twitter = {
+  site: `INJECT_TWITTER_SITE`,
+  image: `INJECT_TWITTER_IMAGE`,
+}
+if (twitter.site && twitter.image) {
+  configs.push(twitterMeta(twitter))
+}
+
+configs.push(`INJECT_VITEPRESS_CONFIG` as UserConfig)
+
+// refer https://vitepress.dev/reference/site-config for details
+export default configs.reduce((a, b) => mergeConfig(a, b))

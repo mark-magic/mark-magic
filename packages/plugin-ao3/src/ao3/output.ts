@@ -95,7 +95,7 @@ interface Ao3Chapter {
   content: string
   /* 创建时间 */
   created: number
-  /** 第几张 */
+  /** 第几章 */
   index: number
 }
 
@@ -353,7 +353,7 @@ export async function addAo3Chapter(
       'accept-language': 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,ja-JP;q=0.6,ja;q=0.5',
       'cache-control': 'max-age=0',
       'content-type': 'application/x-www-form-urlencoded',
-      'sec-ch-ua': '"Not A(Brand";v="99", "Google Chrome";v="121", "Chromium";v="121"',
+      'sec-ch-ua': '"Not)A;Brand";v="99", "Google Chrome";v="127", "Chromium";v="127"',
       'sec-ch-ua-mobile': '?0',
       'sec-ch-ua-platform': '"macOS"',
       'sec-fetch-dest': 'document',
@@ -370,7 +370,7 @@ export async function addAo3Chapter(
       'chapter[title]': chapter.name,
       'chapter[position]': chapter.index.toString(),
       // 'chapter[wip_length]': '?',
-      'chapter[published_at(3i)]': created.get('D').toString(),
+      'chapter[published_at(3i)]': (created.get('D') - 1).toString(), // 这里需要减一，否则会报错
       'chapter[published_at(2i)]': (created.get('M') + 1).toString(),
       'chapter[published_at(1i)]': created.get('y').toString(),
       // 'chapter[author_attributes][ids][]': '15867060',
@@ -380,7 +380,7 @@ export async function addAo3Chapter(
       'chapter[endnotes]': '',
       'chapter[content]': chapter.content,
       post_without_preview_button: 'Post',
-    }),
+    }).toString(),
     method: 'POST',
   })
   if (!r.ok) {

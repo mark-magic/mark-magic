@@ -9,7 +9,6 @@ import {
   addAo3Chapter,
   ao3,
   deleteAo3Chapter,
-  extractChaptersFromHTML,
   getUpdateAuthToken,
   updateAo3Chapter,
   updateAo3Readme,
@@ -76,10 +75,10 @@ describe.skip('api', () => {
     const chapterId = await addAo3Chapter(
       {
         bookId: '53445904',
-        name: '意料之外的后果 3',
+        name: '我们的恩人 26',
         content: '这是新增的测试章节',
         created: Date.now(),
-        index: 3,
+        index: 354,
       },
       authOptions,
     )

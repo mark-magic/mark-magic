@@ -1,6 +1,6 @@
 {
   "name": "@mark-magic/plugin-ao3",
-  "version": "0.13.0",
+  "version": "0.15.1",
   "license": "MIT",
   "type": "module",
   "exports": {

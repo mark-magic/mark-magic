@@ -1,5 +1,11 @@
 # @mark-magic/plugin-ao3
 
+## 0.15.1
+
+### Patch Changes
+
+- fix: 更新发布新章节时的参数
+
 ## 0.13.0
 
 ### Patch Changes

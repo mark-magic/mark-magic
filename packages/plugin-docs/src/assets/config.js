@@ -5,6 +5,7 @@ import { Feed } from 'feed'
 import { sortBy } from 'lodash-es'
 import { cjk } from 'markdown-it-cjk-space-clean'
 import { twitterMeta } from 'vitepress-plugin-twitter-card'
+import taskLists from '@hackmd/markdown-it-task-lists'
 const rss = `INJECT_RSS_CONFIG`
 function getFeed() {
   if (!(typeof rss === 'object' && rss.hostname && rss.copyright)) {
@@ -80,7 +81,7 @@ const configs = [
   defineConfig({
     markdown: {
       config: (md) => {
-        md.use(cjk())
+        md.use(cjk()).use(taskLists)
       },
       attrs: {
         disable: true,

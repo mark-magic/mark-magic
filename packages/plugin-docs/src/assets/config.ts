@@ -1,11 +1,12 @@
 import { SiteConfig, UserConfig, createContentLoader, defineConfig, mergeConfig } from 'vitepress'
-import { readFile, writeFile } from 'fs/promises'
+import { writeFile } from 'fs/promises'
 import path from 'pathe'
 import { Feed } from 'feed'
 import type { RenderRssOptions } from '../output'
 import { sortBy } from 'lodash-es'
 import { cjk } from 'markdown-it-cjk-space-clean'
 import { twitterMeta } from 'vitepress-plugin-twitter-card'
+import taskLists from '@hackmd/markdown-it-task-lists'
 
 // @ts-expect-error
 const rss: RenderRssOptions = `INJECT_RSS_CONFIG`
@@ -94,7 +95,7 @@ const configs: UserConfig[] = [
   defineConfig({
     markdown: {
       config: (md) => {
-        md.use(cjk() as any)
+        md.use(cjk() as any).use(taskLists)
       },
       attrs: {
         disable: true,

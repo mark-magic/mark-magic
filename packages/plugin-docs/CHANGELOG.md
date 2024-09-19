@@ -1,5 +1,11 @@
 # @mark-magic/plugin-docs
 
+## 0.16.0
+
+### Minor Changes
+
+- feat: 修复 task list 未能正确渲染的错误
+
 ## 0.15.0
 
 ### Minor Changes

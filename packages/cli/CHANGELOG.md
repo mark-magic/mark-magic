@@ -1,5 +1,11 @@
 # @mark-magic/cli
 
+## 0.14.2
+
+### Patch Changes
+
+- chore: 升级依赖 ora
+
 ## 0.14.1
 
 ### Patch Changes

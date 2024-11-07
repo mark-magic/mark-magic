@@ -227,5 +227,9 @@ export interface DocsPluginConfig {
       crossorigin: string
     }
     gtag?: string | string[]
+    twitter?: {
+      site: string
+      image: string
+    }
   }
 }

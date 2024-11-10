@@ -6,7 +6,8 @@ import type { RenderRssOptions } from '../output'
 import { sortBy } from 'lodash-es'
 import { cjk } from 'markdown-it-cjk-space-clean'
 import { twitterMeta } from 'vitepress-plugin-twitter-card'
-import taskLists from '@hackmd/markdown-it-task-lists'
+import taskLists from '@rxliuli/markdown-it-task-lists'
+import { PagefindOption, pagefindPlugin, SearchConfig } from 'vitepress-plugin-pagefind'
 
 // @ts-expect-error
 const rss: RenderRssOptions = `INJECT_RSS_CONFIG`
@@ -95,7 +96,7 @@ const configs: UserConfig[] = [
   defineConfig({
     markdown: {
       config: (md) => {
-        md.use(cjk() as any).use(taskLists)
+        md.use(cjk() as any).use(taskLists as any)
       },
       attrs: {
         disable: true,
@@ -114,8 +115,37 @@ const twitter = {
 if (twitter.site && twitter.image) {
   configs.push(twitterMeta(twitter))
 }
+const INJECT_SEARCH = `INJECT_SEARCH` as any
 
-configs.push(`INJECT_VITEPRESS_CONFIG` as UserConfig)
+const injectConfig = `INJECT_VITEPRESS_CONFIG` as UserConfig
+configs.push(injectConfig)
+
+if (INJECT_SEARCH.enabled === true) {
+  let options: SearchConfig & PagefindOption = {}
+  if (injectConfig.lang?.includes('zh')) {
+    options = {
+      customSearchQuery: (input: string) => {
+        const segmenter = new Intl.Segmenter('zh-CN', { granularity: 'word' })
+        const result: string[] = []
+        for (const it of segmenter.segment(input)) {
+          if (it.isWordLike) {
+            result.push(it.segment)
+          }
+        }
+        return result.join(' ')
+      },
+      btnPlaceholder: '搜索',
+      placeholder: '搜索文档',
+      emptyText: '空空如也',
+      heading: '共: {{searchResult}} 条结果',
+    }
+  }
+  configs.push({
+    vite: {
+      plugins: [pagefindPlugin(options)],
+    },
+  })
+}
 
 // refer https://vitepress.dev/reference/site-config for details
 export default configs.reduce((a, b) => mergeConfig(a, b))

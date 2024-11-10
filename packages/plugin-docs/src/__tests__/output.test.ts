@@ -509,3 +509,34 @@ describe('should support favicon', () => {
     ).eq('/logo.png')
   })
 })
+
+it('should support search', async () => {
+  await convert({
+    input: fromVirtual([
+      {
+        id: '01',
+        path: '/01.md',
+        content: '# test 1',
+      },
+      {
+        id: '02',
+        path: '/02/readme.md',
+        content: '# test 2',
+      },
+      {
+        id: 'readme',
+        path: '/readme.md',
+        content: '# test',
+      },
+    ]),
+    output: output({
+      path: path.resolve(tempPath, 'dist'),
+      name: 'test',
+      lang: 'zh-CN',
+      search: {
+        enabled: true,
+      },
+    }),
+  })
+  expect(await pathExists(path.resolve(tempPath, 'dist/pagefind'))).true
+})

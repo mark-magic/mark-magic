@@ -5,7 +5,8 @@ import { Feed } from 'feed'
 import { sortBy } from 'lodash-es'
 import { cjk } from 'markdown-it-cjk-space-clean'
 import { twitterMeta } from 'vitepress-plugin-twitter-card'
-import taskLists from '@hackmd/markdown-it-task-lists'
+import taskLists from '@rxliuli/markdown-it-task-lists'
+import { pagefindPlugin } from 'vitepress-plugin-pagefind'
 const rss = `INJECT_RSS_CONFIG`
 function getFeed() {
   if (!(typeof rss === 'object' && rss.hostname && rss.copyright)) {
@@ -99,6 +100,34 @@ const twitter = {
 if (twitter.site && twitter.image) {
   configs.push(twitterMeta(twitter))
 }
-configs.push(`INJECT_VITEPRESS_CONFIG`)
+const INJECT_SEARCH = `INJECT_SEARCH`
+const injectConfig = `INJECT_VITEPRESS_CONFIG`
+configs.push(injectConfig)
+if (INJECT_SEARCH.enabled === true) {
+  let options = {}
+  if (injectConfig.lang?.includes('zh')) {
+    options = {
+      customSearchQuery: (input) => {
+        const segmenter = new Intl.Segmenter('zh-CN', { granularity: 'word' })
+        const result = []
+        for (const it of segmenter.segment(input)) {
+          if (it.isWordLike) {
+            result.push(it.segment)
+          }
+        }
+        return result.join(' ')
+      },
+      btnPlaceholder: '\u641C\u7D22',
+      placeholder: '\u641C\u7D22\u6587\u6863',
+      emptyText: '\u7A7A\u7A7A\u5982\u4E5F',
+      heading: '\u5171: {{searchResult}} \u6761\u7ED3\u679C',
+    }
+  }
+  configs.push({
+    vite: {
+      plugins: [pagefindPlugin(options)],
+    },
+  })
+}
 var config_default = configs.reduce((a, b) => mergeConfig(a, b))
 export { config_default as default }

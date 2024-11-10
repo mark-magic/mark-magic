@@ -134,7 +134,8 @@ export function output(options: OutputOptions): OutputPlugin {
             } as RenderRssOptions),
           )
           .replaceAll('`INJECT_TWITTER_SITE`', JSON.stringify(options.twitter?.site ?? undefined))
-          .replaceAll('`INJECT_TWITTER_IMAGE`', JSON.stringify(options.twitter?.image ?? undefined)),
+          .replaceAll('`INJECT_TWITTER_IMAGE`', JSON.stringify(options.twitter?.image ?? undefined))
+          .replaceAll('`INJECT_SEARCH`', JSON.stringify(options.search ?? {})),
       )
       if (options.public && (await pathExists(options.public))) {
         await copy(path.resolve(options.public), path.resolve(tempPath, 'public'))

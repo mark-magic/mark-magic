@@ -1,5 +1,11 @@
 # @mark-magic/plugin-docs
 
+## 0.17.0
+
+### Minor Changes
+
+- feat: 支持全文搜索功能
+
 ## 0.16.0
 
 ### Minor Changes

@@ -109,3 +109,22 @@ it('should write categories', async () => {
   ) as Record<string, any>
   expect(meta.categories).deep.eq(['a', 'b'])
 })
+
+it('should support hash link', async () => {
+  await convert({
+    input: fromVirtual([
+      {
+        id: 'test1',
+        path: 'a/b/test1.md',
+        content: '[test2](:/content/test2#hash)',
+      },
+      {
+        id: 'test2',
+        path: 'c/test2.md',
+        content: '# test2',
+      },
+    ]),
+    output: output({ path: tempPath }),
+  })
+  expect(await readFile(path.resolve(tempPath, 'source/_posts/test1.md'), 'utf-8')).includes('[test2](/p/test2#hash)')
+})

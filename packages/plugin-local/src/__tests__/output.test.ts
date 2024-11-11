@@ -1,6 +1,6 @@
 import { mkdir, readFile, writeFile } from 'fs/promises'
 import pathe from 'pathe'
-import { expect, it, describe } from 'vitest'
+import { expect, it, describe, vi } from 'vitest'
 import { convert, InputPlugin, Content, Resource } from '@mark-magic/core'
 import { convertLinks, output } from '../output'
 import filenamify, { filenamifyPath } from 'filenamify'
@@ -51,6 +51,29 @@ describe('utils', () => {
     expect(r.includes('../../_resources/test.mp3')).true
     expect(r.includes('../../_resources/flower.webm')).true
     expect(r.includes(encodeURI('../c/Welcome to Joplin.md'))).true
+  })
+  it('convert hash link', () => {
+    const root = fromMarkdown(`[test2](:/content/test2#hash)`)
+    const contentMap = new BiMultiMap<string, string>()
+    contentMap.set('test2', pathe.resolve(tempPath, 'c/test2.md'))
+    const fn = vi.fn()
+    convertLinks({
+      contentLink: (it) => {
+        fn(it)
+        return formatRelative(pathe.relative(pathe.dirname(it.contentPath), it.linkContentPath))
+      },
+      resourceLink: ({ contentPath: contentPath, resourcePath }) =>
+        formatRelative(pathe.relative(pathe.dirname(contentPath), resourcePath)),
+      resourceMap: new BiMultiMap<string, string>(),
+      fsPath: pathe.resolve(tempPath, 'a/b/test.md'),
+      content: { resources: [] as Resource[] } as Content,
+      contentMap,
+      root,
+    })
+    const r = toMarkdown(root)
+    const arg = fn.mock.calls[0][0] as { linkContentId: string; linkContentHash?: string }
+    expect(arg.linkContentId).eq('test2')
+    expect(arg.linkContentHash).eq('hash')
   })
 })
 
@@ -336,6 +359,29 @@ it('should support duplicate resource name', async () => {
   expect(await getContent('01/readme.md')).eq('01')
   expect(await getContent('02/readme.md')).eq('02')
   expect(await getContent('03/readme.md')).eq('03')
+})
+
+it('should support hash link', async () => {
+  await convert({
+    input: fromVirtual([
+      {
+        id: 'test1',
+        path: 'test1.md',
+        content: '[test2](:/content/test2#hash)',
+      },
+    ]),
+    output: output({
+      path: path.resolve(tempPath, 'dist'),
+      contentLink: (it) => {
+        let url = `/p/${it.linkContentId}`
+        if (it.linkContentHash) {
+          url += `#${it.linkContentHash}`
+        }
+        return url
+      },
+    }),
+  })
+  expect(await readFile(path.resolve(tempPath, 'dist/test1.md'), 'utf-8')).includes('/p/test2#hash')
 })
 
 describe('meta', () => {

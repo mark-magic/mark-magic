@@ -34,7 +34,13 @@ export function output(options?: { path?: string; base?: string }): OutputPlugin
       date: it.created,
       updated: it.updated,
     }),
-    contentLink: (it) => path.join('/', options?.base ?? '/', `/p/${it.linkContentId}`),
+    contentLink: (it) => {
+      let url = path.join('/', options?.base ?? '/', `/p/${it.linkContentId}`)
+      if (it.linkContentHash) {
+        url += `#${it.linkContentHash}`
+      }
+      return url
+    },
     resourceLink: (it) => `/resources/${it.resource.id}${path.extname(it.resource.name)}`,
     contentPath: (it) => path.resolve(postsPath, it.id + '.md'),
     resourcePath: (it) => path.resolve(resourcePath, it.id + path.extname(it.name)),

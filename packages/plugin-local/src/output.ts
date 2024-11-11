@@ -36,21 +36,24 @@ export function defaultOptions(options: Required<Partial<OutputOptions>, 'path'>
   }
 }
 
-export function convertLinks({
-  root,
-  content,
-  contentMap,
-  resourceMap,
-  fsPath,
-  contentLink,
-  resourceLink,
-}: {
-  root: Root
-  content: Content
-  contentMap: BiMultiMap<string, string>
-  resourceMap: BiMultiMap<string, string>
-  fsPath: string
-} & Pick<OutputOptions, 'contentLink' | 'resourceLink'>) {
+export function convertLinks(
+  {
+    root,
+    content,
+    contentMap,
+    resourceMap,
+    fsPath,
+    contentLink,
+    resourceLink,
+  }: {
+    root: Root
+    content: Content
+    contentMap: BiMultiMap<string, string>
+    resourceMap: BiMultiMap<string, string>
+    fsPath: string
+  } & Pick<OutputOptions, 'contentLink' | 'resourceLink'>,
+  after?: boolean,
+) {
   const urls = (selectAll('image,link', root) as (Image | Link)[]).filter(
     (it) => isContentLink(it.url) || isResourceLink(it.url),
   )
@@ -87,8 +90,9 @@ export function convertLinks({
         })!,
       )
     } else {
-      const id = extractContentId(src)
-      if (!contentMap.has(id)) {
+      const href = extractContentId(src)
+      const [id, hash] = href.split('#')
+      if (!after && !contentMap.has(id)) {
         isAfter = true
         return
       }
@@ -100,6 +104,7 @@ export function convertLinks({
           contentPath: fsPath,
           linkContentPath: contentMap.get(id)!,
           linkContentId: id,
+          linkContentHash: hash,
         })!,
       )
     }
@@ -116,8 +121,9 @@ export function convertLinks({
         resourcePath: resourceMap.get(id)!,
       })!
     } else {
-      const id = extractContentId(item.url)
-      if (!contentMap.has(id)) {
+      const href = extractContentId(item.url)
+      const [id, hash] = href.split('#')
+      if (!after && !contentMap.has(id)) {
         isAfter = true
         return
       }
@@ -127,6 +133,7 @@ export function convertLinks({
         contentPath: fsPath,
         linkContentPath: contentMap.get(id)!,
         linkContentId: id,
+        linkContentHash: hash,
       })!
     }
   })
@@ -146,6 +153,7 @@ export interface OutputOptions extends LocalOutputConfig {
     contentPath: string
     linkContentPath: string
     linkContentId: string
+    linkContentHash?: string
   }): string | undefined
   resourceLink(o: { resource: Resource; contentPath: string; resourcePath: string }): string | undefined
 }
@@ -202,7 +210,7 @@ export function output(options: Required<Partial<OutputOptions>, 'path'>): Outpu
     async end() {
       await AsyncArray.forEach(afterList, async (item) => {
         const root = fromMarkdown(await readFile(item.fsPath, 'utf-8'))
-        convertLinks({ ...item, root, contentMap: contentMap, resourceMap, ..._options })
+        convertLinks({ ...item, root, contentMap: contentMap, resourceMap, ..._options }, true)
         await writeFile(item.fsPath, toMarkdown(root))
       })
     },

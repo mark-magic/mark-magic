@@ -1,6 +1,6 @@
 {
   "name": "@mark-magic/plugin-doctran",
-  "version": "0.14.0",
+  "version": "0.18.0",
   "license": "MIT",
   "type": "module",
   "exports": {

@@ -1,5 +1,16 @@
 # @mark-magic/plugin-hexo
 
+## 0.18.0
+
+### Minor Changes
+
+- feat: support hash link
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/plugin-local@0.18.0
+
 ## 0.14.0
 
 ### Patch Changes

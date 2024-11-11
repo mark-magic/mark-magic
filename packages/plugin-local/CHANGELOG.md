@@ -1,5 +1,11 @@
 # @mark-magic/plugin-local
 
+## 0.18.0
+
+### Minor Changes
+
+- feat: support hash link
+
 ## 0.14.0
 
 ### Minor Changes

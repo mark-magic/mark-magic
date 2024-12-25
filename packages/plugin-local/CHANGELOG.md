@@ -1,5 +1,11 @@
 # @mark-magic/plugin-local
 
+## 0.19.0
+
+### Minor Changes
+
+- feat(local): support multiple html links in one mdast node
+
 ## 0.18.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @mark-magic/plugin-joplin
 
+## 0.19.0
+
+### Minor Changes
+
+- feat(joplin): support html links parse
+
 ## 0.14.2
 
 ### Patch Changes

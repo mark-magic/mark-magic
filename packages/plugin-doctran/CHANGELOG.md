@@ -1,5 +1,12 @@
 # @mark-magic/plugin-doctran
 
+## 0.19.0
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/plugin-local@0.19.0
+
 ## 0.18.0
 
 ### Patch Changes

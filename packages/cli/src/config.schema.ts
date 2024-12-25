@@ -231,5 +231,9 @@ export interface DocsPluginConfig {
       site: string
       image: string
     }
+    search?: {
+      enabled?: boolean
+      [k: string]: unknown
+    }
   }
 }

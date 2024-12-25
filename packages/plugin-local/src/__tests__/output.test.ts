@@ -251,6 +251,35 @@ describe('html', () => {
     expect(r.includes('../../_resources/flower.webm')).true
     // expect(r.includes(encodeURI('../c/Welcome to Joplin.md'))).true
   })
+  it('convert multiple html links', () => {
+    const root = fromMarkdown(
+      `
+<img src=":/resource/a" alt="IMG_9101.JPG" width="623" height="415" class="jop-noMdConv">
+<img src=":/resource/b" alt="IMG_9101.JPG" width="623" height="415" class="jop-noMdConv">
+    `.trim(),
+    )
+    const resources = [
+      { id: 'a', name: 'a.jpg' },
+      { id: 'b', name: 'b.jpg' },
+    ] as Resource[]
+    const resourceMap = new BiMultiMap<string, string>()
+    resourceMap.set('a', pathe.resolve(tempPath, '_resources/a.jpg'))
+    resourceMap.set('b', pathe.resolve(tempPath, '_resources/b.jpg'))
+    convertLinks({
+      fsPath: pathe.resolve(tempPath, 'a/b/test.md'),
+      content: { resources } as Content,
+      contentMap: new BiMultiMap<string, string>(),
+      resourceMap,
+      root,
+      contentLink: ({ contentPath: contentPath, linkContentPath: linkcontentPath }) =>
+        formatRelative(pathe.relative(pathe.dirname(contentPath), linkcontentPath)),
+      resourceLink: ({ contentPath: contentPath, resourcePath }) =>
+        formatRelative(pathe.relative(pathe.dirname(contentPath), resourcePath)),
+    })
+    const r = toMarkdown(root)
+    expect(r.includes('../../_resources/a.jpg')).true
+    expect(r.includes('../../_resources/b.jpg')).true
+  })
 })
 
 it('output', async () => {

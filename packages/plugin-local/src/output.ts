@@ -14,7 +14,7 @@ import filenamify from 'filenamify'
 import { dropRight, keyBy } from 'lodash-es'
 import { Required } from 'utility-types'
 import { BiMultiMap } from '@mark-magic/utils'
-import { parse } from 'node-html-parser'
+import { HTMLElement, parse } from 'node-html-parser'
 import { formatRelative } from './utils'
 import { mkdirp, remove } from 'fs-extra/esm'
 import { readFile, writeFile } from 'fs/promises'
@@ -59,57 +59,49 @@ export function convertLinks(
   )
   const map = keyBy(content.resources, (item) => item.id)
   let isAfter = false
-  const htmls = (selectAll('html', root) as HTML[])
+  ;(selectAll('html', root) as HTML[])
     .filter((it) => ['<audio', '<video', '<img'].some((p) => it.value.startsWith(p)))
     .map((it) => {
-      const htmlType = ['<audio', '<video', '<img'].find((p) => it.value.startsWith(p))!.slice(1)
-      // console.log(it.value, htmlType)
-      const dom = parse(it.value).querySelector(htmlType)!
-      return {
-        md: it,
-        dom,
-      }
+      const html = parse(it.value)
+      html.querySelectorAll('audio,video,img').forEach((it) => {
+        const src = it.getAttribute('src')!
+        if (isResourceLink(src)) {
+          const id = extractResourceId(src)
+          const resource = map[id]
+          it.setAttribute(
+            'src',
+            resourceLink({
+              resource,
+              contentPath: fsPath,
+              resourcePath: resourceMap.get(id)!,
+            })!,
+          )
+          return
+        }
+        if (isContentLink(it.attrs.src)) {
+          const href = extractContentId(src)
+          const [id, hash] = href.split('#')
+          if (!after && !contentMap.has(id)) {
+            isAfter = true
+            return
+          }
+          it.setAttribute(
+            'src',
+            contentLink({
+              content: content,
+              contentPath: fsPath,
+              linkContentPath: contentMap.get(id)!,
+              linkContentId: id,
+              linkContentHash: hash,
+            })!,
+          )
+        }
+      })
+      it.value = html.innerHTML
       // dom.setAttribute('src', 'test')
       // console.log(dom.attributes.src)
       // console.log(dom.toString())
     })
-    .filter((it) => isContentLink(it.dom.attrs.src) || isResourceLink(it.dom.attrs.src))
-  htmls.forEach((it) => {
-    const dom = it.dom
-    const src = dom.getAttribute('src')!
-    if (isResourceLink(src)) {
-      const id = extractResourceId(src)
-      const resource = map[id]
-      // item.url = formatRelative(path.relative(dirPath, resourceMap.get(id)!))
-      dom.setAttribute(
-        'src',
-        resourceLink({
-          resource,
-          contentPath: fsPath,
-          resourcePath: resourceMap.get(id)!,
-        })!,
-      )
-    } else {
-      const href = extractContentId(src)
-      const [id, hash] = href.split('#')
-      if (!after && !contentMap.has(id)) {
-        isAfter = true
-        return
-      }
-      // item.url = formatRelative(path.relative(dirPath, contentMap.get(id)!))
-      dom.setAttribute(
-        'src',
-        contentLink({
-          content: content,
-          contentPath: fsPath,
-          linkContentPath: contentMap.get(id)!,
-          linkContentId: id,
-          linkContentHash: hash,
-        })!,
-      )
-    }
-    it.md.value = dom.toString()
-  })
   urls.forEach((item) => {
     if (isResourceLink(item.url)) {
       const id = extractResourceId(item.url)

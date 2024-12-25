@@ -113,3 +113,16 @@ describe.skip('input', () => {
     })
   })
 })
+
+describe('Should convert html img src to resource link', () => {
+  it('Should convert html img src to resource link', async () => {
+    const html = `<img src=":/a" />`
+    const r = convertContentLink(html, ['a'])
+    expect(r.trim()).eq(`<img src=":/resource/a">`)
+  })
+  it('Should convert html multiple img src to resource link', async () => {
+    const html = `<img src=":/a" />\n<img src=":/b" />`
+    const r = convertContentLink(html, ['a', 'b'])
+    expect(r.trim()).eq(`<img src=":/resource/a">\n<img src=":/resource/b">`)
+  })
+})

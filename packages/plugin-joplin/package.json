@@ -44,6 +44,7 @@
     "joplin-api": "^0.6.0",
     "lodash-es": "^4.17.21",
     "mime-types": "^2.1.35",
+    "node-html-parser": "^6.1.5",
     "utility-types": "^3.10.0"
   }
 }

@@ -2,11 +2,12 @@ import { PageUtil, FolderListAllRes, TypeEnum, ResourceProperties, joplinDataApi
 import { type InputPlugin, type Content, type Resource, wrapResourceLink, wrapContentLink } from '@mark-magic/core'
 import { AsyncArray } from '@liuli-util/async'
 import { listToTree, treeToList } from '@liuli-util/tree'
-import { keyBy, omit } from 'lodash-es'
+import { keyBy } from 'lodash-es'
 import path from 'path'
 import { extension } from 'mime-types'
-import { Image, Link, fromMarkdown, selectAll, toMarkdown } from '@liuli-util/markdown-util'
+import { HTML, Image, Link, fromMarkdown, selectAll, toMarkdown } from '@liuli-util/markdown-util'
 import filenamify from 'filenamify'
+import { parse } from 'node-html-parser'
 
 async function getFolders(api: Api): Promise<Record<string, FolderListAllRes & Pick<Content, 'path'>>> {
   const list = await api.folder.listAll()
@@ -47,6 +48,18 @@ export function convertContentLink(body: string, resourceIds: string[]): string 
     }
     it.url = wrapContentLink(it.url.slice(2))
   })
+  ;(selectAll('html', root) as HTML[])
+    .filter((it) => ['<audio', '<video', '<img'].some((p) => it.value.startsWith(p)))
+    .forEach((it) => {
+      const dom = parse(it.value)
+      dom.querySelectorAll('audio,video,img').forEach((it) => {
+        const id = it.getAttribute('src')!.slice(2)
+        if (resourceIds.includes(id)) {
+          it.setAttribute('src', wrapResourceLink(id))
+        }
+      })
+      it.value = dom.innerHTML
+    })
   return toMarkdown(root)
 }
 

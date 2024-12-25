@@ -11,6 +11,8 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   publish:
+    environment:
+      name: npm
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -26,7 +28,7 @@ jobs:
           node-version: 20
           cache: pnpm
       - name: Install dependencies
-        run: pnpm i
+        run: pwd && pnpm i
 
       - name: Setup
         run: pnpm setup-all

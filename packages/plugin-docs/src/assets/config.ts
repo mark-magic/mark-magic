@@ -8,6 +8,7 @@ import { cjk } from 'markdown-it-cjk-space-clean'
 import { twitterMeta } from 'vitepress-plugin-twitter-card'
 import taskLists from '@rxliuli/markdown-it-task-lists'
 import { PagefindOption, pagefindPlugin, SearchConfig } from 'vitepress-plugin-pagefind'
+import footnote from 'markdown-it-footnote'
 
 // @ts-expect-error
 const rss: RenderRssOptions = `INJECT_RSS_CONFIG`
@@ -96,7 +97,9 @@ const configs: UserConfig[] = [
   defineConfig({
     markdown: {
       config: (md) => {
-        md.use(cjk() as any).use(taskLists as any)
+        md.use(cjk() as any)
+          .use(taskLists as any)
+          .use(footnote as any)
       },
       attrs: {
         disable: true,
@@ -113,7 +116,7 @@ const twitter = {
   image: `INJECT_TWITTER_IMAGE`,
 }
 if (twitter.site && twitter.image) {
-  configs.push(twitterMeta(twitter))
+  configs.push(twitterMeta(twitter) as any)
 }
 const INJECT_SEARCH = `INJECT_SEARCH` as any
 

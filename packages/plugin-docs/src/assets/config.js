@@ -7,6 +7,7 @@ import { cjk } from 'markdown-it-cjk-space-clean'
 import { twitterMeta } from 'vitepress-plugin-twitter-card'
 import taskLists from '@rxliuli/markdown-it-task-lists'
 import { pagefindPlugin } from 'vitepress-plugin-pagefind'
+import footnote from 'markdown-it-footnote'
 const rss = `INJECT_RSS_CONFIG`
 function getFeed() {
   if (!(typeof rss === 'object' && rss.hostname && rss.copyright)) {
@@ -82,7 +83,7 @@ const configs = [
   defineConfig({
     markdown: {
       config: (md) => {
-        md.use(cjk()).use(taskLists)
+        md.use(cjk()).use(taskLists).use(footnote)
       },
       attrs: {
         disable: true,

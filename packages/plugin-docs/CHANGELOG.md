@@ -1,5 +1,11 @@
 # @mark-magic/plugin-docs
 
+## 0.20.0
+
+### Minor Changes
+
+- feat: support markdown footnotes
+
 ## 0.19.0
 
 ### Patch Changes

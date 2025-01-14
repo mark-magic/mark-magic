@@ -977,8 +977,8 @@ importers:
         specifier: ^5.1.1
         version: 5.1.1
       joplin-api:
-        specifier: ^0.6.0
-        version: 0.6.0
+        specifier: ^1.0.0
+        version: 1.0.0
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
@@ -4278,6 +4278,15 @@ packages:
       supports-color:
         optional: true
 
+  debug@4.4.0:
+    resolution: {integrity: sha512-6WTZ/IxCY/T6BALoZHaE4ctp9xm+Z5kY/pzYaCHRFeyVhojxlrm+46y68HA6hr0TcwEssoxNiDEUJQjfPZ/RYA==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+
   decamelize-keys@1.1.1:
     resolution: {integrity: sha512-WiPxgEirIV0/eIOMcnFBA3/IJZAZqKnwAwWyvvdi4lsr1WCN22nhdf/3db3DoZcUjTV2SqfzIwNyp6y2xs3nmg==}
     engines: {node: '>=0.10.0'}
@@ -4289,8 +4298,8 @@ packages:
   decode-named-character-reference@1.0.2:
     resolution: {integrity: sha512-O8x12RzrUF8xyVcY0KJowWsmaJxQbmy0/EtnNtHRpsOcT7dFk5W598coHqBVpmWo1oQQfsCqfCmkZN5DJrZVdg==}
 
-  decode-uri-component@0.2.0:
-    resolution: {integrity: sha512-hjf+xovcEn31w/EUYdTXQh/8smFL/dzYjohQGEIgjyNavaJfBY2p5F527Bo1VPATxv0VYTUC2bOcXvqFwk78Og==}
+  decode-uri-component@0.2.2:
+    resolution: {integrity: sha512-FqUYQ+8o158GyGTrMFJms9qh3CqTKvAqgqsTnkLI8sKu0028orqBhxNMFkFen0zGyg6epACD32pjVk58ngIErQ==}
     engines: {node: '>=0.10'}
 
   decode-uri-component@0.4.1:
@@ -5548,8 +5557,8 @@ packages:
   jju@1.4.0:
     resolution: {integrity: sha512-8wb9Yw966OSxApiCt0K3yNJL8pnNeIv+OEq2YMidz4FKP6nonSRoOXc80iXY4JaN2FC11B9qsNmDsm+ZOfMROA==}
 
-  joplin-api@0.6.0:
-    resolution: {integrity: sha512-Nc8GbFdjDHMZwsgMRWfuJzuN+oDdH93NZeM6gb8zruGNjpiDJAFsTP7usNnKAikBXmAFT5DAzQj/mkhdeAnNrg==}
+  joplin-api@1.0.0:
+    resolution: {integrity: sha512-nDeCR9VeLASGI47m26IxzhDt5mxdXcDPDS8Oh3uLlAN/a5fmNe7tcP0tAAmXTCKg5dTi9oo0s3tdBEcpvPeLvQ==}
 
   joycon@3.1.1:
     resolution: {integrity: sha512-34wB/Y7MW7bzjKRjUKTa46I2Z7eV62Rkhva+KkopW7Qvv/OSWBqvkSY7vusOPrNuZcUG3tApvdVgNB8POj3SPw==}
@@ -6730,8 +6739,8 @@ packages:
     resolution: {integrity: sha512-MvjoMCJwEarSbUYk5O+nmoSzSutSsTwF85zcHPQ9OrlFoZOYIjaqBAJIqIXjptyD5vThxGq52Xu/MaJzRkIk4Q==}
     engines: {node: '>=0.6'}
 
-  query-string@9.0.0:
-    resolution: {integrity: sha512-4EWwcRGsO2H+yzq6ddHcVqkCQ2EFUSfDMEjF8ryp8ReymyZhIuaFRGLomeOQLkrzacMHoyky2HW0Qe30UbzkKw==}
+  query-string@9.1.1:
+    resolution: {integrity: sha512-MWkCOVIcJP9QSKU52Ngow6bsAWAPlPK2MludXvcrS2bGZSl+T1qX9MZvRIkqUIkGLJquMJHWfsT6eRqUpp4aWg==}
     engines: {node: '>=18'}
 
   queue-microtask@1.2.3:
@@ -11104,7 +11113,7 @@ snapshots:
 
   agent-base@6.0.2:
     dependencies:
-      debug: 4.3.7
+      debug: 4.4.0
     transitivePeerDependencies:
       - supports-color
 
@@ -11796,6 +11805,10 @@ snapshots:
     dependencies:
       ms: 2.1.3
 
+  debug@4.4.0:
+    dependencies:
+      ms: 2.1.3
+
   decamelize-keys@1.1.1:
     dependencies:
       decamelize: 1.2.0
@@ -11807,7 +11820,7 @@ snapshots:
     dependencies:
       character-entities: 2.0.2
 
-  decode-uri-component@0.2.0: {}
+  decode-uri-component@0.2.2: {}
 
   decode-uri-component@0.4.1: {}
 
@@ -13114,7 +13127,7 @@ snapshots:
   https-proxy-agent@5.0.1:
     dependencies:
       agent-base: 6.0.2
-      debug: 4.3.7
+      debug: 4.4.0
     transitivePeerDependencies:
       - supports-color
 
@@ -13370,11 +13383,11 @@ snapshots:
 
   jju@1.4.0: {}
 
-  joplin-api@0.6.0:
+  joplin-api@1.0.0:
     dependencies:
       '@liuli-util/object': 3.5.1
       lodash-es: 4.17.21
-      query-string: 9.0.0
+      query-string: 9.1.1
 
   joycon@3.1.1: {}
 
@@ -14827,7 +14840,7 @@ snapshots:
     dependencies:
       side-channel: 1.0.4
 
-  query-string@9.0.0:
+  query-string@9.1.1:
     dependencies:
       decode-uri-component: 0.4.1
       filter-obj: 5.1.0
@@ -15182,7 +15195,7 @@ snapshots:
 
   send@1.1.0:
     dependencies:
-      debug: 4.3.7
+      debug: 4.4.0
       destroy: 1.2.0
       encodeurl: 2.0.0
       escape-html: 1.0.3
@@ -15360,7 +15373,7 @@ snapshots:
   source-map-resolve@0.5.3:
     dependencies:
       atob: 2.1.2
-      decode-uri-component: 0.2.0
+      decode-uri-component: 0.2.2
       resolve-url: 0.2.1
       source-map-url: 0.4.1
       urix: 0.1.0

@@ -1,5 +1,11 @@
 # @mark-magic/plugin-joplin
 
+## 0.21.0
+
+### Minor Changes
+
+- chore: up joplin-api
+
 ## 0.19.0
 
 ### Minor Changes

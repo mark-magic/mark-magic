@@ -12,6 +12,7 @@ import { parse } from 'node-html-parser'
 import { AsyncArray } from '@liuli-util/async'
 import simpleGit from 'simple-git'
 import { pathExists } from 'fs-extra'
+import { XMLValidator } from 'fast-xml-parser'
 
 const tempPath = initTempPath(__filename)
 
@@ -198,6 +199,100 @@ it('Should support break line', async () => {
   await extract(outputPath, { dir: path.resolve(tempPath, 'dist') })
   const text = await readFile(path.resolve(tempPath, 'dist/Text/01.xhtml'), 'utf-8')
   expect(text.replaceAll('\n', '')).includes('第一行<br />第二行')
+})
+
+it('Should escape footnote boolean attributes as valid XHTML', async () => {
+  const outputPath = path.resolve(tempPath, './footnote.epub')
+  await convert({
+    input: fromVirtual([
+      {
+        id: 'fn',
+        path: 'fn.md',
+        content: '# 第一章\n\n这是一个脚注[^1]\n\n[^1]: 脚注内容',
+      },
+    ]),
+    output: output({
+      path: outputPath,
+      ...metadata,
+    }),
+  })
+  const distPath = path.resolve(tempPath, 'dist-footnote')
+  await extract(outputPath, { dir: distPath })
+  const text = await readFile(path.resolve(distPath, 'Text/fn.xhtml'), 'utf-8')
+
+  // 属性应带有空字符串值，而不是没有值的裸属性
+  expect(text).toContain('data-footnote-ref=""')
+  expect(text).toContain('data-footnotes=""')
+  // 不应该出现无值的裸属性（合法 HTML5，但不合法 XML）
+  expect(text).not.toMatch(/\bdata-footnote-ref\b(?!=)/)
+  expect(text).not.toMatch(/\bdata-footnotes\b(?!=)/)
+
+  expect(XMLValidator.validate(text)).eq(true)
+})
+
+it('Should generate well-formed XML for all xhtml/opf/container.xml files', async () => {
+  const outputPath = path.resolve(tempPath, './well-formed.epub')
+  await convert({
+    input: fromVirtual([
+      {
+        id: 'fn',
+        path: 'fn.md',
+        content: '# 第一章\n\n这是一个脚注[^1]\n\n[^1]: 脚注内容',
+      },
+      {
+        id: '02',
+        path: '02.md',
+        content: '# 第二章\n\n第一行\n第二行',
+      },
+    ]),
+    output: output({
+      path: outputPath,
+      ...metadata,
+    }),
+  })
+  const distPath = path.resolve(tempPath, 'dist-well-formed')
+  await extract(outputPath, { dir: distPath })
+
+  const files = await readdir(distPath, { recursive: true })
+  const xmlFiles = files.filter((it) => /\.(xhtml|opf)$/.test(it) || it.endsWith('container.xml'))
+  expect(xmlFiles.length).greaterThan(0)
+  for (const file of xmlFiles) {
+    const content = await readFile(path.resolve(distPath, file), 'utf-8')
+    expect(XMLValidator.validate(content), `${file} should be well-formed XML`).eq(true)
+  }
+})
+
+it('Should escape special characters (& and <) in title while staying well-formed XML', async () => {
+  const outputPath = path.resolve(tempPath, './special-chars.epub')
+  await convert({
+    input: fromVirtual([
+      {
+        id: 'sp',
+        path: 'sp.md',
+        content: '# 标题 & <特殊字符>\n\n正文内容',
+      },
+    ]),
+    output: output({
+      path: outputPath,
+      ...metadata,
+      id: 'id & <special>',
+      title: '书名 & <special>',
+    }),
+  })
+  const distPath = path.resolve(tempPath, 'dist-special-chars')
+  await extract(outputPath, { dir: distPath })
+
+  const contentOpf = await readFile(path.resolve(distPath, 'content.opf'), 'utf-8')
+  expect(contentOpf).toContain('<dc:title>书名 &amp; &lt;special&gt;</dc:title>')
+  expect(XMLValidator.validate(contentOpf)).eq(true)
+
+  const navXhtml = await readFile(path.resolve(distPath, 'Text/nav.xhtml'), 'utf-8')
+  expect(navXhtml).toContain('标题 &amp; &lt;特殊字符&gt;')
+  expect(XMLValidator.validate(navXhtml)).eq(true)
+
+  const chapterXhtml = await readFile(path.resolve(distPath, 'Text/sp.xhtml'), 'utf-8')
+  expect(chapterXhtml).toContain('<title>标题 &amp; &lt;特殊字符&gt;</title>')
+  expect(XMLValidator.validate(chapterXhtml)).eq(true)
 })
 
 describe.skip('Should render pmas', async () => {

@@ -3,6 +3,18 @@ import JSZip from 'jszip'
 import mimetype from './template/mimetype?raw'
 import { treeReduce } from '@liuli-util/tree'
 
+/**
+ * 转义 XML 中的特殊字符，用于文本内容与属性值，避免生成非法的 XHTML
+ */
+export function escapeXml(value: string): string {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;')
+}
+
 export interface MetaData {
   /** 书籍唯一标识 */
   id: string
@@ -63,7 +75,7 @@ interface RenderNavToc extends Omit<Toc, 'id' | 'children'> {
   children?: RenderNavToc[]
 }
 
-export function renderNavXML(toc: RenderNavToc[]) {
+export function renderNavXML(toc: RenderNavToc[], metadata: Pick<MetaData, 'language'>) {
   const result = treeReduce(
     toc,
     (accumulator, node, childrenResult, path) => {
@@ -71,7 +83,7 @@ export function renderNavXML(toc: RenderNavToc[]) {
       const childrenHtml = childrenResult
       return (
         accumulator +
-        `\n${indent}<li>\n${indent}  <a href="./${node.chapterId}.xhtml">${node.title}</a>` +
+        `\n${indent}<li>\n${indent}  <a href="./${escapeXml(node.chapterId)}.xhtml">${escapeXml(node.title)}</a>` +
         (childrenHtml ? `\n${indent}  <ol>${childrenHtml}\n${indent}  </ol>\n${indent}</li>` : `\n${indent}</li>`)
       )
     },
@@ -81,10 +93,11 @@ export function renderNavXML(toc: RenderNavToc[]) {
       children: 'children',
     },
   )
+  const lang = escapeXml(metadata.language)
 
   return `<?xml version="1.0" encoding="UTF-8"?>
   <!DOCTYPE html>
-  <html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" lang="fr">
+  <html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="${lang}" lang="${lang}">
     <head>
       <title>Navigation</title>
       <meta charset="utf-8" />
@@ -103,28 +116,40 @@ export function renderNavXML(toc: RenderNavToc[]) {
 export class EpubBuilder {
   private renderMetadata(meta: MetaData) {
     return `<metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
-    <dc:identifier id="book-id">${meta.id}</dc:identifier>
-    <dc:title>${meta.title}</dc:title>
-    <dc:creator>${meta.creator}</dc:creator>
-    <dc:publisher>${meta.publisher}</dc:publisher>
-    <dc:language>${meta.language}</dc:language>
-    ${meta.cover ? `<meta name="cover" content="${meta.cover}" />` : ''}
+    <dc:identifier id="book-id">${escapeXml(meta.id)}</dc:identifier>
+    <dc:title>${escapeXml(meta.title)}</dc:title>
+    <dc:creator>${escapeXml(meta.creator)}</dc:creator>
+    <dc:publisher>${escapeXml(meta.publisher)}</dc:publisher>
+    <dc:language>${escapeXml(meta.language)}</dc:language>
+    ${meta.cover ? `<meta name="cover" content="${escapeXml(meta.cover)}" />` : ''}
   </metadata>`
   }
 
-  private renderManifest({ text, media }: Pick<GenerateOptions, 'text' | 'media' | 'toc'>) {
+  private renderManifest({ text, media, metadata }: Pick<GenerateOptions, 'text' | 'media' | 'metadata'>) {
     return `<manifest>
     ${text
-      .map((item) => `<item id="${item.id}" href="Text/${item.id}.xhtml" media-type="application/xhtml+xml"/>`)
+      .map(
+        (item) =>
+          `<item id="${escapeXml(item.id)}" href="Text/${escapeXml(
+            item.id,
+          )}.xhtml" media-type="application/xhtml+xml"/>`,
+      )
       .join('\n')}
-    ${media.map((item) => `<item href="Media/${item.id}" id="${item.id}" media-type="${lookup(item.id)}"/>`).join('\n')}
+    ${media
+      .map(
+        (item) =>
+          `<item href="Media/${escapeXml(item.id)}" id="${escapeXml(item.id)}" media-type="${
+            lookup(item.id) || 'application/octet-stream'
+          }"${item.id === metadata.cover ? ' properties="cover-image"' : ''}/>`,
+      )
+      .join('\n')}
     <item id="nav" href="Text/nav.xhtml" media-type="application/xhtml+xml" properties="nav" />
   </manifest>`
   }
 
   private renderNcxSpine(text: Chapter[]) {
     return `<spine toc="nav">
-    ${text.map((item) => `<itemref idref="${item.id}"/>`).join('\n')}
+    ${text.map((item) => `<itemref idref="${escapeXml(item.id)}"/>`).join('\n')}
   </spine>`
   }
 
@@ -139,10 +164,10 @@ export class EpubBuilder {
 
   private renderText(text: Chapter) {
     return `<?xml version="1.0" encoding="utf-8"?>
-    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+    <!DOCTYPE html>
     <html xmlns="http://www.w3.org/1999/xhtml">
       <head>
-        <title>${text.title}</title>
+        <title>${escapeXml(text.title)}</title>
       </head>
       <body>
         <main>
@@ -153,7 +178,8 @@ export class EpubBuilder {
   }
 
   private init(zip: JSZip) {
-    zip.file('mimetype', mimetype)
+    // mimetype 必须是压缩包的第一个条目，且不能被压缩，这是 EPUB 规范的强制要求
+    zip.file('mimetype', mimetype, { compression: 'STORE' })
     zip.file(
       'META-INF/container.xml',
       `<?xml version="1.0"?>
@@ -168,7 +194,7 @@ export class EpubBuilder {
   gen(options: GenerateOptions): JSZip {
     const zip = new JSZip()
     this.init(zip)
-    zip.file('Text/nav.xhtml', renderNavXML(options.toc))
+    zip.file('Text/nav.xhtml', renderNavXML(options.toc, options.metadata))
     zip.file(
       'content.opf',
       this.renderContentOpf([

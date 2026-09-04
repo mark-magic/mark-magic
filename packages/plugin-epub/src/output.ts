@@ -28,6 +28,26 @@ export interface Sidebar extends Omit<Toc, 'children'>, ISidebar {
   children?: Sidebar[]
 }
 
+/**
+ * mdast-util-to-hast 会为部分属性（如脚注相关的 data-footnote-ref、data-footnotes）生成布尔值 `true`，
+ * hast-util-to-html 会将其序列化为没有值的裸属性（合法 HTML，但不是合法 XML/XHTML）。
+ * 这里递归遍历 hast 树，把严格等于 `true` 的属性值改成空字符串，使其被序列化为 `attr=""`，从而生成合法的 XHTML。
+ */
+function fixHastBooleanAttributes(node: unknown): void {
+  if (!node || typeof node !== 'object') {
+    return
+  }
+  const n = node as { type?: string; properties?: Record<string, unknown>; children?: unknown[] }
+  if (n.type === 'element' && n.properties) {
+    for (const key of Object.keys(n.properties)) {
+      if (n.properties[key] === true) {
+        n.properties[key] = ''
+      }
+    }
+  }
+  n.children?.forEach(fixHastBooleanAttributes)
+}
+
 export function output(
   options: EpubOutputConfig & {
     root?: string
@@ -79,12 +99,14 @@ export function output(
         chapterId: content.id,
       }
       sidebars.push(sidebar)
+      const hast = mdToHast(root)!
+      fixHastBooleanAttributes(hast)
       const c: Chapter & {
         path: string
       } = {
         id: content.id,
         title: content.name,
-        content: hastToHtml(mdToHast(root)!, {
+        content: hastToHtml(hast, {
           closeSelfClosing: true,
         }),
         path: pathe.join(...content.path),

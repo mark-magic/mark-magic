@@ -3,8 +3,9 @@ import path from 'path'
 import { v4 } from 'uuid'
 import { initTempPath } from '@liuli-util/test'
 import { EpubBuilder, renderNavXML } from '../EpubBuilder'
-import { readFile, writeFile } from 'fs/promises'
+import { readFile, readdir, writeFile } from 'fs/promises'
 import extract from 'extract-zip'
+import { XMLValidator } from 'fast-xml-parser'
 
 const tempPath = initTempPath(__filename)
 let builder: EpubBuilder
@@ -159,28 +160,31 @@ it('multi-level toc', async () => {
 })
 
 it('tree sidebar renderer', () => {
-  const r = renderNavXML([
-    {
-      chapterId: '01-readme',
-      title: '第一卷-量子纠缠',
-      children: [
-        {
-          chapterId: '01-001',
-          title: '第一章-许愿',
-        },
-      ],
-    },
-    {
-      chapterId: '02-readme',
-      title: '第二卷-宇宙膨胀',
-      children: [
-        {
-          chapterId: '02-017',
-          title: '幕间-1-无间迷梦',
-        },
-      ],
-    },
-  ])
+  const r = renderNavXML(
+    [
+      {
+        chapterId: '01-readme',
+        title: '第一卷-量子纠缠',
+        children: [
+          {
+            chapterId: '01-001',
+            title: '第一章-许愿',
+          },
+        ],
+      },
+      {
+        chapterId: '02-readme',
+        title: '第二卷-宇宙膨胀',
+        children: [
+          {
+            chapterId: '02-017',
+            title: '幕间-1-无间迷梦',
+          },
+        ],
+      },
+    ],
+    { language: 'zh-CN' },
+  )
   console.log(r)
   expect(r)
     .includes('<a href="./01-readme.xhtml">第一卷-量子纠缠</a>')
@@ -188,6 +192,8 @@ it('tree sidebar renderer', () => {
     .includes('<a href="./02-readme.xhtml">第二卷-宇宙膨胀</a>')
     .includes('<a href="./02-017.xhtml">幕间-1-无间迷梦</a>')
   expect(r.match(new RegExp('<ol>', 'g'))!.length).eq(3)
+  expect(r).toContain('xml:lang="zh-CN"')
+  expect(r).toContain('lang="zh-CN"')
 })
 
 it('no cover', async () => {
@@ -224,4 +230,173 @@ it('no cover', async () => {
   const zipPath = path.resolve(tempPath, 'test.epub')
   await writeFile(zipPath, await zip.generateAsync({ type: 'nodebuffer' }))
   await extract(zipPath, { dir: path.resolve(tempPath, 'dist') })
+})
+
+it('mimetype should be the first zip entry and stored without compression', async () => {
+  const zip = builder.gen({
+    metadata: {
+      id: v4(),
+      title: '第一卷-量子纠缠',
+      creator: 'Hieronym',
+      publisher: 'rxliuli',
+      language: 'zh-CN',
+    },
+    text: [
+      {
+        id: 'ch0001',
+        title: '引言',
+        content: `<p>test</p>`,
+      },
+    ],
+    media: [],
+    toc: [],
+  })
+  // mimetype 必须是压缩包中的第一个条目
+  expect(Object.keys(zip.files)[0]).eq('mimetype')
+  // mimetype 必须不被压缩（STORE）
+  expect(zip.file('mimetype')?.options.compression).eq('STORE')
+
+  const buffer = await zip.generateAsync({ type: 'nodebuffer' })
+  // zip 本地文件头（local file header）的压缩方法字段位于第 8-9 字节，STORE 对应值为 0
+  expect(buffer.readUInt16LE(8)).eq(0)
+})
+
+it('should generate well-formed XML for title with special characters', async () => {
+  const zip = builder.gen({
+    metadata: {
+      id: v4(),
+      title: 'A & B < C',
+      creator: 'Hieronym"creator"',
+      publisher: 'rxliuli',
+      language: 'zh-CN',
+      cover: 'cover.jpg',
+    },
+    text: [
+      {
+        id: 'cover',
+        title: 'cover',
+        content: `<svg xmlns="http://www.w3.org/2000/svg"><image xlink:href="../Media/cover.jpg" xmlns:xlink="http://www.w3.org/1999/xlink" /></svg>`,
+      },
+      {
+        id: 'ch0001',
+        title: '标题 & <特殊字符>',
+        content: `<p>test</p>`,
+      },
+    ],
+    media: [
+      {
+        id: 'cover.jpg',
+        buffer: await readFile(path.resolve(__dirname, 'assets/cover.jpg')),
+      },
+    ],
+    toc: [
+      {
+        id: v4(),
+        title: '标题 & <特殊字符>',
+        chapterId: 'ch0001',
+      },
+    ],
+  })
+
+  const zipPath = path.resolve(tempPath, 'special-chars.epub')
+  await writeFile(zipPath, await zip.generateAsync({ type: 'nodebuffer' }))
+  const distPath = path.resolve(tempPath, 'special-chars-dist')
+  await extract(zipPath, { dir: distPath })
+
+  const contentOpf = await readFile(path.resolve(distPath, 'content.opf'), 'utf-8')
+  expect(contentOpf).toContain('<dc:title>A &amp; B &lt; C</dc:title>')
+  expect(XMLValidator.validate(contentOpf)).eq(true)
+
+  const navXhtml = await readFile(path.resolve(distPath, 'Text/nav.xhtml'), 'utf-8')
+  expect(navXhtml).toContain('标题 &amp; &lt;特殊字符&gt;')
+  expect(XMLValidator.validate(navXhtml)).eq(true)
+
+  const chapterXhtml = await readFile(path.resolve(distPath, 'Text/ch0001.xhtml'), 'utf-8')
+  expect(chapterXhtml).toContain('<title>标题 &amp; &lt;特殊字符&gt;</title>')
+  expect(XMLValidator.validate(chapterXhtml)).eq(true)
+})
+
+it('all generated xhtml/opf/container.xml files should be well-formed XML', async () => {
+  const zip = builder.gen({
+    metadata: {
+      id: v4(),
+      title: '第一卷-量子纠缠',
+      creator: 'Hieronym',
+      publisher: 'rxliuli',
+      language: 'zh-CN',
+      cover: 'cover.jpg',
+    },
+    text: [
+      {
+        id: 'cover',
+        title: 'cover',
+        content: `<svg xmlns="http://www.w3.org/2000/svg"><image xlink:href="../Media/cover.jpg" xmlns:xlink="http://www.w3.org/1999/xlink" /></svg>`,
+      },
+      {
+        id: 'ch0001',
+        title: '引言',
+        content: `<p>test</p>`,
+      },
+    ],
+    media: [
+      {
+        id: 'cover.jpg',
+        buffer: await readFile(path.resolve(__dirname, 'assets/cover.jpg')),
+      },
+    ],
+    toc: [
+      {
+        id: v4(),
+        title: '引言',
+        chapterId: 'ch0001',
+      },
+    ],
+  })
+
+  const zipPath = path.resolve(tempPath, 'well-formed.epub')
+  await writeFile(zipPath, await zip.generateAsync({ type: 'nodebuffer' }))
+  const distPath = path.resolve(tempPath, 'well-formed-dist')
+  await extract(zipPath, { dir: distPath })
+
+  const files = await readdir(distPath, { recursive: true })
+  const xmlFiles = files.filter((it) => /\.(xhtml|opf)$/.test(it) || it.endsWith('container.xml'))
+  expect(xmlFiles.length).greaterThan(0)
+  for (const file of xmlFiles) {
+    const content = await readFile(path.resolve(distPath, file), 'utf-8')
+    expect(XMLValidator.validate(content), `${file} should be well-formed XML`).eq(true)
+  }
+})
+
+it('cover image manifest item should declare properties="cover-image"', async () => {
+  const zip = builder.gen({
+    metadata: {
+      id: v4(),
+      title: '第一卷-量子纠缠',
+      creator: 'Hieronym',
+      publisher: 'rxliuli',
+      language: 'zh-CN',
+      cover: 'cover.jpg',
+    },
+    text: [
+      {
+        id: 'ch0001',
+        title: '引言',
+        content: `<p>test</p>`,
+      },
+    ],
+    media: [
+      {
+        id: 'cover.jpg',
+        buffer: await readFile(path.resolve(__dirname, 'assets/cover.jpg')),
+      },
+    ],
+    toc: [],
+  })
+  const zipPath = path.resolve(tempPath, 'cover.epub')
+  await writeFile(zipPath, await zip.generateAsync({ type: 'nodebuffer' }))
+  const distPath = path.resolve(tempPath, 'cover-dist')
+  await extract(zipPath, { dir: distPath })
+  const contentOpf = await readFile(path.resolve(distPath, 'content.opf'), 'utf-8')
+  expect(contentOpf).toMatch(/<item[^>]*id="cover\.jpg"[^>]*properties="cover-image"/)
+  expect(contentOpf).toContain('<meta name="cover" content="cover.jpg" />')
 })

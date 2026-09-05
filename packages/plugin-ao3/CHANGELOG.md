@@ -1,5 +1,12 @@
 # @mark-magic/plugin-ao3
 
+## 0.22.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @mark-magic/epub@0.4.1
+
 ## 0.22.0
 
 ### Minor Changes

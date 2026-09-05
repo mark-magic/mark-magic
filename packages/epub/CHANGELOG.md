@@ -1,5 +1,11 @@
 # @mark-magic/epub
 
+## 0.4.2
+
+### Patch Changes
+
+- fix: serialize boolean hast attributes as valued attributes, escape XML special characters, store mimetype uncompressed, unify chapter DOCTYPE, mark cover manifest item and fix nav lang, for strict XHTML compliance (closes liuli-moe/to-the-stars#260)
+
 ## 0.4.0
 
 ### Minor Changes
